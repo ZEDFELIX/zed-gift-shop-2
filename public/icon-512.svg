@@ -1,0 +1,11 @@
+// ZED GIFT SHOP - PWA App Icons (SVG placeholders)
+// These are placeholder SVGs that can be replaced with proper raster icons.
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+ <rect width="512" height="512" rx="96" fill="#0F5C4D"/>
+ <rect x="64" y="64" width="384" height="384" rx="64" fill="#FFFFFF"/>
+ <rect x="128" y="128" width="256" height="32" rx="16" fill="#0F5C4D"/>
+ <rect x="128" y="200" width="200" height="32" rx="16" fill="#0F5C4D"/>
+ <rect x="128" y="272" width="160" height="32" rx="16" fill="#0F5C4D"/>
+ <circle cx="384" cy="128" r="48" fill="#0F5C4D"/>
+ <circle cx="384" cy="128" r="32" fill="#FFFFFF"/>
+</svg>

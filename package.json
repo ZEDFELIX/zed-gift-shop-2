@@ -1,0 +1,54 @@
+{
+  "name": "zed-gift-shop-2",
+  "version": "1.0.0",
+  "private": true,
+  "description": "ZED GIFT SHOP 2 — Premium Kenyan gifting & personalized products ecommerce.",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "typecheck": "tsc --noEmit",
+    "db:up": "node scripts/postgres.mjs up",
+    "db:down": "node scripts/postgres.mjs down",
+    "db:status": "node scripts/postgres.mjs status",
+    "db:push": "prisma db push",
+    "db:seed": "prisma db seed",
+    "db:images": "node --import tsx scripts/update-demo-images.ts",
+    "db:setup": "npm run db:up && npm run db:push && npm run db:seed",
+    "postinstall": "prisma generate"
+  },
+  "prisma": {
+    "seed": "node --import tsx prisma/seed.ts"
+  },
+  "dependencies": {
+    "@prisma/client": "^6.19.3",
+    "@supabase/ssr": "^0.12.7",
+    "@supabase/supabase-js": "^2.117.0",
+    "@vercel/blob": "^2.8.0",
+    "bcryptjs": "^3.0.3",
+    "clsx": "^2.1.1",
+    "jose": "^6.2.12",
+    "lucide-react": "^0.525.0",
+    "next": "^15.5.25",
+    "nodemailer": "^7.0.0",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "zod": "^3.25.76"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4.1.0",
+    "@types/node": "^24.0.0",
+    "@types/nodemailer": "^6.4.17",
+    "@types/react": "^19.1.0",
+    "@types/react-dom": "^19.1.0",
+    "embedded-postgres": "18.4.0-beta.17",
+    "eslint": "^9.39.5",
+    "eslint-config-next": "^15.3.3",
+    "postcss": "^8.5.3",
+    "prisma": "^6.19.3",
+    "tailwindcss": "^4.1.0",
+    "tsx": "^4.23.15",
+    "typescript": "^5.8.3"
+  }
+}

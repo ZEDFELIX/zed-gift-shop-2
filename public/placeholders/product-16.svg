@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="800" viewBox="0 0 800 800">
+ <defs>
+ <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+ <stop offset="0" stop-color="#0F5C4D"/>
+ <stop offset="0.55" stop-color="#0b4a33"/>
+ <stop offset="1" stop-color="#0F5C4D"/>
+ </linearGradient>
+ <radialGradient id="glow" cx="0.5" cy="0.5" r="0.5">
+ <stop offset="0.6" stop-color="#D98BA8" stop-opacity="0.18"/>
+ <stop offset="1" stop-color="#D98BA8" stop-opacity="0"/>
+ </radialGradient>
+ </defs>
+ <rect width="800" height="800" fill="url(#bg)"/>
+ <circle cx="400" cy="400" r="300" fill="url(#glow)"/>
+ <g stroke="#D98BA8" stroke-opacity="0.22" stroke-width="2">
+ <path d="M-120 640 L920 -80"/>
+ <path d="M-80 700 L960 -20"/>
+ <path d="M-40 760 L1000 40"/>
+ </g>
+ <g fill="none" stroke="#D98BA8" stroke-width="6" opacity="0.9">
+ <rect x="190" y="190" width="420" height="420" rx="28"/>
+ <path d="M260 190 L190 260 M540 190 L610 260 M260 610 L190 540 M540 610 L610 540"/>
+ <circle cx="400" cy="400" r="120"/>
+ <path d="M400 330 L400 470 M330 400 L470 400"/>
+ </g>
+ <text x="400" y="620" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="44" font-weight="bold" letter-spacing="3" fill="#D98BA8">Gift 16</text>
+ <text x="400" y="668" text-anchor="middle" font-family="Arial, sans-serif" font-size="20" letter-spacing="10" fill="#ffffff" fill-opacity="0.75">ZED GIFT SHOP</text>
+</svg>

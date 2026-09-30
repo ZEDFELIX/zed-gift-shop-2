@@ -1,0 +1,49 @@
+# dependencies
+/node_modules
+/.pnp
+.pnp.*
+
+# next.js
+/.next/
+/out/
+/.vercel
+
+# production
+/build
+
+# local environment
+.env
+.env*.local
+!.env.example
+
+# prisma
+prisma/*.db
+prisma/*.db-journal
+prisma/pg-data/
+
+# local postgres data
+/.pgdata/
+
+# uploads / media (local dev)
+/public/uploads/
+
+# misc
+.DS_Store
+*.pem
+
+# local logs
+*.log
+
+# opencode assistant memory (local only)
+/.opencode/
+
+# debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# typescript
+*.tsbuildinfo
+next-env.d.ts
+.vercel
+.env*
