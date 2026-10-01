@@ -94,7 +94,9 @@ const [form, setForm] = useState({
   isGift: false,
   });
 const [options, setOptions] = useState<DeliveryOption[]>([]);
-  const [step, setStep] = useState<"form" | "review" | "processing" | "stk" | "polling" | "flutterwave" | "bank" | "cod" | "failed" | "assistance" | "done">("form");
+  // Wizard steps: 1 contact, 2 delivery, 3 method, 4 payment, 5 review.
+  const [wiz, setWiz] = useState(1);
+  const [step, setStep] = useState<"form" | "processing" | "stk" | "polling" | "flutterwave" | "bank" | "cod" | "failed" | "assistance" | "done">("form");
   const [error, setError] = useState<string | null>(null);
   const [orderRef, setOrderRef] = useState<{ orderId: string; orderNumber: string; pollToken: string } | null>(null);
   const [orderTotal, setOrderTotal] = useState<number | null>(null);
@@ -402,29 +404,47 @@ const deliveryFee = deliveryOptions.find((o) => o.method === form.deliveryMethod
   const total = Math.max(0, cart.subtotal - cart.discount) + deliveryFee;
   const phoneDigits = form.phone.replace(/\D/g, "").replace(/^00/, "");
   const phoneIsValid = /^(0|254)\d{9}$/.test(phoneDigits);
-  const canSubmit =
-  form.name.trim() &&
-  /.+@.+\..+/.test(form.email) &&
-  phoneIsValid &&
-  form.county &&
-  form.town.trim() &&
-  form.address.trim() &&
-  (form.deliveryMethod === "PICKUP" || form.deliveryMethod)
-  ? true
-  : false;
+  // The M-PESA prompt needs a Safaricom number once the number is in national form.
+  const safaricomDigits = phoneDigits.replace(/^(?:0|254)/, "");
+  const mpesaPhoneOk = /^7[01279]\d{7}$/.test(safaricomDigits);
+  const contactValid = form.name.trim().length >= 2 && /.+@.+\..+/.test(form.email) && phoneIsValid;
+  const deliveryValid = Boolean(form.county && form.town.trim() && form.address.trim());
+  const methodValid = form.deliveryMethod !== "";
+  const paymentValid = paymentMethod !== "COD" || codInfo.available;
 
- function toggleReview() {
- if (step === "form") setStep("review");
- else setStep("form");
- }
+  // Entering the delivery method step: pick the first available option when the
+  // customer has not chosen one yet.
+  useEffect(() => {
+    if (wiz === 3 && form.county && options.length > 0 && !form.deliveryMethod) {
+      const first = options.find((o) => o.available) ?? options[0];
+      if (first) setForm((f) => ({ ...f, deliveryMethod: first.method }));
+    }
+  }, [wiz, form.county, options, form.deliveryMethod]);
 
- const showReview = step !== "form";
+  const onWizard = step === "form";
+  const showOrderBanner = !onWizard || wiz === 5;
+
+const wizardSteps = [
+  { n: 1, label: "Contact" },
+  { n: 2, label: "Delivery" },
+  { n: 3, label: "Method" },
+  { n: 4, label: "Payment" },
+  { n: 5, label: "Review" },
+] as const;
+
+function wizardReached(n: number): boolean {
+  if (n === 1) return true;
+  if (n === 2) return contactValid;
+  if (n === 3) return contactValid && deliveryValid;
+  if (n === 4) return contactValid && deliveryValid && methodValid;
+  return contactValid && deliveryValid && methodValid && paymentValid;
+}
 
  return (
  <div className="grid gap-8 lg:grid-cols-[1fr_400px]">
- <div className="space-y-6">
- {/* Order summary banner (review step) */}
- {showReview && (
+<div className="space-y-6">
+  {/* Order summary banner (review + post-order steps) */}
+  {showOrderBanner && (
  <div className="glass-card rounded-zed p-5">
  <h2 className="font-display text-lg font-bold text-[#171717]">Order details</h2>
  <ul className="mt-3 divide-y divide-white/40 text-sm">
@@ -448,31 +468,75 @@ const deliveryFee = deliveryOptions.find((o) => o.method === form.deliveryMethod
  </div>
  )}
 
-{/* Contact & delivery */}
-  {step === "form" ? (
+{/* Five-step checkout wizard */}
+  {onWizard ? (
   <div className="glass-card rounded-zed p-5 lg:p-7">
- <h2 className="font-display text-lg font-bold text-[#171717]">Delivery details</h2>
- <div className="mt-5 grid gap-4 sm:grid-cols-2">
- <div>
- <label className="label" htmlFor="co-name">Full name</label>
- <input id="co-name" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} className="field" placeholder="Jane Mwangi" />
- </div>
- <div>
-<label className="label" htmlFor="co-phone">M-PESA phone</label>
-  <div className="relative">
-  <Phone className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-[#6B6B6B]" />
-  <input id="co-phone" value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })} className={`field pl-9 ${form.phone && !phoneIsValid ? "border-red-400" : ""}`} placeholder="0712 345 678" inputMode="tel" autoComplete="tel-national" />
+  {/* Progress stepper */}
+  <ol className="mb-6 flex items-center gap-1 sm:gap-2" aria-label="Checkout progress">
+  {wizardSteps.map((s, i) => {
+  const done = wiz > s.n;
+  const active = wiz === s.n;
+  return (
+  <li key={s.n} className="flex min-w-0 flex-1 items-center gap-1 sm:gap-2">
+  <button
+  type="button"
+  disabled={!wizardReached(s.n)}
+  onClick={() => setWiz(s.n)}
+  className={`flex items-center gap-1.5 rounded-full px-2 py-1 text-[11px] font-bold uppercase tracking-wide transition-colors disabled:cursor-not-allowed ${active ? "bg-zed-950 text-white" : done ? "text-deep-olive" : "text-[#9B9B9B] hover:text-[#171717] disabled:hover:text-[#9B9B9B]"}`}
+  >
+  <span className={`grid size-4 place-items-center rounded-full ${active ? "bg-white text-zed-950" : done ? "bg-deep-olive text-white" : "bg-white/40 text-[#9B9B9B]"}`}>
+  {done ? <Check className="size-2.5" /> : s.n}
+  </span>
+  <span className="hidden sm:inline">{s.label}</span>
+  </button>
+  {i < wizardSteps.length - 1 && <span className="h-px flex-1 bg-white/40" aria-hidden="true" />}
+  </li>
+  );
+  })}
+  </ol>
+
+  {wiz === 1 && (
+  <>
+  <h2 className="font-display text-lg font-bold text-[#171717]">Your contact details</h2>
+  <div className="mt-5 grid gap-4 sm:grid-cols-2">
+  <div>
+  <label className="label" htmlFor="co-name">Full name</label>
+  <input id="co-name" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} className={`field ${form.name && form.name.trim().length < 2 ? "border-red-400" : ""}`} placeholder="Jane Mwangi" />
   </div>
-  {form.phone && !phoneIsValid && (
-  <p className="mt-1 text-xs text-red-600">Enter a Kenyan mobile number, e.g. 0712 345 678.</p>
+  <div>
+  <label className="label" htmlFor="co-phone">M-PESA phone</label>
+  <div className="relative">
+    <Phone className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-[#6B6B6B]" />
+    <input id="co-phone" value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })} className={`field pl-9 ${form.phone && !phoneIsValid ? "border-red-400" : ""}`} placeholder="0712 345 678" inputMode="tel" autoComplete="tel-national" />
+    </div>
+    {form.phone && !phoneIsValid && (
+    <p className="mt-1 text-xs text-red-600">Enter a Kenyan mobile number, e.g. 0712 345 678.</p>
+    )}
+    </div>
+  <div className="sm:col-span-2">
+  <label className="label" htmlFor="co-email">Email (for order updates)</label>
+  <input id="co-email" type="email" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} className="field" placeholder="you@example.com" />
+  {form.email && !/.+@.+\..+/.test(form.email) && (
+  <p className="mt-1 text-xs text-red-600">Enter a valid email address.</p>
   )}
   </div>
- <div className="sm:col-span-2">
- <label className="label" htmlFor="co-email">Email (for order updates)</label>
- <input id="co-email" type="email" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} className="field" placeholder="you@example.com" />
- </div>
- <div>
- <label className="label" htmlFor="co-county">County</label>
+  </div>
+  <p className="mt-3 text-xs text-[#6B6B6B]">Cash on delivery and M-PESA both use the phone number above.</p>
+
+  <div className="mt-6 flex items-center justify-end gap-3">
+  <button type="button" onClick={() => setWiz(2)} disabled={!contactValid} className="rounded-zed bg-zed-950 px-8 py-3 text-sm font-bold uppercase tracking-wider text-white transition-colors hover:bg-zed-900 disabled:cursor-not-allowed disabled:opacity-40">
+  Continue
+  </button>
+  </div>
+  </>
+  )}
+
+  {wiz === 2 && (
+  <>
+  <h2 className="font-display text-lg font-bold text-[#171717]">Where should we deliver?</h2>
+<div className="mt-5 grid gap-4 sm:grid-cols-2">
+  <div>
+  <label className="label" htmlFor="co-county">County</label>
  <select id="co-county" value={form.county} onChange={(e) => { setForm({ ...form, county: e.target.value, area: "", town: "" }); fetchDelivery(e.target.value); }} className="field">
  <option value="">Select county</option>
  {counties.map((c) => (
@@ -512,53 +576,85 @@ const deliveryFee = deliveryOptions.find((o) => o.method === form.deliveryMethod
   <label className="label" htmlFor="co-landmark">Nearest landmark (optional)</label>
   <input id="co-landmark" value={form.landmark} onChange={(e) => setForm({ ...form, landmark: e.target.value })} className="field" placeholder="Opposite Kenya High School" />
   </div>
-  <div className="sm:col-span-2">
+<div className="sm:col-span-2">
   <label className="label" htmlFor="co-instructions">Delivery instructions (optional)</label>
   <textarea id="co-instructions" value={form.instructions} onChange={(e) => setForm({ ...form, instructions: e.target.value })} className="field" rows={3} placeholder="Gate colour, best time to deliver, rider to call on arrival" />
   </div>
   </div>
+  {!deliveryValid && (
+  <p className="mt-3 text-xs text-[#6B6B6B]">Enter your county, town and delivery address to continue.</p>
+  )}
+  <div className="mt-6 flex items-center justify-between gap-3">
+  {wiz > 1 && (
+  <button type="button" onClick={() => setWiz(1)} className="flex items-center gap-2 rounded-zed border border-white/60 px-5 py-3 text-sm font-semibold text-[#171717] transition-colors hover:bg-white/40">
+  <ArrowLeft className="size-4" /> Back
+  </button>
+  )}
+  <button type="button" onClick={() => setWiz(3)} disabled={!deliveryValid} className="ml-auto rounded-zed bg-zed-950 px-8 py-3 text-sm font-bold uppercase tracking-wider text-white transition-colors hover:bg-zed-900 disabled:cursor-not-allowed disabled:opacity-40">
+  Continue
+  </button>
+  </div>
+  </>
+  )}
 
- {/* Delivery method */}
- {form.county && (
- <div className="mt-6">
- <p className="label">Delivery method</p>
- {deliveryOptions.length === 0 ? (
- <p className="flex items-center gap-2 text-sm text-[#6B6B6B]">
- <Loader2 className="size-4 animate-spin" /> Checking options for {form.county}...
- </p>
- ) : (
- <div className="space-y-2">
- {deliveryOptions.map((opt) => (
- <button
- key={opt.method}
- type="button"
- onClick={() => setForm({ ...form, deliveryMethod: opt.method })}
- className={`flex w-full items-center justify-between gap-3 rounded-zed border p-3.5 text-left backdrop-blur-sm transition-colors ${form.deliveryMethod === opt.method ? "border-soft-sage bg-warm-white" : "border-white/50 bg-white/30 hover:border-soft-sage hover:bg-white/45"}`}
- >
- <div className="flex items-center gap-3">
- <span className={`grid size-5 place-items-center rounded-full border ${form.deliveryMethod === opt.method ? "border-deep-olive bg-deep-olive" : "border-white/60"}`}>
- {form.deliveryMethod === opt.method && <Check className="size-3 text-white" />}
- </span>
- <div>
- <p className="text-sm font-semibold text-[#171717]">{opt.label}</p>
- <p className="text-xs text-[#6B6B6B]">{opt.description}</p>
- </div>
- </div>
- <p className="shrink-0 text-sm font-bold text-[#171717]">{opt.fee === 0 ? "Free" : formatKES(opt.fee)}</p>
- </button>
- ))}
- </div>
- )}
- </div>
- )}
+  {/* Step 3: delivery method */}
+  {wiz === 3 && (
+  <>
+  <h2 className="font-display text-lg font-bold text-[#171717]">Delivery method</h2>
+  <p className="mt-1 text-xs text-[#6B6B6B]">Fees and promise dates come from our delivery zones for {[form.area, form.town, form.county].filter(Boolean).join(", ") || form.county}.</p>
+  {form.county && (
+  <div className="mt-5">
+  {deliveryOptions.length === 0 ? (
+  <p className="flex items-center gap-2 text-sm text-[#6B6B6B]">
+  <Loader2 className="size-4 animate-spin" /> Checking options for {form.county}...
+  </p>
+  ) : (
+  <div className="space-y-2">
+  {deliveryOptions.map((opt) => (
+  <button
+  key={opt.method}
+  type="button"
+  onClick={() => setForm({ ...form, deliveryMethod: opt.method })}
+  className={`flex w-full items-center justify-between gap-3 rounded-zed border p-3.5 text-left backdrop-blur-sm transition-colors ${form.deliveryMethod === opt.method ? "border-soft-sage bg-warm-white" : "border-white/50 bg-white/30 hover:border-soft-sage hover:bg-white/45"}`}
+  >
+  <div className="flex items-center gap-3">
+  <span className={`grid size-5 place-items-center rounded-full border ${form.deliveryMethod === opt.method ? "border-deep-olive bg-deep-olive" : "border-white/60"}`}>
+  {form.deliveryMethod === opt.method && <Check className="size-3 text-white" />}
+  </span>
+  <div>
+  <p className="text-sm font-semibold text-[#171717]">{opt.label}</p>
+  <p className="text-xs text-[#6B6B6B]">{opt.description}</p>
+  </div>
+  </div>
+  <p className="shrink-0 text-sm font-bold text-[#171717]">{opt.fee === 0 ? "Free" : formatKES(opt.fee)}</p>
+  </button>
+  ))}
+  </div>
+  )}
+  </div>
+  )}
 
- {/* Payment Method */}
- <div className="mt-6">
- <p className="label">Payment method</p>
- <div className="space-y-2">
- <button
- type="button"
- onClick={() => setPaymentMethod("M_PESA")}
+  <div className="mt-6 flex items-center justify-between gap-3">
+  <button type="button" onClick={() => setWiz(2)} className="flex items-center gap-2 rounded-zed border border-white/60 px-5 py-3 text-sm font-semibold text-[#171717] transition-colors hover:bg-white/40">
+  <ArrowLeft className="size-4" /> Back
+  </button>
+  <button type="button" onClick={() => setWiz(4)} disabled={!methodValid} className="ml-auto rounded-zed bg-zed-950 px-8 py-3 text-sm font-bold uppercase tracking-wider text-white transition-colors hover:bg-zed-900 disabled:cursor-not-allowed disabled:opacity-40">
+  Continue
+  </button>
+  </div>
+  </>
+  )}
+
+  {/* Step 4: payment */}
+  {wiz === 4 && (
+  <>
+<h2 className="font-display text-lg font-bold text-[#171717]">How would you like to pay?</h2>
+  <div className="mt-5">
+  <p className="label">Payment method</p>
+  <div className="space-y-2">
+  <button
+  type="button"
+  onClick={() => setPaymentMethod("M_PESA")}
  className={`flex w-full items-center gap-3 rounded-zed border p-3.5 text-left backdrop-blur-sm transition-colors ${paymentMethod === "M_PESA" ? "border-soft-sage bg-warm-white" : "border-white/50 bg-white/30 hover:border-soft-sage hover:bg-white/45"}`}
  >
  <div className={`grid size-5 place-items-center rounded-full border ${paymentMethod === "M_PESA" ? "border-deep-olive bg-deep-olive" : "border-white/60"}`}>
@@ -614,42 +710,58 @@ const deliveryFee = deliveryOptions.find((o) => o.method === form.deliveryMethod
   </p>
   {!codInfo.available && codInfo.reason && <p id="cod-reason" className="sr-only">{codInfo.reason}</p>}
   </div>
+</button>
+  </div>
+  {paymentMethod === "COD" && !codInfo.available && (
+  <p className="mt-2 text-xs text-red-600">{codInfo.reason ?? "Cash on delivery is not available for this address yet."}</p>
+  )}
+  {paymentMethod === "M_PESA" && form.phone && !mpesaPhoneOk && (
+  <p className="mt-2 text-xs text-red-600">M-PESA needs a Safaricom number (071x, 072x, 074x or 079x).</p>
+  )}
+  </div>
+
+  <div className="mt-6 flex items-start gap-3 rounded-zed glass-panel/70 p-4 backdrop-blur-sm">
+  <Sparkles className="mt-0.5 size-5 shrink-0 text-soft-sage" />
+  <div>
+  <label className="flex cursor-pointer items-center gap-2 text-sm font-semibold text-[#171717]">
+  <input type="checkbox" checked={form.isGift} onChange={(e) => setForm({ ...form, isGift: e.target.checked })} className="size-4 accent-deep-olive" />
+  This is a gift
+  </label>
+  <p className="mt-1 text-xs text-[#171717]">We&apos;ll wrap it beautifully and hide all pricing from the delivery slip.</p>
+  </div>
+  </div>
+
+  {/* Surprise Mode */}
+  <div className="mt-6">
+  <SurpriseToggle />
+  </div>
+
+  {paymentMethod === "COD" && (
+  <p className="mt-3 text-xs text-[#6B6B6B]">Cash on delivery total: {formatKES(total)}. Keep the exact amount ready for the rider.</p>
+  )}
+  {paymentMethod === "BANK_TRANSFER" && (
+  <p className="mt-3 text-xs text-[#6B6B6B]">You&apos;ll receive our account details with your bank transfer reference after placing the order.</p>
+  )}
+
+  {error && step === "form" && (
+  <p className="mt-4 rounded-zed bg-red-50/70 px-4 py-3 text-sm text-red-700 backdrop-blur-sm">{error}</p>
+  )}
+
+  <div className="mt-6 flex items-center justify-between gap-3">
+  <button type="button" onClick={() => setWiz(3)} className="flex items-center gap-2 rounded-zed border border-white/60 px-5 py-3 text-sm font-semibold text-[#171717] transition-colors hover:bg-white/40">
+  <ArrowLeft className="size-4" /> Back
   </button>
-  </div>
-  </div>
- <div className="mt-6 flex items-start gap-3 rounded-zed glass-panel/70 p-4 backdrop-blur-sm">
- <Sparkles className="mt-0.5 size-5 shrink-0 text-soft-sage" />
- <div>
- <label className="flex cursor-pointer items-center gap-2 text-sm font-semibold text-[#171717]">
- <input type="checkbox" checked={form.isGift} onChange={(e) => setForm({ ...form, isGift: e.target.checked })} className="size-4 accent-deep-olive" />
- This is a gift
- </label>
- <p className="mt-1 text-xs text-[#171717]">We&apos;ll wrap it beautifully and hide all pricing from the delivery slip.</p>
- </div>
- </div>
-
- {/* Surprise Mode */}
- <div className="mt-6">
- <SurpriseToggle />
- </div>
-
- {error && step === "form" && (
- <p className="mt-4 rounded-zed bg-red-50/70 px-4 py-3 text-sm text-red-700 backdrop-blur-sm">{error}</p>
- )}
-
-<button
-  type="button"
-  disabled={!canSubmit}
-  onClick={toggleReview}
-  className="mt-6 w-full rounded-zed bg-zed-950 py-4 text-sm font-bold uppercase tracking-wider text-white transition-colors hover:bg-zed-900 disabled:cursor-not-allowed disabled:opacity-40"
-  >
+  <button type="button" onClick={() => setWiz(5)} disabled={!paymentValid} className="ml-auto rounded-zed bg-zed-950 px-8 py-3 text-sm font-bold uppercase tracking-wider text-white transition-colors hover:bg-zed-900 disabled:cursor-not-allowed disabled:opacity-40">
   Review order
   </button>
   </div>
+  </>
+  )}
+  </div>
   ) : null}
 
-  {/* Review: read-only summary with the actual order-placing button */}
-  {step === "review" && (
+  {/* Step 5: review - read-only summary with the actual order-placing button */}
+  {wiz === 5 && (
   <div className="glass-card rounded-zed p-5 lg:p-7">
   <h2 className="font-display text-lg font-bold text-[#171717]">Check your details</h2>
 
@@ -715,7 +827,7 @@ const deliveryFee = deliveryOptions.find((o) => o.method === form.deliveryMethod
   </button>
   <button
   type="button"
-  onClick={toggleReview}
+  onClick={() => setWiz(4)}
   className="mt-2 w-full rounded-zed border border-white/60 py-3 text-sm font-semibold text-[#171717] transition-colors hover:bg-white/40"
   >
   Back to edit details
@@ -968,10 +1080,12 @@ const deliveryFee = deliveryOptions.find((o) => o.method === form.deliveryMethod
  </div>
  </dl>
  <div className="glass-panel mt-4 rounded-zed px-3.5 py-3 text-xs text-[#6B6B6B]">
- <span className="flex items-center gap-1.5 font-semibold text-[#171717]">
- <ShieldCheck className="size-3.5" /> {paymentMethod === "FLUTTERWAVE" ? "Paid via Flutterwave" : "Paid via M-PESA STK Push"}
- </span>
- <p className="mt-1">{paymentMethod === "FLUTTERWAVE" ? "Pay securely with card or mobile money." : "You approve with your M-PESA PIN - no card details on the site. Refunds are processed via M-PESA."}</p>
+<span className="flex items-center gap-1.5 font-semibold text-[#171717]">
+  <ShieldCheck className="size-3.5" /> {(paymentLabels as Record<string, string>)[paymentMethod] ?? paymentMethod}
+  </span>
+  <span className="mt-1 block">
+  {paymentMethod === "FLUTTERWAVE" ? "Pay securely with card or mobile money." : paymentMethod === "COD" ? "Pay the rider in cash on delivery." : paymentMethod === "BANK_TRANSFER" ? "Pay by bank transfer, then we dispatch." : "You approve with your M-PESA PIN - no card details on the site. Refunds are processed via M-PESA."}
+  </span>
  </div>
  <p className="mt-3 text-[11px] leading-relaxed text-[#6B6B6B]">
  Need help? WhatsApp {sitePhone}. By placing this order you agree to our delivery &amp; returns policy.
