@@ -67,7 +67,7 @@ export default async function GiftsPage() {
  </p>
  <Link
  href="/gift-builder"
- className="mt-6 inline-flex items-center gap-2 rounded-zed bg-zed-950 px-6 py-3.5 text-sm font-bold uppercase tracking-wider text-[#171717] transition-colors hover:bg-white"
+ className="mt-6 inline-flex items-center gap-2 rounded-zed bg-zed-950 px-6 py-3.5 text-sm font-bold uppercase tracking-wider text-white transition-colors hover:bg-white"
  >
  Open the Gift Builder <ArrowRight className="size-4" />
  </Link>

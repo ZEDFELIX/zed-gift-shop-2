@@ -289,7 +289,7 @@ export function ProductPurchase({
  type="button"
  onClick={addToCart}
  disabled={busy}
- className="inline-flex w-full items-center justify-center gap-2 rounded-zed bg-zed-950 px-6 py-4 text-sm font-bold uppercase tracking-wider text-[#171717] transition-colors hover:bg-zed-950 hover:text-white disabled:opacity-60"
+ className="inline-flex w-full items-center justify-center gap-2 rounded-zed bg-zed-950 px-6 py-4 text-sm font-bold uppercase tracking-wider text-white transition-colors hover:bg-zed-950 hover:text-white disabled:opacity-60"
  >
  <ShoppingBag className="size-4" />
  {busy ? "Adding..." : "Add to cart"}

@@ -307,7 +307,7 @@ export default function GiftBuilder() {
  type="button"
  onClick={addSelected}
  disabled={adding || selectedItems.length > 5}
- className="rounded-zed bg-zed-950 px-5 py-2.5 text-sm font-bold text-[#171717] transition-colors hover:bg-white disabled:opacity-50"
+ className="rounded-zed bg-zed-950 px-5 py-2.5 text-sm font-bold text-white transition-colors hover:bg-white disabled:opacity-50"
  >
  {adding ? "Adding..." : `Add to cart | ${formatKES(total)}`}
  </button>

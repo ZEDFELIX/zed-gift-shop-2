@@ -176,7 +176,7 @@ export function ShopControls({
  <SlidersHorizontal className="size-4" />
  Filters
  {activeFilterCount > 0 && (
- <span className="grid size-5 place-items-center rounded-full bg-zed-950 text-[11px] font-bold text-[var(--color-ink)]">{activeFilterCount}</span>
+ <span className="grid size-5 place-items-center rounded-full bg-zed-950 text-[11px] font-bold text-white">{activeFilterCount}</span>
  )}
  </button>
  <div className="relative">

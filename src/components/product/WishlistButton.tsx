@@ -46,7 +46,7 @@ export function WishlistButton({ productId, initialInWishlist = false }: { produ
  aria-pressed={inWishlist}
  className={`grid size-10 place-items-center rounded-full border backdrop-blur transition-colors ${
  inWishlist
- ? "border-zed-900/60 bg-zed-950 text-[#171717] shadow-glass"
+ ? "border-zed-900/60 bg-zed-950 text-white shadow-glass"
  : "border-white/55 bg-white/75 text-[#171717] hover:border-soft-sage hover:text-deep-olive"
  } ${busy ? "opacity-60" : ""}`}
  >

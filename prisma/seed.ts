@@ -12,7 +12,11 @@ import { RIO_CATEGORIES, RIO_PRODUCTS } from "./rio-catalogue";
 const prisma = new PrismaClient();
 
 function placeholder(name: string, alt: string) {
- const url = PRODUCT_PHOTO[name] ? photoUrl(PRODUCT_PHOTO[name]) : `/placeholders/${name}.svg`;
+ // Products and blog posts are both keyed by slug, so fall back only when a
+// product has no mapped photo of its own.
+const url = PRODUCT_PHOTO[name]
+  ? photoUrl(PRODUCT_PHOTO[name])
+  : `/placeholders/${name}.svg`;
  return { url, alt, sortOrder: 0, isPrimary: true };
 }
 
@@ -138,12 +142,7 @@ type SeedProduct = {
  deliveryNote?: string;
 };
 
-const PHOTO_KEYS = Array.from(
-  { length: 16 },
-  (_, i) => `product-${String(i + 1).padStart(2, "0")}`,
-) as string[];
-
-const PRODUCTS: SeedProduct[] = RIO_PRODUCTS.map((item, index) => ({
+const PRODUCTS: SeedProduct[] = RIO_PRODUCTS.map((item) => ({
   slug: item.slug,
   name: item.name,
   shortDescription: item.shortDescription,
@@ -159,7 +158,7 @@ const PRODUCTS: SeedProduct[] = RIO_PRODUCTS.map((item, index) => ({
   bestSeller: item.bestSeller ?? false,
   personalizationEnabled: item.personalizationEnabled ?? false,
   giftWrapAvailable: item.giftWrapAvailable ?? true,
-  image: PHOTO_KEYS[index % PHOTO_KEYS.length],
+  image: item.slug,
 }));
 
 async function main() {
@@ -275,10 +274,15 @@ async function main() {
  p.slug.includes("mug") ? { key: "name", label: "Name to print", type: "text", required: true } : { key: "initials", label: "Initials / name", type: "text", required: true },
  ])
  : null,
- giftWrapAvailable: p.giftWrapAvailable ?? false,
- giftMessageAvailable: true,
- deliveryNote: p.deliveryNote,
- },
+giftWrapAvailable: p.giftWrapAvailable ?? false,
+  giftMessageAvailable: true,
+  deliveryNote: p.deliveryNote,
+  // Replace images so re-seeding after a photo-map change actually applies it.
+  images: {
+    deleteMany: {},
+    create: [placeholder(p.image, p.name)],
+  },
+  },
  create: {
  slug: p.slug,
  name: p.name,

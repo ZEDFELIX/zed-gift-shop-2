@@ -37,7 +37,7 @@ export function NewsletterForm() {
 
  if (state === "done") {
  return (
- <div className="mx-auto mt-6 flex max-w-md items-center justify-center gap-2 rounded-zed bg-zed-950 px-6 py-4 text-sm font-bold text-[#171717]">
+ <div className="mx-auto mt-6 flex max-w-md items-center justify-center gap-2 rounded-zed bg-zed-950 px-6 py-4 text-sm font-bold text-white">
  <Check className="size-5" /> You&apos;re in - check your inbox for a welcome gift code.
  </div>
  );
@@ -58,7 +58,7 @@ export function NewsletterForm() {
  <button
  type="submit"
  disabled={state === "busy"}
- className="shrink-0 rounded-zed bg-zed-950 px-5 py-3 text-sm font-bold text-[#171717] transition-colors hover:bg-white disabled:opacity-60"
+ className="shrink-0 rounded-zed bg-zed-950 px-5 py-3 text-sm font-bold text-white transition-colors hover:bg-white disabled:opacity-60"
  >
  {state === "busy" ? "Joining..." : "Join"}
  </button>

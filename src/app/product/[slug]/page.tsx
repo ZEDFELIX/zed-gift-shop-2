@@ -102,7 +102,7 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
  <span className="grid aspect-square place-items-center font-display text-4xl text-soft-sage">ZED</span>
  )}
  {sale != null && sale > 0 && (
- <span className="absolute left-4 top-4 rounded-full bg-zed-950 px-3 py-1.5 text-xs font-bold text-[var(--color-ink)]">-{sale}%</span>
+ <span className="absolute left-4 top-4 rounded-full bg-zed-950 px-3 py-1.5 text-xs font-bold text-white">-{sale}%</span>
  )}
  </div>
  <div className="grid grid-cols-5 gap-3">
@@ -154,7 +154,7 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
  {product.compareAtPrice != null && product.compareAtPrice > product.price && (
  <>
  <p className="text-xl text-[rgba(48,37,34,0.62)] line-through">{formatKES(product.compareAtPrice)}</p>
- <span className="rounded-full bg-zed-950 px-2.5 py-1 text-xs font-bold text-[var(--color-ink)]">
+ <span className="rounded-full bg-zed-950 px-2.5 py-1 text-xs font-bold text-white">
  Save {formatKES(product.compareAtPrice - product.price)}
  </span>
  </>
@@ -206,7 +206,7 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
  Handwritten-style gift note included
  </div>
  <div className="flex items-center gap-2.5 text-sm text-[var(--color-ink)]">
- <span className="grid size-5 shrink-0 place-items-center rounded bg-zed-950 text-[10px] font-black text-[var(--color-ink)]">KES</span>
+ <span className="grid size-5 shrink-0 place-items-center rounded bg-zed-950 text-[10px] font-black text-white">KES</span>
  Transparent pricing in Kenyan Shillings
  </div>
  </div>
