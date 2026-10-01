@@ -340,32 +340,70 @@ giftWrapAvailable: p.giftWrapAvailable ?? false,
     }
   }
 
-  // ---- Delivery zones ----
- const zones: { county: string; town?: string; fee: number; deliveryTime?: string; sameDay?: boolean }[] = [
- { county: "Nairobi", fee: 150, deliveryTime: "1-3 business days", sameDay: true },
- { county: "Nairobi", town: "CBD & Westlands", fee: 300, deliveryTime: "Same day (order before 2pm)", sameDay: true },
- { county: "Kiambu", fee: 200, deliveryTime: "1-2 business days", sameDay: true },
- { county: "Mombasa", fee: 350, deliveryTime: "2-3 business days" },
- { county: "Kisumu", fee: 350, deliveryTime: "2-3 business days" },
- { county: "Nakuru", fee: 300, deliveryTime: "2-3 business days" },
- { county: "Uasin Gishu", town: "Eldoret", fee: 350, deliveryTime: "2-3 business days" },
- { county: "Machakos", town: "Athi River", fee: 250, deliveryTime: "1-2 business days", sameDay: true },
- { county: "Kajiado", town: "Kitengela", fee: 250, deliveryTime: "1-2 business days", sameDay: true },
- ];
- for (const z of zones) {
- await prisma.deliveryZone.upsert({
- where: { county_town: { county: z.county, town: z.town ?? "" } },
- update: { fee: z.fee, deliveryTime: z.deliveryTime, sameDay: z.sameDay ?? false, active: true },
- create: {
- county: z.county,
- town: z.town ?? "",
- fee: z.fee,
- deliveryTime: z.deliveryTime,
- sameDay: z.sameDay ?? false,
- active: true,
- },
- });
- }
+// ---- Delivery zones ----
+  const zones: {
+  name: string;
+  county: string;
+  town?: string;
+  fee: number;
+  expressFee?: number;
+  deliveryTime?: string;
+  sameDay?: boolean;
+  pickup?: boolean;
+  codAvailable?: boolean;
+  minOrder?: number;
+  maxOrder?: number;
+  deliveryPartner?: string;
+  }[] = [
+  { name: "Nairobi County", county: "Nairobi", fee: 150, expressFee: 300, deliveryTime: "1-3 business days", sameDay: true, pickup: true, codAvailable: true, minOrder: 500, maxOrder: 300000, deliveryPartner: "Rio in-house riders" },
+  { name: "Nairobi CBD", county: "Nairobi", town: "CBD", fee: 150, expressFee: 300, deliveryTime: "Same day (order before 2pm)", sameDay: true, pickup: true, codAvailable: true, minOrder: 500 },
+  { name: "Westlands", county: "Nairobi", town: "Westlands", fee: 150, expressFee: 300, deliveryTime: "Same day (order before 2pm)", sameDay: true, codAvailable: true, minOrder: 500 },
+  { name: "Kilimani", county: "Nairobi", town: "Kilimani", fee: 180, expressFee: 350, deliveryTime: "Same day (order before 2pm)", sameDay: true, codAvailable: true, minOrder: 500 },
+  { name: "Karen", county: "Nairobi", town: "Karen", fee: 250, expressFee: 450, deliveryTime: "Next day", codAvailable: true, minOrder: 500 },
+  { name: "Kasarani", county: "Nairobi", town: "Kasarani", fee: 250, expressFee: 450, deliveryTime: "Next day", codAvailable: true, minOrder: 500 },
+  { name: "Ruaka", county: "Kiambu", town: "Ruaka", fee: 250, expressFee: 450, deliveryTime: "Next day", sameDay: true, codAvailable: true, minOrder: 500, deliveryPartner: "Ruaka riders" },
+  { name: "Kiambu County", county: "Kiambu", fee: 250, expressFee: 450, deliveryTime: "1-2 business days", sameDay: true, codAvailable: true, minOrder: 500 },
+  { name: "Thika", county: "Kiambu", town: "Thika", fee: 250, expressFee: 450, deliveryTime: "1-2 business days", codAvailable: true, minOrder: 500 },
+  { name: "Mombasa", county: "Mombasa", fee: 350, expressFee: 600, deliveryTime: "2-3 business days", codAvailable: true, minOrder: 1000, deliveryPartner: "Coastal couriers" },
+  { name: "Nakuru", county: "Nakuru", fee: 300, expressFee: 550, deliveryTime: "2-3 business days", codAvailable: true, minOrder: 1000 },
+  { name: "Kisumu", county: "Kisumu", fee: 350, expressFee: 600, deliveryTime: "2-3 business days", codAvailable: true, minOrder: 1000 },
+  { name: "Eldoret", county: "Uasin Gishu", town: "Eldoret", fee: 350, expressFee: 600, deliveryTime: "2-3 business days", codAvailable: true, minOrder: 1000 },
+  { name: "Athi River", county: "Machakos", town: "Athi River", fee: 250, expressFee: 450, deliveryTime: "1-2 business days", sameDay: true, codAvailable: true, minOrder: 500 },
+  { name: "Kitengela", county: "Kajiado", town: "Kitengela", fee: 250, expressFee: 450, deliveryTime: "1-2 business days", sameDay: true, codAvailable: true, minOrder: 500 },
+  ];
+  for (const z of zones) {
+  await prisma.deliveryZone.upsert({
+  where: { county_town: { county: z.county, town: z.town ?? "" } },
+  update: {
+  name: z.name,
+  fee: z.fee,
+  expressFee: z.expressFee,
+  deliveryTime: z.deliveryTime,
+  sameDay: z.sameDay ?? false,
+  pickup: z.pickup ?? false,
+  codAvailable: z.codAvailable ?? false,
+  minOrder: z.minOrder ?? 0,
+  maxOrder: z.maxOrder,
+  deliveryPartner: z.deliveryPartner,
+  active: true,
+  },
+  create: {
+  name: z.name,
+  county: z.county,
+  town: z.town ?? "",
+  fee: z.fee,
+  expressFee: z.expressFee,
+  deliveryTime: z.deliveryTime,
+  sameDay: z.sameDay ?? false,
+  pickup: z.pickup ?? false,
+  codAvailable: z.codAvailable ?? false,
+  minOrder: z.minOrder ?? 0,
+  maxOrder: z.maxOrder,
+  deliveryPartner: z.deliveryPartner,
+  active: true,
+  },
+  });
+  }
 
  // ---- Gift wrap ----
  const wraps = [

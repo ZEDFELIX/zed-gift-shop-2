@@ -30,30 +30,37 @@ enum CategoryKind {
 }
 
 enum OrderStatus {
- PENDING_PAYMENT
- PAID
- PROCESSING
- CUSTOMIZATION
- READY_FOR_DISPATCH
- OUT_FOR_DELIVERY
- DELIVERED
- CANCELLED
- REFUNDED
+  PENDING_PAYMENT
+  PAID
+  PROCESSING
+  CUSTOMIZATION
+  PACKED
+  READY_FOR_DISPATCH
+  DISPATCHED
+  OUT_FOR_DELIVERY
+  DELIVERED
+  CANCELLED
+  REFUNDED
 }
 
 enum PaymentStatus {
- PENDING
- SUCCESS
- FAILED
- CANCELLED
- TIMEOUT
+  PENDING
+  PROCESSING
+  SUCCESS
+  FAILED
+  CANCELLED
+  TIMEOUT
+  REFUNDED
+  REVERSED
 }
 
 enum PaymentProvider {
- M_PESA
- MANUAL
- CARD
- FLUTTERWAVE
+  M_PESA
+  MANUAL
+  CARD
+  FLUTTERWAVE
+  BANK_TRANSFER
+  COD
 }
 
 enum DeliveryMethod {
@@ -103,13 +110,42 @@ enum OccasionType {
 }
 
 enum NotificationType {
- ORDER
- PAYMENT
- DELIVERY
- REMINDER
- MARKETING
- REVIEW
- SYSTEM
+  ORDER
+  PAYMENT
+  DELIVERY
+  REMINDER
+  MARKETING
+  REVIEW
+  SYSTEM
+}
+
+/// Customer-visible notification events. One row is attempted per event and
+/// channel so a provider outage never silently loses the record.
+enum NotificationEvent {
+  ORDER_RECEIVED
+  PAYMENT_CONFIRMED
+  ORDER_PROCESSING
+  ORDER_PACKED
+  ORDER_DISPATCHED
+  OUT_FOR_DELIVERY
+  DELIVERED
+  PAYMENT_FAILED
+  ORDER_CANCELLED
+  REFUND_PROCESSED
+}
+
+enum NotificationChannel {
+  EMAIL
+  SMS
+  WHATSAPP
+}
+
+enum NotificationDeliveryStatus {
+  QUEUED
+  SENT
+  DELIVERED
+  FAILED
+  SKIPPED
 }
 
 // ---------- Accounts ----------
@@ -152,38 +188,57 @@ model PasswordReset {
 }
 
 model Address {
- id String @id @default(cuid())
- userId String
- label String?
- fullName String
- phone String
- county String
- town String
- address String
- building String?
- apartment String?
- isDefault Boolean @default(false)
- createdAt DateTime @default(now())
- updatedAt DateTime @updatedAt
+  id String @id @default(cuid())
+  userId String
+  label String?
+  fullName String
+  phone String
+  county String
+  town String
+  area String?
+  street String?
+  address String
+  building String?
+  apartment String?
+  landmark String?
+  deliveryInstructions String?
+  isDefault Boolean @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
- user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
- @@index([userId])
+  @@index([userId])
 }
 
 model Notification {
- id String @id @default(cuid())
- userId String
- type NotificationType @default(SYSTEM)
- title String
- body String?
- read Boolean @default(false)
- createdAt DateTime @default(now())
+  id String @id @default(cuid())
+  userId String
+  type NotificationType @default(SYSTEM)
+  event NotificationEvent
+  channel NotificationChannel @default(EMAIL)
+  title String
+  body String
+  toEmail String?
+  toPhone String?
+  provider String?
+  providerMessageId String?
+  providerResponseJson String?
+  status NotificationDeliveryStatus @default(QUEUED)
+  error String?
+  read Boolean @default(false)
+  sentAt DateTime?
+  deliveredAt DateTime?
+  failedAt DateTime?
+  createdAt DateTime @default(now())
 
- user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
- @@index([userId])
- @@index([read])
+  @@index([userId])
+  @@index([read])
+  @@index([event])
+  @@index([channel])
+  @@index([status])
 }
 
 // ---------- Catalogue ----------
@@ -255,10 +310,12 @@ model Product {
  // Ratings
  ratingCount Int @default(0)
  ratingAverage Float @default(0)
- // Delivery note
- deliveryNote String?
- createdAt DateTime @default(now())
- updatedAt DateTime @updatedAt
+// Delivery note
+  deliveryNote String?
+  // Fragile or high-value items can be excluded from cash on delivery.
+  codEligible Boolean @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
  categories ProductCategory[]
  collections ProductCollection[]
@@ -411,33 +468,42 @@ model Order {
  total Int
  couponCode String?
  couponId String?
- // Delivery
- deliveryMethod DeliveryMethod
- county String
- town String
- address String
- building String?
- apartment String?
- deliveryInstructions String?
- // Status
- orderStatus OrderStatus @default(PENDING_PAYMENT)
- paymentStatus PaymentStatus @default(PENDING)
- isGift Boolean @default(false)
- // Audit
- createdAt DateTime @default(now())
- updatedAt DateTime @updatedAt
+// Delivery (Kenyan address structure)
+  deliveryMethod DeliveryMethod
+  county String
+  town String
+  area String?
+  street String?
+  address String
+  building String?
+  apartment String?
+  landmark String?
+  deliveryInstructions String?
+  deliveryPartner String?
+  expectedDeliveryDate DateTime?
+  // Status
+  orderStatus OrderStatus @default(PENDING_PAYMENT)
+  paymentStatus PaymentStatus @default(PENDING)
+  isGift Boolean @default(false)
+  paidAt DateTime?
+  cancelledAt DateTime?
+  // Audit
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
- user User? @relation(fields: [userId], references: [id], onDelete: SetNull)
- items OrderItem[]
- payments Payment[]
- coupon Coupon? @relation(fields: [couponId], references: [id], onDelete: SetNull)
- reviews Review[]
+  user User? @relation(fields: [userId], references: [id], onDelete: SetNull)
+  items OrderItem[]
+  payments Payment[]
+  refunds Refund[]
+  coupon Coupon? @relation(fields: [couponId], references: [id], onDelete: SetNull)
+  reviews Review[]
 
- @@index([orderNumber])
- @@index([email])
- @@index([phone])
- @@index([orderStatus])
- @@index([paymentStatus])
+  @@index([orderNumber])
+  @@index([email])
+  @@index([phone])
+  @@index([orderStatus])
+  @@index([paymentStatus])
+  @@index([county])
 }
 
 model OrderItem {
@@ -501,33 +567,123 @@ model GiftWrap {
 // ---------- Payments ----------
 
 model Payment {
- id String @id @default(cuid())
- orderId String
- provider PaymentProvider @default(M_PESA)
- status PaymentStatus @default(PENDING)
- amount Int
- phone String
- email String?
- // Sarafu/Daraja identifiers
- merchantRequestId String?
- checkoutRequestId String?
- // Flutterwave identifiers
- txRef String?
- checkoutUrl String?
- mpesaReceipt String?
- transactionCode String?
- resultCode Int?
- resultDescription String?
- transactionDate DateTime?
- rawCallbackJson String?
- createdAt DateTime @default(now())
- updatedAt DateTime @updatedAt
+  id String @id @default(cuid())
+  orderId String
+  provider PaymentProvider @default(M_PESA)
+  status PaymentStatus @default(PENDING)
+  amount Int
+  currency String @default("KES")
+  phone String
+  email String?
+  // Guard against a replayed STK push creating a second charge.
+  idempotencyKey String? @unique
+  // Daraja identifiers
+  merchantRequestId String?
+  checkoutRequestId String?
+  mpesaReceipt String? @unique
+  transactionCode String?
+  // Flutterwave identifiers
+  txRef String? @unique
+  transactionId String?
+  checkoutUrl String?
+  // Bank transfer
+  bankReference String?
+  // Timestamps
+  initiatedAt DateTime @default(now())
+  completedAt DateTime?
+  expiredAt DateTime?
+  // Provider response
+  resultCode Int?
+  resultDescription String?
+  transactionDate DateTime?
+  rawCallbackJson String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
- order Order @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  order Order @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  events PaymentEvent[]
+  refunds Refund[]
 
- @@index([orderId])
- @@index([checkoutRequestId])
- @@index([status])
+  @@index([orderId])
+  @@index([checkoutRequestId])
+  @@index([mpesaReceipt])
+  @@index([status])
+  @@index([phone])
+}
+
+/// Append-only status history for a payment. Rows are never updated or deleted.
+model PaymentEvent {
+  id String @id @default(cuid())
+  paymentId String
+  fromStatus PaymentStatus?
+  toStatus PaymentStatus
+  source String
+  note String?
+  metadataJson String?
+  createdAt DateTime @default(now())
+
+  payment Payment @relation(fields: [paymentId], references: [id], onDelete: Cascade)
+
+  @@index([paymentId])
+  @@index([createdAt])
+}
+
+enum RefundStatus {
+  REQUESTED
+  PROCESSING
+  SUCCEEDED
+  FAILED
+  REJECTED
+}
+
+model Refund {
+  id String @id @default(cuid())
+  orderId String
+  paymentId String
+  amount Int
+  currency String @default("KES")
+  reason String
+  status RefundStatus @default(REQUESTED)
+  requestedById String?
+  requestedByEmail String?
+  // Provider round-trip
+  providerRefundId String?
+  providerResponseJson String?
+  providerMessage String?
+  failureReason String?
+  processedAt DateTime?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  order Order @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  payment Payment @relation(fields: [paymentId], references: [id], onDelete: Cascade)
+
+  @@index([orderId])
+  @@index([paymentId])
+  @@index([status])
+}
+
+/// Durable record of administrative actions. Required for Kenya's
+/// Data Protection Act 2019 accountability obligations.
+model AuditLog {
+  id String @id @default(cuid())
+  actorId String?
+  actorEmail String?
+  actorRole String?
+  action String
+  entity String
+  entityId String?
+  orderId String?
+  beforeJson String?
+  afterJson String?
+  ipAddress String?
+  userAgent String?
+  createdAt DateTime @default(now())
+
+  @@index([entity])
+  @@index([entityId])
+  @@index([actorId])
+  @@index([createdAt])
 }
 
 // ---------- Marketing & service ----------
@@ -557,21 +713,29 @@ model Coupon {
 }
 
 model DeliveryZone {
- id String @id @default(cuid())
- county String
- town String?
- fee Int
- deliveryTime String?
- sameDay Boolean @default(false)
- nextDay Boolean @default(true)
- pickup Boolean @default(false)
- active Boolean @default(true)
- sortOrder Int @default(0)
- createdAt DateTime @default(now())
- updatedAt DateTime @updatedAt
+  id String @id @default(cuid())
+  name String
+  county String
+  town String?
+  fee Int
+  expressFee Int?
+  deliveryTime String?
+  sameDay Boolean @default(false)
+  nextDay Boolean @default(true)
+  pickup Boolean @default(false)
+  // Cash on delivery is opt-in per zone, never site-wide by default.
+  codAvailable Boolean @default(false)
+  minOrder Int @default(0)
+  maxOrder Int?
+  deliveryPartner String?
+  active Boolean @default(true)
+  sortOrder Int @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
- @@unique([county, town])
- @@index([county])
+  @@unique([county, town])
+  @@index([county])
+  @@index([active])
 }
 
 model Review {
