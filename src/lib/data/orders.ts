@@ -11,13 +11,16 @@ export type CreateOrderInput = {
  name: string;
  email: string;
  phone: string;
- county: string;
- town: string;
- address: string;
- building?: string | null;
- apartment?: string | null;
- deliveryInstructions?: string | null;
- deliveryMethod: DeliveryMethod;
+county: string;
+  town: string;
+  area?: string | null;
+  street?: string | null;
+  address: string;
+  building?: string | null;
+  apartment?: string | null;
+  landmark?: string | null;
+  deliveryInstructions?: string | null;
+  deliveryMethod: DeliveryMethod;
  items: {
  productId: string | null;
  variantId: string | null;
@@ -55,13 +58,16 @@ export async function createOrder(input: CreateOrderInput): Promise<{ orderId: s
  total,
  couponCode: input.couponCode,
  couponId: input.couponId,
- deliveryMethod: input.deliveryMethod,
- county: input.county,
- town: input.town,
- address: input.address,
- building: input.building ?? null,
- apartment: input.apartment ?? null,
- deliveryInstructions: input.deliveryInstructions ?? null,
+deliveryMethod: input.deliveryMethod,
+  county: input.county,
+  town: input.town,
+  area: input.area ?? null,
+  street: input.street ?? null,
+  address: input.address,
+  building: input.building ?? null,
+  apartment: input.apartment ?? null,
+  landmark: input.landmark ?? null,
+  deliveryInstructions: input.deliveryInstructions ?? null,
  orderStatus: "PENDING_PAYMENT",
  paymentStatus: "PENDING",
  isGift: input.isGift,
@@ -94,16 +100,24 @@ async function resolveDeliveryFee(county: string, method: DeliveryMethod): Promi
 }
 
 export async function getOrderByNumberAndKey(orderNumber: string, key: string) {
- const order = await prisma.order.findUnique({
- where: { orderNumber: orderNumber.toUpperCase() },
- include: { items: true, payments: { orderBy: { createdAt: "desc" } } },
- });
- if (!order) return null;
- const match = key.includes("@")
- ? order.email.toLowerCase() === key.trim().toLowerCase()
- : order.phone.replace(/\D/g, "").endsWith(key.replace(/\D/g, "").slice(-10));
- if (!match) return null;
- return order;
+  const order = await prisma.order.findUnique({
+    where: { orderNumber: orderNumber.toUpperCase() },
+    include: { items: true, payments: { orderBy: { createdAt: "desc" } } },
+  });
+  if (!order) return null;
+
+  if (key.includes("@")) {
+    const match = order.email.toLowerCase() === key.trim().toLowerCase();
+    return match ? order : null;
+  }
+
+  // Phone lookups must present a substantial part of the number. Matching on a
+  // short suffix let anyone enumerate orders by guessing three digits.
+  const provided = key.replace(/\D/g, "");
+  const stored = order.phone.replace(/\D/g, "");
+  if (provided.length < 9 || !stored.endsWith(provided)) return null;
+
+  return order;
 }
 
 export async function getOrdersByEmailOrPhone(value: string) {

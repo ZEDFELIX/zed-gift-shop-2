@@ -41,18 +41,22 @@ async function transport() {
  };
  }
 
- const host = process.env.EMAIL_HOST ?? "localhost";
- const port = Number(process.env.EMAIL_PORT ?? 1025);
- const secure = (process.env.EMAIL_SECURE ?? "false") === "true";
- const user = process.env.EMAIL_USER;
- const pass = process.env.EMAIL_PASS;
+// Accept either the EMAIL_* or the SMTP_* names: deployments in the wild use
+  // both, and reading only one silently fell back to localhost:1025.
+  const host = process.env.EMAIL_HOST ?? process.env.SMTP_HOST;
+  const port = Number(process.env.EMAIL_PORT ?? process.env.SMTP_PORT ?? 587);
+  const secure = (process.env.EMAIL_SECURE ?? process.env.SMTP_SECURE ?? (port === 465 ? "true" : "false")) === "true";
+  const user = process.env.EMAIL_USER ?? process.env.SMTP_USER;
+  const pass = process.env.EMAIL_PASS ?? process.env.SMTP_PASSWORD ?? process.env.SMTP_PASS;
 
- const transporter = nodemailer.createTransport({
- host,
- port,
- secure,
- ...(user ? { auth: { user, pass: pass ?? "" } } : {}),
- });
+  if (!host) throw new Error("Neither EMAIL_HOST nor SMTP_HOST is configured.");
+
+  const transporter = nodemailer.createTransport({
+  host,
+  port,
+  secure,
+  ...(user ? { auth: { user, pass: pass ?? "" } } : {}),
+  });
 
  return {
  send: async (mail: EmailData) => {
@@ -69,14 +73,25 @@ async function transport() {
  };
 }
 
-export async function sendEmail(mail: EmailData): Promise<{ ok: boolean; messageId?: string }> {
- try {
- const t = await transport();
- return (await t.send(mail)) as { ok: boolean; messageId?: string };
- } catch (err) {
- console.error("[email] failed:", err);
- return { ok: false };
- }
+export type SendResult = { ok: boolean; messageId?: string; error?: string };
+
+/**
+ * Email is best-effort for the order flow: a mail outage must not roll back a
+ * paid order. But the failure is reported back to the caller so it can be
+ * recorded against the notification rather than disappearing.
+ */
+export async function sendEmail(mail: EmailData): Promise<SendResult> {
+  const enabled = (process.env.EMAIL_ENABLED ?? "true") === "true";
+  if (!enabled) return { ok: false, error: "Email delivery is disabled (EMAIL_ENABLED=false)." };
+
+  try {
+    const t = await transport();
+    return (await t.send(mail)) as SendResult;
+  } catch (err) {
+    const error = err instanceof Error ? err.message : String(err);
+    console.error(`[email] failed to send "${mail.subject}": ${error}`);
+    return { ok: false, error };
+  }
 }
 
 function layout(raw: { subject: string; text: string; html: string }) {

@@ -9,19 +9,22 @@ import { createOrder, reserveInventoryForOrder } from "@/lib/data/orders";
 import type { DeliveryMethod } from "@prisma/client";
 
 export type CheckoutInput = {
- name: string;
- email: string;
- phone: string;
- county: string;
- town: string;
- address: string;
- building?: string;
- apartment?: string;
- instructions?: string;
- deliveryMethod: DeliveryMethod;
- couponCode?: string | null;
- isGift?: boolean;
- paymentMethod?: "M_PESA" | "FLUTTERWAVE" | "CARD";
+  name: string;
+  email: string;
+  phone: string;
+  county: string;
+  town: string;
+  area?: string;
+  street?: string;
+  address: string;
+  building?: string;
+  apartment?: string;
+  landmark?: string;
+  instructions?: string;
+  deliveryMethod: DeliveryMethod;
+  couponCode?: string | null;
+  isGift?: boolean;
+  paymentMethod?: "M_PESA" | "FLUTTERWAVE" | "CARD" | "BANK_TRANSFER" | "COD";
 };
 
 export type CheckoutResult =
@@ -90,13 +93,16 @@ export async function createOrderFromCart(input: CheckoutInput): Promise<Checkou
  name: input.name,
  email: input.email,
  phone: input.phone,
- county: input.county,
- town: input.town,
- address: input.address,
- building: input.building || null,
- apartment: input.apartment || null,
- deliveryInstructions: input.instructions || null,
- deliveryMethod: input.deliveryMethod,
+county: input.county,
+  town: input.town,
+  area: input.area || null,
+  street: input.street || null,
+  address: input.address,
+  building: input.building || null,
+  apartment: input.apartment || null,
+  landmark: input.landmark || null,
+  deliveryInstructions: input.instructions || null,
+  deliveryMethod: input.deliveryMethod,
  items: items.map((i) => ({
  productId: i.productId,
  variantId: i.variantId,

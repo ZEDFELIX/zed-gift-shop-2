@@ -66,23 +66,26 @@ export function CheckoutForm({
 }) {
  const router = useRouter();
  const [cart, setCart] = useState<CartView>(initialCart);
- const [form, setForm] = useState({
- name: user?.name ?? "",
- email: user?.email ?? "",
- phone: user?.phone ?? "",
- county: "",
- town: "",
- address: "",
- building: "",
- apartment: "",
- instructions: "",
- deliveryMethod: "",
- isGift: false,
- });
+const [form, setForm] = useState({
+  name: user?.name ?? "",
+  email: user?.email ?? "",
+  phone: user?.phone ?? "",
+  county: "",
+  town: "",
+  area: "",
+  street: "",
+  address: "",
+  building: "",
+  apartment: "",
+  landmark: "",
+  instructions: "",
+  deliveryMethod: "",
+  isGift: false,
+  });
 const [options, setOptions] = useState<DeliveryOption[]>([]);
   const [step, setStep] = useState<"form" | "review" | "processing" | "stk" | "polling" | "flutterwave" | "failed" | "assistance" | "done">("form");
   const [error, setError] = useState<string | null>(null);
-  const [orderRef, setOrderRef] = useState<{ orderId: string; orderNumber: string } | null>(null);
+  const [orderRef, setOrderRef] = useState<{ orderId: string; orderNumber: string; pollToken: string } | null>(null);
   const [orderTotal, setOrderTotal] = useState<number | null>(null);
   const [pollSeconds, setPollSeconds] = useState(0);
   const [paymentMethod, setPaymentMethod] = useState<"M_PESA" | "FLUTTERWAVE">("M_PESA");
@@ -123,24 +126,28 @@ const [options, setOptions] = useState<DeliveryOption[]>([]);
  name: form.name,
  email: form.email,
  phone: form.phone,
- county: form.county,
- town: form.town,
- address: form.address,
- building: form.building,
- apartment: form.apartment,
- instructions: form.instructions,
- deliveryMethod: form.deliveryMethod,
- isGift: form.isGift,
- paymentMethod,
- }),
+county: form.county,
+  town: form.town,
+  area: form.area,
+  street: form.street,
+  address: form.address,
+  building: form.building,
+  apartment: form.apartment,
+  landmark: form.landmark,
+  instructions: form.instructions,
+  deliveryMethod: form.deliveryMethod,
+  isGift: form.isGift,
+  paymentMethod,
+  }),
  });
 const data = (await res.json()) as {
-  ok?: boolean;
-  error?: string;
-  configured?: boolean;
-  total?: number;
-  orderId?: string;
-  orderNumber?: string;
+ok?: boolean;
+   error?: string;
+   configured?: boolean;
+   pollToken?: string;
+   total?: number;
+   orderId?: string;
+   orderNumber?: string;
   payment?: {
   status?: string;
   error?: string;
@@ -168,7 +175,7 @@ const data = (await res.json()) as {
   return;
   }
 
-  setOrderRef({ orderId: data.orderId!, orderNumber: data.orderNumber! });
+  setOrderRef({ orderId: data.orderId!, orderNumber: data.orderNumber!, pollToken: data.pollToken ?? "" });
   setOrderTotal(data.total ?? null);
 
   if (data.configured === false || data.payment?.configured === false) {
@@ -273,7 +280,9 @@ useEffect(() => {
   return;
   }
   try {
-  const res = await fetch(`/api/orders/${orderRef.orderId}/status`);
+  const res = await fetch(`/api/orders/${orderRef.orderId}/status`, {
+  headers: { "x-order-token": orderRef.pollToken },
+  });
   const data = (await res.json()) as { paymentStatus?: string; mpesaReceipt?: string | null; paymentResultDescription?: string | null };
   if (data.paymentStatus === "SUCCESSFUL") {
   clearInterval(interval);
@@ -301,7 +310,9 @@ useEffect(() => {
   if (step !== "flutterwave" || !orderRef) return;
   const interval = setInterval(async () => {
   try {
-  const res = await fetch(`/api/orders/${orderRef.orderId}/status`);
+  const res = await fetch(`/api/orders/${orderRef.orderId}/status`, {
+  headers: { "x-order-token": orderRef.pollToken },
+  });
   const data = (await res.json()) as { paymentStatus?: string };
   if (data.paymentStatus === "SUCCESSFUL") {
   clearInterval(interval);
@@ -382,9 +393,9 @@ useEffect(() => {
  </div>
  )}
 
- {/* Contact & delivery */}
- {step === "form" || step === "review" ? (
- <div className="glass-card rounded-zed p-5 lg:p-7">
+{/* Contact & delivery */}
+  {step === "form" ? (
+  <div className="glass-card rounded-zed p-5 lg:p-7">
  <h2 className="font-display text-lg font-bold text-[#171717]">Delivery details</h2>
  <div className="mt-5 grid gap-4 sm:grid-cols-2">
  <div>
@@ -411,23 +422,39 @@ useEffect(() => {
  ))}
  </select>
  </div>
- <div>
- <label className="label" htmlFor="co-town">Town / estate</label>
- <input id="co-town" value={form.town} onChange={(e) => setForm({ ...form, town: e.target.value })} className="field" placeholder="Kilimani, Nairobi" />
- </div>
- <div className="sm:col-span-2">
- <label className="label" htmlFor="co-address">Delivery address</label>
- <input id="co-address" value={form.address} onChange={(e) => setForm({ ...form, address: e.target.value })} className="field" placeholder="House/plot no., street, landmarks" />
- </div>
- <div>
- <label className="label" htmlFor="co-building">Building (optional)</label>
- <input id="co-building" value={form.building} onChange={(e) => setForm({ ...form, building: e.target.value })} className="field" />
- </div>
- <div>
- <label className="label" htmlFor="co-apartment">Apartment (optional)</label>
- <input id="co-apartment" value={form.apartment} onChange={(e) => setForm({ ...form, apartment: e.target.value })} className="field" />
- </div>
- </div>
+<div>
+  <label className="label" htmlFor="co-town">Town</label>
+  <input id="co-town" value={form.town} onChange={(e) => setForm({ ...form, town: e.target.value })} className="field" placeholder="Nairobi" />
+  </div>
+  <div>
+  <label className="label" htmlFor="co-area">Area / estate</label>
+  <input id="co-area" value={form.area} onChange={(e) => setForm({ ...form, area: e.target.value })} className="field" placeholder="Kilimani" />
+  </div>
+  <div className="sm:col-span-2">
+  <label className="label" htmlFor="co-address">Delivery address</label>
+  <input id="co-address" value={form.address} onChange={(e) => setForm({ ...form, address: e.target.value })} className="field" placeholder="House/plot no. and street" />
+  </div>
+  <div>
+  <label className="label" htmlFor="co-street">Street (optional)</label>
+  <input id="co-street" value={form.street} onChange={(e) => setForm({ ...form, street: e.target.value })} className="field" />
+  </div>
+  <div>
+  <label className="label" htmlFor="co-building">Building (optional)</label>
+  <input id="co-building" value={form.building} onChange={(e) => setForm({ ...form, building: e.target.value })} className="field" />
+  </div>
+  <div>
+  <label className="label" htmlFor="co-apartment">Apartment (optional)</label>
+  <input id="co-apartment" value={form.apartment} onChange={(e) => setForm({ ...form, apartment: e.target.value })} className="field" />
+  </div>
+  <div>
+  <label className="label" htmlFor="co-landmark">Nearest landmark (optional)</label>
+  <input id="co-landmark" value={form.landmark} onChange={(e) => setForm({ ...form, landmark: e.target.value })} className="field" placeholder="Opposite Kenya High School" />
+  </div>
+  <div className="sm:col-span-2">
+  <label className="label" htmlFor="co-instructions">Delivery instructions (optional)</label>
+  <textarea id="co-instructions" value={form.instructions} onChange={(e) => setForm({ ...form, instructions: e.target.value })} className="field" rows={3} placeholder="Gate colour, best time to deliver, rider to call on arrival" />
+  </div>
+  </div>
 
  {/* Delivery method */}
  {form.county && (
@@ -517,16 +544,94 @@ useEffect(() => {
  <p className="mt-4 rounded-zed bg-red-50/70 px-4 py-3 text-sm text-red-700 backdrop-blur-sm">{error}</p>
  )}
 
- <button
- type="button"
- disabled={!canSubmit}
- onClick={toggleReview}
- className="mt-6 w-full rounded-zed bg-zed-950 py-4 text-sm font-bold uppercase tracking-wider text-white transition-colors hover:bg-zed-900 disabled:cursor-not-allowed disabled:opacity-40"
- >
- {step === "review" ? "Back to edit details" : "Review order"}
- </button>
- </div>
- ) : null}
+<button
+  type="button"
+  disabled={!canSubmit}
+  onClick={toggleReview}
+  className="mt-6 w-full rounded-zed bg-zed-950 py-4 text-sm font-bold uppercase tracking-wider text-white transition-colors hover:bg-zed-900 disabled:cursor-not-allowed disabled:opacity-40"
+  >
+  Review order
+  </button>
+  </div>
+  ) : null}
+
+  {/* Review: read-only summary with the actual order-placing button */}
+  {step === "review" && (
+  <div className="glass-card rounded-zed p-5 lg:p-7">
+  <h2 className="font-display text-lg font-bold text-[#171717]">Check your details</h2>
+
+  <dl className="mt-4 divide-y divide-white/40 text-sm">
+  <div className="flex items-start justify-between gap-4 py-2.5">
+  <dt className="text-[#6B6B6B]">Contact</dt>
+  <dd className="text-right font-medium text-[#171717]">
+  {form.name}
+  <br />
+  {form.phone}
+  <br />
+  {form.email}
+  </dd>
+  </div>
+  <div className="flex items-start justify-between gap-4 py-2.5">
+  <dt className="text-[#6B6B6B]">Deliver to</dt>
+  <dd className="text-right font-medium text-[#171717]">
+  {[form.area, form.town, form.county].filter(Boolean).join(", ")}
+  <br />
+  {[form.address, form.street, form.building, form.apartment].filter(Boolean).join(", ")}
+  {form.landmark ? (
+  <>
+  <br />
+  <span className="text-xs text-[#6B6B6B]">Near {form.landmark}</span>
+  </>
+  ) : null}
+  </dd>
+  </div>
+  {form.instructions.trim() && (
+  <div className="flex items-start justify-between gap-4 py-2.5">
+  <dt className="text-[#6B6B6B]">Instructions</dt>
+  <dd className="max-w-[60%] text-right font-medium text-[#171717]">{form.instructions}</dd>
+  </div>
+  )}
+  <div className="flex items-start justify-between gap-4 py-2.5">
+  <dt className="text-[#6B6B6B]">Delivery</dt>
+  <dd className="text-right font-medium text-[#171717]">
+  {(methods as Record<string, string>)[form.deliveryMethod] ?? form.deliveryMethod}
+  <br />
+  <span className="text-xs text-[#6B6B6B]">
+  {deliveryOptions.find((o) => o.method === form.deliveryMethod)?.eta}
+  </span>
+  </dd>
+  </div>
+  <div className="flex items-start justify-between gap-4 py-2.5">
+  <dt className="text-[#6B6B6B]">Payment</dt>
+  <dd className="text-right font-medium text-[#171717]">
+  {paymentMethod === "FLUTTERWAVE" ? "Card / Mobile Money" : "M-PESA STK Push"}
+  </dd>
+  </div>
+  </dl>
+
+  {error && (
+  <p className="mt-4 rounded-zed bg-red-50/70 px-4 py-3 text-sm text-red-700 backdrop-blur-sm">{error}</p>
+  )}
+
+  <button
+  type="button"
+  onClick={placeOrder}
+  className="mt-6 w-full rounded-zed bg-zed-950 py-4 text-sm font-bold uppercase tracking-wider text-white transition-colors hover:bg-zed-900"
+  >
+  Place order &amp; pay {formatKES(total)}
+  </button>
+  <button
+  type="button"
+  onClick={toggleReview}
+  className="mt-2 w-full rounded-zed border border-white/60 py-3 text-sm font-semibold text-[#171717] transition-colors hover:bg-white/40"
+  >
+  Back to edit details
+  </button>
+  <p className="mt-3 text-center text-[11px] leading-relaxed text-[#6B6B6B]">
+  By placing this order you agree to our delivery &amp; returns policy.
+  </p>
+  </div>
+  )}
 
 {/* STK + polling + Flutterwave + failure + assistance states */}
   {(step === "stk" || step === "polling" || step === "flutterwave" || step === "failed" || step === "assistance") && orderRef && (

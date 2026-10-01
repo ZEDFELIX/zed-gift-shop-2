@@ -75,19 +75,22 @@ export const cartSchema = z.object({
 });
 
 export const checkoutSchema = z.object({
- name: z.string().min(2).max(120),
- email: emailSchema,
- phone: phoneSchema,
- county: z.string().min(2),
- town: z.string().min(2),
- address: z.string().min(3),
- building: z.string().max(120).optional().or(z.literal("")),
- apartment: z.string().max(120).optional().or(z.literal("")),
- instructions: z.string().max(500).optional().or(z.literal("")),
- deliveryMethod: z.enum(["SAME_DAY", "NEXT_DAY", "STANDARD", "EXPRESS", "PICKUP"]),
- couponCode: z.string().max(40).optional().or(z.literal("")),
- isGift: z.boolean().optional(),
- paymentMethod: z.enum(["M_PESA", "FLUTTERWAVE", "CARD"]).optional().default("M_PESA"),
+  name: z.string().min(2).max(120),
+  email: emailSchema,
+  phone: phoneSchema,
+  county: z.string().min(2),
+  town: z.string().min(2),
+  area: z.string().max(120).optional().or(z.literal("")),
+  street: z.string().max(120).optional().or(z.literal("")),
+  address: z.string().min(3),
+  building: z.string().max(120).optional().or(z.literal("")),
+  apartment: z.string().max(120).optional().or(z.literal("")),
+  landmark: z.string().max(200).optional().or(z.literal("")),
+  instructions: z.string().max(500).optional().or(z.literal("")),
+  deliveryMethod: z.enum(["SAME_DAY", "NEXT_DAY", "STANDARD", "EXPRESS", "PICKUP"]),
+  couponCode: z.string().max(40).optional().or(z.literal("")),
+  isGift: z.boolean().optional(),
+  paymentMethod: z.enum(["M_PESA", "FLUTTERWAVE", "CARD", "BANK_TRANSFER", "COD"]).optional().default("M_PESA"),
 });
 
 export const couponSchema = z.object({
