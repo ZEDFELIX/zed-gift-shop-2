@@ -628,7 +628,43 @@ export const ORDER_STATUS_LABELS = Object.fromEntries(ORDER_STATUS_STEPS.map((s)
 
 export const PAYMENT_STATUS_LABELS: Record<string, string> = {
   PENDING: "Awaiting payment",
+  PROCESSING: "Payment processing",
   SUCCESSFUL: "Paid",
   FAILED: "Payment failed",
   CANCELLED: "Cancelled",
+  TIMEOUT: "Payment timed out",
+  REFUNDED: "Refunded",
+  REVERSED: "Reversed",
 };
+
+/**
+ * Bank transfer details shown at checkout. Overridable through the environment so
+ * a real account number is never hard-coded into the repository.
+ */
+export const BANK_TRANSFER = {
+  bankName: process.env.BANK_NAME ?? "Equity Bank Kenya",
+  accountName: process.env.BANK_ACCOUNT_NAME ?? SITE.name,
+  accountNumber: process.env.BANK_ACCOUNT_NUMBER ?? "",
+  branch: process.env.BANK_BRANCH ?? "",
+  swift: process.env.BANK_SWIFT ?? "",
+} as const;
+
+export function bankTransferConfigured(): boolean {
+  return Boolean(BANK_TRANSFER.accountNumber);
+}
+
+export function getBankTransferInstructions(reference: string): string[] {
+  if (!bankTransferConfigured()) {
+    return [
+      "Bank transfer is not available on this store right now. Please contact us to arrange another payment method.",
+    ];
+  }
+  return [
+    `Bank: ${BANK_TRANSFER.bankName}${BANK_TRANSFER.branch ? ` - ${BANK_TRANSFER.branch} branch` : ""}`,
+    `Account name: ${BANK_TRANSFER.accountName}`,
+    `Account number: ${BANK_TRANSFER.accountNumber}`,
+    ...(BANK_TRANSFER.swift ? [`SWIFT: ${BANK_TRANSFER.swift}`] : []),
+    `Reference (use this exactly): ${reference}`,
+    "Send the exact order total, then WhatsApp us your confirmation number. We confirm payment and dispatch your order.",
+  ];
+}

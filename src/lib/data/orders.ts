@@ -4,7 +4,7 @@ import { prisma } from "@/lib/prisma";
 import { generateOrderNumber } from "@/lib/utils";
 import { ORDER_STATUS_STEPS as STEP_DEFS } from "@/lib/constants";
 import type { DeliveryMethod, OrderStatus, PaymentStatus, Prisma } from "@prisma/client";
-import { getDeliveryOptions } from "@/lib/data/delivery";
+import { resolveFeeForMethod, type DeliveryZone } from "@/lib/data/delivery";
 
 export type CreateOrderInput = {
  userId?: string | null;
@@ -42,23 +42,29 @@ county: string;
 };
 
 export async function createOrder(input: CreateOrderInput): Promise<{ orderId: string; orderNumber: string }> {
- const deliveryFee = await resolveDeliveryFee(input.county, input.deliveryMethod);
- const total = Math.max(0, input.subtotal - input.discount) + deliveryFee;
+  const netTotal = Math.max(0, input.subtotal - input.discount);
+  const { fee: deliveryFee, estimatedDeliveryDate, zone } = await resolveDeliveryFee({
+    county: input.county,
+    town: input.town,
+    method: input.deliveryMethod,
+    subtotal: netTotal,
+  });
+  const total = netTotal + deliveryFee;
 
- const order = await prisma.order.create({
- data: {
- orderNumber: generateOrderNumber(),
- userId: input.userId ?? null,
- name: input.name,
- email: input.email,
- phone: input.phone,
- subtotal: input.subtotal,
- discount: input.discount,
- deliveryFee,
- total,
- couponCode: input.couponCode,
- couponId: input.couponId,
-deliveryMethod: input.deliveryMethod,
+  const order = await prisma.order.create({
+  data: {
+  orderNumber: generateOrderNumber(),
+  userId: input.userId ?? null,
+  name: input.name,
+  email: input.email,
+  phone: input.phone,
+  subtotal: input.subtotal,
+  discount: input.discount,
+  deliveryFee,
+  total,
+  couponCode: input.couponCode,
+  couponId: input.couponId,
+  deliveryMethod: input.deliveryMethod,
   county: input.county,
   town: input.town,
   area: input.area ?? null,
@@ -68,6 +74,8 @@ deliveryMethod: input.deliveryMethod,
   apartment: input.apartment ?? null,
   landmark: input.landmark ?? null,
   deliveryInstructions: input.deliveryInstructions ?? null,
+  deliveryPartner: zone?.deliveryPartner ?? null,
+  expectedDeliveryDate: estimatedDeliveryDate ? new Date(estimatedDeliveryDate) : null,
  orderStatus: "PENDING_PAYMENT",
  paymentStatus: "PENDING",
  isGift: input.isGift,
@@ -92,11 +100,14 @@ deliveryMethod: input.deliveryMethod,
  return { orderId: order.id, orderNumber: order.orderNumber };
 }
 
-async function resolveDeliveryFee(county: string, method: DeliveryMethod): Promise<number> {
- if (method === "PICKUP") return 0;
- const options = await getDeliveryOptions(county);
- const option = options.find((o) => o.method === method);
- return option?.fee ?? 800;
+async function resolveDeliveryFee(input: {
+  county: string;
+  town: string;
+  method: DeliveryMethod;
+  subtotal: number;
+}): Promise<{ fee: number; estimatedDeliveryDate: string | null; zone: DeliveryZone | null }> {
+  if (input.method === "PICKUP") return { fee: 0, estimatedDeliveryDate: null, zone: null };
+  return resolveFeeForMethod(input);
 }
 
 export async function getOrderByNumberAndKey(orderNumber: string, key: string) {

@@ -7,8 +7,16 @@ import { initiateFlutterwaveCharge, flutterwaveConfigured } from "@/lib/flutterw
 import { prisma } from "@/lib/prisma";
 import { releaseInventoryForOrder, updateOrderStatus, updatePaymentStatus } from "@/lib/data/orders";
 import { issueOrderToken } from "@/lib/order-token";
+import { recordPaymentEvent, transitionPayment } from "@/lib/payments";
+import { BANK_TRANSFER, getBankTransferInstructions } from "@/lib/constants";
 
 export const runtime = "nodejs";
+
+function addDays(from: Date, days: number): Date {
+  const date = new Date(from);
+  date.setDate(date.getDate() + days);
+  return date;
+}
 
 export async function POST(req: Request) {
  let body: unknown;
@@ -46,8 +54,75 @@ const { order, totals } = result;
  return NextResponse.json({ error: "Failed to create payment record." }, { status: 500 });
  }
 
- // Handle M-PESA STK Push
- if (paymentMethod === "M_PESA") {
+// Cash on delivery: the order is real but unsettled until the rider collects.
+  if (paymentMethod === "COD") {
+    await prisma.payment.update({
+      where: { id: payment.id },
+      data: {
+        provider: "COD",
+        status: "PENDING",
+        resultDescription: "To be collected on delivery.",
+        initiatedAt: new Date(),
+        // Cash is collected in person, so nothing is pending with a provider.
+        expiredAt: addDays(new Date(), 7),
+      },
+    });
+    await recordPaymentEvent(payment.id, {
+      toStatus: "PENDING",
+      source: "checkout",
+      note: "Cash on delivery selected.",
+    });
+
+    return NextResponse.json({
+      ok: true,
+      pollToken,
+      orderId: order.orderId,
+      orderNumber: order.orderNumber,
+      total: totals.total,
+      payment: { status: "PENDING", configured: true, method: "COD" },
+    });
+  }
+
+  // Bank transfer: instructions are shown now, staff reconcile the payment.
+  if (paymentMethod === "BANK_TRANSFER") {
+    const bankReference = order.orderNumber.replace(/[^A-Za-z0-9]/g, "").toUpperCase().slice(-12);
+    await prisma.payment.update({
+      where: { id: payment.id },
+      data: {
+        provider: "BANK_TRANSFER",
+        status: "PENDING",
+        bankReference,
+        resultDescription: "Awaiting bank transfer.",
+        initiatedAt: new Date(),
+        // Hold the order while the customer transfers, then release it.
+        expiredAt: addDays(new Date(), 3),
+      },
+    });
+    await recordPaymentEvent(payment.id, {
+      toStatus: "PENDING",
+      source: "checkout",
+      note: "Bank transfer selected.",
+      metadata: { bankReference },
+    });
+
+    return NextResponse.json({
+      ok: true,
+      pollToken,
+      orderId: order.orderId,
+      orderNumber: order.orderNumber,
+      total: totals.total,
+      payment: {
+        status: "PENDING",
+        configured: true,
+        method: "BANK_TRANSFER",
+        bankReference,
+        instructions: getBankTransferInstructions(bankReference),
+      },
+    });
+  }
+
+  // Handle M-PESA STK Push
+  if (paymentMethod === "M_PESA") {
  if (!mpesaConfigured()) {
  await prisma.payment.update({
  where: { id: payment.id },
@@ -69,18 +144,30 @@ const { order, totals } = result;
  transactionDesc: "ZED Gift Shop",
  });
 
- if (push.ok && push.checkoutRequestId) {
- await prisma.payment.update({
- where: { id: payment.id },
- data: { checkoutRequestId: push.checkoutRequestId, merchantRequestId: push.merchantRequestId ?? null },
- });
+if (push.ok && push.checkoutRequestId) {
+    // The prompt is out with the customer, so the payment is in flight rather
+    // than waiting to be started. One key per prompt keeps retries idempotent.
+    await transitionPayment({
+      paymentId: payment.id,
+      to: "PROCESSING",
+      source: "stk_push",
+      note: "STK prompt sent to the customer.",
+      metadata: { checkoutRequestId: push.checkoutRequestId },
+      patch: {
+        checkoutRequestId: push.checkoutRequestId,
+        merchantRequestId: push.merchantRequestId ?? null,
+        idempotencyKey: push.checkoutRequestId,
+        initiatedAt: new Date(),
+        expiredAt: addDays(new Date(), 1),
+      },
+    });
 return NextResponse.json({
   ok: true,
   pollToken,
   orderId: order.orderId,
   orderNumber: order.orderNumber,
   total: totals.total,
-  payment: { status: "PENDING", checkoutRequestId: push.checkoutRequestId, merchantRequestId: push.merchantRequestId ?? null, configured: true, method: "M_PESA" },
+  payment: { status: "PROCESSING", checkoutRequestId: push.checkoutRequestId, merchantRequestId: push.merchantRequestId ?? null, configured: true, method: "M_PESA" },
   });
   }
 

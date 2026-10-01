@@ -344,7 +344,7 @@ giftWrapAvailable: p.giftWrapAvailable ?? false,
   const zones: {
   name: string;
   county: string;
-  town?: string;
+  town?: string | null;
   fee: number;
   expressFee?: number;
   deliveryTime?: string;
@@ -371,26 +371,15 @@ giftWrapAvailable: p.giftWrapAvailable ?? false,
   { name: "Athi River", county: "Machakos", town: "Athi River", fee: 250, expressFee: 450, deliveryTime: "1-2 business days", sameDay: true, codAvailable: true, minOrder: 500 },
   { name: "Kitengela", county: "Kajiado", town: "Kitengela", fee: 250, expressFee: 450, deliveryTime: "1-2 business days", sameDay: true, codAvailable: true, minOrder: 500 },
   ];
+  // County-wide zones are stored with a null town. Older rows used an empty
+  // string, which broke exact town matching during delivery quotes.
+  await prisma.deliveryZone.updateMany({ where: { town: "" }, data: { town: null } });
   for (const z of zones) {
-  await prisma.deliveryZone.upsert({
-  where: { county_town: { county: z.county, town: z.town ?? "" } },
-  update: {
-  name: z.name,
-  fee: z.fee,
-  expressFee: z.expressFee,
-  deliveryTime: z.deliveryTime,
-  sameDay: z.sameDay ?? false,
-  pickup: z.pickup ?? false,
-  codAvailable: z.codAvailable ?? false,
-  minOrder: z.minOrder ?? 0,
-  maxOrder: z.maxOrder,
-  deliveryPartner: z.deliveryPartner,
-  active: true,
-  },
-  create: {
+  const town = z.town ?? null;
+  const data = {
   name: z.name,
   county: z.county,
-  town: z.town ?? "",
+  town,
   fee: z.fee,
   expressFee: z.expressFee,
   deliveryTime: z.deliveryTime,
@@ -401,8 +390,18 @@ giftWrapAvailable: p.giftWrapAvailable ?? false,
   maxOrder: z.maxOrder,
   deliveryPartner: z.deliveryPartner,
   active: true,
-  },
+  };
+  // findFirst instead of upsert: the county/town compound key cannot express a
+  // null town, and county-wide zones are exactly the null-town rows.
+  const existing = await prisma.deliveryZone.findFirst({
+    where: { county: z.county, town },
+    select: { id: true },
   });
+  if (existing) {
+    await prisma.deliveryZone.update({ where: { id: existing.id }, data });
+  } else {
+    await prisma.deliveryZone.create({ data });
+  }
   }
 
  // ---- Gift wrap ----

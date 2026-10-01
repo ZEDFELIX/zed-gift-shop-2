@@ -579,15 +579,15 @@ model Payment {
   idempotencyKey String? @unique
   // Daraja identifiers
   merchantRequestId String?
-  checkoutRequestId String?
+  checkoutRequestId String? @unique
   mpesaReceipt String? @unique
-  transactionCode String?
+  transactionCode String? @unique
   // Flutterwave identifiers
   txRef String? @unique
-  transactionId String?
+  transactionId String? @unique
   checkoutUrl String?
   // Bank transfer
-  bankReference String?
+  bankReference String? @unique
   // Timestamps
   initiatedAt DateTime @default(now())
   completedAt DateTime?
@@ -605,8 +605,7 @@ model Payment {
   refunds Refund[]
 
   @@index([orderId])
-  @@index([checkoutRequestId])
-  @@index([mpesaReceipt])
+  @@index([createdAt])
   @@index([status])
   @@index([phone])
 }

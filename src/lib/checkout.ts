@@ -4,7 +4,7 @@ import { prisma } from "@/lib/prisma";
 import { getOrCreateCart, unitPrice } from "@/lib/cart";
 import { getSession } from "@/lib/auth";
 import { validateCouponForCart } from "@/lib/data/coupons";
-import { getDeliveryOptions, type DeliveryOption } from "@/lib/data/delivery";
+import { quoteDeliveryFor, type DeliveryOption } from "@/lib/data/delivery";
 import { createOrder, reserveInventoryForOrder } from "@/lib/data/orders";
 import type { DeliveryMethod } from "@prisma/client";
 
@@ -79,14 +79,46 @@ export async function createOrderFromCart(input: CheckoutInput): Promise<Checkou
  couponId = validation.coupon?.id ?? null;
  }
 
- const deliveryOption =
- input.deliveryMethod === "PICKUP"
- ? null
- : (await getDeliveryOptions(input.county)).find((o) => o.method === input.deliveryMethod) ?? null;
- if (input.deliveryMethod !== "PICKUP" && !deliveryOption) {
- return { ok: false, error: "That delivery option isn't available for the selected county." };
- }
- const deliveryFee = deliveryOption?.fee ?? 0;
+const paymentMethod = input.paymentMethod ?? "M_PESA";
+  const netTotal = Math.max(0, subtotal - discount);
+  const allProductsCodEligible = items.every((i) => i.product.codEligible);
+
+  // One quote drives the fee, the promise date and the cash-on-delivery rules,
+  // so the customer is never shown a combination the server will reject.
+  const quote = await quoteDeliveryFor({
+    county: input.county,
+    town: input.town,
+    subtotal: netTotal,
+    allProductsCodEligible,
+  });
+
+  const deliveryOption =
+    input.deliveryMethod === "PICKUP"
+      ? quote.options.find((o) => o.pickup) ?? null
+      : quote.options.find((o) => o.method === input.deliveryMethod) ?? null;
+
+  if (!deliveryOption) {
+    return { ok: false, error: "That delivery option isn't available for the selected area." };
+  }
+  const deliveryFee = deliveryOption.fee;
+
+  if (netTotal < quote.minOrder) {
+    return {
+      ok: false,
+      error: `This order is below the KES ${quote.minOrder.toLocaleString("en-KE")} minimum for ${quote.zone?.name ?? input.county}.`,
+    };
+  }
+  if (quote.maxOrder != null && netTotal > quote.maxOrder) {
+    return {
+      ok: false,
+      error: `This order is above the KES ${quote.maxOrder.toLocaleString("en-KE")} maximum for ${quote.zone?.name ?? input.county}.`,
+    };
+  }
+
+  // Cash on delivery is a zone and product decision, never a client preference.
+  if (paymentMethod === "COD" && !quote.codAvailable) {
+    return { ok: false, error: quote.codReason ?? "Cash on delivery is not available for this address." };
+  }
 
  const order = await createOrder({
  userId: sessionUserId,

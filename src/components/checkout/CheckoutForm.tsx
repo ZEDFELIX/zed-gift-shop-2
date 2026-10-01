@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { ArrowLeft, Check, HelpCircle, Loader2, Lock, Phone, RefreshCw, ShieldCheck, Sparkles } from "lucide-react";
+import { ArrowLeft, Check, HelpCircle, Landmark, Loader2, Lock, PackageCheck, Phone, RefreshCw, ShieldCheck, Sparkles } from "lucide-react";
 import { formatKES } from "@/lib/utils";
 import { SurpriseToggle } from "@/components/product/SurpriseToggle";
 
@@ -53,16 +53,27 @@ const methods: Record<DeliveryOption["method"], string> = {
  PICKUP: "Pickup",
 };
 
+type PaymentChoice = "M_PESA" | "FLUTTERWAVE" | "BANK_TRANSFER" | "COD";
+
+const paymentLabels: Record<PaymentChoice, string> = {
+  M_PESA: "M-PESA STK Push",
+  FLUTTERWAVE: "Card / Mobile Money",
+  BANK_TRANSFER: "Bank transfer",
+  COD: "Cash on delivery",
+};
+
 export function CheckoutForm({
- initialCart,
- counties,
- user,
- sitePhone,
+  initialCart,
+  counties,
+  user,
+  sitePhone,
+  bankTransferAvailable = false,
 }: {
- initialCart: CartView;
- counties: string[];
- user: UserPrefill;
- sitePhone: string;
+  initialCart: CartView;
+  counties: string[];
+  user: UserPrefill;
+  sitePhone: string;
+  bankTransferAvailable?: boolean;
 }) {
  const router = useRouter();
  const [cart, setCart] = useState<CartView>(initialCart);
@@ -83,37 +94,62 @@ const [form, setForm] = useState({
   isGift: false,
   });
 const [options, setOptions] = useState<DeliveryOption[]>([]);
-  const [step, setStep] = useState<"form" | "review" | "processing" | "stk" | "polling" | "flutterwave" | "failed" | "assistance" | "done">("form");
+  const [step, setStep] = useState<"form" | "review" | "processing" | "stk" | "polling" | "flutterwave" | "bank" | "cod" | "failed" | "assistance" | "done">("form");
   const [error, setError] = useState<string | null>(null);
   const [orderRef, setOrderRef] = useState<{ orderId: string; orderNumber: string; pollToken: string } | null>(null);
   const [orderTotal, setOrderTotal] = useState<number | null>(null);
   const [pollSeconds, setPollSeconds] = useState(0);
-  const [paymentMethod, setPaymentMethod] = useState<"M_PESA" | "FLUTTERWAVE">("M_PESA");
+  const [paymentMethod, setPaymentMethod] = useState<PaymentChoice>("M_PESA");
   const [pushSent, setPushSent] = useState(false);
   const [failedMethod, setFailedMethod] = useState<"M_PESA" | "FLUTTERWAVE">("M_PESA");
   const [retrying, setRetrying] = useState(false);
   const [flutterwaveUrl, setFlutterwaveUrl] = useState<string | null>(null);
-  const [flutterwaveTxRef, setFlutterwaveTxRef] = useState<string | null>(null);
+const [flutterwaveTxRef, setFlutterwaveTxRef] = useState<string | null>(null);
+  const [codInfo, setCodInfo] = useState<{ available: boolean; reason: string | null; partner: string | null }>({
+    available: false,
+    reason: null,
+    partner: null,
+  });
+  const [bankInstructions, setBankInstructions] = useState<string[] | null>(null);
   const pollRef = useRef(0);
 
- const deliveryOptions = useMemo(() => options, [options]);
+  const deliveryOptions = useMemo(() => options, [options]);
 
- async function fetchDelivery(county: string) {
- if (!county) {
- setOptions([]);
- return;
- }
- try {
- const res = await fetch(`/api/delivery?county=${encodeURIComponent(county)}`);
- const data = (await res.json()) as { options?: DeliveryOption[] };
- setOptions(data.options ?? []);
- if (!form.deliveryMethod && data.options?.[0]) {
- setForm((f) => ({ ...f, deliveryMethod: data.options![0].method }));
- }
- } catch {
- setOptions([]);
- }
- }
+  async function fetchDelivery(county: string, town?: string) {
+    if (!county) {
+    setOptions([]);
+    return;
+  }
+    try {
+    const params = new URLSearchParams({ county });
+    if (town) params.set("town", town);
+    const res = await fetch(`/api/delivery?${params.toString()}`);
+    const data = (await res.json()) as {
+      options?: DeliveryOption[];
+      codAvailable?: boolean;
+      codReason?: string | null;
+      zone?: { deliveryPartner?: string | null } | null;
+    };
+    setOptions(data.options ?? []);
+    setCodInfo({
+      available: Boolean(data.codAvailable),
+      reason: data.codReason ?? null,
+      partner: data.zone?.deliveryPartner ?? null,
+    });
+    setForm((f) => {
+      const stillOffered = data.options?.some((o) => o.method === f.deliveryMethod);
+      if (!f.deliveryMethod || !stillOffered) {
+        return { ...f, deliveryMethod: data.options?.[0]?.method ?? "" };
+      }
+      return f;
+    });
+    // Cash on delivery must not stay selected when the zone rules forbid it.
+    setPaymentMethod((current) => (current === "COD" && !data.codAvailable ? "M_PESA" : current));
+  } catch {
+    setOptions([]);
+    setCodInfo({ available: false, reason: "We could not check delivery options. Please try again.", partner: null });
+  }
+  }
 
  async function placeOrder() {
  setError(null);
@@ -154,11 +190,13 @@ ok?: boolean;
   configured?: boolean;
   checkoutRequestId?: string;
   merchantRequestId?: string;
-  method?: string;
-  txRef?: string;
-  authorizationUrl?: string;
-  link?: string;
-  };
+method?: string;
+      txRef?: string;
+      authorizationUrl?: string;
+      link?: string;
+      bankReference?: string;
+      instructions?: string[];
+      };
   };
 
   const configured = data.configured !== false && data.payment?.configured !== false;
@@ -200,6 +238,21 @@ ok?: boolean;
   setPushSent(true);
   setStep("flutterwave");
   return;
+  }
+
+  // Bank transfer: show the account details and wait for reconciliation.
+  if (data.payment?.method === "BANK_TRANSFER") {
+    setBankInstructions(data.payment.instructions ?? null);
+    setPushSent(false);
+    setStep("bank");
+    return;
+  }
+
+  // Cash on delivery: nothing to pay yet, the rider collects.
+  if (data.payment?.method === "COD") {
+    setPushSent(false);
+    setStep("cod");
+    return;
   }
 
   setPushSent(true);
@@ -365,7 +418,7 @@ const deliveryFee = deliveryOptions.find((o) => o.method === form.deliveryMethod
  else setStep("form");
  }
 
- const showReview = step === "review" || step === "processing" || step === "stk" || step === "polling" || step === "flutterwave" || step === "failed" || step === "done";
+ const showReview = step !== "form";
 
  return (
  <div className="grid gap-8 lg:grid-cols-[1fr_400px]">
@@ -420,7 +473,7 @@ const deliveryFee = deliveryOptions.find((o) => o.method === form.deliveryMethod
  </div>
  <div>
  <label className="label" htmlFor="co-county">County</label>
- <select id="co-county" value={form.county} onChange={(e) => { setForm({ ...form, county: e.target.value }); fetchDelivery(e.target.value); }} className="field">
+ <select id="co-county" value={form.county} onChange={(e) => { setForm({ ...form, county: e.target.value, area: "", town: "" }); fetchDelivery(e.target.value); }} className="field">
  <option value="">Select county</option>
  {counties.map((c) => (
  <option key={c} value={c}>{c}</option>
@@ -429,7 +482,11 @@ const deliveryFee = deliveryOptions.find((o) => o.method === form.deliveryMethod
  </div>
 <div>
   <label className="label" htmlFor="co-town">Town</label>
-  <input id="co-town" value={form.town} onChange={(e) => setForm({ ...form, town: e.target.value })} className="field" placeholder="Nairobi" />
+  <input id="co-town" value={form.town} onChange={(e) => {
+              const town = e.target.value;
+              setForm({ ...form, town });
+              fetchDelivery(form.county, town);
+            }} className="field" placeholder="Nairobi" />
   </div>
   <div>
   <label className="label" htmlFor="co-area">Area / estate</label>
@@ -524,11 +581,42 @@ const deliveryFee = deliveryOptions.find((o) => o.method === form.deliveryMethod
  <p className="text-sm font-semibold text-[#171717]">Card / Mobile Money</p>
  <p className="text-xs text-[#6B6B6B]">Pay with card or M-PESA via Flutterwave</p>
  </div>
- </button>
- </div>
- </div>
-
- {/* Gift flag */}
+</button>
+  {bankTransferAvailable && (
+  <button
+  type="button"
+  onClick={() => setPaymentMethod("BANK_TRANSFER")}
+  className={`flex w-full items-center gap-3 rounded-zed border p-3.5 text-left backdrop-blur-sm transition-colors ${paymentMethod === "BANK_TRANSFER" ? "border-soft-sage bg-warm-white" : "border-white/50 bg-white/30 hover:border-soft-sage hover:bg-white/45"}`}
+  >
+  <div className={`grid size-5 place-items-center rounded-full border ${paymentMethod === "BANK_TRANSFER" ? "border-deep-olive bg-deep-olive" : "border-white/60"}`}>
+  {paymentMethod === "BANK_TRANSFER" && <Check className="size-3 text-white" />}
+  </div>
+  <div>
+  <p className="text-sm font-semibold text-[#171717]">Bank transfer</p>
+  <p className="text-xs text-[#6B6B6B]">Transfer to our account, then we confirm and dispatch</p>
+  </div>
+  </button>
+  )}
+  <button
+  type="button"
+  onClick={() => setPaymentMethod("COD")}
+  disabled={!codInfo.available}
+  aria-describedby={!codInfo.available ? "cod-reason" : undefined}
+  className={`flex w-full items-center gap-3 rounded-zed border p-3.5 text-left backdrop-blur-sm transition-colors ${paymentMethod === "COD" ? "border-soft-sage bg-warm-white" : "border-white/50 bg-white/30 hover:border-soft-sage hover:bg-white/45"} ${codInfo.available ? "" : "cursor-not-allowed opacity-55"}`}
+  >
+  <div className={`grid size-5 place-items-center rounded-full border ${paymentMethod === "COD" ? "border-deep-olive bg-deep-olive" : "border-white/60"}`}>
+  {paymentMethod === "COD" && <Check className="size-3 text-white" />}
+  </div>
+  <div>
+  <p className="text-sm font-semibold text-[#171717]">Cash on delivery</p>
+  <p className="text-xs text-[#6B6B6B]">
+  {codInfo.available ? `Pay the rider in cash when your order arrives${codInfo.partner ? ` via ${codInfo.partner}` : ""}.` : codInfo.reason ?? "Not available for this address yet."}
+  </p>
+  {!codInfo.available && codInfo.reason && <p id="cod-reason" className="sr-only">{codInfo.reason}</p>}
+  </div>
+  </button>
+  </div>
+  </div>
  <div className="mt-6 flex items-start gap-3 rounded-zed glass-panel/70 p-4 backdrop-blur-sm">
  <Sparkles className="mt-0.5 size-5 shrink-0 text-soft-sage" />
  <div>
@@ -609,7 +697,7 @@ const deliveryFee = deliveryOptions.find((o) => o.method === form.deliveryMethod
   <div className="flex items-start justify-between gap-4 py-2.5">
   <dt className="text-[#6B6B6B]">Payment</dt>
   <dd className="text-right font-medium text-[#171717]">
-  {paymentMethod === "FLUTTERWAVE" ? "Card / Mobile Money" : "M-PESA STK Push"}
+  {(paymentLabels as Record<string, string>)[paymentMethod] ?? paymentMethod}
   </dd>
   </div>
   </dl>
@@ -623,7 +711,7 @@ const deliveryFee = deliveryOptions.find((o) => o.method === form.deliveryMethod
   onClick={placeOrder}
   className="mt-6 w-full rounded-zed bg-zed-950 py-4 text-sm font-bold uppercase tracking-wider text-white transition-colors hover:bg-zed-900"
   >
-  Place order &amp; pay {formatKES(total)}
+  Place order{paymentMethod === "COD" ? "" : " & pay"} {formatKES(total)}
   </button>
   <button
   type="button"
@@ -754,12 +842,73 @@ const deliveryFee = deliveryOptions.find((o) => o.method === form.deliveryMethod
   Continue shopping
   </button>
   </div>
-  </>
+</>
   )}
   </div>
   )}
 
- {step === "done" && orderRef && (
+  {(step === "bank" || step === "cod") && orderRef && (
+  <div className="glass-card rounded-zed p-6 text-center">
+  <span className="mx-auto grid size-14 place-items-center rounded-full bg-zed-950 text-white">
+  {step === "bank" ? <Landmark className="size-7" /> : <PackageCheck className="size-7" />}
+  </span>
+
+  {step === "bank" ? (
+  <>
+  <h2 className="mt-4 font-display text-xl font-bold text-[#171717]">Transfer {formatKES(orderTotal ?? total)}</h2>
+  <p className="mx-auto mt-2 max-w-sm text-sm text-[#6B6B6B]">
+  Order <strong>{orderRef.orderNumber}</strong> is saved and your items are reserved. Transfer the exact total, then send us your confirmation number on WhatsApp.
+  </p>
+
+  {bankInstructions ? (
+  <>
+  <dl className="mx-auto mt-5 max-w-sm space-y-2 rounded-zed border border-white/60 bg-white/40 p-4 text-left text-sm">
+  {bankInstructions.map((line, i) => (
+  <div key={i} className="flex items-start justify-between gap-4">
+  <dt className="shrink-0 text-[#6B6B6B]">{line.split(":")[0]}</dt>
+  <dd className="text-right font-semibold text-[#171717]">{line.includes(":") ? line.slice(line.indexOf(":") + 1).trim() : line}</dd>
+  </div>
+  ))}
+  </dl>
+  <button
+  type="button"
+  onClick={() => navigator.clipboard?.writeText(bankInstructions.join("\n"))}
+  className="mt-3 text-sm text-[#6B6B6B] underline-offset-2 hover:underline"
+  >
+  Copy account details
+  </button>
+  </>
+  ) : (
+  <p className="mx-auto mt-4 max-w-sm rounded-zed bg-red-50/70 px-4 py-3 text-sm text-red-700">
+  Bank transfer isn&apos;t set up on this store yet. Call us on {sitePhone} and we&apos;ll take your order directly.
+  </p>
+  )}
+  </>
+  ) : (
+  <>
+  <h2 className="mt-4 font-display text-xl font-bold text-[#171717]">Order placed - pay on delivery</h2>
+  <p className="mx-auto mt-2 max-w-sm text-sm text-[#6B6B6B]">
+  Thanks! Order <strong>{orderRef.orderNumber}</strong> is confirmed. Have{" "}
+  <strong className="text-[#171717]">{formatKES(orderTotal ?? total)}</strong> ready in cash for the rider{codInfo.partner ? ` from ${codInfo.partner}` : ""}.
+  </p>
+  <p className="mx-auto mt-3 max-w-sm text-xs text-[#6B6B6B]">
+  We&apos;ll call {form.phone} before delivery. Please keep the exact amount as change is often unavailable.
+  </p>
+  </>
+  )}
+
+  <div className="mt-6 flex flex-wrap items-center justify-center gap-2">
+  <button type="button" onClick={() => router.push(`/checkout/success?order=${orderRef.orderNumber}`)} className="rounded-zed bg-zed-950 px-6 py-3 text-sm font-bold text-white">
+  View order summary
+  </button>
+  <button type="button" onClick={() => router.push("/shop")} className="glass-panel rounded-zed px-6 py-3 text-sm font-semibold text-[#171717] hover:text-deep-olive">
+  Keep shopping
+  </button>
+  </div>
+  </div>
+  )}
+
+  {step === "done" && orderRef && (
  <div className="glass-card rounded-zed p-6 text-center">
  <span className="mx-auto grid size-14 place-items-center rounded-full bg-zed-950 text-white">
  <Check className="size-7" />

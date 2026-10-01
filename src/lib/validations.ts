@@ -123,7 +123,8 @@ export const cartSchema = z.object({
  couponCode: z.string().max(40).nullable().optional(),
 });
 
-export const checkoutSchema = z.object({
+export const checkoutSchema = z
+  .object({
   name: z.string().min(2).max(120),
   email: emailSchema,
   phone: phoneSchema,
@@ -140,7 +141,28 @@ export const checkoutSchema = z.object({
   couponCode: z.string().max(40).optional().or(z.literal("")),
   isGift: z.boolean().optional(),
   paymentMethod: z.enum(["M_PESA", "FLUTTERWAVE", "CARD", "BANK_TRANSFER", "COD"]).optional().default("M_PESA"),
-});
+})
+  .superRefine((data, ctx) => {
+    // M-PESA can only be prompted on a Safaricom number, and only where a
+    // Daraja sandbox or live app is actually configured for this store.
+    if (data.paymentMethod === "M_PESA" && data.phone) {
+      const result = mpesaPhoneSchema.safeParse(data.phone);
+      if (!result.success) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          path: ["phone"],
+          message: "M-PESA payments need a Safaricom number (071x, 072x, 074x or 079x).",
+        });
+      }
+    }
+    if (data.deliveryMethod === "PICKUP" && data.paymentMethod === "COD") {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        path: ["paymentMethod"],
+        message: "Choose M-PESA, card or bank transfer for pickup orders.",
+      });
+    }
+  });
 
 export const couponSchema = z.object({
  code: z.string().min(1).max(40).trim().toUpperCase(),
