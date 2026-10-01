@@ -30,7 +30,7 @@ export function Pagination({ page, pages, total, pageSize, href }: { page: numbe
  }, [])
  .map((p, i) =>
  p === "..." ? (
- <span key={`gap-${i}`} className="px-2 text-[#6B6B6B]">
+ <span key={`gap-${i}`} className="px-2 text-[#334155]">
  ...
  </span>
  ) : (
@@ -39,7 +39,7 @@ export function Pagination({ page, pages, total, pageSize, href }: { page: numbe
  href={pageHref(p)}
  aria-current={p === page ? "page" : undefined}
  className={`grid size-10 place-items-center rounded-zed text-sm font-semibold ${
- p === page ? "bg-zed-950 text-white" : "glass-panel text-[#171717] hover:border-soft-sage"
+ p === page ? "bg-zed-950 text-white" : "glass-panel text-[#07111F] hover:border-soft-sage"
  }`}
  >
  {p}
@@ -55,7 +55,7 @@ export function Pagination({ page, pages, total, pageSize, href }: { page: numbe
  <ChevronRight className="size-4" />
  </Link>
  </div>
- <p className="text-xs text-[#6B6B6B]">
+ <p className="text-xs text-[#334155]">
  Showing {start}-{end} of {total} gifts
  </p>
  </div>

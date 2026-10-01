@@ -5,7 +5,8 @@ import { getOrCreateCart, unitPrice } from "@/lib/cart";
 import { getSession } from "@/lib/auth";
 import { validateCouponForCart } from "@/lib/data/coupons";
 import { quoteDeliveryFor, type DeliveryOption } from "@/lib/data/delivery";
-import { createOrder, reserveInventoryForOrder } from "@/lib/data/orders";
+import { createOrder } from "@/lib/data/orders";
+import { reserveWithinTx, OutOfStockError } from "@/lib/inventory";
 import type { DeliveryMethod } from "@prisma/client";
 
 export type CheckoutInput = {
@@ -120,50 +121,84 @@ const paymentMethod = input.paymentMethod ?? "M_PESA";
     return { ok: false, error: quote.codReason ?? "Cash on delivery is not available for this address." };
   }
 
- const order = await createOrder({
- userId: sessionUserId,
- name: input.name,
- email: input.email,
- phone: input.phone,
-county: input.county,
-  town: input.town,
-  area: input.area || null,
-  street: input.street || null,
-  address: input.address,
-  building: input.building || null,
-  apartment: input.apartment || null,
-  landmark: input.landmark || null,
-  deliveryInstructions: input.instructions || null,
-  deliveryMethod: input.deliveryMethod,
- items: items.map((i) => ({
- productId: i.productId,
- variantId: i.variantId,
- name: i.product.name,
- sku: i.product.sku ?? i.variant?.sku ?? null,
- image: i.product.images[0]?.url ?? null,
- price: unitPrice(i).price,
- quantity: i.quantity,
- giftWrapPrice: unitPrice(i).giftWrapPrice,
- personalizationJson: i.personalizationJson,
- giftWrapJson: i.giftWrapJson,
- giftMessageJson: i.giftMessageJson,
- })),
- subtotal,
- discount,
- couponCode: cart.couponCode,
- couponId,
- isGift: input.isGift ?? false,
- });
+const orderItems = items.map((i) => ({
+  productId: i.productId,
+  variantId: i.variantId,
+  name: i.product.name,
+  sku: i.product.sku ?? i.variant?.sku ?? null,
+  image: i.product.images[0]?.url ?? null,
+  price: unitPrice(i).price,
+  quantity: i.quantity,
+  giftWrapPrice: unitPrice(i).giftWrapPrice,
+  personalizationJson: i.personalizationJson,
+  giftWrapJson: i.giftWrapJson,
+  giftMessageJson: i.giftMessageJson,
+  }));
 
- await reserveInventoryForOrder(order.orderId);
+  // Order creation, stock reservation and cart cleanup must land together.
+  // If any part fails the whole thing rolls back, so a customer can never end
+  // up with an order that has no reserved stock (or stock held for no order).
+  let order: { orderId: string; orderNumber: string };
+  try {
+    order = await prisma.$transaction(async (tx) => {
+      // Reuses the canonical order writer so numbering, delivery fee and
+      // status defaults stay identical to every other order entry point.
+      const created = await createOrder(
+        {
+          userId: sessionUserId,
+          name: input.name,
+          email: input.email,
+          phone: input.phone,
+          county: input.county,
+          town: input.town,
+          area: input.area || null,
+          street: input.street || null,
+          address: input.address,
+          building: input.building || null,
+          apartment: input.apartment || null,
+          landmark: input.landmark || null,
+          deliveryInstructions: input.instructions || null,
+          deliveryMethod: input.deliveryMethod,
+          items: orderItems,
+          subtotal,
+          discount,
+          couponCode: cart.couponCode,
+          couponId,
+          isGift: input.isGift ?? false,
+        },
+        {
+          tx,
+          deliveryFee,
+          estimatedDeliveryDate: deliveryOption.estimatedDeliveryDate ?? null,
+          deliveryPartner: quote.zone?.deliveryPartner ?? null,
+        },
+      );
 
- // Clear the cart and coupon so a stale cart can't be reused.
- await prisma.cartItem.deleteMany({ where: { cartId: cart.id } });
- await prisma.cart.update({ where: { id: cart.id }, data: { couponCode: null } });
- // NOTE: keep the same cart session id cookie; it stays empty until next add.
+      // Guarded reservation: the database refuses any line that would
+      // oversell, and a shortfall unwinds the whole order.
+      await reserveWithinTx(
+        tx,
+        orderItems.map((i) => ({ productId: i.productId, variantId: i.variantId, quantity: i.quantity })),
+        `Order ${created.orderNumber}`,
+      );
 
- const totals = { subtotal, discount, deliveryFee, total: Math.max(0, subtotal - discount) + deliveryFee };
- return { ok: true, order, totals, deliveryOption };
+      // Clear the cart and coupon so a stale cart can't be reused.
+      await tx.cartItem.deleteMany({ where: { cartId: cart.id } });
+      await tx.cart.update({ where: { id: cart.id }, data: { couponCode: null } });
+
+      return created;
+    });
+  } catch (error) {
+    if (error instanceof OutOfStockError) {
+      return { ok: false, error: "Some items just sold out. Please review your cart and try again." };
+    }
+    console.error("[checkout] order transaction failed", error);
+    return { ok: false, error: "We couldn't complete your order. Please try again." };
+  }
+  // NOTE: keep the same cart session id cookie; it stays empty until next add.
+
+  const totals = { subtotal, discount, deliveryFee, total: Math.max(0, subtotal - discount) + deliveryFee };
+  return { ok: true, order, totals, deliveryOption };
 }
 
 export async function createPaymentForOrder(input: {

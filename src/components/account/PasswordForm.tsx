@@ -43,7 +43,7 @@ export function PasswordForm() {
 
  return (
  <form onSubmit={submit} className="glass-card space-y-4 rounded-zed p-6">
- <h2 className="font-display text-lg font-bold text-[#171717]">Change password</h2>
+ <h2 className="font-display text-lg font-bold text-[#07111F]">Change password</h2>
  <div className="space-y-4">
  <div>
  <label className="label" htmlFor="pw-current">Current password</label>
@@ -66,7 +66,7 @@ export function PasswordForm() {
  <button type="submit" disabled={status === "saving"} className="flex items-center gap-2 rounded-zed bg-zed-950 px-5 py-3 text-sm font-bold text-white disabled:opacity-50">
  {status === "saving" ? <Loader2 className="size-4 animate-spin" /> : <Save className="size-4" />} Update password
  </button>
- <button type="button" onClick={logout} className="flex items-center gap-2 rounded-zed border border-edge px-5 py-3 text-sm font-semibold text-[#171717] hover:border-red-200 hover:text-red-600">
+ <button type="button" onClick={logout} className="flex items-center gap-2 rounded-zed border border-edge px-5 py-3 text-sm font-semibold text-[#07111F] hover:border-red-200 hover:text-red-600">
  <LogOut className="size-4" /> Log out
  </button>
  </div>

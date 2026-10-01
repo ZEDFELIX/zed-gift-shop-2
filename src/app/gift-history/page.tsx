@@ -22,8 +22,8 @@ export default async function GiftHistoryPage() {
  <header className="flex flex-wrap items-end justify-between gap-4">
  <div>
  <p className="eyebrow">Gifting history</p>
- <h1 className="mt-2 font-display text-3xl font-bold text-[#171717]">My Gift History</h1>
- <p className="mt-1 text-sm text-[#6B6B6B]">
+ <h1 className="mt-2 font-display text-3xl font-bold text-[#07111F]">My Gift History</h1>
+ <p className="mt-1 text-sm text-[#334155]">
  Every gift you&apos;ve sent. Re-gift with one tap.
  </p>
  </div>
@@ -35,8 +35,8 @@ export default async function GiftHistoryPage() {
  {giftOrders.length === 0 ? (
  <div className="glass-panel mx-auto mt-14 max-w-md rounded-zed p-10 text-center">
  <Package className="mx-auto size-12 text-soft-sage/50" />
- <p className="mt-4 font-display text-xl font-bold text-[#171717]">No gift history yet</p>
- <p className="mt-2 text-sm text-[#6B6B6B]">When you send a gift, it appears here for future reference.</p>
+ <p className="mt-4 font-display text-xl font-bold text-[#07111F]">No gift history yet</p>
+ <p className="mt-2 text-sm text-[#334155]">When you send a gift, it appears here for future reference.</p>
  <Link href="/shop" className="mt-6 inline-flex rounded-zed bg-zed-950 px-6 py-3 text-sm font-bold text-white">
  Start gifting
  </Link>
@@ -47,12 +47,12 @@ export default async function GiftHistoryPage() {
  <article key={order.id} className="glass-card rounded-zed p-5">
  <div className="flex flex-wrap items-center justify-between gap-3">
  <div>
- <p className="font-display text-sm font-bold text-[#171717]">{order.orderNumber}</p>
- <p className="text-xs text-[#6B6B6B]">
+ <p className="font-display text-sm font-bold text-[#07111F]">{order.orderNumber}</p>
+ <p className="text-xs text-[#334155]">
  {order.createdAt.toLocaleDateString("en-KE", { day: "numeric", month: "short", year: "numeric" })}
  </p>
  </div>
- <span className="rounded-full bg-warm-white px-2.5 py-1 text-xs font-semibold text-[#171717]">
+ <span className="rounded-full bg-warm-white px-2.5 py-1 text-xs font-semibold text-[#07111F]">
  {ORDER_STATUS_LABELS[order.orderStatus] ?? order.orderStatus}
  </span>
  </div>
@@ -61,20 +61,20 @@ export default async function GiftHistoryPage() {
  {order.items.map((item) => (
  <li key={item.id} className="flex items-center justify-between py-3">
  <div className="min-w-0 flex-1">
- <p className="text-sm font-medium text-[#171717]">{item.name}</p>
+ <p className="text-sm font-medium text-[#07111F]">{item.name}</p>
  {item.personalizationJson && (
  <p className="text-xs text-soft-sage">
  Personalized | {JSON.parse(item.personalizationJson).engravingText ?? ""}
  </p>
  )}
  </div>
- <p className="shrink-0 font-bold text-[#171717]">{formatKES(item.price)}</p>
+ <p className="shrink-0 font-bold text-[#07111F]">{formatKES(item.price)}</p>
  </li>
  ))}
  </ul>
 
  <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
- <div className="flex items-center gap-2 text-sm text-[#6B6B6B]">
+ <div className="flex items-center gap-2 text-sm text-[#334155]">
  <span>
  {order.items.length} item{order.items.length > 1 ? "s" : ""} |{" "}
  {formatKES(order.total)} total

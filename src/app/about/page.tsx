@@ -24,7 +24,7 @@ export default function AboutPage() {
  </div>
 
  <div className="container-zed py-14">
- <div className="max-w-3xl space-y-6 text-[#171717] leading-relaxed">
+ <div className="max-w-3xl space-y-6 text-[#07111F] leading-relaxed">
  <p>
  Every order at ZED is picked by hand, wrapped with care, and personalized to your message. From engraved
  keepsakes and mugs to custom hampers and corporate gift boxes, we obsess over the details that turn a
@@ -45,8 +45,8 @@ export default function AboutPage() {
  <span className="grid size-11 place-items-center rounded-zed glass-panel text-deep-olive">
  <v.icon className="size-5" />
  </span>
- <p className="mt-4 font-display font-bold text-[#171717]">{v.title}</p>
- <p className="mt-2 text-sm leading-relaxed text-[#6B6B6B]">{v.body}</p>
+ <p className="mt-4 font-display font-bold text-[#07111F]">{v.title}</p>
+ <p className="mt-2 text-sm leading-relaxed text-[#334155]">{v.body}</p>
  </div>
  ))}
  </div>

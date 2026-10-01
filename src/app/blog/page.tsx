@@ -17,8 +17,8 @@ export default function BlogIndexPage() {
     <div className="container-zed py-10 lg:py-14">
       <header className="mb-8 max-w-2xl">
         <p className="eyebrow">Journal</p>
-        <h1 className="mt-2 font-display text-3xl font-bold text-[#171717] lg:text-4xl">Gifting, done thoughtfully</h1>
-        <p className="mt-3 leading-relaxed text-[#171717]">
+        <h1 className="mt-2 font-display text-3xl font-bold text-[#07111F] lg:text-4xl">Gifting, done thoughtfully</h1>
+        <p className="mt-3 leading-relaxed text-[#07111F]">
           Occasion ideas, delivery know-how and personalization tips - written by the people who pack your gifts.
         </p>
       </header>
@@ -32,10 +32,10 @@ export default function BlogIndexPage() {
             <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-soft-sage">
               {post.category} - {post.date}
             </p>
-            <h2 className="mt-2 font-display text-xl font-bold leading-snug text-[#171717] group-hover:text-deep-olive">
+            <h2 className="mt-2 font-display text-xl font-bold leading-snug text-[#07111F] group-hover:text-deep-olive">
               {post.title}
             </h2>
-            <p className="mt-2 line-clamp-3 text-sm leading-relaxed text-[#6B6B6B]">{post.excerpt}</p>
+            <p className="mt-2 line-clamp-3 text-sm leading-relaxed text-[#334155]">{post.excerpt}</p>
             <p className="mt-4 flex items-center gap-1.5 text-sm font-bold text-deep-olive">
               Read more <ArrowRight className="size-4 transition-transform group-hover:translate-x-0.5" />
             </p>

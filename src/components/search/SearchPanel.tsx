@@ -119,7 +119,7 @@ export function SearchPanel({ open, onClose }: { open: boolean; onClose: () => v
  }}
  placeholder="Search gifts, occasions, recipients..."
  aria-label="Search products"
- className="w-full border-none bg-transparent text-lg text-[#171717] placeholder:text-[#6B6B6B] focus:outline-none"
+ className="w-full border-none bg-transparent text-lg text-[#07111F] placeholder:text-[#334155] focus:outline-none"
  />
  <button type="button" onClick={onClose} aria-label="Close search" className="grid size-9 shrink-0 place-items-center rounded-zed hover:bg-zed-900/5">
  <X className="size-5" />
@@ -130,12 +130,12 @@ export function SearchPanel({ open, onClose }: { open: boolean; onClose: () => v
  <div className="mt-5 grid gap-6 sm:grid-cols-2">
  {recent.length > 0 && (
  <div>
- <p className="mb-2 flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-[0.18em] text-[#6B6B6B]">
+ <p className="mb-2 flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-[0.18em] text-[#334155]">
  <Clock className="size-3.5" /> Recent searches
  </p>
  <div className="flex flex-wrap gap-2">
  {recent.map((r) => (
- <button key={r} type="button" onClick={() => submit(r)} className="rounded-full bg-zed-900/5 px-3 py-1.5 text-sm text-[#171717] hover:bg-zed-900/10">
+ <button key={r} type="button" onClick={() => submit(r)} className="rounded-full bg-zed-900/5 px-3 py-1.5 text-sm text-[#07111F] hover:bg-zed-900/10">
  {r}
  </button>
  ))}
@@ -143,10 +143,10 @@ export function SearchPanel({ open, onClose }: { open: boolean; onClose: () => v
  </div>
  )}
  <div>
- <p className="mb-2 text-[11px] font-semibold uppercase tracking-[0.18em] text-[#6B6B6B]">Popular</p>
+ <p className="mb-2 text-[11px] font-semibold uppercase tracking-[0.18em] text-[#334155]">Popular</p>
  <div className="flex flex-wrap gap-2">
  {POPULAR.map((t) => (
- <button key={t} type="button" onClick={() => submit(t)} className="rounded-full border border-white/60 bg-white/50 px-3 py-1.5 text-sm text-[#171717] hover:border-soft-sage hover:text-[#171717]">
+ <button key={t} type="button" onClick={() => submit(t)} className="rounded-full border border-white/60 bg-white/50 px-3 py-1.5 text-sm text-[#07111F] hover:border-soft-sage hover:text-[#07111F]">
  {t}
  </button>
  ))}
@@ -156,13 +156,13 @@ export function SearchPanel({ open, onClose }: { open: boolean; onClose: () => v
  ) : (
  <div className="mt-4 min-h-24">
  {loading && (
- <p className="flex items-center gap-2 py-6 text-sm text-[#6B6B6B]">
+ <p className="flex items-center gap-2 py-6 text-sm text-[#334155]">
  <Loader2 className="size-4 animate-spin" /> Searching...
  </p>
  )}
  {!loading && results.length === 0 && (
- <p className="py-6 text-sm text-[#6B6B6B]">
- No matches for <span className="font-semibold text-[#171717]">&ldquo;{q}&rdquo;</span>. Press Enter to browse all results.
+ <p className="py-6 text-sm text-[#334155]">
+ No matches for <span className="font-semibold text-[#07111F]">&ldquo;{q}&rdquo;</span>. Press Enter to browse all results.
  </p>
  )}
  {categoryHits.map((c) => (
@@ -178,10 +178,10 @@ export function SearchPanel({ open, onClose }: { open: boolean; onClose: () => v
  {p.image ? <Image src={p.image} alt="" fill sizes="44px" unoptimized className="object-cover" /> : null}
  </span>
  <span className="min-w-0 flex-1">
- <span className="block truncate text-sm font-medium text-[#171717]">{p.name}</span>
- <span className="block text-xs text-[#6B6B6B]">{p.category ?? "Gift"}</span>
+ <span className="block truncate text-sm font-medium text-[#07111F]">{p.name}</span>
+ <span className="block text-xs text-[#334155]">{p.category ?? "Gift"}</span>
  </span>
- <span className="shrink-0 text-sm font-bold text-[#171717]">{formatKES(p.price)}</span>
+ <span className="shrink-0 text-sm font-bold text-[#07111F]">{formatKES(p.price)}</span>
  </Link>
  </li>
  ))}

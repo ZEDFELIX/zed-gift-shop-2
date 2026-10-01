@@ -47,8 +47,8 @@ export default function FaqPage() {
  return (
  <div className="container-zed max-w-3xl py-12">
  <p className="eyebrow text-soft-sage">Good to know</p>
- <h1 className="mt-2 font-display text-4xl font-black text-[#171717]">Frequently asked questions</h1>
- <p className="mt-4 text-[#171717]">
+ <h1 className="mt-2 font-display text-4xl font-black text-[#07111F]">Frequently asked questions</h1>
+ <p className="mt-4 text-[#07111F]">
  Everything about ordering, payment, personalization and delivery. Can&apos;t find your answer?{" "}
  <Link href="/contact" className="text-soft-sage underline underline-offset-2">Contact us</Link> or WhatsApp{" "}
  <a className="text-soft-sage underline underline-offset-2" href={SITE.phoneHref}>{SITE.phone}</a>.
@@ -57,11 +57,11 @@ export default function FaqPage() {
  <div className="mt-10 space-y-3">
  {faqs.map((f) => (
  <details key={f.q} className="glass-panel group rounded-2xl p-1">
- <summary className="flex cursor-pointer list-none items-center justify-between gap-3 px-4 py-3.5 font-display font-semibold text-[#171717] marker:hidden">
+ <summary className="flex cursor-pointer list-none items-center justify-between gap-3 px-4 py-3.5 font-display font-semibold text-[#07111F] marker:hidden">
  {f.q}
  <ChevronDown className="size-5 shrink-0 text-soft-sage transition-transform group-open:rotate-180" />
  </summary>
- <p className="px-4 pb-4 text-sm leading-relaxed text-[#171717]">{f.a}</p>
+ <p className="px-4 pb-4 text-sm leading-relaxed text-[#07111F]">{f.a}</p>
  </details>
  ))}
  </div>

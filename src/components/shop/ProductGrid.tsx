@@ -13,8 +13,8 @@ export function ProductGrid({
  if (products.length === 0) {
    return (
      <div className="rounded-zed border border-dashed border-edge-strong px-6 py-16 text-center">
-       <p className="font-display text-lg font-bold text-[#171717]">No gifts match your filters</p>
-       <p className="mt-1 text-sm text-[#6B6B6B]">
+       <p className="font-display text-lg font-bold text-[#07111F]">No gifts match your filters</p>
+       <p className="mt-1 text-sm text-[#334155]">
          Try adjusting your search or browse all gifts instead.
        </p>
      </div>

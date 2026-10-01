@@ -50,8 +50,8 @@ export function SettingsForm({ initial }: { initial: SettingsShape }) {
 
  return (
  <form onSubmit={save} className="space-y-4 rounded-zed border border-edge bg-white p-6">
- <h2 className="font-display text-lg font-bold text-[#171717]">Store settings</h2>
- <p className="text-sm text-[#6B6B6B]">These power the announcement bar, hero and contact details sitewide.</p>
+ <h2 className="font-display text-lg font-bold text-[#07111F]">Store settings</h2>
+ <p className="text-sm text-[#334155]">These power the announcement bar, hero and contact details sitewide.</p>
 
  <div>
  <label className="label" htmlFor="st-announce">Announcement bar text</label>
@@ -83,7 +83,7 @@ export function SettingsForm({ initial }: { initial: SettingsShape }) {
  <input id="st-corp" type="email" className="field" value={form.corporateEmail} onChange={(e) => set("corporateEmail", e.target.value)} />
  </div>
  </div>
- <label className="flex items-center gap-2 text-sm text-[#171717]">
+ <label className="flex items-center gap-2 text-sm text-[#07111F]">
  <input type="checkbox" checked={form.maintenanceMode} onChange={(e) => set("maintenanceMode", e.target.checked)} className="size-4 accent-deep-olive" />
  Maintenance mode (show a closed banner sitewide)
  </label>

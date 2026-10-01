@@ -18,8 +18,8 @@ export default async function CheckoutPage() {
  if (!cart || (cart.items.length === 0 && cart.count === 0)) {
  return (
  <div className="glass-panel mx-auto max-w-md py-20 text-center">
- <p className="font-display text-2xl font-bold text-[#171717]">Your cart is empty</p>
- <p className="mt-2 text-[#6B6B6B]">Add a gift first, then check out.</p>
+ <p className="font-display text-2xl font-bold text-[#07111F]">Your cart is empty</p>
+ <p className="mt-2 text-[#334155]">Add a gift first, then check out.</p>
  <Link href="/shop" className="mt-6 inline-flex rounded-zed bg-zed-950 px-6 py-3 text-sm font-bold text-white">
  Browse gifts
  </Link>
@@ -31,8 +31,8 @@ export default async function CheckoutPage() {
  <div className="container-zed py-10 lg:py-14">
  <header className="mb-8">
  <p className="eyebrow">Secure checkout</p>
- <h1 className="mt-2 font-display text-3xl font-bold text-[#171717] lg:text-4xl">Almost there</h1>
-<p className="mt-2 flex items-center gap-2 text-sm text-[#6B6B6B]">
+ <h1 className="mt-2 font-display text-3xl font-bold text-[#07111F] lg:text-4xl">Almost there</h1>
+<p className="mt-2 flex items-center gap-2 text-sm text-[#334155]">
   <ShieldCheck className="size-4 text-soft-sage" /> Checkout is protected. Pay by M-PESA, card, bank transfer, or cash on delivery.
   </p>
  </header>
@@ -45,7 +45,7 @@ sitePhone={SITE.phone}
   bankTransferAvailable={bankTransferConfigured()}
   />
 
- <p className="mt-8 flex items-center justify-center gap-2 text-center text-xs text-[#6B6B6B]">
+ <p className="mt-8 flex items-center justify-center gap-2 text-center text-xs text-[#334155]">
  <Truck className="size-4 text-soft-sage" /> Same-day in Nairobi by 2 PM| Countrywide in 1-3 days
  </p>
  </div>

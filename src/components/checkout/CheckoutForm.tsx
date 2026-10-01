@@ -279,6 +279,7 @@ method?: string;
   phone: form.phone,
   amount: orderTotal ?? 0,
   accountReference: orderRef.orderNumber,
+  pollToken: orderRef.pollToken,
   }),
   });
   const data = (await res.json()) as { ok?: boolean; error?: string; checkoutRequestId?: string };
@@ -446,7 +447,7 @@ function wizardReached(n: number): boolean {
   {/* Order summary banner (review + post-order steps) */}
   {showOrderBanner && (
  <div className="glass-card rounded-zed p-5">
- <h2 className="font-display text-lg font-bold text-[#171717]">Order details</h2>
+ <h2 className="font-display text-lg font-bold text-[#07111F]">Order details</h2>
  <ul className="mt-3 divide-y divide-white/40 text-sm">
  {cart.items.map((i) => (
  <li key={i.id} className="flex items-center gap-3 py-2.5">
@@ -454,14 +455,14 @@ function wizardReached(n: number): boolean {
  {i.image ? <Image src={i.image} alt="" fill unoptimized className="object-cover" /> : null}
  </span>
  <div className="min-w-0 flex-1">
- <p className="truncate font-medium text-[#171717]">{i.name}</p>
- <p className="text-xs text-[#6B6B6B]">
+ <p className="truncate font-medium text-[#07111F]">{i.name}</p>
+ <p className="text-xs text-[#334155]">
  x{i.quantity}
  {i.variant ? ` | ${i.variant.value}` : ""}
  {i.giftWrapPrice > 0 ? " | Gift box" : ""}
  </p>
  </div>
- <p className="font-semibold text-[#171717]">{formatKES(i.lineTotal)}</p>
+ <p className="font-semibold text-[#07111F]">{formatKES(i.lineTotal)}</p>
  </li>
  ))}
  </ul>
@@ -482,9 +483,9 @@ function wizardReached(n: number): boolean {
   type="button"
   disabled={!wizardReached(s.n)}
   onClick={() => setWiz(s.n)}
-  className={`flex items-center gap-1.5 rounded-full px-2 py-1 text-[11px] font-bold uppercase tracking-wide transition-colors disabled:cursor-not-allowed ${active ? "bg-zed-950 text-white" : done ? "text-deep-olive" : "text-[#9B9B9B] hover:text-[#171717] disabled:hover:text-[#9B9B9B]"}`}
+  className={`flex items-center gap-1.5 rounded-full px-2 py-1 text-[11px] font-bold uppercase tracking-wide transition-colors disabled:cursor-not-allowed ${active ? "bg-zed-950 text-white" : done ? "text-deep-olive" : "text-[#334155] hover:text-[#07111F] disabled:hover:text-[#334155]"}`}
   >
-  <span className={`grid size-4 place-items-center rounded-full ${active ? "bg-white text-zed-950" : done ? "bg-deep-olive text-white" : "bg-white/40 text-[#9B9B9B]"}`}>
+  <span className={`grid size-4 place-items-center rounded-full ${active ? "bg-white text-zed-950" : done ? "bg-deep-olive text-white" : "bg-white/40 text-[#334155]"}`}>
   {done ? <Check className="size-2.5" /> : s.n}
   </span>
   <span className="hidden sm:inline">{s.label}</span>
@@ -497,7 +498,7 @@ function wizardReached(n: number): boolean {
 
   {wiz === 1 && (
   <>
-  <h2 className="font-display text-lg font-bold text-[#171717]">Your contact details</h2>
+  <h2 className="font-display text-lg font-bold text-[#07111F]">Your contact details</h2>
   <div className="mt-5 grid gap-4 sm:grid-cols-2">
   <div>
   <label className="label" htmlFor="co-name">Full name</label>
@@ -506,7 +507,7 @@ function wizardReached(n: number): boolean {
   <div>
   <label className="label" htmlFor="co-phone">M-PESA phone</label>
   <div className="relative">
-    <Phone className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-[#6B6B6B]" />
+    <Phone className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-[#334155]" />
     <input id="co-phone" value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })} className={`field pl-9 ${form.phone && !phoneIsValid ? "border-red-400" : ""}`} placeholder="0712 345 678" inputMode="tel" autoComplete="tel-national" />
     </div>
     {form.phone && !phoneIsValid && (
@@ -521,7 +522,7 @@ function wizardReached(n: number): boolean {
   )}
   </div>
   </div>
-  <p className="mt-3 text-xs text-[#6B6B6B]">Cash on delivery and M-PESA both use the phone number above.</p>
+  <p className="mt-3 text-xs text-[#334155]">Cash on delivery and M-PESA both use the phone number above.</p>
 
   <div className="mt-6 flex items-center justify-end gap-3">
   <button type="button" onClick={() => setWiz(2)} disabled={!contactValid} className="rounded-zed bg-zed-950 px-8 py-3 text-sm font-bold uppercase tracking-wider text-white transition-colors hover:bg-zed-900 disabled:cursor-not-allowed disabled:opacity-40">
@@ -533,7 +534,7 @@ function wizardReached(n: number): boolean {
 
   {wiz === 2 && (
   <>
-  <h2 className="font-display text-lg font-bold text-[#171717]">Where should we deliver?</h2>
+  <h2 className="font-display text-lg font-bold text-[#07111F]">Where should we deliver?</h2>
 <div className="mt-5 grid gap-4 sm:grid-cols-2">
   <div>
   <label className="label" htmlFor="co-county">County</label>
@@ -582,11 +583,11 @@ function wizardReached(n: number): boolean {
   </div>
   </div>
   {!deliveryValid && (
-  <p className="mt-3 text-xs text-[#6B6B6B]">Enter your county, town and delivery address to continue.</p>
+  <p className="mt-3 text-xs text-[#334155]">Enter your county, town and delivery address to continue.</p>
   )}
   <div className="mt-6 flex items-center justify-between gap-3">
   {wiz > 1 && (
-  <button type="button" onClick={() => setWiz(1)} className="flex items-center gap-2 rounded-zed border border-white/60 px-5 py-3 text-sm font-semibold text-[#171717] transition-colors hover:bg-white/40">
+  <button type="button" onClick={() => setWiz(1)} className="flex items-center gap-2 rounded-zed border border-white/60 px-5 py-3 text-sm font-semibold text-[#07111F] transition-colors hover:bg-white/40">
   <ArrowLeft className="size-4" /> Back
   </button>
   )}
@@ -600,12 +601,12 @@ function wizardReached(n: number): boolean {
   {/* Step 3: delivery method */}
   {wiz === 3 && (
   <>
-  <h2 className="font-display text-lg font-bold text-[#171717]">Delivery method</h2>
-  <p className="mt-1 text-xs text-[#6B6B6B]">Fees and promise dates come from our delivery zones for {[form.area, form.town, form.county].filter(Boolean).join(", ") || form.county}.</p>
+  <h2 className="font-display text-lg font-bold text-[#07111F]">Delivery method</h2>
+  <p className="mt-1 text-xs text-[#334155]">Fees and promise dates come from our delivery zones for {[form.area, form.town, form.county].filter(Boolean).join(", ") || form.county}.</p>
   {form.county && (
   <div className="mt-5">
   {deliveryOptions.length === 0 ? (
-  <p className="flex items-center gap-2 text-sm text-[#6B6B6B]">
+  <p className="flex items-center gap-2 text-sm text-[#334155]">
   <Loader2 className="size-4 animate-spin" /> Checking options for {form.county}...
   </p>
   ) : (
@@ -622,11 +623,11 @@ function wizardReached(n: number): boolean {
   {form.deliveryMethod === opt.method && <Check className="size-3 text-white" />}
   </span>
   <div>
-  <p className="text-sm font-semibold text-[#171717]">{opt.label}</p>
-  <p className="text-xs text-[#6B6B6B]">{opt.description}</p>
+  <p className="text-sm font-semibold text-[#07111F]">{opt.label}</p>
+  <p className="text-xs text-[#334155]">{opt.description}</p>
   </div>
   </div>
-  <p className="shrink-0 text-sm font-bold text-[#171717]">{opt.fee === 0 ? "Free" : formatKES(opt.fee)}</p>
+  <p className="shrink-0 text-sm font-bold text-[#07111F]">{opt.fee === 0 ? "Free" : formatKES(opt.fee)}</p>
   </button>
   ))}
   </div>
@@ -635,7 +636,7 @@ function wizardReached(n: number): boolean {
   )}
 
   <div className="mt-6 flex items-center justify-between gap-3">
-  <button type="button" onClick={() => setWiz(2)} className="flex items-center gap-2 rounded-zed border border-white/60 px-5 py-3 text-sm font-semibold text-[#171717] transition-colors hover:bg-white/40">
+  <button type="button" onClick={() => setWiz(2)} className="flex items-center gap-2 rounded-zed border border-white/60 px-5 py-3 text-sm font-semibold text-[#07111F] transition-colors hover:bg-white/40">
   <ArrowLeft className="size-4" /> Back
   </button>
   <button type="button" onClick={() => setWiz(4)} disabled={!methodValid} className="ml-auto rounded-zed bg-zed-950 px-8 py-3 text-sm font-bold uppercase tracking-wider text-white transition-colors hover:bg-zed-900 disabled:cursor-not-allowed disabled:opacity-40">
@@ -648,7 +649,7 @@ function wizardReached(n: number): boolean {
   {/* Step 4: payment */}
   {wiz === 4 && (
   <>
-<h2 className="font-display text-lg font-bold text-[#171717]">How would you like to pay?</h2>
+<h2 className="font-display text-lg font-bold text-[#07111F]">How would you like to pay?</h2>
   <div className="mt-5">
   <p className="label">Payment method</p>
   <div className="space-y-2">
@@ -661,8 +662,8 @@ function wizardReached(n: number): boolean {
  {paymentMethod === "M_PESA" && <Check className="size-3 text-white" />}
  </div>
  <div>
- <p className="text-sm font-semibold text-[#171717]">M-PESA STK Push</p>
- <p className="text-xs text-[#6B6B6B]">Pay instantly with your phone via M-PESA</p>
+ <p className="text-sm font-semibold text-[#07111F]">M-PESA STK Push</p>
+ <p className="text-xs text-[#334155]">Pay instantly with your phone via M-PESA</p>
  </div>
  </button>
  <button
@@ -674,8 +675,8 @@ function wizardReached(n: number): boolean {
  {paymentMethod === "FLUTTERWAVE" && <Check className="size-3 text-white" />}
  </div>
  <div>
- <p className="text-sm font-semibold text-[#171717]">Card / Mobile Money</p>
- <p className="text-xs text-[#6B6B6B]">Pay with card or M-PESA via Flutterwave</p>
+ <p className="text-sm font-semibold text-[#07111F]">Card / Mobile Money</p>
+ <p className="text-xs text-[#334155]">Pay with card or M-PESA via Flutterwave</p>
  </div>
 </button>
   {bankTransferAvailable && (
@@ -688,8 +689,8 @@ function wizardReached(n: number): boolean {
   {paymentMethod === "BANK_TRANSFER" && <Check className="size-3 text-white" />}
   </div>
   <div>
-  <p className="text-sm font-semibold text-[#171717]">Bank transfer</p>
-  <p className="text-xs text-[#6B6B6B]">Transfer to our account, then we confirm and dispatch</p>
+  <p className="text-sm font-semibold text-[#07111F]">Bank transfer</p>
+  <p className="text-xs text-[#334155]">Transfer to our account, then we confirm and dispatch</p>
   </div>
   </button>
   )}
@@ -704,8 +705,8 @@ function wizardReached(n: number): boolean {
   {paymentMethod === "COD" && <Check className="size-3 text-white" />}
   </div>
   <div>
-  <p className="text-sm font-semibold text-[#171717]">Cash on delivery</p>
-  <p className="text-xs text-[#6B6B6B]">
+  <p className="text-sm font-semibold text-[#07111F]">Cash on delivery</p>
+  <p className="text-xs text-[#334155]">
   {codInfo.available ? `Pay the rider in cash when your order arrives${codInfo.partner ? ` via ${codInfo.partner}` : ""}.` : codInfo.reason ?? "Not available for this address yet."}
   </p>
   {!codInfo.available && codInfo.reason && <p id="cod-reason" className="sr-only">{codInfo.reason}</p>}
@@ -723,11 +724,11 @@ function wizardReached(n: number): boolean {
   <div className="mt-6 flex items-start gap-3 rounded-zed glass-panel/70 p-4 backdrop-blur-sm">
   <Sparkles className="mt-0.5 size-5 shrink-0 text-soft-sage" />
   <div>
-  <label className="flex cursor-pointer items-center gap-2 text-sm font-semibold text-[#171717]">
+  <label className="flex cursor-pointer items-center gap-2 text-sm font-semibold text-[#07111F]">
   <input type="checkbox" checked={form.isGift} onChange={(e) => setForm({ ...form, isGift: e.target.checked })} className="size-4 accent-deep-olive" />
   This is a gift
   </label>
-  <p className="mt-1 text-xs text-[#171717]">We&apos;ll wrap it beautifully and hide all pricing from the delivery slip.</p>
+  <p className="mt-1 text-xs text-[#07111F]">We&apos;ll wrap it beautifully and hide all pricing from the delivery slip.</p>
   </div>
   </div>
 
@@ -737,10 +738,10 @@ function wizardReached(n: number): boolean {
   </div>
 
   {paymentMethod === "COD" && (
-  <p className="mt-3 text-xs text-[#6B6B6B]">Cash on delivery total: {formatKES(total)}. Keep the exact amount ready for the rider.</p>
+  <p className="mt-3 text-xs text-[#334155]">Cash on delivery total: {formatKES(total)}. Keep the exact amount ready for the rider.</p>
   )}
   {paymentMethod === "BANK_TRANSFER" && (
-  <p className="mt-3 text-xs text-[#6B6B6B]">You&apos;ll receive our account details with your bank transfer reference after placing the order.</p>
+  <p className="mt-3 text-xs text-[#334155]">You&apos;ll receive our account details with your bank transfer reference after placing the order.</p>
   )}
 
   {error && step === "form" && (
@@ -748,7 +749,7 @@ function wizardReached(n: number): boolean {
   )}
 
   <div className="mt-6 flex items-center justify-between gap-3">
-  <button type="button" onClick={() => setWiz(3)} className="flex items-center gap-2 rounded-zed border border-white/60 px-5 py-3 text-sm font-semibold text-[#171717] transition-colors hover:bg-white/40">
+  <button type="button" onClick={() => setWiz(3)} className="flex items-center gap-2 rounded-zed border border-white/60 px-5 py-3 text-sm font-semibold text-[#07111F] transition-colors hover:bg-white/40">
   <ArrowLeft className="size-4" /> Back
   </button>
   <button type="button" onClick={() => setWiz(5)} disabled={!paymentValid} className="ml-auto rounded-zed bg-zed-950 px-8 py-3 text-sm font-bold uppercase tracking-wider text-white transition-colors hover:bg-zed-900 disabled:cursor-not-allowed disabled:opacity-40">
@@ -763,12 +764,12 @@ function wizardReached(n: number): boolean {
   {/* Step 5: review - read-only summary with the actual order-placing button */}
   {wiz === 5 && (
   <div className="glass-card rounded-zed p-5 lg:p-7">
-  <h2 className="font-display text-lg font-bold text-[#171717]">Check your details</h2>
+  <h2 className="font-display text-lg font-bold text-[#07111F]">Check your details</h2>
 
   <dl className="mt-4 divide-y divide-white/40 text-sm">
   <div className="flex items-start justify-between gap-4 py-2.5">
-  <dt className="text-[#6B6B6B]">Contact</dt>
-  <dd className="text-right font-medium text-[#171717]">
+  <dt className="text-[#334155]">Contact</dt>
+  <dd className="text-right font-medium text-[#07111F]">
   {form.name}
   <br />
   {form.phone}
@@ -777,38 +778,38 @@ function wizardReached(n: number): boolean {
   </dd>
   </div>
   <div className="flex items-start justify-between gap-4 py-2.5">
-  <dt className="text-[#6B6B6B]">Deliver to</dt>
-  <dd className="text-right font-medium text-[#171717]">
+  <dt className="text-[#334155]">Deliver to</dt>
+  <dd className="text-right font-medium text-[#07111F]">
   {[form.area, form.town, form.county].filter(Boolean).join(", ")}
   <br />
   {[form.address, form.street, form.building, form.apartment].filter(Boolean).join(", ")}
   {form.landmark ? (
   <>
   <br />
-  <span className="text-xs text-[#6B6B6B]">Near {form.landmark}</span>
+  <span className="text-xs text-[#334155]">Near {form.landmark}</span>
   </>
   ) : null}
   </dd>
   </div>
   {form.instructions.trim() && (
   <div className="flex items-start justify-between gap-4 py-2.5">
-  <dt className="text-[#6B6B6B]">Instructions</dt>
-  <dd className="max-w-[60%] text-right font-medium text-[#171717]">{form.instructions}</dd>
+  <dt className="text-[#334155]">Instructions</dt>
+  <dd className="max-w-[60%] text-right font-medium text-[#07111F]">{form.instructions}</dd>
   </div>
   )}
   <div className="flex items-start justify-between gap-4 py-2.5">
-  <dt className="text-[#6B6B6B]">Delivery</dt>
-  <dd className="text-right font-medium text-[#171717]">
+  <dt className="text-[#334155]">Delivery</dt>
+  <dd className="text-right font-medium text-[#07111F]">
   {(methods as Record<string, string>)[form.deliveryMethod] ?? form.deliveryMethod}
   <br />
-  <span className="text-xs text-[#6B6B6B]">
+  <span className="text-xs text-[#334155]">
   {deliveryOptions.find((o) => o.method === form.deliveryMethod)?.eta}
   </span>
   </dd>
   </div>
   <div className="flex items-start justify-between gap-4 py-2.5">
-  <dt className="text-[#6B6B6B]">Payment</dt>
-  <dd className="text-right font-medium text-[#171717]">
+  <dt className="text-[#334155]">Payment</dt>
+  <dd className="text-right font-medium text-[#07111F]">
   {(paymentLabels as Record<string, string>)[paymentMethod] ?? paymentMethod}
   </dd>
   </div>
@@ -828,11 +829,11 @@ function wizardReached(n: number): boolean {
   <button
   type="button"
   onClick={() => setWiz(4)}
-  className="mt-2 w-full rounded-zed border border-white/60 py-3 text-sm font-semibold text-[#171717] transition-colors hover:bg-white/40"
+  className="mt-2 w-full rounded-zed border border-white/60 py-3 text-sm font-semibold text-[#07111F] transition-colors hover:bg-white/40"
   >
   Back to edit details
   </button>
-  <p className="mt-3 text-center text-[11px] leading-relaxed text-[#6B6B6B]">
+  <p className="mt-3 text-center text-[11px] leading-relaxed text-[#334155]">
   By placing this order you agree to our delivery &amp; returns policy.
   </p>
   </div>
@@ -855,20 +856,20 @@ function wizardReached(n: number): boolean {
 
   {step === "flutterwave" ? (
   <>
-  <h2 className="mt-4 font-display text-xl font-bold text-[#171717]">Complete your payment</h2>
+  <h2 className="mt-4 font-display text-xl font-bold text-[#07111F]">Complete your payment</h2>
   {flutterwaveUrl && (
   <a href={flutterwaveUrl} target="_blank" rel="noopener noreferrer" className="mt-4 inline-block rounded-zed bg-zed-950 px-8 py-4 text-sm font-bold text-white transition-colors hover:bg-white hover:shadow-glass-lg">
   Pay with Flutterwave
   </a>
   )}
-  <p className="mx-auto mt-4 max-w-sm text-sm text-[#6B6B6B]">
+  <p className="mx-auto mt-4 max-w-sm text-sm text-[#334155]">
   You&apos;ll be redirected to Flutterwave to complete payment. We&apos;ll check for confirmation automatically.
   </p>
   <div className="mt-4 flex flex-col items-center justify-center gap-2 sm:flex-row">
-  <button type="button" onClick={retryPayment} disabled={retrying} className="flex items-center gap-2 text-sm text-[#6B6B6B] underline-offset-2 hover:underline disabled:opacity-50">
+  <button type="button" onClick={retryPayment} disabled={retrying} className="flex items-center gap-2 text-sm text-[#334155] underline-offset-2 hover:underline disabled:opacity-50">
   {retrying ? <Loader2 className="size-4 animate-spin" /> : null} Reopen the payment window
   </button>
-  <button type="button" onClick={() => router.push(`/track?order=${orderRef.orderNumber}`)} className="text-sm text-[#6B6B6B] underline-offset-2 hover:underline">
+  <button type="button" onClick={() => router.push(`/track?order=${orderRef.orderNumber}`)} className="text-sm text-[#334155] underline-offset-2 hover:underline">
   I&apos;ll track it later
   </button>
   </div>
@@ -876,8 +877,8 @@ function wizardReached(n: number): boolean {
   </>
   ) : step === "stk" ? (
   <>
-  <h2 className="mt-4 font-display text-xl font-bold text-[#171717]">{pushSent ? "Check your phone" : "We couldn&apos;t send the prompt"}</h2>
-  <p className="mx-auto mt-2 max-w-sm text-sm text-[#6B6B6B]">
+  <h2 className="mt-4 font-display text-xl font-bold text-[#07111F]">{pushSent ? "Check your phone" : "We couldn&apos;t send the prompt"}</h2>
+  <p className="mx-auto mt-2 max-w-sm text-sm text-[#334155]">
   {pushSent ? (
   <>
   We&apos;ve sent an <strong>M-PESA STK push</strong> to <strong>{form.phone}</strong> for{" "}
@@ -887,7 +888,7 @@ function wizardReached(n: number): boolean {
   error ?? "We couldn&apos;t start the M-PESA payment. Send the prompt again below."
   )}
   </p>
-  <p className="mt-2 text-xs text-[#6B6B6B]">Order {orderRef.orderNumber}</p>
+  <p className="mt-2 text-xs text-[#334155]">Order {orderRef.orderNumber}</p>
   <div className="mt-5 flex flex-col items-center justify-center gap-2 sm:flex-row">
   {pushSent ? (
   <button type="button" onClick={startPolling} className="rounded-zed bg-zed-950 px-6 py-3 text-sm font-bold text-white">
@@ -898,10 +899,10 @@ function wizardReached(n: number): boolean {
   {retrying ? <Loader2 className="size-4 animate-spin" /> : <RefreshCw className="size-4" />} Send prompt again
   </button>
   )}
-  <button type="button" onClick={retryPayment} disabled={retrying} className="flex items-center gap-2 text-sm text-[#6B6B6B] underline-offset-2 hover:underline disabled:opacity-50">
+  <button type="button" onClick={retryPayment} disabled={retrying} className="flex items-center gap-2 text-sm text-[#334155] underline-offset-2 hover:underline disabled:opacity-50">
   {retrying ? <Loader2 className="size-4 animate-spin" /> : null} Prompt didn&apos;t arrive? Send it again
   </button>
-  <button type="button" onClick={() => router.push(`/track?order=${orderRef.orderNumber}`)} className="text-sm text-[#6B6B6B] underline-offset-2 hover:underline">
+  <button type="button" onClick={() => router.push(`/track?order=${orderRef.orderNumber}`)} className="text-sm text-[#334155] underline-offset-2 hover:underline">
   I&apos;ll track it later
   </button>
   </div>
@@ -909,16 +910,16 @@ function wizardReached(n: number): boolean {
   </>
   ) : step === "polling" ? (
   <>
-  <h2 className="mt-4 font-display text-xl font-bold text-[#171717]">Waiting for confirmation</h2>
-  <p className="mx-auto mt-2 max-w-sm text-sm text-[#6B6B6B]">
+  <h2 className="mt-4 font-display text-xl font-bold text-[#07111F]">Waiting for confirmation</h2>
+  <p className="mx-auto mt-2 max-w-sm text-sm text-[#334155]">
   Waiting for payment confirmation{pollSeconds >= 5 ? ` (${pollSeconds}s...)` : "..."}
   </p>
-  <p className="mt-4 text-xs text-[#6B6B6B]">Approve the prompt on your phone with your M-PESA PIN.</p>
+  <p className="mt-4 text-xs text-[#334155]">Approve the prompt on your phone with your M-PESA PIN.</p>
   <div className="mt-4 flex flex-col items-center justify-center gap-2 sm:flex-row">
-  <button type="button" onClick={retryPayment} disabled={retrying} className="flex items-center gap-2 text-sm text-[#6B6B6B] underline-offset-2 hover:underline disabled:opacity-50">
+  <button type="button" onClick={retryPayment} disabled={retrying} className="flex items-center gap-2 text-sm text-[#334155] underline-offset-2 hover:underline disabled:opacity-50">
   {retrying ? <Loader2 className="size-4 animate-spin" /> : <RefreshCw className="size-4" />} Prompt didn&apos;t arrive? Send it again
   </button>
-  <button type="button" onClick={() => router.push(`/track?order=${orderRef.orderNumber}`)} className="text-sm text-[#6B6B6B] underline-offset-2 hover:underline">
+  <button type="button" onClick={() => router.push(`/track?order=${orderRef.orderNumber}`)} className="text-sm text-[#334155] underline-offset-2 hover:underline">
   I&apos;ll track it later
   </button>
   </div>
@@ -926,31 +927,31 @@ function wizardReached(n: number): boolean {
   </>
   ) : step === "failed" ? (
   <>
-  <h2 className="mt-4 font-display text-xl font-bold text-[#171717]">Payment didn&apos;t go through</h2>
-  <p className="mx-auto mt-2 max-w-sm text-sm text-[#6B6B6B]">
+  <h2 className="mt-4 font-display text-xl font-bold text-[#07111F]">Payment didn&apos;t go through</h2>
+  <p className="mx-auto mt-2 max-w-sm text-sm text-[#334155]">
   {error ?? (failedMethod === "M_PESA" ? "The M-PESA payment wasn&apos;t completed." : "The payment wasn&apos;t completed.")} Your order <strong>{orderRef.orderNumber}</strong> is saved and you can try again.
   </p>
   <div className="mt-5 flex flex-col items-center justify-center gap-2 sm:flex-row">
   <button type="button" onClick={retryPayment} disabled={retrying} className="flex items-center justify-center gap-2 rounded-zed bg-zed-950 px-6 py-3 text-sm font-bold text-white disabled:opacity-50">
   {retrying ? <Loader2 className="size-4 animate-spin" /> : <RefreshCw className="size-4" />} {failedMethod === "M_PESA" ? "Try M-PESA again" : "Try payment again"}
   </button>
-  <button type="button" onClick={() => router.push(`/track?order=${orderRef.orderNumber}`)} className="text-sm text-[#6B6B6B] underline-offset-2 hover:underline">
+  <button type="button" onClick={() => router.push(`/track?order=${orderRef.orderNumber}`)} className="text-sm text-[#334155] underline-offset-2 hover:underline">
   I&apos;ll pay later
   </button>
   </div>
   </>
   ) : (
   <>
-  <h2 className="mt-4 font-display text-xl font-bold text-[#171717]">Order saved - payment needs a hand</h2>
-  <p className="mx-auto mt-2 max-w-sm text-sm text-[#6B6B6B]">
+  <h2 className="mt-4 font-display text-xl font-bold text-[#07111F]">Order saved - payment needs a hand</h2>
+  <p className="mx-auto mt-2 max-w-sm text-sm text-[#334155]">
   We&apos;ve saved order <strong>{orderRef.orderNumber}</strong>, but {error ? error.toLowerCase() : "payments aren&apos;t available on this store right now"}. We&apos;ve reserved your items - get in touch to complete payment.
   </p>
-  <p className="mt-3 text-sm font-semibold text-[#171717]">{sitePhone}</p>
+  <p className="mt-3 text-sm font-semibold text-[#07111F]">{sitePhone}</p>
   <div className="mt-5 flex flex-wrap items-center justify-center gap-2">
   <button type="button" onClick={() => router.push(`/track?order=${orderRef.orderNumber}`)} className="rounded-zed bg-zed-950 px-6 py-3 text-sm font-bold text-white">
   Track order
   </button>
-  <button type="button" onClick={() => router.push("/shop")} className="glass-panel rounded-zed px-6 py-3 text-sm font-semibold text-[#171717] hover:text-deep-olive">
+  <button type="button" onClick={() => router.push("/shop")} className="glass-panel rounded-zed px-6 py-3 text-sm font-semibold text-[#07111F] hover:text-deep-olive">
   Continue shopping
   </button>
   </div>
@@ -967,8 +968,8 @@ function wizardReached(n: number): boolean {
 
   {step === "bank" ? (
   <>
-  <h2 className="mt-4 font-display text-xl font-bold text-[#171717]">Transfer {formatKES(orderTotal ?? total)}</h2>
-  <p className="mx-auto mt-2 max-w-sm text-sm text-[#6B6B6B]">
+  <h2 className="mt-4 font-display text-xl font-bold text-[#07111F]">Transfer {formatKES(orderTotal ?? total)}</h2>
+  <p className="mx-auto mt-2 max-w-sm text-sm text-[#334155]">
   Order <strong>{orderRef.orderNumber}</strong> is saved and your items are reserved. Transfer the exact total, then send us your confirmation number on WhatsApp.
   </p>
 
@@ -977,15 +978,15 @@ function wizardReached(n: number): boolean {
   <dl className="mx-auto mt-5 max-w-sm space-y-2 rounded-zed border border-white/60 bg-white/40 p-4 text-left text-sm">
   {bankInstructions.map((line, i) => (
   <div key={i} className="flex items-start justify-between gap-4">
-  <dt className="shrink-0 text-[#6B6B6B]">{line.split(":")[0]}</dt>
-  <dd className="text-right font-semibold text-[#171717]">{line.includes(":") ? line.slice(line.indexOf(":") + 1).trim() : line}</dd>
+  <dt className="shrink-0 text-[#334155]">{line.split(":")[0]}</dt>
+  <dd className="text-right font-semibold text-[#07111F]">{line.includes(":") ? line.slice(line.indexOf(":") + 1).trim() : line}</dd>
   </div>
   ))}
   </dl>
   <button
   type="button"
   onClick={() => navigator.clipboard?.writeText(bankInstructions.join("\n"))}
-  className="mt-3 text-sm text-[#6B6B6B] underline-offset-2 hover:underline"
+  className="mt-3 text-sm text-[#334155] underline-offset-2 hover:underline"
   >
   Copy account details
   </button>
@@ -998,12 +999,12 @@ function wizardReached(n: number): boolean {
   </>
   ) : (
   <>
-  <h2 className="mt-4 font-display text-xl font-bold text-[#171717]">Order placed - pay on delivery</h2>
-  <p className="mx-auto mt-2 max-w-sm text-sm text-[#6B6B6B]">
+  <h2 className="mt-4 font-display text-xl font-bold text-[#07111F]">Order placed - pay on delivery</h2>
+  <p className="mx-auto mt-2 max-w-sm text-sm text-[#334155]">
   Thanks! Order <strong>{orderRef.orderNumber}</strong> is confirmed. Have{" "}
-  <strong className="text-[#171717]">{formatKES(orderTotal ?? total)}</strong> ready in cash for the rider{codInfo.partner ? ` from ${codInfo.partner}` : ""}.
+  <strong className="text-[#07111F]">{formatKES(orderTotal ?? total)}</strong> ready in cash for the rider{codInfo.partner ? ` from ${codInfo.partner}` : ""}.
   </p>
-  <p className="mx-auto mt-3 max-w-sm text-xs text-[#6B6B6B]">
+  <p className="mx-auto mt-3 max-w-sm text-xs text-[#334155]">
   We&apos;ll call {form.phone} before delivery. Please keep the exact amount as change is often unavailable.
   </p>
   </>
@@ -1013,7 +1014,7 @@ function wizardReached(n: number): boolean {
   <button type="button" onClick={() => router.push(`/checkout/success?order=${orderRef.orderNumber}`)} className="rounded-zed bg-zed-950 px-6 py-3 text-sm font-bold text-white">
   View order summary
   </button>
-  <button type="button" onClick={() => router.push("/shop")} className="glass-panel rounded-zed px-6 py-3 text-sm font-semibold text-[#171717] hover:text-deep-olive">
+  <button type="button" onClick={() => router.push("/shop")} className="glass-panel rounded-zed px-6 py-3 text-sm font-semibold text-[#07111F] hover:text-deep-olive">
   Keep shopping
   </button>
   </div>
@@ -1025,8 +1026,8 @@ function wizardReached(n: number): boolean {
  <span className="mx-auto grid size-14 place-items-center rounded-full bg-zed-950 text-white">
  <Check className="size-7" />
  </span>
- <h2 className="mt-4 font-display text-xl font-bold text-[#171717]">Thanks for your order!</h2>
- <p className="mt-2 text-sm text-[#6B6B6B]">
+ <h2 className="mt-4 font-display text-xl font-bold text-[#07111F]">Thanks for your order!</h2>
+ <p className="mt-2 text-sm text-[#334155]">
  Order <strong>{orderRef.orderNumber}</strong> is confirmed and being prepared.
  {error && <span className="mt-2 block text-red-600">{error}</span>}
  </p>
@@ -1034,7 +1035,7 @@ function wizardReached(n: number): boolean {
  <button type="button" onClick={() => router.push(`/checkout/success?order=${orderRef.orderNumber}`)} className="rounded-zed bg-zed-950 px-6 py-3 text-sm font-bold text-white">
  View order summary
  </button>
- <button type="button" onClick={() => router.push("/shop")} className="glass-panel rounded-zed px-6 py-3 text-sm font-semibold text-[#171717] hover:text-deep-olive">
+ <button type="button" onClick={() => router.push("/shop")} className="glass-panel rounded-zed px-6 py-3 text-sm font-semibold text-[#07111F] hover:text-deep-olive">
  Keep shopping
  </button>
  </div>
@@ -1045,20 +1046,20 @@ function wizardReached(n: number): boolean {
  {/* Totals */}
  <aside className="lg:sticky lg:top-24 lg:self-start">
  <div className="glass-card rounded-zed p-5">
- <p className="font-display text-lg font-bold text-[#171717]">Summary</p>
+ <p className="font-display text-lg font-bold text-[#07111F]">Summary</p>
  <ul className="mt-4 max-h-64 space-y-2.5 overflow-y-auto text-sm">
  {cart.items.map((i) => (
  <li key={i.id} className="flex items-center justify-between gap-3">
- <span className="truncate text-[#171717]">
+ <span className="truncate text-[#07111F]">
  {i.name.slice(0, 42)}
- <span className="text-[#6B6B6B]"> x{i.quantity}</span>
+ <span className="text-[#334155]"> x{i.quantity}</span>
  </span>
  <span className="shrink-0 font-medium">{formatKES(i.lineTotal)}</span>
  </li>
  ))}
  </ul>
  <dl className="mt-4 space-y-1.5 border-t border-white/40 pt-4 text-sm">
- <div className="flex justify-between text-[#171717]">
+ <div className="flex justify-between text-[#07111F]">
  <dt>Subtotal</dt>
  <dd>{formatKES(cart.subtotal)}</dd>
  </div>
@@ -1070,24 +1071,24 @@ function wizardReached(n: number): boolean {
  <dd>-{formatKES(cart.discount)}</dd>
  </div>
  )}
- <div className="flex justify-between text-[#171717]">
+ <div className="flex justify-between text-[#07111F]">
  <dt>Delivery {form.deliveryMethod ? `(${(methods as Record<string, string>)[form.deliveryMethod]})` : ""}</dt>
  <dd>{deliveryFee === 0 ? "Free" : formatKES(deliveryFee)}</dd>
  </div>
- <div className="flex justify-between border-t border-white/40 pt-3 text-base font-bold text-[#171717]">
+ <div className="flex justify-between border-t border-white/40 pt-3 text-base font-bold text-[#07111F]">
  <dt>Total</dt>
  <dd>{formatKES(total)}</dd>
  </div>
  </dl>
- <div className="glass-panel mt-4 rounded-zed px-3.5 py-3 text-xs text-[#6B6B6B]">
-<span className="flex items-center gap-1.5 font-semibold text-[#171717]">
+ <div className="glass-panel mt-4 rounded-zed px-3.5 py-3 text-xs text-[#334155]">
+<span className="flex items-center gap-1.5 font-semibold text-[#07111F]">
   <ShieldCheck className="size-3.5" /> {(paymentLabels as Record<string, string>)[paymentMethod] ?? paymentMethod}
   </span>
   <span className="mt-1 block">
   {paymentMethod === "FLUTTERWAVE" ? "Pay securely with card or mobile money." : paymentMethod === "COD" ? "Pay the rider in cash on delivery." : paymentMethod === "BANK_TRANSFER" ? "Pay by bank transfer, then we dispatch." : "You approve with your M-PESA PIN - no card details on the site. Refunds are processed via M-PESA."}
   </span>
  </div>
- <p className="mt-3 text-[11px] leading-relaxed text-[#6B6B6B]">
+ <p className="mt-3 text-[11px] leading-relaxed text-[#334155]">
  Need help? WhatsApp {sitePhone}. By placing this order you agree to our delivery &amp; returns policy.
  </p>
  </div>

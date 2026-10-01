@@ -16,7 +16,7 @@ export default async function AdminReviewsPage() {
 
  return (
  <div className="space-y-4">
- <p className="text-sm text-[#6B6B6B]">{pending} pending | {reviews.length} total</p>
+ <p className="text-sm text-[#334155]">{pending} pending | {reviews.length} total</p>
  <ReviewsManager reviews={reviews.map((r) => ({
  id: r.id,
  productName: r.product.name,
@@ -29,7 +29,7 @@ export default async function AdminReviewsPage() {
  verifiedPurchase: r.verifiedPurchase,
  createdAt: r.createdAt.toISOString(),
  }))} />
- <p className="text-xs text-[#6B6B6B]">
+ <p className="text-xs text-[#334155]">
  Public pages only show <Link href="/shop" className="underline">approved</Link> reviews.
  </p>
  </div>

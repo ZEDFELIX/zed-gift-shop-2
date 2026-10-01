@@ -84,13 +84,13 @@ export function DeliveriesManager() {
  return (
  <div className="space-y-4">
  <div className="flex items-center justify-between">
- <p className="text-sm text-[#6B6B6B]">{Object.keys(grouped).length} counties covered</p>
+ <p className="text-sm text-[#334155]">{Object.keys(grouped).length} counties covered</p>
  <button type="button" onClick={() => setShowForm((s) => !s)} className="flex items-center gap-1.5 rounded-zed bg-zed-950 px-4 py-2.5 text-sm font-bold text-white">
  <Plus className="size-4" /> {showForm ? "Cancel" : "Add zone"}
  </button>
  </div>
 
- {loading && <p className="flex items-center gap-2 text-sm text-[#6B6B6B]"><Loader2 className="size-4 animate-spin" /> Loading...</p>}
+ {loading && <p className="flex items-center gap-2 text-sm text-[#334155]"><Loader2 className="size-4 animate-spin" /> Loading...</p>}
 
  {showForm && (
  <form onSubmit={create} className="grid gap-4 rounded-zed border border-edge bg-white p-5 sm:grid-cols-2">
@@ -115,7 +115,7 @@ export function DeliveriesManager() {
  </div>
  <div className="flex gap-4 sm:col-span-2">
  {([["sameDay", "Same-day"], ["nextDay", "Next-day"], ["pickup", "Pickup"]] as const).map(([key, label]) => (
- <label key={key} className="flex items-center gap-2 text-sm text-[#171717]">
+ <label key={key} className="flex items-center gap-2 text-sm text-[#07111F]">
  <input type="checkbox" checked={form[key]} onChange={(e) => setForm({ ...form, [key]: e.target.checked })} className="size-4 accent-deep-olive" />
  {label}
  </label>
@@ -129,7 +129,7 @@ export function DeliveriesManager() {
  )}
 
  {Object.keys(grouped).length === 0 && !loading && (
- <div className="rounded-zed border border-dashed border-edge p-10 text-center text-sm text-[#6B6B6B]">
+ <div className="rounded-zed border border-dashed border-edge p-10 text-center text-sm text-[#334155]">
  <Truck className="mx-auto mb-2 size-8 text-soft-sage/50" /> No delivery zones yet - add at least Nairobi for same-day.
  </div>
  )}
@@ -137,22 +137,22 @@ export function DeliveriesManager() {
  <ul className="space-y-3">
  {Object.entries(grouped).map(([county, list]) => (
  <li key={county} className="rounded-zed border border-edge bg-white p-4">
- <p className="font-bold text-[#171717]">{county}</p>
+ <p className="font-bold text-[#07111F]">{county}</p>
  <ul className="mt-2 divide-y divide-edge">
  {list.map((z) => (
  <li key={z.id} className="flex flex-wrap items-center justify-between gap-2 py-2.5 text-sm">
  <div>
- <p className="font-medium text-[#171717]">{z.town ?? "Whole county"}
- <span className={`ml-2 rounded-full px-2 py-0.5 text-[10px] font-bold ${z.active ? "bg-emerald-50 text-emerald-700" : "bg-panel text-[#6B6B6B]"}`}>{z.active ? "Active" : "Paused"}</span>
+ <p className="font-medium text-[#07111F]">{z.town ?? "Whole county"}
+ <span className={`ml-2 rounded-full px-2 py-0.5 text-[10px] font-bold ${z.active ? "bg-emerald-50 text-emerald-700" : "bg-panel text-[#334155]"}`}>{z.active ? "Active" : "Paused"}</span>
  </p>
- <p className="text-xs text-[#6B6B6B]">
+ <p className="text-xs text-[#334155]">
  {[z.sameDay && "Same-day", z.nextDay && "Next-day", z.pickup && "Pickup"].filter(Boolean).join(" | ") || "-"}
  {z.deliveryTime ? ` | ${z.deliveryTime}` : ""}
  </p>
  </div>
  <div className="flex items-center gap-2">
- <p className="font-bold text-[#171717]">{z.fee === 0 ? "Free" : formatKES(z.fee)}</p>
- <button type="button" onClick={() => toggleActive(z)} className="rounded-zed border border-edge px-3 py-1.5 text-xs font-semibold text-[#171717] hover:border-soft-sage">{z.active ? "Pause" : "Activate"}</button>
+ <p className="font-bold text-[#07111F]">{z.fee === 0 ? "Free" : formatKES(z.fee)}</p>
+ <button type="button" onClick={() => toggleActive(z)} className="rounded-zed border border-edge px-3 py-1.5 text-xs font-semibold text-[#07111F] hover:border-soft-sage">{z.active ? "Pause" : "Activate"}</button>
  <button type="button" onClick={() => remove(z.id)} className="rounded-zed border border-red-100 p-1.5 text-red-500 hover:bg-red-50" aria-label="Delete zone">
  <Trash2 className="size-4" />
  </button>

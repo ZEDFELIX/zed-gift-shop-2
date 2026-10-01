@@ -15,7 +15,7 @@ export default async function AdminStaffPage() {
 
  return (
  <div className="space-y-4">
- <p className="text-sm text-[#6B6B6B]">
+ <p className="text-sm text-[#334155]">
  {me?.role === "ADMIN" ? "You're the owner - you can add teammates with staff access." : "Only the owner can manage staff."}
  </p>
  <StaffManager

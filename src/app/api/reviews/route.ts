@@ -1,7 +1,14 @@
 import { NextResponse } from "next/server";
 import { reviewSchema } from "@/lib/validations";
-import { createReview } from "@/lib/data/reviews";
+import { createReview, listApprovedReviews, ratingBreakdown } from "@/lib/data/reviews";
 import { getSession } from "@/lib/auth";
+
+export async function GET(req: Request) {
+ const productId = new URL(req.url).searchParams.get("productId");
+ if (!productId) return NextResponse.json({ error: "productId is required." }, { status: 400 });
+ const reviews = await listApprovedReviews(productId);
+ return NextResponse.json({ data: reviews, summary: ratingBreakdown(reviews) });
+}
 
 export async function POST(req: Request) {
  let body: unknown;

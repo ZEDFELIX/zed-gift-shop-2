@@ -104,7 +104,7 @@ export function ProductForm({ product, categories, collections }: { product?: Pr
  return (
  <form onSubmit={submit} className="space-y-5">
  <div className="flex flex-wrap items-center justify-between gap-3">
- <Link href="/admin/products" className="flex items-center gap-1 text-sm font-semibold text-[#6B6B6B] hover:text-soft-sage">
+ <Link href="/admin/products" className="flex items-center gap-1 text-sm font-semibold text-[#334155] hover:text-soft-sage">
  <ArrowLeft className="size-4" /> All products
  </Link>
  <button type="submit" disabled={busy} className="flex items-center gap-2 rounded-zed bg-zed-950 px-5 py-3 text-sm font-bold text-white disabled:opacity-50">
@@ -176,7 +176,7 @@ export function ProductForm({ product, categories, collections }: { product?: Pr
  ["giftWrapAvailable", "Gift wrap available"],
  ["giftMessageAvailable", "Gift message available"],
  ] as const).map(([key, label]) => (
- <label key={key} className="flex items-center gap-2 text-sm text-[#171717]">
+ <label key={key} className="flex items-center gap-2 text-sm text-[#07111F]">
  <input type="checkbox" checked={form[key] as boolean} onChange={(e) => set(key, e.target.checked as never)} className="size-4 accent-deep-olive" />
  {label}
  </label>
@@ -189,9 +189,9 @@ export function ProductForm({ product, categories, collections }: { product?: Pr
  <p className="label">Categories</p>
  <div className="mt-1 max-h-56 space-y-1.5 overflow-y-auto rounded-zed border border-edge p-3">
  {categories.map((c) => (
- <label key={c.id} className="flex items-center gap-2 text-sm text-[#171717]">
+ <label key={c.id} className="flex items-center gap-2 text-sm text-[#07111F]">
  <input type="checkbox" checked={form.categoryIds.includes(c.id)} onChange={() => toggleInArray("categoryIds", c.id)} className="size-4 accent-deep-olive" />
- {c.name} <span className="text-[10px] uppercase text-[#6B6B6B]">{c.kind}</span>
+ {c.name} <span className="text-[10px] uppercase text-[#334155]">{c.kind}</span>
  </label>
  ))}
  </div>
@@ -200,7 +200,7 @@ export function ProductForm({ product, categories, collections }: { product?: Pr
  <p className="label">Collections</p>
  <div className="mt-1 max-h-56 space-y-1.5 overflow-y-auto rounded-zed border border-edge p-3">
  {collections.map((c) => (
- <label key={c.id} className="flex items-center gap-2 text-sm text-[#171717]">
+ <label key={c.id} className="flex items-center gap-2 text-sm text-[#07111F]">
  <input type="checkbox" checked={form.collectionIds.includes(c.id)} onChange={() => toggleInArray("collectionIds", c.id)} className="size-4 accent-deep-olive" />
  {c.name}
  </label>
@@ -212,12 +212,12 @@ export function ProductForm({ product, categories, collections }: { product?: Pr
  <div className="rounded-zed border border-edge bg-white p-5">
  <div className="flex items-center justify-between">
  <p className="label">Variants (size, scent, colour...)</p>
- <button type="button" onClick={addVariant} className="flex items-center gap-1.5 rounded-zed border border-edge px-3 py-1.5 text-xs font-semibold text-[#171717] hover:border-soft-sage">
+ <button type="button" onClick={addVariant} className="flex items-center gap-1.5 rounded-zed border border-edge px-3 py-1.5 text-xs font-semibold text-[#07111F] hover:border-soft-sage">
  <Plus className="size-3.5" /> Add variant
  </button>
  </div>
  {form.variants.length === 0 ? (
- <p className="mt-3 text-sm text-[#6B6B6B]">No variants - the product is sold as a single SKU.</p>
+ <p className="mt-3 text-sm text-[#334155]">No variants - the product is sold as a single SKU.</p>
  ) : (
  <ul className="mt-3 space-y-3">
  {form.variants.map((v, i) => (

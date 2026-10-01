@@ -36,7 +36,7 @@ export function StaffManager({ staff, canAdd }: { staff: StaffRow[]; canAdd: boo
  <div className="space-y-4">
  {canAdd && (
  <div className="flex items-center justify-between">
- <p className="text-sm text-[#6B6B6B]">{staff.length} teammate{staff.length === 1 ? "" : "s"}</p>
+ <p className="text-sm text-[#334155]">{staff.length} teammate{staff.length === 1 ? "" : "s"}</p>
  <button type="button" onClick={() => setShowForm((s) => !s)} className="flex items-center gap-1.5 rounded-zed bg-zed-950 px-4 py-2.5 text-sm font-bold text-white">
  <Plus className="size-4" /> {showForm ? "Cancel" : "Add staff"}
  </button>
@@ -72,11 +72,11 @@ export function StaffManager({ staff, canAdd }: { staff: StaffRow[]; canAdd: boo
  <ShieldCheck className="size-5" />
  </span>
  <div>
- <p className="font-semibold text-[#171717]">
+ <p className="font-semibold text-[#07111F]">
  {s.name}
  <span className={`ml-2 rounded-full px-2 py-0.5 text-[10px] font-bold ${s.role === "ADMIN" ? "bg-zed-950 text-white" : "bg-warm-white text-deep-olive"}`}>{s.role}</span>
  </p>
- <p className="text-sm text-[#6B6B6B]">{s.email} | joined {new Date(s.createdAt).toLocaleDateString("en-KE")}</p>
+ <p className="text-sm text-[#334155]">{s.email} | joined {new Date(s.createdAt).toLocaleDateString("en-KE")}</p>
  </div>
  </div>
  </li>

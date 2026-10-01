@@ -31,7 +31,7 @@ export function ToastHost() {
  {t.type === "success" && <CheckCircle2 className="size-5 shrink-0 text-soft-sage" />}
  {t.type === "error" && <XCircle className="size-5 shrink-0 text-red-600" />}
  {t.type === "info" && <Info className="size-5 shrink-0 text-deep-olive" />}
- <span className="flex-1 font-medium text-[#171717]">{t.message}</span>
+ <span className="flex-1 font-medium text-[#07111F]">{t.message}</span>
  </div>
  ))}
  </div>

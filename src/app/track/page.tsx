@@ -24,7 +24,7 @@ type TrackedOrder = {
 
 export default function TrackPage() {
  return (
- <Suspense fallback={<div className="container-zed max-w-2xl py-20 text-center text-sm text-[#6B6B6B]">Loading...</div>}>
+ <Suspense fallback={<div className="container-zed max-w-2xl py-20 text-center text-sm text-[#334155]">Loading...</div>}>
  <TrackContent />
  </Suspense>
  );
@@ -73,8 +73,8 @@ function TrackContent() {
  <div className="container-zed max-w-2xl py-14 lg:py-20">
  <header className="text-center">
  <p className="eyebrow">Where&apos;s my gift?</p>
- <h1 className="mt-2 font-display text-3xl font-bold text-[#171717] lg:text-4xl">Track your order</h1>
- <p className="mt-2 text-sm text-[#6B6B6B]">Enter the order number and the email or phone you used at checkout.</p>
+ <h1 className="mt-2 font-display text-3xl font-bold text-[#07111F] lg:text-4xl">Track your order</h1>
+ <p className="mt-2 text-sm text-[#334155]">Enter the order number and the email or phone you used at checkout.</p>
  </header>
 
  <form onSubmit={lookup} className="glass-card mt-8 space-y-3 rounded-zed p-5">
@@ -101,15 +101,15 @@ function TrackContent() {
  <Truck className="size-5" />
  </span>
  <div>
- <p className="font-display text-lg font-bold text-[#171717]">{result.orderNumber}</p>
- <p className="text-xs text-[#6B6B6B]">
+ <p className="font-display text-lg font-bold text-[#07111F]">{result.orderNumber}</p>
+ <p className="text-xs text-[#334155]">
  Placed {new Date(result.createdAt).toLocaleDateString("en-KE", { day: "numeric", month: "short", year: "numeric" })} | {result.county}, {result.town}
  </p>
  </div>
  </div>
  <div className="text-right">
- <p className="text-xs text-[#6B6B6B]">Total</p>
- <p className="font-bold text-[#171717]">{formatKES(result.total)}</p>
+ <p className="text-xs text-[#334155]">Total</p>
+ <p className="font-bold text-[#07111F]">{formatKES(result.total)}</p>
  <p className={`text-xs font-semibold ${paid ? "text-emerald-600" : "text-amber-600"}`}>{paid ? "Paid via M-PESA" : "Awaiting payment"}</p>
  </div>
  </div>
@@ -122,7 +122,7 @@ function TrackContent() {
 
  <ol className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-4">
  {steps.map((s, i) => (
- <li key={s} className={`relative rounded-zed border p-3 ${i <= currentIndex ? "border-soft-sage bg-warm-white" : "border-white/50 bg-white/30 text-[#6B6B6B]"}`}>
+ <li key={s} className={`relative rounded-zed border p-3 ${i <= currentIndex ? "border-soft-sage bg-warm-white" : "border-white/50 bg-white/30 text-[#334155]"}`}>
  <span className="text-[10px] font-bold uppercase tracking-widest">{ORDER_STATUS_STEPS[i].label}</span>
  {i <= currentIndex && <span className="mt-1 block size-1.5 rounded-full bg-soft-sage" />}
  </li>
@@ -131,7 +131,7 @@ function TrackContent() {
  </div>
 
  <div className="glass-panel rounded-zed p-5">
- <h2 className="font-display text-base font-bold text-[#171717]">Your items</h2>
+ <h2 className="font-display text-base font-bold text-[#07111F]">Your items</h2>
  <ul className="mt-3 divide-y divide-white/40">
  {result.items.map((item, idx) => (
  <li key={idx} className="flex items-center gap-3 py-3">
@@ -139,23 +139,23 @@ function TrackContent() {
  {item.image && <Image src={item.image} alt="" fill unoptimized className="object-cover" />}
  </span>
  <div className="min-w-0 flex-1">
- <p className="truncate text-sm font-medium text-[#171717]">{item.name}</p>
- <p className="text-xs text-[#6B6B6B]">Qty {item.quantity}{item.giftWrapPrice > 0 ? " | Gift wrap" : ""}</p>
+ <p className="truncate text-sm font-medium text-[#07111F]">{item.name}</p>
+ <p className="text-xs text-[#334155]">Qty {item.quantity}{item.giftWrapPrice > 0 ? " | Gift wrap" : ""}</p>
  </div>
- <p className="text-sm font-semibold text-[#171717]">{formatKES((item.price + item.giftWrapPrice) * item.quantity)}</p>
+ <p className="text-sm font-semibold text-[#07111F]">{formatKES((item.price + item.giftWrapPrice) * item.quantity)}</p>
  </li>
  ))}
  </ul>
  </div>
 
- <p className="text-center text-xs text-[#6B6B6B]">
+ <p className="text-center text-xs text-[#334155]">
  Need help? WhatsApp <a className="font-semibold text-soft-sage underline" href="tel:+254711436169">+254 711 436169</a> with your order number.
  </p>
  </section>
  )}
 
  {!result && !error && (
- <div className="mt-10 flex flex-col items-center text-center text-sm text-[#6B6B6B]">
+ <div className="mt-10 flex flex-col items-center text-center text-sm text-[#334155]">
  <PackageSearch className="mb-2 size-10 text-soft-sage/50" />
  <p>New to ZED? <Link href="/shop" className="text-soft-sage underline underline-offset-2">Explore the gift shop</Link></p>
  </div>

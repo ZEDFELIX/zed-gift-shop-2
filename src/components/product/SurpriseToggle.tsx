@@ -16,8 +16,8 @@ export function SurpriseToggle() {
  <div className="flex items-center gap-2">
  <Sparkles className="size-5 text-soft-sage" />
  <div className="text-left">
- <p className="text-sm font-bold text-[#171717]">This is a surprise</p>
- <p className="text-xs text-[#171717]">Hide price & invoice from delivery</p>
+ <p className="text-sm font-bold text-[#07111F]">This is a surprise</p>
+ <p className="text-xs text-[#07111F]">Hide price & invoice from delivery</p>
  </div>
  </div>
  <div className="relative h-7 w-12 rounded-full bg-zed-950 transition-colors">
@@ -27,14 +27,14 @@ export function SurpriseToggle() {
  }`}
  />
  {isSurprise ? (
- <Eye className="absolute right-2 top-1/2 size-4 -translate-y-1/2 text-[#171717]" />
+ <Eye className="absolute right-2 top-1/2 size-4 -translate-y-1/2 text-[#07111F]" />
  ) : (
  <EyeOff className="absolute left-2 top-1/2 size-4 -translate-y-1/2 text-white/50" />
  )}
  </div>
  </button>
  {isSurprise && (
- <div className="mt-3 space-y-2 text-xs text-[#171717]">
+ <div className="mt-3 space-y-2 text-xs text-[#07111F]">
  <p>- Price is hidden from the delivery slip</p>
  <p>- Your details are protected</p>
  <p>- Neutral communication is sent</p>

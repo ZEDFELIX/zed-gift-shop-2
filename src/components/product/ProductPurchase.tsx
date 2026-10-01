@@ -108,8 +108,8 @@ export function ProductPurchase({
  return (
  <div className="space-y-6">
  {/* Views & reviews summary */}
- <div className="flex items-center gap-3 text-sm text-[#6B6B6B]">
- <span className="flex items-center gap-1 text-[#171717]">
+ <div className="flex items-center gap-3 text-sm text-[#334155]">
+ <span className="flex items-center gap-1 text-[#07111F]">
  <Sparkles className="size-4 text-soft-sage" /> Available online
  </span>
  <span className="text-edge-strong">|</span>
@@ -123,7 +123,7 @@ export function ProductPurchase({
  <div key={group.name}>
  <p className="label">
  {group.name}:{" "}
- <span className="font-semibold text-[#171717]">{selections[group.name] ?? "Select"}</span>
+ <span className="font-semibold text-[#07111F]">{selections[group.name] ?? "Select"}</span>
  </p>
  <div className="flex flex-wrap gap-2">
  {group.values.map((v) => {
@@ -139,7 +139,7 @@ export function ProductPurchase({
  className={`rounded-zed border px-4 py-2.5 text-sm font-semibold backdrop-blur-sm transition-colors ${
  active
  ? "border-soft-sage bg-zed-950 text-white"
- : "border-white/50 bg-white/30 text-[#171717] hover:border-soft-sage"
+ : "border-white/50 bg-white/30 text-[#07111F] hover:border-soft-sage"
  } ${!v.inStock ? "cursor-not-allowed opacity-40" : ""}`}
  >
  {v.value}
@@ -159,10 +159,10 @@ export function ProductPurchase({
  {/* Personalization */}
  {personalizationFields.length > 0 && (
  <div className="rounded-zed border border-zed-900 bg-warm-white p-4">
- <p className="flex items-center gap-2 text-sm font-bold text-[#171717]">
+ <p className="flex items-center gap-2 text-sm font-bold text-[#07111F]">
  <Sparkles className="size-4" /> Personalize
  </p>
- <p className="mt-1 text-xs text-[#171717]">
+ <p className="mt-1 text-xs text-[#07111F]">
  We engrave or print this exactly as written - double-check spelling.
  </p>
  <div className="mt-3 space-y-3">
@@ -209,7 +209,7 @@ export function ProductPurchase({
  type="button"
  onClick={() => setWrapId(w.id)}
  className={`rounded-zed border px-3.5 py-2 text-left text-sm backdrop-blur-sm transition-colors ${
- active ? "border-soft-sage bg-zed-950 text-white" : "border-white/50 bg-white/30 text-[#171717] hover:border-soft-sage"
+ active ? "border-soft-sage bg-zed-950 text-white" : "border-white/50 bg-white/30 text-[#07111F] hover:border-soft-sage"
  }`}
  >
  <span className="font-semibold">{w.name}</span>
@@ -227,7 +227,7 @@ export function ProductPurchase({
  <button
  type="button"
  onClick={() => setUseGiftMessage((v) => !v)}
- className="flex items-center gap-2 text-sm font-semibold text-[#171717]"
+ className="flex items-center gap-2 text-sm font-semibold text-[#07111F]"
  >
  <span className={`grid size-5 place-items-center rounded border ${useGiftMessage ? "border-soft-sage bg-zed-950 text-white" : "border-white/60 bg-white/40"}`}>
  {useGiftMessage && <Check className="size-3.5" />}
@@ -276,9 +276,9 @@ export function ProductPurchase({
  </button>
  </div>
  <div className="flex items-baseline gap-2">
- <p className="font-display text-3xl font-black text-[#171717]">{formatKES(price * quantity)}</p>
+ <p className="font-display text-[22px] font-black text-[#07111F] sm:text-3xl">{formatKES(price * quantity)}</p>
  {compareAtPrice != null && compareAtPrice > basePrice && (
- <p className="text-lg text-[#6B6B6B] line-through">{formatKES(compareAtPrice * quantity)}</p>
+ <p className="text-lg text-[#334155] line-through">{formatKES(compareAtPrice * quantity)}</p>
  )}
  </div>
  </div>
@@ -295,15 +295,15 @@ export function ProductPurchase({
  {busy ? "Adding..." : "Add to cart"}
  </button>
  ) : (
- <p className="rounded-zed glass-panel px-6 py-4 text-center text-sm font-bold text-[#6B6B6B]">
+ <p className="rounded-zed glass-panel px-6 py-4 text-center text-sm font-bold text-[#334155]">
  Currently out of stock
  </p>
  )}
  {error && <p className="mt-2 text-sm text-red-600">{error}</p>}
- <p className="mt-3 flex items-center justify-center gap-2 text-center text-xs text-[#6B6B6B]">
+ <p className="mt-3 flex items-center justify-center gap-2 text-center text-xs text-[#334155]">
  <ShieldCheck className="size-4 text-soft-sage" /> Secure M-PESA checkout | Free gift box with every order
  </p>
- <p className="mt-1 text-center text-xs text-[#6B6B6B]">Free in Nairobi on this item.</p>
+ <p className="mt-1 text-center text-xs text-[#334155]">Free in Nairobi on this item.</p>
  </div>
  </div>
  );

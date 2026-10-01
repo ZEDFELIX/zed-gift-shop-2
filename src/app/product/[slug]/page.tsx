@@ -105,7 +105,7 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
  <span className="absolute left-4 top-4 rounded-full bg-zed-950 px-3 py-1.5 text-xs font-bold text-white">-{sale}%</span>
  )}
  </div>
- <div className="grid grid-cols-5 gap-3">
+ <div className="grid grid-cols-5 gap-2 sm:gap-3">
  {product.images.slice(0, 5).map((img) => (
  <div key={img.id} className="glass-panel relative aspect-square overflow-hidden rounded-zed ring-1 ring-white/50">
  <Image src={img.url} alt={img.alt ?? product.name} fill sizes="120px" unoptimized className="object-cover" />
@@ -129,7 +129,7 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
  ))}
  </div>
 
- <h1 className="mt-3 font-display text-3xl font-black leading-tight text-[var(--color-ink)] lg:text-4xl">{product.name}</h1>
+ <h1 className="mt-3 font-display text-[26px] font-black leading-tight text-[var(--color-ink)] sm:text-3xl lg:text-4xl">{product.name}</h1>
  {product.headline && <p className="mt-2 text-lg text-soft-sage">{product.headline}</p>}
 
  <div className="mt-3 flex items-center gap-2">

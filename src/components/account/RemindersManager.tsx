@@ -91,13 +91,13 @@ export function RemindersManager() {
  return (
  <div className="space-y-4">
  <div className="flex items-center justify-between">
- <p className="text-sm text-[#6B6B6B]">Never miss a day - sit back, we&apos;ll remind you.</p>
+ <p className="text-sm text-[#334155]">Never miss a day - sit back, we&apos;ll remind you.</p>
  <button type="button" onClick={() => setShowForm((s) => !s)} className="flex items-center gap-1.5 rounded-zed bg-zed-950 px-4 py-2.5 text-sm font-bold text-white">
  <Plus className="size-4" /> {showForm ? "Cancel" : "Add reminder"}
  </button>
  </div>
 
- {loading && <p className="flex items-center gap-2 text-sm text-[#6B6B6B]"><Loader2 className="size-4 animate-spin" /> Loading...</p>}
+ {loading && <p className="flex items-center gap-2 text-sm text-[#334155]"><Loader2 className="size-4 animate-spin" /> Loading...</p>}
 
  {showForm && (
  <form onSubmit={create} className="glass-card grid gap-4 rounded-zed p-5 sm:grid-cols-2">
@@ -123,7 +123,7 @@ export function RemindersManager() {
  <label className="label" htmlFor="rm-notes">Notes (gift ideas!)</label>
  <input id="rm-notes" className="field" placeholder="Loves coffee & candles" value={form.notes} onChange={(e) => setForm({ ...form, notes: e.target.value })} />
  </div>
- <label className="flex items-center gap-2 text-sm text-[#171717] sm:col-span-2">
+ <label className="flex items-center gap-2 text-sm text-[#07111F] sm:col-span-2">
  <input type="checkbox" checked={form.repeatsAnnually} onChange={(e) => setForm({ ...form, repeatsAnnually: e.target.checked })} className="size-4 accent-deep-olive" />
  Remind me every year on this date
  </label>
@@ -135,7 +135,7 @@ export function RemindersManager() {
  )}
 
  {reminders.length === 0 && !loading && (
- <div className="rounded-zed border border-dashed border-edge p-10 text-center text-sm text-[#6B6B6B]">
+ <div className="rounded-zed border border-dashed border-edge p-10 text-center text-sm text-[#334155]">
  <Bell className="mx-auto mb-2 size-8 text-soft-sage/50" />
  No reminders yet. Add birthdays and anniversaries - we&apos;ll email you before each one.
  </div>
@@ -149,14 +149,14 @@ export function RemindersManager() {
  <Calendar className="size-5" />
  </span>
  <div>
- <p className="font-semibold text-[#171717]">
+ <p className="font-semibold text-[#07111F]">
  {r.personName}
  <span className="ml-2 rounded-full bg-panel px-2 py-0.5 text-[11px] font-bold text-deep-olive">{OCCASION_LABELS[r.occasion] ?? r.occasion}</span>
  </p>
- <p className="mt-0.5 text-sm text-[#6B6B6B]">
+ <p className="mt-0.5 text-sm text-[#334155]">
  <span className="font-semibold text-soft-sage">{upcomingLabel(r.date)}</span> | every year{r.relationship ? ` | ${r.relationship}` : ""}
  </p>
- {r.notes && <p className="mt-1 text-sm italic text-[#6B6B6B]">&ldquo;{r.notes}&rdquo;</p>}
+ {r.notes && <p className="mt-1 text-sm italic text-[#334155]">&ldquo;{r.notes}&rdquo;</p>}
  </div>
  </div>
  <button type="button" onClick={() => remove(r.id)} className="rounded-zed border border-red-100 p-2 text-red-500 hover:bg-red-50" aria-label="Delete reminder">

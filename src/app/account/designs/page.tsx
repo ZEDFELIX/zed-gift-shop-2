@@ -35,8 +35,8 @@ export default async function DesignApprovalsPage() {
  <div className="flex flex-wrap items-end justify-between gap-4">
  <div>
  <p className="eyebrow">Design workflow</p>
- <h1 className="mt-2 font-display text-3xl font-bold text-[#171717]">Design Approvals</h1>
- <p className="mt-1 text-sm text-[#6B6B6B]">
+ <h1 className="mt-2 font-display text-3xl font-bold text-[#07111F]">Design Approvals</h1>
+ <p className="mt-1 text-sm text-[#334155]">
  Review and approve custom designs before we begin production.
  </p>
  </div>
@@ -48,8 +48,8 @@ export default async function DesignApprovalsPage() {
  {pendingDesigns.length === 0 ? (
  <div className="glass-panel mx-auto mt-14 max-w-md rounded-zed p-10 text-center">
  <FileImage className="mx-auto size-12 text-soft-sage/50" />
- <p className="mt-4 font-display text-xl font-bold text-[#171717]">No designs pending</p>
- <p className="mt-2 text-sm text-[#6B6B6B]">
+ <p className="mt-4 font-display text-xl font-bold text-[#07111F]">No designs pending</p>
+ <p className="mt-2 text-sm text-[#334155]">
  Custom design approvals appear here when you order personalized items.
  </p>
  </div>
@@ -59,12 +59,12 @@ export default async function DesignApprovalsPage() {
  <article key={order.id} className="glass-card rounded-zed p-6">
  <div className="flex flex-wrap items-center justify-between gap-3">
  <div>
- <p className="font-display text-sm font-bold text-[#171717]">{order.orderNumber}</p>
- <p className="text-xs text-[#6B6B6B]">
+ <p className="font-display text-sm font-bold text-[#07111F]">{order.orderNumber}</p>
+ <p className="text-xs text-[#334155]">
  {order.createdAt.toLocaleDateString("en-KE", { day: "numeric", month: "short", year: "numeric" })} | {order.items.length} item(s)
  </p>
  </div>
- <span className="rounded-full bg-warm-white px-2.5 py-1 text-xs font-semibold text-[#171717]">
+ <span className="rounded-full bg-warm-white px-2.5 py-1 text-xs font-semibold text-[#07111F]">
  Pending Your Approval
  </span>
  </div>
@@ -84,13 +84,13 @@ export default async function DesignApprovalsPage() {
  </div>
  )}
  <div>
- <p className="text-sm font-semibold text-[#171717]">{item.name}</p>
+ <p className="text-sm font-semibold text-[#07111F]">{item.name}</p>
  {item.personalizationJson && (
  <p className="text-xs text-soft-sage">
  {(() => { try { const p = JSON.parse(item.personalizationJson); return p.engravingText ?? p.name ?? "Custom"; } catch { return "Custom"; } })()}
  </p>
  )}
- <p className="mt-1 text-sm font-bold text-[#171717]">{formatKES(item.price)}</p>
+ <p className="mt-1 text-sm font-bold text-[#07111F]">{formatKES(item.price)}</p>
  </div>
  </div>
  </div>

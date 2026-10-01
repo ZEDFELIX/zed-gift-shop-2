@@ -15,7 +15,7 @@ export default async function AccountLayout({ children }: { children: React.Reac
  <header className="mb-8 flex flex-wrap items-end justify-between gap-3">
  <div>
  <p className="eyebrow">My account</p>
- <h1 className="mt-1 font-display text-3xl font-bold text-[#171717]">Hello, {user.name.split(" ")[0]}</h1>
+ <h1 className="mt-1 font-display text-3xl font-bold text-[#07111F]">Hello, {user.name.split(" ")[0]}</h1>
  </div>
  </header>
  <div className="grid gap-6 lg:grid-cols-[220px_1fr] lg:items-start">

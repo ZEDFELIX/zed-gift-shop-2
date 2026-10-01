@@ -7,7 +7,7 @@
   --font-ui: var(--font-poppins), var(--font-jost), ui-sans-serif, system-ui, sans-serif;
 
   /* Brand: plum, rose and lilac on white. */
-  --color-plum-950:#2A1F2D;
+  --color-plum-950:#07111F;
   --color-plum-900:#4A1F42;
   --color-plum-800:#6B2D5C;
   --color-plum-700:#8B3A7A;
@@ -32,9 +32,9 @@
   --color-violet-200:#DDD1FA;
   --color-violet-100:#EDE8FD;
 
-  --color-ink:#2A1F2D;
-  --color-charcoal:#42384A;
-  --color-muted:#6E6478;
+--color-ink:#07111F;
+--color-charcoal:#334155;
+--color-muted:#334155;
   --color-stone:#EADCE8;
   --color-obsidian:#2A1F2D;
   --color-edge:#EADCE8;
@@ -105,25 +105,59 @@
 }
 
 @layer components {
-  /* Flat surfaces. No glassmorphism. */
+  /* Frosted premium glass surfaces — same colors as before, only the finish changes. */
   .card{@apply rounded-lg border border-edge bg-white}
   .card-flat{@apply rounded-lg border border-edge bg-white}
   .card-quiet{@apply rounded-lg border border-edge bg-panel}
   .panel-rose{@apply rounded-lg border border-rose-100 bg-rose-50}
   .panel-violet{@apply rounded-lg border border-violet-100 bg-violet-50}
   .divider-soft{@apply border-t border-edge}
-  .text-gradient{background:linear-gradient(120deg,var(--color-plum-800),var(--color-rose-500),var(--color-violet-500));-webkit-background-clip:text;background-clip:text;color:transparent}
-  .skeleton{background:linear-gradient(90deg,var(--color-plum-100) 25%,var(--color-plum-200) 50%,var(--color-plum-100) 75%);background-size:200% 100%;animation:var(--animate-shimmer)}
+.text-gradient{background:linear-gradient(120deg,var(--color-plum-800),var(--color-rose-500),var(--color-violet-500));-webkit-background-clip:text;background-clip:text;color:transparent}
+.skeleton{background:linear-gradient(90deg,var(--color-plum-100) 25%,var(--color-plum-200) 50%,var(--color-plum-100) 75%);background-size:200% 100%;animation:var(--animate-shimmer)}
 
-  /* Legacy class names kept so existing markup renders as flat panels. */
-  .glass{background:#fff;border:1px solid var(--color-edge);box-shadow:var(--shadow-glass)}
-  .glass-strong{background:#fff;border:1px solid var(--color-edge);box-shadow:var(--shadow-glass)}
-  .glass-panel{background:#fff;border:1px solid var(--color-edge);box-shadow:none}
-  .glass-nav{background:#fff;border:1px solid var(--color-edge);box-shadow:var(--shadow-glass-nav)}
+  /* Subtle frosted glass on plain white panels/buttons built with utility classes.
+     Backgrounds stay near-opaque so text and product info stay fully readable;
+     only the finish (blur, thin rim, soft depth, hover lift) is added. */
+  [class*="bg-white"]:not([class*="bg-white/"]):not([class*="hover:bg-white"]),
+  [class*="bg-panel"]:not([class*="bg-panel/"]),
+  [class*="bg-warm-ivory"]:not([class*="bg-warm-ivory/"]),
+  [class*="bg-warm-white"]:not([class*="bg-warm-white/"]){
+    -webkit-backdrop-filter:blur(16px) saturate(140%);
+    backdrop-filter:blur(16px) saturate(140%);
+    border-color:rgba(255,255,255,.92);
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.95),0 12px 30px -22px rgba(42,31,45,.22);
+    transition:box-shadow .25s ease,border-color .25s ease,transform .25s ease;
+  }
+  [class*="bg-white"]:not([class*="bg-white/"]):not([class*="hover:bg-white"]):hover,
+  [class*="bg-panel"]:not([class*="bg-panel/"]):hover{
+    box-shadow:inset 0 1px 0 rgba(255,255,255,1),0 18px 40px -24px rgba(107,45,92,.28);
+  }
+  article[class*="bg-white"]:hover,[class*="bg-white"].glass-card:hover{
+    transform:translateY(-2px);
+  }
+
+  /* Every button gets the same frosted rim + soft depth, keeping its own colors. */
+  button,[role="button"],.btn,.btn-primary,.btn-rose,.btn-outline,a.btn,a.btn-primary,a.btn-rose,a.btn-outline{
+    -webkit-backdrop-filter:blur(14px) saturate(150%);
+    backdrop-filter:blur(14px) saturate(150%);
+    border:1px solid rgba(255,255,255,.6);
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.6),0 10px 24px -18px rgba(42,31,45,.3);
+    transition:border-color .2s ease,box-shadow .2s ease,transform .15s ease,background-color .2s ease;
+  }
+  button:hover,[role="button"]:hover,.btn:hover,.btn-primary:hover,.btn-rose:hover,.btn-outline:hover,a.btn:hover,a.btn-primary:hover,a.btn-rose:hover,a.btn-outline:hover{
+    border-color:rgba(255,255,255,.9);
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.75),0 16px 34px -20px rgba(107,45,92,.35);
+  }
+  button:active:not(:disabled),[role="button"]:active{transform:translateY(1px);box-shadow:inset 0 1px 0 rgba(255,255,255,.45),inset 0 2px 8px rgba(42,31,45,.08),0 6px 14px -12px rgba(42,31,45,.25)}
+  button:disabled,[role="button"][aria-disabled="true"]{-webkit-backdrop-filter:blur(6px) saturate(120%);backdrop-filter:blur(6px) saturate(120%);box-shadow:inset 0 1px 0 rgba(255,255,255,.4);opacity:.55;cursor:not-allowed}
+  .glass{background:rgba(255,255,255,.82);border:1px solid rgba(255,255,255,.92);box-shadow:inset 0 1px 0 rgba(255,255,255,.95),var(--shadow-glass);-webkit-backdrop-filter:blur(18px) saturate(140%);backdrop-filter:blur(18px) saturate(140%)}
+  .glass-strong{background:rgba(255,255,255,.86);border:1px solid rgba(255,255,255,.95);box-shadow:inset 0 1px 0 rgba(255,255,255,1),var(--shadow-glass);-webkit-backdrop-filter:blur(22px) saturate(145%);backdrop-filter:blur(22px) saturate(145%)}
+  .glass-panel{background:rgba(255,255,255,.78);border:1px solid rgba(255,255,255,.9);box-shadow:none;-webkit-backdrop-filter:blur(16px) saturate(140%);backdrop-filter:blur(16px) saturate(140%)}
+  .glass-nav{background:rgba(255,255,255,.88);border:1px solid rgba(255,255,255,.95);box-shadow:inset 0 1px 0 rgba(255,255,255,1),var(--shadow-glass-nav);-webkit-backdrop-filter:blur(20px) saturate(150%);backdrop-filter:blur(20px) saturate(150%)}
   .glass-dark{background:var(--color-plum-950);border:1px solid rgba(255,255,255,.14);color:#fff}
-  .glass-card{background:#fff;border:1px solid var(--color-edge);box-shadow:var(--shadow-card);transition:border-color .15s ease,box-shadow .15s ease}
-  .glass-card:hover{border-color:var(--color-rose-200);box-shadow:var(--shadow-glass-lg)}
-  .zed-card{background:#fff;border:1px solid var(--color-edge);border-radius:.75rem}
+  .glass-card{background:rgba(255,255,255,.8);border:1px solid rgba(255,255,255,.92);box-shadow:inset 0 1px 0 rgba(255,255,255,.95),var(--shadow-card);-webkit-backdrop-filter:blur(16px) saturate(140%);backdrop-filter:blur(16px) saturate(140%);transition:border-color .2s ease,box-shadow .2s ease,transform .2s ease}
+  .glass-card:hover{border-color:var(--color-rose-200);box-shadow:inset 0 1px 0 rgba(255,255,255,1),var(--shadow-glass-lg);transform:translateY(-2px)}
+  .zed-card{background:rgba(255,255,255,.8);border:1px solid rgba(255,255,255,.92);border-radius:.75rem;-webkit-backdrop-filter:blur(16px) saturate(140%);backdrop-filter:blur(16px) saturate(140%)}
 }
 
 @layer utilities {
@@ -141,4 +175,79 @@
 }
 
 @media(max-width:1023px){.desktop-only{display:none}}
+
+/* ---------------------------------------------------------------------------
+   Mobile optimization layer (sizing / spacing / touch targets only).
+   No color, content, structure or functional changes.
+   Breakpoints: <=374px small, 375-430 standard, 431-767 large, 768-1023 tablet.
+--------------------------------------------------------------------------- */
+@media(max-width:767px){
+  /* No horizontal scrolling anywhere; images stay proportional. */
+  html,body{overflow-x:clip;max-width:100%}
+  img{max-width:100%;height:auto}
+  main,#main{min-width:0}
+  .container-zed{padding-left:16px;padding-right:16px}
+
+  /* Touch targets: 44px minimum. */
+  button,[role="button"],.btn,.btn-primary,.btn-rose,.btn-outline,a.btn,a.btn-primary,a.btn-rose,a.btn-outline{
+    min-height:44px;min-width:44px
+  }
+  /* Compact icon-only controls keep their box but stay tappable. */
+  button[aria-label],button[aria-pressed]{min-width:44px;min-height:44px}
+
+  /* Forms: comfortable height, 16px text (prevents iOS zoom), 14px radius. */
+  .field,input:not([type="checkbox"]):not([type="radio"]):not([type="submit"]),select,textarea{
+    min-height:50px;font-size:16px;border-radius:14px
+  }
+  textarea{min-height:110px}
+  select{padding-right:2.25rem}
+  .label{font-size:14px}
+
+  /* Buttons: 46px tall, 13-14px label, 14px radius. */
+  .btn,.btn-primary,.btn-rose,.btn-outline{padding-top:.75rem;padding-bottom:.75rem;font-size:14px;border-radius:14px}
+
+  /* Section rhythm. */
+  section{padding-top:1.5rem;padding-bottom:1.5rem}
+  h1{font-size:1.75rem;line-height:1.2}
+  h2{font-size:1.25rem}
+  p{line-height:1.6}
+
+  /* Two products per row with a 12px gutter; two lines of title text. */
+  article h3{font-size:14px;line-height:1.35;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+  article p{font-size:13px}
+
+  /* Bottom navigation: 64px + safe area, equal-width items. */
+  nav[aria-label="Mobile quick navigation"]{
+    height:64px;padding-bottom:env(safe-area-inset-bottom,0px);
+    padding-left:calc(8px + env(safe-area-inset-left,0px));
+    padding-right:calc(8px + env(safe-area-inset-right,0px));
+    align-items:stretch
+  }
+  nav[aria-label="Mobile quick navigation"] > *{height:100%;justify-content:center;min-height:44px}
+  nav[aria-label="Mobile quick navigation"] svg{width:22px;height:22px}
+  nav[aria-label="Mobile quick navigation"] span{font-size:11px;line-height:1.1}
+  /* Keep the last content clear of the floating bottom bar. The footer carries its
+     own dark background, so padding it here avoids a mismatched strip at page end. */
+  footer{padding-bottom:calc(76px + env(safe-area-inset-bottom,0px))}
+}
+
+/* Small phones (320-374px): tighter gutters and padding, still 2 columns. */
+@media(max-width:374px){
+  .container-zed{padding-left:12px;padding-right:12px}
+  .field,input:not([type="checkbox"]):not([type="radio"]):not([type="submit"]),select{min-height:48px}
+  button,.btn,.btn-primary,.btn-rose,.btn-outline{min-height:42px}
+  nav[aria-label="Mobile quick navigation"]{height:60px}
+}
+
+/* Larger phones (431-767px): slightly roomier cards. */
+@media(min-width:431px) and (max-width:767px){
+  article h3{font-size:15px}
+}
+
+/* Tablets (768-1023px): comfortable but capped line lengths. */
+@media(min-width:768px) and (max-width:1023px){
+  footer{padding-bottom:0}
+  .container-zed{padding-left:24px;padding-right:24px}
+}
+
 @media(prefers-reduced-motion:reduce){*,::before,:after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}

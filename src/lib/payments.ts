@@ -150,32 +150,6 @@ export function amountSatisfies(expected: number, reported: number | undefined):
   return Math.round(reported) >= Math.round(expected);
 }
 
-export async function writeAuditLog(input: {
-  action: string;
-  entity: string;
-  entityId?: string | null;
-  orderId?: string | null;
-  actorId?: string | null;
-  actorEmail?: string | null;
-  actorRole?: string | null;
-  before?: unknown;
-  after?: unknown;
-  ipAddress?: string | null;
-  userAgent?: string | null;
-}): Promise<void> {
-  await prisma.auditLog.create({
-    data: {
-      action: input.action,
-      entity: input.entity,
-      entityId: input.entityId ?? null,
-      orderId: input.orderId ?? null,
-      actorId: input.actorId ?? null,
-      actorEmail: input.actorEmail ?? null,
-      actorRole: input.actorRole ?? null,
-      beforeJson: input.before === undefined ? null : JSON.stringify(input.before),
-      afterJson: input.after === undefined ? null : JSON.stringify(input.after),
-      ipAddress: input.ipAddress ?? null,
-      userAgent: input.userAgent ?? null,
-    },
-  });
-}
+// Re-exported for callers that historically imported it from here; the single
+// implementation lives in @/lib/audit so redaction rules stay in one place.
+export { writeAuditLog } from "@/lib/audit";

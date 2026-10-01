@@ -45,10 +45,10 @@ export function AuthForm({ mode }: { mode: "login" | "register" }) {
  <form onSubmit={submit} className="glass-card space-y-4 rounded-zed p-6 lg:p-8">
  <div className="text-center">
  <p className="eyebrow">{isLogin ? "Welcome back" : "Join the club"}</p>
- <h1 className="mt-2 font-display text-2xl font-bold text-[#171717]">
+ <h1 className="mt-2 font-display text-2xl font-bold text-[#07111F]">
  {isLogin ? "Log in to your account" : "Create a free account"}
  </h1>
- <p className="mt-1.5 text-sm text-[#6B6B6B]">
+ <p className="mt-1.5 text-sm text-[#334155]">
  {isLogin ? "Track orders, save favourites & checkout faster." : "Save addresses, get occasion reminders & faster checkout."}
  </p>
  </div>
@@ -57,7 +57,7 @@ export function AuthForm({ mode }: { mode: "login" | "register" }) {
  <div>
  <label className="label" htmlFor="a-name">Full name</label>
  <div className="relative">
- <User className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-[#6B6B6B]" />
+ <User className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-[#334155]" />
  <input id="a-name" className="field pl-9" placeholder="Jane Mwangi" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} required />
  </div>
  </div>
@@ -66,7 +66,7 @@ export function AuthForm({ mode }: { mode: "login" | "register" }) {
  <div>
  <label className="label" htmlFor="a-email">Email</label>
  <div className="relative">
- <Mail className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-[#6B6B6B]" />
+ <Mail className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-[#334155]" />
  <input id="a-email" type="email" autoComplete="email" className="field pl-9" placeholder="you@example.com" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} required />
  </div>
  </div>
@@ -74,10 +74,10 @@ export function AuthForm({ mode }: { mode: "login" | "register" }) {
  <div>
  <label className="label" htmlFor="a-password">Password</label>
  <div className="relative">
- <Lock className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-[#6B6B6B]" />
+ <Lock className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-[#334155]" />
  <input id="a-password" type="password" autoComplete={isLogin ? "current-password" : "new-password"} className="field pl-9" placeholder="--------" value={form.password} onChange={(e) => setForm({ ...form, password: e.target.value })} required minLength={isLogin ? 1 : 8} />
  </div>
- {!isLogin && <p className="mt-1 text-xs text-[#6B6B6B]">At least 8 characters.</p>}
+ {!isLogin && <p className="mt-1 text-xs text-[#334155]">At least 8 characters.</p>}
  </div>
 
  {error && <p className="rounded-zed bg-red-50/70 px-4 py-3 text-sm text-red-700 backdrop-blur-sm">{error}</p>}
@@ -87,7 +87,7 @@ export function AuthForm({ mode }: { mode: "login" | "register" }) {
  {isLogin ? "Log in" : "Create account"}
  </button>
 
- <p className="pt-1 text-center text-sm text-[#6B6B6B]">
+ <p className="pt-1 text-center text-sm text-[#334155]">
  {isLogin ? (
  <>
  New to ZED? <Link className="font-semibold text-soft-sage underline underline-offset-2" href={`/register${next !== "/account" ? `?next=${encodeURIComponent(next)}` : ""}`}>Create an account</Link>
@@ -101,7 +101,7 @@ export function AuthForm({ mode }: { mode: "login" | "register" }) {
 
  {isLogin && (
  <p className="text-center text-xs">
- <Link className="text-[#6B6B6B] underline underline-offset-2 hover:text-soft-sage" href="/forgot-password">Forgot your password?</Link>
+ <Link className="text-[#334155] underline underline-offset-2 hover:text-soft-sage" href="/forgot-password">Forgot your password?</Link>
  </p>
  )}
  </form>

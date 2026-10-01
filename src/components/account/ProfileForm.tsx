@@ -32,7 +32,7 @@ export function ProfileForm({ name, email, phone }: { name: string; email: strin
 
  return (
  <form onSubmit={submit} className="glass-card space-y-4 rounded-zed p-6">
- <h2 className="font-display text-lg font-bold text-[#171717]">Profile</h2>
+ <h2 className="font-display text-lg font-bold text-[#07111F]">Profile</h2>
  <div className="grid gap-4 sm:grid-cols-2">
  <div>
  <label className="label" htmlFor="p-name">Full name</label>

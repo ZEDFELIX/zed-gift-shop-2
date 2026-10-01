@@ -24,7 +24,7 @@ export function AdminNav() {
  {TABS.map(({ href, label, icon: Icon }) => {
  if (href === "/account") {
  return (
- <Link key={href} href={href} className="flex shrink-0 items-center gap-2 rounded-zed px-4 py-2.5 text-sm font-semibold text-[#6B6B6B] hover:bg-panel lg:mt-2">
+ <Link key={href} href={href} className="flex shrink-0 items-center gap-2 rounded-zed px-4 py-2.5 text-sm font-semibold text-[#334155] hover:bg-panel lg:mt-2">
  <Icon className="size-4" /> {label}
  </Link>
  );
@@ -34,7 +34,7 @@ export function AdminNav() {
  <Link
  key={href}
  href={href}
- className={`flex shrink-0 items-center gap-2 rounded-zed px-4 py-2.5 text-sm font-semibold transition-colors ${active ? "bg-zed-950 text-white" : "text-[#171717] hover:bg-panel hover:text-[#171717]"}`}
+ className={`flex shrink-0 items-center gap-2 rounded-zed px-4 py-2.5 text-sm font-semibold transition-colors ${active ? "bg-zed-950 text-white" : "text-[#07111F] hover:bg-panel hover:text-[#07111F]"}`}
  >
  <Icon className="size-4" /> {label}
  </Link>

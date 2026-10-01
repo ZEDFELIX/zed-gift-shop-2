@@ -43,7 +43,7 @@ export function OrderStatusController({ orderId, orderStatus, paymentStatus, rec
 
  return (
  <form onSubmit={save} className="space-y-4 rounded-zed border border-edge bg-white p-5">
- <h2 className="font-display text-base font-bold text-[#171717]">Update order</h2>
+ <h2 className="font-display text-base font-bold text-[#07111F]">Update order</h2>
  <div className="grid gap-4 sm:grid-cols-3">
  <div>
  <label className="label" htmlFor="os-status">Order status</label>

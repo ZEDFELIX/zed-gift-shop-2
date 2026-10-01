@@ -5,6 +5,7 @@ import { generateOrderNumber } from "@/lib/utils";
 import { ORDER_STATUS_STEPS as STEP_DEFS } from "@/lib/constants";
 import type { DeliveryMethod, OrderStatus, PaymentStatus, Prisma } from "@prisma/client";
 import { resolveFeeForMethod, type DeliveryZone } from "@/lib/data/delivery";
+import { reserveWithinTx, releaseWithinTx, commitSaleWithinTx } from "@/lib/inventory";
 
 export type CreateOrderInput = {
  userId?: string | null;
@@ -41,17 +42,41 @@ county: string;
  isGift: boolean;
 };
 
-export async function createOrder(input: CreateOrderInput): Promise<{ orderId: string; orderNumber: string }> {
+export type CreateOrderOptions = {
+  /** Run inside a caller-supplied transaction (checkout uses this for atomicity). */
+  tx?: Prisma.TransactionClient;
+  /** Pre-resolved delivery fee, so checkout can quote once and stay consistent. */
+  deliveryFee?: number;
+  estimatedDeliveryDate?: string | Date | null;
+  deliveryPartner?: string | null;
+};
+
+export async function createOrder(
+  input: CreateOrderInput,
+  options: CreateOrderOptions = {},
+): Promise<{ orderId: string; orderNumber: string }> {
+  const tx = options.tx ?? prisma;
   const netTotal = Math.max(0, input.subtotal - input.discount);
-  const { fee: deliveryFee, estimatedDeliveryDate, zone } = await resolveDeliveryFee({
-    county: input.county,
-    town: input.town,
-    method: input.deliveryMethod,
-    subtotal: netTotal,
-  });
+
+  let deliveryFee = options.deliveryFee;
+  let estimatedDeliveryDate = options.estimatedDeliveryDate ?? null;
+  let deliveryPartner = options.deliveryPartner ?? null;
+
+  if (deliveryFee === undefined) {
+    const resolved = await resolveDeliveryFee({
+      county: input.county,
+      town: input.town,
+      method: input.deliveryMethod,
+      subtotal: netTotal,
+    });
+    deliveryFee = resolved.fee;
+    estimatedDeliveryDate = resolved.estimatedDeliveryDate;
+    deliveryPartner = resolved.zone?.deliveryPartner ?? null;
+  }
+
   const total = netTotal + deliveryFee;
 
-  const order = await prisma.order.create({
+  const order = await tx.order.create({
   data: {
   orderNumber: generateOrderNumber(),
   userId: input.userId ?? null,
@@ -74,30 +99,30 @@ export async function createOrder(input: CreateOrderInput): Promise<{ orderId: s
   apartment: input.apartment ?? null,
   landmark: input.landmark ?? null,
   deliveryInstructions: input.deliveryInstructions ?? null,
-  deliveryPartner: zone?.deliveryPartner ?? null,
+  deliveryPartner,
   expectedDeliveryDate: estimatedDeliveryDate ? new Date(estimatedDeliveryDate) : null,
- orderStatus: "PENDING_PAYMENT",
- paymentStatus: "PENDING",
- isGift: input.isGift,
- items: {
- create: input.items.map((item) => ({
- productId: item.productId,
- variantId: item.variantId,
- name: item.name,
- sku: item.sku,
- image: item.image,
- price: item.price,
- quantity: item.quantity,
- giftWrapPrice: item.giftWrapPrice,
- personalizationJson: item.personalizationJson,
- giftWrapJson: item.giftWrapJson,
- giftMessageJson: item.giftMessageJson,
- })),
- },
- },
- });
+  orderStatus: "PENDING_PAYMENT",
+  paymentStatus: "PENDING",
+  isGift: input.isGift,
+  items: {
+  create: input.items.map((item) => ({
+  productId: item.productId,
+  variantId: item.variantId,
+  name: item.name,
+  sku: item.sku,
+  image: item.image,
+  price: item.price,
+  quantity: item.quantity,
+  giftWrapPrice: item.giftWrapPrice,
+  personalizationJson: item.personalizationJson,
+  giftWrapJson: item.giftWrapJson,
+  giftMessageJson: item.giftMessageJson,
+  })),
+  },
+  },
+  });
 
- return { orderId: order.id, orderNumber: order.orderNumber };
+  return { orderId: order.id, orderNumber: order.orderNumber };
 }
 
 async function resolveDeliveryFee(input: {
@@ -212,134 +237,56 @@ export async function updatePaymentStatus(orderId: string, status: PaymentStatus
  });
 }
 
+/** Order lines reduced to the shape the inventory layer needs. */
+export function capturesFor(items: { productId: string | null; variantId: string | null; quantity: number }[]) {
+  return items.map((i) => ({ productId: i.productId, variantId: i.variantId, quantity: i.quantity }));
+}
+
+/**
+ * Standalone reservation for orders created outside the checkout transaction.
+ * Uses the same guarded path, so it cannot oversell either.
+ */
 export async function reserveInventoryForOrder(orderId: string) {
- const order = await getOrderById(orderId);
- if (!order) return;
+  const order = await getOrderById(orderId);
+  if (!order) return;
 
- const captures: { productId: string | null; variantId: string | null; quantity: number }[] = order.items.map((i) => ({
- productId: i.productId,
- variantId: i.variantId,
- quantity: i.quantity,
- }));
-
- for (const c of captures) {
- if (c.productId) {
- await prisma.product.update({
- where: { id: c.productId },
- data: { reservedQuantity: { increment: c.quantity } },
- });
- }
- if (c.variantId) {
- await prisma.productVariant.update({
- where: { id: c.variantId },
- data: { reservedQuantity: { increment: c.quantity } },
- });
- }
- await prisma.inventoryTransaction.create({
- data: {
- productId: c.productId,
- variantId: c.variantId,
- type: "RESERVE",
- quantity: c.quantity,
- note: `Order ${order.orderNumber}`,
- refOrderItemId: order.id,
- },
- });
- }
+  await prisma.$transaction(async (tx) => {
+    await reserveWithinTx(tx, capturesFor(order.items), `Order ${order.orderNumber}`);
+  });
 }
 
 export async function releaseInventoryForOrder(orderId: string) {
- const order = await getOrderById(orderId);
- if (!order) return;
- for (const item of order.items) {
- if (item.productId) {
- const product = await prisma.product.findUnique({ where: { id: item.productId } });
- if (product) {
- await prisma.product.update({
- where: { id: item.productId },
- data: { reservedQuantity: { decrement: Math.min(item.quantity, product.reservedQuantity) } },
- });
- }
- }
- if (item.variantId) {
- const variant = await prisma.productVariant.findUnique({ where: { id: item.variantId } });
- if (variant) {
- await prisma.productVariant.update({
- where: { id: item.variantId },
- data: { reservedQuantity: { decrement: Math.min(item.quantity, variant.reservedQuantity) } },
- });
- }
- }
- await prisma.inventoryTransaction.create({
- data: {
- productId: item.productId,
- variantId: item.variantId,
- type: "RELEASE",
- quantity: -item.quantity,
- note: `Order ${order.orderNumber} ${order.paymentStatus === "SUCCESSFUL" ? "paid" : "cancelled"}`,
- },
- });
- }
+  const order = await getOrderById(orderId);
+  if (!order) return;
+
+  const note = `Order ${order.orderNumber} ${order.paymentStatus === "SUCCESSFUL" ? "paid" : "cancelled"}`;
+  await prisma.$transaction(async (tx) => {
+    await releaseWithinTx(tx, capturesFor(order.items), note);
+  });
 }
 
 export async function confirmOrderPaid(orderId: string, paymentId: string, mpesaReceipt: string) {
- const order = await prisma.order.findUnique({ where: { id: orderId }, include: { items: true } });
- if (!order || order.paymentStatus === "SUCCESSFUL") return;
+  const order = await prisma.order.findUnique({ where: { id: orderId }, include: { items: true } });
+  if (!order || order.paymentStatus === "SUCCESSFUL") return;
 
- const now = new Date();
- await prisma.$transaction(async (tx) => {
- await tx.order.update({
- where: { id: orderId },
- data: { paymentStatus: "SUCCESSFUL", orderStatus: "PAID", updatedAt: now },
- });
+  const now = new Date();
+  await prisma.$transaction(async (tx) => {
+  await tx.order.update({
+  where: { id: orderId },
+  data: { paymentStatus: "SUCCESSFUL", orderStatus: "PAID", updatedAt: now },
+  });
 // Stock deduction: committed sale, release reserves and decrement real stock.
-  for (const item of order.items) {
-  if (item.productId) {
-  const product = await tx.product.findUnique({ where: { id: item.productId } });
-  if (product) {
-  const release = Math.min(item.quantity, product.reservedQuantity);
-  await tx.product.update({
-  where: { id: item.productId },
-  data: {
-  reservedQuantity: { decrement: release },
-  quantity: { decrement: item.quantity },
-  },
-  });
-  }
-  }
-  if (item.variantId) {
-  const variant = await tx.productVariant.findUnique({ where: { id: item.variantId } });
-  if (variant) {
-  const release = Math.min(item.quantity, variant.reservedQuantity);
-  await tx.productVariant.update({
-  where: { id: item.variantId },
-  data: {
-  reservedQuantity: { decrement: release },
-  quantity: { decrement: item.quantity },
-  },
-  });
-  }
-  }
- await tx.inventoryTransaction.create({
- data: {
- productId: item.productId,
- variantId: item.variantId,
- type: "OUT",
- quantity: -item.quantity,
- note: `Order ${order.orderNumber} (${mpesaReceipt})`,
- },
- });
- }
+  await commitSaleWithinTx(tx, capturesFor(order.items), `Order ${order.orderNumber} (${mpesaReceipt})`);
 
- if (order.couponId) {
- await tx.coupon.update({ where: { id: order.couponId }, data: { usedCount: { increment: 1 } } });
- }
- });
+  if (order.couponId) {
+  await tx.coupon.update({ where: { id: order.couponId }, data: { usedCount: { increment: 1 } } });
+  }
+  });
 
- await prisma.payment.update({
- where: { id: paymentId },
- data: { mpesaReceipt, updatedAt: now },
- });
+  await prisma.payment.update({
+  where: { id: paymentId },
+  data: { mpesaReceipt, updatedAt: now },
+  });
 }
 
 export const ORDER_STATUS_STEPS = STEP_DEFS as { status: OrderStatus; label: string }[];

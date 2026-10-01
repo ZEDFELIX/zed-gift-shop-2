@@ -6,15 +6,35 @@ import { stkPush } from "@/lib/mpesa";
 import { phoneSchema } from "@/lib/validations";
 import { updateOrderStatus, updatePaymentStatus, reserveInventoryForOrder, releaseInventoryForOrder } from "@/lib/data/orders";
 import { recordPaymentEvent, syncOrderToPaymentStatus } from "@/lib/payments";
+import { getSession } from "@/lib/auth";
+import { verifyOrderToken } from "@/lib/order-token";
+import { rateLimit } from "@/lib/rate-limit";
 
+// A signed guest token is issued when the order is created; a signed-in owner
+// may also retry. This endpoint triggers a real charge, so it must never be
+// reachable by someone who merely knows an order id.
 const schema = z.object({
   phone: z.string().min(9).max(15).pipe(phoneSchema),
   amount: z.number().nonnegative().max(1_000_000),
   accountReference: z.string().min(1).max(20),
   orderId: z.string().min(1).max(64),
+  pollToken: z.string().max(1024).optional(),
 });
 
+function clientKey(req: Request): string {
+  const forwarded = req.headers.get("x-forwarded-for");
+  return forwarded?.split(",")[0]?.trim() || req.headers.get("x-real-ip") || "unknown";
+}
+
 export async function POST(req: Request) {
+  const limit = await rateLimit(`mpesa-push:${clientKey(req)}`, { limit: 6, windowSeconds: 300 });
+  if (!limit.ok) {
+    return NextResponse.json(
+      { error: "Too many payment attempts. Please wait a moment and try again." },
+      { status: 429, headers: { "Retry-After": String(limit.retryAfterSeconds) } },
+    );
+  }
+
   let body: unknown;
   try {
     body = await req.json();
@@ -27,7 +47,7 @@ const parsed = schema.safeParse(body);
   return NextResponse.json({ error: "Missing required fields." }, { status: 400 });
   }
 
-  const { phone, accountReference, orderId } = parsed.data;
+  const { phone, accountReference, orderId, pollToken } = parsed.data;
 
   // Verify the order exists and is unpaid.
   const order = await prisma.order.findUnique({
@@ -37,6 +57,7 @@ const parsed = schema.safeParse(body);
       orderNumber: true,
       orderStatus: true,
       paymentStatus: true,
+      userId: true,
       total: true,
       payments: { select: { id: true, status: true }, orderBy: { createdAt: "desc" }, take: 1 },
     },
@@ -44,6 +65,15 @@ const parsed = schema.safeParse(body);
 
   if (!order) {
     return NextResponse.json({ error: "Order not found." }, { status: 404 });
+  }
+
+  // Authorization: the signed-in owner of the order, or a guest holding the
+  // token issued at checkout. Everything else is rejected before any charge.
+  const session = await getSession();
+  const ownsOrder = Boolean(session && order.userId && session.sub === order.userId);
+  const hasGuestToken = verifyOrderToken(pollToken, order.id);
+  if (!ownsOrder && !hasGuestToken) {
+    return NextResponse.json({ error: "You are not allowed to pay for this order." }, { status: 403 });
   }
 
   if (order.paymentStatus === "SUCCESSFUL") {

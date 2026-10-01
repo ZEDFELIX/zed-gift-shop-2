@@ -19,8 +19,8 @@ export default async function CollectionsPage() {
  <div className="container-zed py-10 lg:py-14">
  <header className="max-w-2xl">
  <p className="eyebrow">Curated for you</p>
- <h1 className="mt-2 font-display text-3xl font-bold text-[#171717] lg:text-4xl">Collections</h1>
- <p className="mt-3 text-[#171717]">Groups of gifts we&apos;ve put together for how you shop.</p>
+ <h1 className="mt-2 font-display text-3xl font-bold text-[#07111F] lg:text-4xl">Collections</h1>
+ <p className="mt-3 text-[#07111F]">Groups of gifts we&apos;ve put together for how you shop.</p>
  </header>
 
  <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">

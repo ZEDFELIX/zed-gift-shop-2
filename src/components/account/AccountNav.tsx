@@ -22,7 +22,7 @@ export function AccountNav() {
  <Link
  key={href}
  href={href}
- className={`flex shrink-0 items-center gap-2 rounded-zed px-4 py-2.5 text-sm font-semibold transition-colors ${active ? "bg-zed-950 text-white" : "text-[#171717] hover:bg-white/50 hover:text-[#171717]"}`}
+ className={`flex shrink-0 items-center gap-2 rounded-zed px-4 py-2.5 text-sm font-semibold transition-colors ${active ? "bg-zed-950 text-white" : "text-[#07111F] hover:bg-white/50 hover:text-[#07111F]"}`}
  >
  <Icon className="size-4" /> {label}
  </Link>

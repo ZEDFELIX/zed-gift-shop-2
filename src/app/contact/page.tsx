@@ -9,8 +9,8 @@ export default function ContactPage() {
  return (
  <div className="container-zed py-12">
  <p className="eyebrow text-soft-sage">We&apos;re here to help</p>
- <h1 className="mt-2 max-w-2xl font-display text-4xl font-black text-[#171717] sm:text-5xl">Contact ZED Gift Shop</h1>
- <p className="mt-4 max-w-2xl text-[#171717]">
+ <h1 className="mt-2 max-w-2xl font-display text-4xl font-black text-[#07111F] sm:text-5xl">Contact ZED Gift Shop</h1>
+ <p className="mt-4 max-w-2xl text-[#07111F]">
  Need help with an order, a custom or personalized gift, or a bulk corporate order? Send us a message -
  we usually reply within one working day.
  </p>
@@ -38,18 +38,18 @@ export default function ContactPage() {
  </div>
 
  <div className="glass-card rounded-zed p-6">
- <p className="flex items-center gap-2 font-display text-base font-bold text-[#171717]">
+ <p className="flex items-center gap-2 font-display text-base font-bold text-[#07111F]">
  <Clock className="size-5 text-soft-sage" /> Opening hours
  </p>
- <ul className="mt-3 space-y-1.5 text-sm text-[#171717]">
+ <ul className="mt-3 space-y-1.5 text-sm text-[#07111F]">
  <li className="flex justify-between"><span>Mon - Fri</span><span className="font-semibold">8:00am - 8:00pm</span></li>
  <li className="flex justify-between"><span>Saturday</span><span className="font-semibold">9:00am - 8:00pm</span></li>
  <li className="flex justify-between"><span>Sundays & holidays</span><span className="font-semibold">10:00am - 6:00pm</span></li>
  </ul>
  </div>
 
- <div className="glass-panel rounded-zed p-6 text-sm text-[#171717]">
- <p className="flex items-center gap-2 font-display text-base font-bold text-[#171717]">
+ <div className="glass-panel rounded-zed p-6 text-sm text-[#07111F]">
+ <p className="flex items-center gap-2 font-display text-base font-bold text-[#07111F]">
  <MessageSquareText className="size-5 text-soft-sage" /> Business enquiries
  </p>
  <p className="mt-3">

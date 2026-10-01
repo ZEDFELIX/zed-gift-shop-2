@@ -40,7 +40,7 @@ export function ReviewForm({ productId }: { productId: string }) {
 
  if (state === "done") {
  return (
- <div className="flex items-center gap-2 rounded-zed glass-panel px-4 py-3 text-sm font-semibold text-[#171717]">
+ <div className="flex items-center gap-2 rounded-zed glass-panel px-4 py-3 text-sm font-semibold text-[#07111F]">
  <Check className="size-4 text-soft-sage" /> Thanks! Your review is in the queue for approval.
  </div>
  );
@@ -60,7 +60,7 @@ export function ReviewForm({ productId }: { productId: string }) {
  aria-label={`${star} star${star === 1 ? "" : "s"}`}
  className="p-0.5"
  >
- <Star className={`size-7 ${star <= (hover || rating) ? "fill-zed-950 text-white" : "text-[#6B6B6B]"}`} />
+ <Star className={`size-7 ${star <= (hover || rating) ? "fill-zed-950 text-white" : "text-[#334155]"}`} />
  </button>
  ))}
  </div>

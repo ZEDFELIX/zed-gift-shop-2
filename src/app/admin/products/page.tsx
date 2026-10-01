@@ -25,7 +25,7 @@ export default async function AdminProductsPage({ searchParams }: { searchParams
  <option value="DRAFT">Draft</option>
  <option value="ARCHIVED">Archived</option>
  </select>
- <button type="submit" className="rounded-zed border border-edge bg-white px-4 text-sm font-semibold text-[#171717] hover:border-soft-sage">
+ <button type="submit" className="rounded-zed border border-edge bg-white px-4 text-sm font-semibold text-[#07111F] hover:border-soft-sage">
  <Search className="size-4" />
  </button>
  </form>
@@ -34,12 +34,12 @@ export default async function AdminProductsPage({ searchParams }: { searchParams
  </Link>
  </div>
 
- <p className="text-sm text-[#6B6B6B]">{total} product{total === 1 ? "" : "s"}</p>
+ <p className="text-sm text-[#334155]">{total} product{total === 1 ? "" : "s"}</p>
 
  <div className="overflow-x-auto rounded-zed border border-edge bg-white">
  <table className="w-full text-sm">
  <thead>
- <tr className="border-b border-edge bg-panel text-left text-xs uppercase tracking-wider text-[#6B6B6B]">
+ <tr className="border-b border-edge bg-panel text-left text-xs uppercase tracking-wider text-[#334155]">
  <th className="p-3">Product</th>
  <th className="p-3">SKU</th>
  <th className="p-3">Price</th>
@@ -57,16 +57,16 @@ export default async function AdminProductsPage({ searchParams }: { searchParams
  {p.images[0]?.url && <Image src={p.images[0].url} alt="" fill unoptimized className="object-cover" />}
  </span>
  <div>
- <p className="font-semibold text-[#171717]">{p.name}</p>
- <p className="text-xs text-[#6B6B6B]">/{p.slug}</p>
+ <p className="font-semibold text-[#07111F]">{p.name}</p>
+ <p className="text-xs text-[#334155]">/{p.slug}</p>
  </div>
  </div>
  </td>
- <td className="p-3 text-[#6B6B6B]">{p.sku ?? "-"}</td>
- <td className="p-3 font-semibold text-[#171717]">{formatKES(p.price)}</td>
- <td className={`p-3 font-semibold ${p.quantity <= p.lowStockThreshold ? "text-red-600" : "text-[#171717]"}`}>{p.quantity}</td>
+ <td className="p-3 text-[#334155]">{p.sku ?? "-"}</td>
+ <td className="p-3 font-semibold text-[#07111F]">{formatKES(p.price)}</td>
+ <td className={`p-3 font-semibold ${p.quantity <= p.lowStockThreshold ? "text-red-600" : "text-[#07111F]"}`}>{p.quantity}</td>
  <td className="p-3">
- <span className={`rounded-full px-2 py-0.5 text-[11px] font-bold ${p.status === "ACTIVE" ? "bg-emerald-50 text-emerald-700" : p.status === "DRAFT" ? "bg-amber-50 text-amber-700" : "bg-panel text-[#6B6B6B]"}`}>
+ <span className={`rounded-full px-2 py-0.5 text-[11px] font-bold ${p.status === "ACTIVE" ? "bg-emerald-50 text-emerald-700" : p.status === "DRAFT" ? "bg-amber-50 text-amber-700" : "bg-panel text-[#334155]"}`}>
  {p.status}
  </span>
  </td>
@@ -76,7 +76,7 @@ export default async function AdminProductsPage({ searchParams }: { searchParams
  </tr>
  ))}
  {items.length === 0 && (
- <tr><td colSpan={6} className="p-8 text-center text-[#6B6B6B]">No products match that search.</td></tr>
+ <tr><td colSpan={6} className="p-8 text-center text-[#334155]">No products match that search.</td></tr>
  )}
  </tbody>
  </table>
@@ -86,7 +86,7 @@ export default async function AdminProductsPage({ searchParams }: { searchParams
  <div className="flex items-center justify-center gap-2 text-sm">
  {Array.from({ length: pages }, (_, i) => i + 1).map((n) => (
  <Link key={n} href={`?page=${n}${q ? `&q=${encodeURIComponent(q)}` : ""}${status ? `&status=${status}` : ""}`}
- className={`rounded-zed px-3 py-1.5 font-semibold ${n === current ? "bg-zed-950 text-white" : "bg-panel text-[#6B6B6B] hover:bg-panel/70"}`}>
+ className={`rounded-zed px-3 py-1.5 font-semibold ${n === current ? "bg-zed-950 text-white" : "bg-panel text-[#334155] hover:bg-panel/70"}`}>
  {n}
  </Link>
  ))}

@@ -238,7 +238,9 @@ export const categoryCreateSchema = z.object({
  slug: z.string().min(2).max(140).regex(/^[a-z0-9-]+$/),
  kind: z.enum(["CATEGORY", "OCCASION", "RECIPIENT"]).default("CATEGORY"),
  description: z.string().max(2000).optional().or(z.literal("")),
+ image: z.string().url().max(500).optional().or(z.literal("")),
  parentId: z.string().max(40).nullable().optional(),
+ sortOrder: z.coerce.number().int().min(0).max(9999).optional(),
  active: z.coerce.boolean().default(true),
 });
 

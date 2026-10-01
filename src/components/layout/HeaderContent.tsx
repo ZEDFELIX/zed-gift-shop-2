@@ -13,7 +13,6 @@ import {
   Phone,
   Search,
   ShoppingBag,
-  Sparkles,
   User,
   X,
 } from "lucide-react";
@@ -37,7 +36,7 @@ function openCart() {
 function Brand({ compact = false }: { compact?: boolean }) {
   return (
     <Link href="/" className="flex shrink-0 items-center gap-2" aria-label={`${SITE.name} home`}>
-      <span className="grid size-9 place-items-center rounded-md bg-deep-olive font-display text-sm font-black text-white sm:size-10">
+      <span className="grid size-8 place-items-center rounded-md bg-deep-olive font-display text-[13px] font-black text-white sm:size-10 sm:text-sm">
         Z2
       </span>
       <span className="flex flex-col leading-none">
@@ -150,12 +149,12 @@ export function HeaderContent({
 
       {/* Main header row */}
       <div className="sticky top-0 z-40 border-b border-edge bg-white/95 backdrop-blur-md">
-        <div className="container-zed flex h-16 items-center gap-3 lg:h-[74px] lg:gap-6">
+        <div className="container-zed flex h-[60px] items-center gap-2.5 px-4 lg:h-[74px] lg:gap-6 lg:px-10">
           <button
             type="button"
             aria-label="Open menu"
             onClick={() => setMobileOpen(true)}
-            className="grid size-10 shrink-0 place-items-center rounded-md text-[var(--color-ink)] hover:bg-zed-900/5 lg:hidden"
+            className="grid size-11 shrink-0 place-items-center rounded-md text-[var(--color-ink)] hover:bg-zed-900/5 lg:hidden"
           >
             <Menu className="size-5" />
           </button>
@@ -209,9 +208,9 @@ export function HeaderContent({
               type="button"
               onClick={() => setSearchOpen(true)}
               aria-label="Search"
-              className="grid size-10 place-items-center rounded-md text-[var(--color-ink)] hover:bg-zed-900/5 md:hidden"
+              className="grid size-11 place-items-center rounded-md text-[var(--color-ink)] hover:bg-zed-900/5 md:hidden"
             >
-              <Search className="size-5" />
+              <Search className="size-[22px] shrink-0 text-soft-sage" />
             </button>
             <button
               type="button"
@@ -278,23 +277,36 @@ export function HeaderContent({
         </div>
       </div>
 
-      {/* Category quick strip */}
-      <div className="hidden border-b border-edge bg-white/55 backdrop-blur-xl lg:block">
-        <div className="container-zed flex items-center gap-1 py-2">
-          <span className="mr-2 shrink-0 text-[12px] font-bold uppercase tracking-[0.14em] text-soft-sage">
-            Product Categories
-          </span>
+      {/* Category quick strip — horizontal scroller on mobile */}
+      <div className="no-scrollbar flex items-center gap-2.5 overflow-x-auto border-t border-edge/60 bg-white/55 py-2 backdrop-blur-xl lg:hidden">
           {CATEGORY_STRIP.map((c) => (
             <Link
               key={c.href}
               href={c.href}
-              className="rounded-md px-2.5 py-1.5 text-[13px] font-medium text-[var(--color-ink)] transition-colors hover:bg-white hover:text-soft-sage"
+              className="shrink-0 rounded-2xl border border-white/60 bg-white/70 px-3.5 py-2.5 text-[13px] font-medium text-[var(--color-ink)] shadow-glass transition-colors hover:bg-white"
             >
               {c.label}
             </Link>
           ))}
         </div>
-      </div>
+
+      {/* Category quick strip — desktop */}
+      <div className="hidden border-b border-edge bg-white/55 backdrop-blur-xl lg:block">
+          <div className="container-zed flex items-center gap-1 py-2">
+            <span className="mr-2 shrink-0 text-[12px] font-bold uppercase tracking-[0.14em] text-soft-sage">
+              Product Categories
+            </span>
+            {CATEGORY_STRIP.map((c) => (
+              <Link
+                key={c.href}
+                href={c.href}
+                className="rounded-md px-2.5 py-1.5 text-[13px] font-medium text-[var(--color-ink)] transition-colors hover:bg-white hover:text-soft-sage"
+              >
+                {c.label}
+              </Link>
+            ))}
+          </div>
+        </div>
 
       {/* Mobile drawer */}
       {mobileOpen && (
@@ -380,8 +392,7 @@ export function HeaderContent({
 
       <SearchPanel open={searchOpen} onClose={() => setSearchOpen(false)} />
 
-      <nav aria-label="Mobile quick navigation" className="fixed inset-x-3 bottom-3 z-[60] grid grid-cols-5 border border-edge bg-white p-1.5 shadow-glass-lg lg:hidden">
-        <Link href="/" className="flex flex-col items-center gap-0.5 px-2 py-2 text-[10px] font-semibold text-ink hover:text-rose-600"><Sparkles className="size-4" /><span>Home</span></Link>
+      <nav aria-label="Mobile quick navigation" className="fixed inset-x-3 bottom-3 z-[60] grid grid-cols-4 rounded-2xl border border-edge bg-white p-1.5 shadow-glass-lg lg:hidden">
         <Link href="/shop" className="flex flex-col items-center gap-0.5 px-2 py-2 text-[10px] font-semibold text-ink hover:text-rose-600"><ShoppingBag className="size-4" /><span>Shop</span></Link>
         <button type="button" onClick={() => setSearchOpen(true)} className="flex flex-col items-center gap-0.5 px-2 py-2 text-[10px] font-semibold text-ink hover:text-rose-600"><Search className="size-4" /><span>Search</span></button>
         <Link href="/wishlist" className="flex flex-col items-center gap-0.5 px-2 py-2 text-[10px] font-semibold text-ink hover:text-rose-600"><Heart className="size-4" /><span>Wishlist</span></Link>

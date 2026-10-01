@@ -42,7 +42,7 @@ export function InventoryManager({ products }: { products: ProductRow[] }) {
  <div className="overflow-hidden rounded-zed border border-edge bg-white">
  <table className="w-full text-sm">
  <thead>
- <tr className="border-b border-edge bg-panel text-left text-xs uppercase tracking-wider text-[#6B6B6B]">
+ <tr className="border-b border-edge bg-panel text-left text-xs uppercase tracking-wider text-[#334155]">
  <th className="p-3">Product</th>
  <th className="p-3">On hand</th>
  <th className="p-3">Reserved</th>
@@ -62,14 +62,14 @@ export function InventoryManager({ products }: { products: ProductRow[] }) {
  {p.imageUrl && <Image src={p.imageUrl} alt="" fill unoptimized className="object-cover" />}
  </span>
  <div>
- <p className="font-semibold text-[#171717]">{p.name}</p>
+ <p className="font-semibold text-[#07111F]">{p.name}</p>
  {sticky && <p className="text-[11px] font-bold text-red-600">LOW STOCK</p>}
  </div>
  </div>
  </td>
- <td className="p-3 font-bold text-[#171717]">{p.quantity}</td>
- <td className="p-3 text-[#6B6B6B]">{p.reservedQuantity}</td>
- <td className="p-3 font-semibold text-[#171717]">{Math.max(0, p.quantity - p.reservedQuantity)}</td>
+ <td className="p-3 font-bold text-[#07111F]">{p.quantity}</td>
+ <td className="p-3 text-[#334155]">{p.reservedQuantity}</td>
+ <td className="p-3 font-semibold text-[#07111F]">{Math.max(0, p.quantity - p.reservedQuantity)}</td>
  <td className="p-3">
  <div className="flex items-center gap-1.5">
  <button type="button" disabled={busyId === `${p.id}::-1`} onClick={() => adjust(p.id, null, -1)} className="rounded-zed border border-edge p-1.5 hover:border-soft-sage disabled:opacity-40" aria-label="Decrease">
@@ -83,10 +83,10 @@ export function InventoryManager({ products }: { products: ProductRow[] }) {
  </tr>
  {p.variants.map((v) => (
  <tr key={v.id} className="bg-panel/30 text-xs hover:bg-panel/60">
- <td className="p-2 pl-9 text-[#6B6B6B]">{p.name} | {v.value} <span className="text-[#6B6B6B]">({v.sku})</span></td>
- <td className="p-2 font-semibold text-[#171717]">{v.quantity}</td>
- <td className="p-2 text-[#6B6B6B]">{v.reservedQuantity}</td>
- <td className="p-2 text-[#6B6B6B]">{Math.max(0, v.quantity - v.reservedQuantity)}</td>
+ <td className="p-2 pl-9 text-[#334155]">{p.name} | {v.value} <span className="text-[#334155]">({v.sku})</span></td>
+ <td className="p-2 font-semibold text-[#07111F]">{v.quantity}</td>
+ <td className="p-2 text-[#334155]">{v.reservedQuantity}</td>
+ <td className="p-2 text-[#334155]">{Math.max(0, v.quantity - v.reservedQuantity)}</td>
  <td className="p-2">
  <div className="flex items-center gap-1.5">
  <button type="button" disabled={busyId === `${v.id}::-1`} onClick={() => adjust(p.id, v.id, -1)} className="rounded-zed border border-edge bg-white p-1.5 hover:border-soft-sage disabled:opacity-40" aria-label="Decrease variant">
@@ -95,7 +95,7 @@ export function InventoryManager({ products }: { products: ProductRow[] }) {
  <button type="button" disabled={busyId === `${v.id}::1`} onClick={() => adjust(p.id, v.id, 1)} className="rounded-zed border border-edge bg-white p-1.5 hover:border-soft-sage disabled:opacity-40" aria-label="Increase variant">
  <Plus className="size-3" />
  </button>
- {busyId === `${v.id}::1` || busyId === `${v.id}::-1` ? <Loader2 className="size-3 animate-spin text-[#6B6B6B]" /> : null}
+ {busyId === `${v.id}::1` || busyId === `${v.id}::-1` ? <Loader2 className="size-3 animate-spin text-[#334155]" /> : null}
  </div>
  </td>
  </tr>
@@ -103,7 +103,7 @@ export function InventoryManager({ products }: { products: ProductRow[] }) {
  </Fragment>
  );
  })}
- {filtered.length === 0 && <tr><td colSpan={5} className="p-8 text-center text-[#6B6B6B]">No products.</td></tr>}
+ {filtered.length === 0 && <tr><td colSpan={5} className="p-8 text-center text-[#334155]">No products.</td></tr>}
  </tbody>
  </table>
  </div>

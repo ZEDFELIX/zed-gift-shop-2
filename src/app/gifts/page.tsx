@@ -23,14 +23,14 @@ export default async function GiftsPage() {
  <div className="container-zed py-10 lg:py-14">
  <header className="max-w-2xl">
  <p className="eyebrow">Gift discovery</p>
- <h1 className="mt-2 font-display text-3xl font-bold text-[#171717] lg:text-4xl">What are we celebrating?</h1>
- <p className="mt-3 text-[#171717]">
+ <h1 className="mt-2 font-display text-3xl font-bold text-[#07111F] lg:text-4xl">What are we celebrating?</h1>
+ <p className="mt-3 text-[#07111F]">
  Start with the occasion or the person - we&apos;ll match the moment to the gift.
  </p>
  </header>
 
  <section className="mt-10">
- <h2 className="font-display text-xl font-bold text-[#171717]">By occasion</h2>
+ <h2 className="font-display text-xl font-bold text-[#07111F]">By occasion</h2>
  <div className="mt-5 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
  {OCCASION_CARDS.map((c) => (
  <Link key={c.href} href={c.href} className="group relative block aspect-[4/5] overflow-hidden rounded-zed bg-white/45">
@@ -43,7 +43,7 @@ export default async function GiftsPage() {
  </section>
 
  <section className="mt-12">
- <h2 className="font-display text-xl font-bold text-[#171717]">By recipient</h2>
+ <h2 className="font-display text-xl font-bold text-[#07111F]">By recipient</h2>
  <div className="mt-5 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
  {recipients.map((r) => (
  <Link
@@ -51,8 +51,8 @@ export default async function GiftsPage() {
  href={`/gifts/${r.slug}`}
  className="glass-card flex flex-col items-center justify-center gap-2 rounded-zed p-6 text-center transition-all hover:-translate-y-1 hover:shadow-glass-lg"
  >
- <span className="font-display text-sm font-bold text-[#171717]">{r.name}</span>
- <span className="text-xs text-[#6B6B6B]">{r._count.products} gifts</span>
+ <span className="font-display text-sm font-bold text-[#07111F]">{r.name}</span>
+ <span className="text-xs text-[#334155]">{r._count.products} gifts</span>
  </Link>
  ))}
  </div>

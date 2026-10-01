@@ -17,6 +17,12 @@ enum Role {
  ADMIN
 }
 
+enum UserStatus {
+ ACTIVE
+ SUSPENDED
+ DISABLED
+}
+
 enum ProductStatus {
  DRAFT
  ACTIVE
@@ -132,6 +138,14 @@ enum NotificationEvent {
   PAYMENT_FAILED
   ORDER_CANCELLED
   REFUND_PROCESSED
+  // Admin-facing operational alerts.
+  ADMIN_NEW_ORDER
+  ADMIN_FAILED_PAYMENT
+  ADMIN_LOW_STOCK
+  ADMIN_OUT_OF_STOCK
+  ADMIN_NEW_CUSTOMER
+  ADMIN_NEW_REVIEW
+  ADMIN_NEW_REFUND_REQUEST
 }
 
 enum NotificationChannel {
@@ -158,7 +172,13 @@ model User {
  passwordHash String?
  phone String?
  role Role @default(CUSTOMER)
+ status UserStatus @default(ACTIVE)
  favoritesJson String?
+ // Authentication hardening: lockout after repeated failures + activity trail.
+ failedLoginAttempts Int @default(0)
+ lockedUntil DateTime?
+ lastLoginAt DateTime?
+ lastLoginIp String?
  createdAt DateTime @default(now())
  updatedAt DateTime @updatedAt
 
@@ -170,8 +190,11 @@ model User {
  notifications Notification[]
  inventoryTransactions InventoryTransaction[]
  passwordResets PasswordReset[]
+ groupMemberships CustomerGroupMember[]
 
  @@index([role])
+ @@index([status])
+ @@index([createdAt])
 }
 
 model PasswordReset {
@@ -801,4 +824,103 @@ model AdminSetting {
  value String // JSON-encoded
  updatedAt DateTime @updatedAt
  updatedBy String?
+}
+
+// ---------- Customer segmentation ----------
+
+model CustomerGroup {
+  id String @id @default(cuid())
+  name String @unique
+  slug String @unique
+  description String?
+  discountPercent Int @default(0)
+  active Boolean @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  members CustomerGroupMember[]
+
+  @@index([active])
+}
+
+model CustomerGroupMember {
+  id String @id @default(cuid())
+  groupId String
+  userId String
+  addedById String?
+  createdAt DateTime @default(now())
+
+  group CustomerGroup @relation(fields: [groupId], references: [id], onDelete: Cascade)
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([groupId, userId])
+  @@index([userId])
+}
+
+// ---------- Marketing campaigns & promotions ----------
+
+model Campaign {
+  id String @id @default(cuid())
+  name String
+  slug String @unique
+  description String?
+  bannerImage String?
+  bannerUrl String?
+  headline String?
+  subheadline String?
+  status CampaignStatus @default(DRAFT)
+  startsAt DateTime?
+  endsAt DateTime?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  promotions Promotion[]
+
+  @@index([status])
+  @@index([startsAt, endsAt])
+}
+
+enum CampaignStatus {
+  DRAFT
+  SCHEDULED
+  ACTIVE
+  PAUSED
+  ENDED
+}
+
+model Promotion {
+  id String @id @default(cuid())
+  name String
+  description String?
+  campaignId String?
+  discountType DiscountType @default(PERCENTAGE)
+  discountValue Int
+  scope DiscountScope @default(ALL)
+  minOrderValue Int @default(0)
+  maxUses Int?
+  usedCount Int @default(0)
+  startsAt DateTime?
+  endsAt DateTime?
+  active Boolean @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  campaign Campaign? @relation(fields: [campaignId], references: [id], onDelete: SetNull)
+
+  @@index([active])
+  @@index([campaignId])
+  @@index([startsAt, endsAt])
+}
+
+// ---------- Product view analytics ----------
+
+model ProductView {
+  id String @id @default(cuid())
+  productId String
+  userId String?
+  sessionHash String?
+  createdAt DateTime @default(now())
+
+  @@index([productId, createdAt])
+  @@index([createdAt])
 }

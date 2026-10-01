@@ -38,8 +38,8 @@ export function ForgotPasswordForm() {
  <span className="mx-auto grid size-14 place-items-center rounded-full bg-zed-950 text-white">
  <CheckCircle2 className="size-7" />
  </span>
- <h1 className="mt-4 font-display text-2xl font-bold text-[#171717]">Check your inbox</h1>
- <p className="mt-2 text-sm text-[#6B6B6B]">
+ <h1 className="mt-4 font-display text-2xl font-bold text-[#07111F]">Check your inbox</h1>
+ <p className="mt-2 text-sm text-[#334155]">
  If an account exists for <strong>{email}</strong>, we&apos;ve emailed you a link to reset your password. It expires in 1 hour.
  </p>
  <Link href="/login" className="mt-6 inline-block font-semibold text-soft-sage underline underline-offset-2">Back to log in</Link>
@@ -51,13 +51,13 @@ export function ForgotPasswordForm() {
  <form onSubmit={submit} className="glass-card w-full max-w-md space-y-4 rounded-zed p-6 lg:p-8">
  <div className="text-center">
  <p className="eyebrow">Need a hand?</p>
- <h1 className="mt-2 font-display text-2xl font-bold text-[#171717]">Reset your password</h1>
- <p className="mt-1.5 text-sm text-[#6B6B6B]">Enter your account email and we&apos;ll send you a reset link.</p>
+ <h1 className="mt-2 font-display text-2xl font-bold text-[#07111F]">Reset your password</h1>
+ <p className="mt-1.5 text-sm text-[#334155]">Enter your account email and we&apos;ll send you a reset link.</p>
  </div>
  <div>
  <label className="label" htmlFor="fp-email">Email</label>
  <div className="relative">
- <Mail className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-[#6B6B6B]" />
+ <Mail className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-[#334155]" />
  <input id="fp-email" type="email" className="field pl-9" placeholder="you@example.com" value={email} onChange={(e) => setEmail(e.target.value)} required />
  </div>
  </div>

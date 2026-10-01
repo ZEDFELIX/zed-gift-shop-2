@@ -86,13 +86,13 @@ export function CouponsManager() {
  return (
  <div className="space-y-4">
  <div className="flex items-center justify-between">
- <p className="text-sm text-[#6B6B6B]">Active coupons:{coupons.filter((c) => c.active).length}</p>
+ <p className="text-sm text-[#334155]">Active coupons:{coupons.filter((c) => c.active).length}</p>
  <button type="button" onClick={() => setShowForm((s) => !s)} className="flex items-center gap-1.5 rounded-zed bg-zed-950 px-4 py-2.5 text-sm font-bold text-white">
  <Plus className="size-4" /> {showForm ? "Cancel" : "New coupon"}
  </button>
  </div>
 
- {loading && <p className="flex items-center gap-2 text-sm text-[#6B6B6B]"><Loader2 className="size-4 animate-spin" /> Loading...</p>}
+ {loading && <p className="flex items-center gap-2 text-sm text-[#334155]"><Loader2 className="size-4 animate-spin" /> Loading...</p>}
 
  {showForm && (
  <form onSubmit={create} className="grid gap-4 rounded-zed border border-edge bg-white p-5 sm:grid-cols-2">
@@ -131,7 +131,7 @@ export function CouponsManager() {
  )}
 
  {coupons.length === 0 && !loading && (
- <div className="rounded-zed border border-dashed border-edge p-10 text-center text-sm text-[#6B6B6B]">
+ <div className="rounded-zed border border-dashed border-edge p-10 text-center text-sm text-[#334155]">
  <Ticket className="mx-auto mb-2 size-8 text-soft-sage/50" /> No coupons yet.
  </div>
  )}
@@ -141,18 +141,18 @@ export function CouponsManager() {
  <li key={c.id} className="rounded-zed border border-edge bg-white p-5">
  <div className="flex flex-wrap items-center justify-between gap-3">
  <div>
- <p className="flex items-center gap-2 font-bold text-[#171717]">
+ <p className="flex items-center gap-2 font-bold text-[#07111F]">
  {c.code}
- <span className={`rounded-full px-2 py-0.5 text-[11px] font-bold ${c.active ? "bg-emerald-50 text-emerald-700" : "bg-panel text-[#6B6B6B]"}`}>{c.active ? "Active" : "Paused"}</span>
+ <span className={`rounded-full px-2 py-0.5 text-[11px] font-bold ${c.active ? "bg-emerald-50 text-emerald-700" : "bg-panel text-[#334155]"}`}>{c.active ? "Active" : "Paused"}</span>
  </p>
- <p className="mt-1 text-sm text-[#6B6B6B]">
+ <p className="mt-1 text-sm text-[#334155]">
  {c.type === "PERCENTAGE" ? `${c.value}% off` : `${formatKES(c.value)} off`}
  {c.minSpend > 0 ? ` | min ${formatKES(c.minSpend)}` : ""} | used {c.usedCount}{c.maxUses ? `/${c.maxUses}` : ""}
  {c.expiresAt ? ` | expires ${new Date(c.expiresAt).toLocaleDateString("en-KE")}` : ""}
  </p>
  </div>
  <div className="flex items-center gap-2">
- <button type="button" onClick={() => toggle(c)} className="rounded-zed border border-edge px-3 py-1.5 text-xs font-semibold text-[#171717] hover:border-soft-sage">
+ <button type="button" onClick={() => toggle(c)} className="rounded-zed border border-edge px-3 py-1.5 text-xs font-semibold text-[#07111F] hover:border-soft-sage">
  {c.active ? "Pause" : "Activate"}
  </button>
  <button type="button" onClick={() => remove(c.id)} className="rounded-zed border border-red-100 p-2 text-red-500 hover:bg-red-50" aria-label="Delete coupon">
