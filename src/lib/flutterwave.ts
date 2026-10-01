@@ -125,7 +125,7 @@ export async function verifyFlutterwaveTransaction(transactionId: string | numbe
  return {
  ok: true,
  data: data.data,
- status: data.data.status === "successful" ? "SUCCESS" : data.data.status?.toUpperCase() ?? "PENDING",
+ status: data.data.status === "successful" ? "SUCCESSFUL" : data.data.status?.toUpperCase() ?? "PENDING",
  };
  } catch (err) {
  return { ok: false, error: err instanceof Error ? err.message : "Verification failed." };

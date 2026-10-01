@@ -47,14 +47,14 @@ export function OrderStatusController({ orderId, orderStatus, paymentStatus, rec
  <div className="grid gap-4 sm:grid-cols-3">
  <div>
  <label className="label" htmlFor="os-status">Order status</label>
- <select id="os-status" className="field" value={os} onChange={(e) => setOs(e.target.value)} disabled={ps !== "SUCCESS"}>
+ <select id="os-status" className="field" value={os} onChange={(e) => setOs(e.target.value)} disabled={ps !== "SUCCESSFUL"}>
  {ORDER_STATUS_STEPS.map((s) => <option key={s.status} value={s.status}>{s.label}</option>)}
  </select>
  </div>
  <div>
  <label className="label" htmlFor="os-pay">Payment</label>
  <select id="os-pay" className="field" value={ps} onChange={(e) => setPs(e.target.value)}>
- {["PENDING", "SUCCESS", "FAILED", "CANCELLED", "TIMEOUT"].map((v) => <option key={v} value={v}>{v}</option>)}
+ {["PENDING", "SUCCESSFUL", "FAILED", "CANCELLED", "TIMEOUT"].map((v) => <option key={v} value={v}>{v}</option>)}
  </select>
  </div>
  <div>

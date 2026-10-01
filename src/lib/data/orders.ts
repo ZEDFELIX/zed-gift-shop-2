@@ -181,7 +181,7 @@ export async function updatePaymentStatus(orderId: string, status: PaymentStatus
  where: { id: orderId },
  data: {
  paymentStatus: status,
- orderStatus: status === "SUCCESS" ? "PAID" : undefined,
+ orderStatus: status === "SUCCESSFUL" ? "PAID" : undefined,
  updatedAt: now,
  },
  });
@@ -251,7 +251,7 @@ export async function releaseInventoryForOrder(orderId: string) {
  variantId: item.variantId,
  type: "RELEASE",
  quantity: -item.quantity,
- note: `Order ${order.orderNumber} ${order.paymentStatus === "SUCCESS" ? "paid" : "cancelled"}`,
+ note: `Order ${order.orderNumber} ${order.paymentStatus === "SUCCESSFUL" ? "paid" : "cancelled"}`,
  },
  });
  }
@@ -259,13 +259,13 @@ export async function releaseInventoryForOrder(orderId: string) {
 
 export async function confirmOrderPaid(orderId: string, paymentId: string, mpesaReceipt: string) {
  const order = await prisma.order.findUnique({ where: { id: orderId }, include: { items: true } });
- if (!order || order.paymentStatus === "SUCCESS") return;
+ if (!order || order.paymentStatus === "SUCCESSFUL") return;
 
  const now = new Date();
  await prisma.$transaction(async (tx) => {
  await tx.order.update({
  where: { id: orderId },
- data: { paymentStatus: "SUCCESS", orderStatus: "PAID", updatedAt: now },
+ data: { paymentStatus: "SUCCESSFUL", orderStatus: "PAID", updatedAt: now },
  });
 // Stock deduction: committed sale, release reserves and decrement real stock.
   for (const item of order.items) {

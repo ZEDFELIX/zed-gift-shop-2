@@ -34,7 +34,7 @@ export default async function AccountOrdersPage() {
  <p className="font-bold text-[#171717]">{formatKES(o.total)}</p>
  </div>
  <div className="mt-3 flex flex-wrap items-center gap-2 text-xs">
- <span className={`rounded-full px-2.5 py-1 font-semibold ${o.paymentStatus === "SUCCESS" ? "bg-emerald-50 text-emerald-700" : "bg-amber-50 text-amber-700"}`}>
+ <span className={`rounded-full px-2.5 py-1 font-semibold ${o.paymentStatus === "SUCCESSFUL" ? "bg-emerald-50 text-emerald-700" : "bg-amber-50 text-amber-700"}`}>
  {PAYMENT_STATUS_LABELS[o.paymentStatus] ?? o.paymentStatus}
  </span>
  <span className="rounded-full bg-white/45 px-2.5 py-1 font-semibold text-[#171717]">{ORDER_STATUS_LABELS[o.orderStatus] ?? o.orderStatus}</span>

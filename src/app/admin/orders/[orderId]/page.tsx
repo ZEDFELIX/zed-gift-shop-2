@@ -30,7 +30,7 @@ export default async function AdminOrderPage({ params }: { params: Promise<{ ord
  <p className="text-sm text-[#6B6B6B]">{order.createdAt.toLocaleString("en-KE")}</p>
  </div>
  <div className="text-right">
- <span className={`rounded-full px-2.5 py-1 text-xs font-bold ${order.paymentStatus === "SUCCESS" ? "bg-emerald-50 text-emerald-700" : "bg-amber-50 text-amber-700"}`}>
+ <span className={`rounded-full px-2.5 py-1 text-xs font-bold ${order.paymentStatus === "SUCCESSFUL" ? "bg-emerald-50 text-emerald-700" : "bg-amber-50 text-amber-700"}`}>
  {PAYMENT_STATUS_LABELS[order.paymentStatus]}
  </span>
  <span className="ml-2 rounded-full bg-panel px-2.5 py-1 text-xs font-bold text-[#171717]">{ORDER_STATUS_LABELS[order.orderStatus]}</span>

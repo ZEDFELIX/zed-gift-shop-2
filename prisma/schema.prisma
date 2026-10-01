@@ -46,7 +46,7 @@ enum OrderStatus {
 enum PaymentStatus {
   PENDING
   PROCESSING
-  SUCCESS
+  SUCCESSFUL
   FAILED
   CANCELLED
   TIMEOUT

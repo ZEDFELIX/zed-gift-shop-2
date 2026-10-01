@@ -39,17 +39,23 @@ export async function POST(req: Request) {
  const clash = await prisma.deliveryZone.findFirst({ where: { county: d.county, town: d.town ?? null } });
  if (clash) return NextResponse.json({ error: "That zone already exists for this county." }, { status: 409 });
 
- const zone = await prisma.deliveryZone.create({
- data: {
- county: d.county,
- town: d.town ?? null,
- fee: d.fee,
- deliveryTime: d.deliveryTime || null,
- sameDay: d.sameDay,
- nextDay: d.nextDay,
- pickup: d.pickup,
- active: d.active,
- },
- });
+const zone = await prisma.deliveryZone.create({
+  data: {
+  name: d.name,
+  county: d.county,
+  town: d.town ?? null,
+  fee: d.fee,
+  expressFee: d.expressFee ?? null,
+  deliveryTime: d.deliveryTime || null,
+  sameDay: d.sameDay,
+  nextDay: d.nextDay,
+  pickup: d.pickup,
+  codAvailable: d.codAvailable,
+  minOrder: d.minOrder,
+  maxOrder: d.maxOrder ?? null,
+  deliveryPartner: d.deliveryPartner || null,
+  active: d.active,
+  },
+  });
  return NextResponse.json({ zone }, { status: 201 });
 }

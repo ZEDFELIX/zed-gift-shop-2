@@ -275,7 +275,7 @@ useEffect(() => {
   try {
   const res = await fetch(`/api/orders/${orderRef.orderId}/status`);
   const data = (await res.json()) as { paymentStatus?: string; mpesaReceipt?: string | null; paymentResultDescription?: string | null };
-  if (data.paymentStatus === "SUCCESS") {
+  if (data.paymentStatus === "SUCCESSFUL") {
   clearInterval(interval);
   pollRef.current = 0;
   setPollSeconds(0);
@@ -303,7 +303,7 @@ useEffect(() => {
   try {
   const res = await fetch(`/api/orders/${orderRef.orderId}/status`);
   const data = (await res.json()) as { paymentStatus?: string };
-  if (data.paymentStatus === "SUCCESS") {
+  if (data.paymentStatus === "SUCCESSFUL") {
   clearInterval(interval);
   setStep("done");
   } else if (data.paymentStatus === "FAILED" || data.paymentStatus === "CANCELLED") {

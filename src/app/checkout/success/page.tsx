@@ -21,7 +21,7 @@ export default async function CheckoutSuccessPage({ searchParams }: { searchPara
  );
  }
 
- const isPaid = data.paymentStatus === "SUCCESS";
+ const isPaid = data.paymentStatus === "SUCCESSFUL";
  const statusLabel = ORDER_STATUS_STEPS.find((s) => s.status === data.orderStatus)?.label ?? data.orderStatus;
 
  return (

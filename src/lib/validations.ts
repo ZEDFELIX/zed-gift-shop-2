@@ -168,16 +168,34 @@ export const categoryCreateSchema = z.object({
  active: z.coerce.boolean().default(true),
 });
 
-export const deliveryZoneSchema = z.object({
- county: z.string().min(2).max(60),
- town: z.string().max(60).nullable().optional(),
- fee: z.coerce.number().int().min(0).max(10_000_000),
- deliveryTime: z.string().max(80).optional().or(z.literal("")),
- sameDay: z.coerce.boolean().default(false),
- nextDay: z.coerce.boolean().default(true),
- pickup: z.coerce.boolean().default(false),
- active: z.coerce.boolean().default(true),
+const deliveryZoneFields = z.object({
+  name: z.string().min(2).max(80),
+  county: z.string().min(2).max(60),
+  town: z.string().max(60).nullable().optional(),
+  fee: z.coerce.number().int().min(0).max(10_000_000),
+  expressFee: z.coerce.number().int().min(0).max(10_000_000).nullable().optional(),
+  deliveryTime: z.string().max(80).optional().or(z.literal("")),
+  sameDay: z.coerce.boolean().default(false),
+  nextDay: z.coerce.boolean().default(true),
+  pickup: z.coerce.boolean().default(false),
+  codAvailable: z.coerce.boolean().default(false),
+  minOrder: z.coerce.number().int().min(0).default(0),
+  maxOrder: z.coerce.number().int().min(0).max(100_000_000).nullable().optional(),
+  deliveryPartner: z.string().max(120).nullable().optional(),
+  active: z.coerce.boolean().default(true),
 });
+
+export const deliveryZoneSchema = deliveryZoneFields.refine(
+  (z) => z.maxOrder == null || z.maxOrder >= z.minOrder,
+  { message: "Maximum order value must be at least the minimum.", path: ["maxOrder"] },
+);
+
+export const deliveryZoneUpdateSchema = deliveryZoneFields
+  .partial()
+  .refine(
+    (z) => z.maxOrder == null || z.minOrder == null || z.maxOrder >= z.minOrder,
+    { message: "Maximum order value must be at least the minimum.", path: ["maxOrder"] },
+  );
 
 export const discountCreateSchema = z.object({
  code: z.string().min(2).max(40).toUpperCase(),

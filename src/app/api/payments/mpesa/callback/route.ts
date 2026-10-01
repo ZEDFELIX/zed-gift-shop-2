@@ -73,7 +73,7 @@ export async function POST(req: Request) {
  });
 
  // Already final - ignore duplicate callbacks.
- if (payment.status === "SUCCESS" || payment.status === "FAILED" || payment.status === "CANCELLED") {
+ if (payment.status === "SUCCESSFUL" || payment.status === "FAILED" || payment.status === "CANCELLED") {
  return ack();
  }
 
@@ -101,7 +101,7 @@ if (receipt && amountPaid < payment.amount) {
  await prisma.payment.update({
  where: { id: payment.id },
  data: {
- status: "SUCCESS",
+ status: "SUCCESSFUL",
  mpesaReceipt: receipt,
  resultCode,
 resultDescription: cb.ResultDesc ?? "The service request is processed successfully.",

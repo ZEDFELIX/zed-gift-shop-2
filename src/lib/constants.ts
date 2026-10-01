@@ -628,7 +628,7 @@ export const ORDER_STATUS_LABELS = Object.fromEntries(ORDER_STATUS_STEPS.map((s)
 
 export const PAYMENT_STATUS_LABELS: Record<string, string> = {
   PENDING: "Awaiting payment",
-  SUCCESS: "Paid",
+  SUCCESSFUL: "Paid",
   FAILED: "Payment failed",
   CANCELLED: "Cancelled",
 };

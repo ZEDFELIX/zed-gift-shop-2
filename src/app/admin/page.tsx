@@ -20,12 +20,12 @@ export default async function AdminDashboardPage() {
  prisma.product.groupBy({ by: ["status"], _count: { _all: true } }),
  prisma.product.findMany({ where: { status: "ACTIVE" }, select: { id: true, name: true, quantity: true, lowStockThreshold: true }, orderBy: { quantity: "asc" }, take: 6 }),
  prisma.review.groupBy({ by: ["status"], _count: { _all: true } }),
- prisma.order.aggregate({ where: { paymentStatus: "SUCCESS" }, _sum: { total: true }, _count: true }),
+ prisma.order.aggregate({ where: { paymentStatus: "SUCCESSFUL" }, _sum: { total: true }, _count: true }),
  ]);
 
  const lowStock = lowStockRaw.filter((p) => p.quantity <= p.lowStockThreshold);
 
- const paidOrders = orderCounts.find((o) => o.paymentStatus === "SUCCESS")?._count._all ?? 0;
+ const paidOrders = orderCounts.find((o) => o.paymentStatus === "SUCCESSFUL")?._count._all ?? 0;
  const pendingOrders = orderCounts.find((o) => o.paymentStatus === "PENDING")?._count._all ?? 0;
 
  const cards = [
@@ -59,7 +59,7 @@ export default async function AdminDashboardPage() {
  <Link href={`/admin/orders/${o.id}`} className="flex flex-wrap items-center justify-between gap-2 py-2.5 hover:text-soft-sage">
  <span className="font-semibold text-[#171717]">{o.orderNumber}</span>
  <span className="hidden text-[#6B6B6B] sm:block">{o.name}</span>
- <span className={`rounded-full px-2 py-0.5 text-[11px] font-semibold ${o.paymentStatus === "SUCCESS" ? "bg-emerald-50 text-emerald-700" : "bg-amber-50 text-amber-700"}`}>
+ <span className={`rounded-full px-2 py-0.5 text-[11px] font-semibold ${o.paymentStatus === "SUCCESSFUL" ? "bg-emerald-50 text-emerald-700" : "bg-amber-50 text-amber-700"}`}>
  {PAYMENT_STATUS_LABELS[o.paymentStatus]}
  </span>
  <span className="font-bold text-[#171717]">{formatKES(o.total)}</span>

@@ -34,7 +34,7 @@ export default async function OrderDetailPage({ params }: { params: Promise<{ or
  <div className="text-right">
  <p className="text-sm text-[#6B6B6B]">Total</p>
  <p className="font-display text-xl font-bold text-[#171717]">{formatKES(order.total)}</p>
- <p className={`text-xs font-semibold ${order.paymentStatus === "SUCCESS" ? "text-emerald-600" : "text-amber-600"}`}>
+ <p className={`text-xs font-semibold ${order.paymentStatus === "SUCCESSFUL" ? "text-emerald-600" : "text-amber-600"}`}>
  {PAYMENT_STATUS_LABELS[order.paymentStatus] ?? order.paymentStatus}{receipt ? ` | ${receipt}` : ""}
  </p>
  </div>

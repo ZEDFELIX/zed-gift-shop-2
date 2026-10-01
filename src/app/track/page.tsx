@@ -67,7 +67,7 @@ function TrackContent() {
 
  const steps = ORDER_STATUS_STEPS.map((s) => s.status);
  const currentIndex = steps.indexOf(result?.orderStatus ?? "");
- const paid = result?.paymentStatus === "SUCCESS";
+ const paid = result?.paymentStatus === "SUCCESSFUL";
 
  return (
  <div className="container-zed max-w-2xl py-14 lg:py-20">

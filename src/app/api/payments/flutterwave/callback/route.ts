@@ -75,7 +75,7 @@ export async function POST(req: Request) {
  return NextResponse.json({ status: "ignored" });
  }
 
- if (payment.status === "SUCCESS" || payment.status === "FAILED") {
+ if (payment.status === "SUCCESSFUL" || payment.status === "FAILED") {
  return NextResponse.json({ status: "already_processed" });
  }
 
@@ -87,16 +87,16 @@ export async function POST(req: Request) {
   verified.tx_ref === payment.txRef &&
   verified.currency === "KES" &&
   Number(verified.amount) >= payment.amount
-   ? "SUCCESS"
+   ? "SUCCESSFUL"
    : verify.ok && ["failed", "cancelled"].includes(String(verified?.status).toLowerCase())
      ? "FAILED"
      : "PENDING";
 
- if (finalStatus === "SUCCESS") {
+ if (finalStatus === "SUCCESSFUL") {
  await prisma.payment.update({
  where: { id: payment.id },
  data: {
- status: "SUCCESS",
+ status: "SUCCESSFUL",
  mpesaReceipt: `${txRef}-${transactionId}`,
  resultDescription: `Flutterwave payment via ${event.data?.payment_type ?? "card"}`,
  },

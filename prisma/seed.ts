@@ -464,7 +464,7 @@ giftWrapAvailable: p.giftWrapAvailable ?? false,
   town: "Kilimani",
   address: "Sample Apartment, Rose Avenue",
   orderStatus: "DELIVERED",
-  paymentStatus: "SUCCESS",
+  paymentStatus: "SUCCESSFUL",
   isGift: true,
   items: {
   create: [
@@ -491,7 +491,7 @@ giftWrapAvailable: p.giftWrapAvailable ?? false,
   create: [
   {
   provider: "M_PESA",
-  status: "SUCCESS",
+  status: "SUCCESSFUL",
   amount: subtotal + 150,
   phone: "254712345678",
   mpesaReceipt: "SEEDSMP1",

@@ -26,8 +26,8 @@ export async function POST(req: Request) {
  }
 
  // If our DB already has a final status, trust it.
- if (payment.status === "SUCCESS") {
- return NextResponse.json({ status: "SUCCESS", mpesaReceipt: payment.mpesaReceipt, orderNumber: payment.order.orderNumber, amount: payment.amount });
+ if (payment.status === "SUCCESSFUL") {
+ return NextResponse.json({ status: "SUCCESSFUL", mpesaReceipt: payment.mpesaReceipt, orderNumber: payment.order.orderNumber, amount: payment.amount });
  }
  if (payment.status === "FAILED" || payment.status === "CANCELLED") {
  return NextResponse.json({ status: payment.status, orderNumber: payment.order.orderNumber, amount: payment.amount });
@@ -44,8 +44,8 @@ export async function POST(req: Request) {
  where: { checkoutRequestId: parsed.data.checkoutRequestId },
  select: { status: true, mpesaReceipt: true },
  });
- if (persisted?.status === "SUCCESS") {
- return NextResponse.json({ status: "SUCCESS", mpesaReceipt: persisted.mpesaReceipt, orderNumber: payment.order.orderNumber, amount: payment.amount });
+ if (persisted?.status === "SUCCESSFUL") {
+ return NextResponse.json({ status: "SUCCESSFUL", mpesaReceipt: persisted.mpesaReceipt, orderNumber: payment.order.orderNumber, amount: payment.amount });
  }
  return NextResponse.json({ status: "PENDING", orderNumber: payment.order.orderNumber, amount: payment.amount });
 }

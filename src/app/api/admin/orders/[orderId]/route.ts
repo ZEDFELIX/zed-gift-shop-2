@@ -39,12 +39,12 @@ export async function PATCH(req: Request, { params }: { params: Promise<{ orderI
  const validOrderStatuses = ORDER_STATUS_STEPS.map((s) => s.status);
  const isOrderStatus = parsed.data.orderStatus && validOrderStatuses.includes(parsed.data.orderStatus);
  const isPaymentStatus =
- parsed.data.paymentStatus && ["PENDING", "SUCCESS", "FAILED", "CANCELLED", "TIMEOUT"].includes(parsed.data.paymentStatus);
+ parsed.data.paymentStatus && ["PENDING", "SUCCESSFUL", "FAILED", "CANCELLED", "TIMEOUT"].includes(parsed.data.paymentStatus);
 
  const data: Record<string, string> = {};
  if (isOrderStatus) {
  data.orderStatus = parsed.data.orderStatus!;
- if (parsed.data.orderStatus !== "PENDING_PAYMENT" && order.orderStatus === "PENDING_PAYMENT" && order.paymentStatus !== "SUCCESS") {
+ if (parsed.data.orderStatus !== "PENDING_PAYMENT" && order.orderStatus === "PENDING_PAYMENT" && order.paymentStatus !== "SUCCESSFUL") {
  data.paymentStatus = "CANCELLED";
  }
  }

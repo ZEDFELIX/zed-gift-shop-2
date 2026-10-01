@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { requireAdmin } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
-import { deliveryZoneSchema } from "@/lib/validations";
+import { deliveryZoneUpdateSchema } from "@/lib/validations";
 
 export const runtime = "nodejs";
 
@@ -27,13 +27,21 @@ export async function PATCH(req: Request, { params }: { params: Promise<{ id: st
  } catch {
  return NextResponse.json({ error: "Invalid request body." }, { status: 400 });
  }
- const parsed = deliveryZoneSchema.partial().safeParse(body);
- if (!parsed.success) {
- return NextResponse.json({ error: parsed.error.issues[0]?.message ?? "Please check the zone." }, { status: 400 });
- }
+const parsed = deliveryZoneUpdateSchema.safeParse(body);
+  if (!parsed.success) {
+  return NextResponse.json({ error: parsed.error.issues[0]?.message ?? "Please check the zone." }, { status: 400 });
+  }
 
- const zone = await prisma.deliveryZone.update({ where: { id }, data: parsed.data });
- return NextResponse.json({ zone });
+  // The county/town pair is unique, so blank strings have to become null.
+  const data = {
+  ...parsed.data,
+  town: parsed.data.town === "" ? null : parsed.data.town,
+  deliveryTime: parsed.data.deliveryTime === "" ? null : parsed.data.deliveryTime,
+  deliveryPartner: parsed.data.deliveryPartner === "" ? null : parsed.data.deliveryPartner,
+  };
+
+  const zone = await prisma.deliveryZone.update({ where: { id }, data });
+  return NextResponse.json({ zone });
 }
 
 export async function DELETE(_req: Request, { params }: { params: Promise<{ id: string }> }) {

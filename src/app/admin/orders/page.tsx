@@ -6,7 +6,7 @@ import { ORDER_STATUS_LABELS, PAYMENT_STATUS_LABELS } from "@/lib/constants";
 export const dynamic = "force-dynamic";
 export const metadata = { title: "Orders | Admin" };
 
-const PAYMENTS = ["ALL", "PENDING", "SUCCESS", "FAILED", "CANCELLED"];
+const PAYMENTS = ["ALL", "PENDING", "SUCCESSFUL", "FAILED", "CANCELLED"];
 
 export default async function AdminOrdersPage({ searchParams }: { searchParams: Promise<{ q?: string; status?: string; payment?: string; page?: string }> }) {
  const sp = await searchParams;
@@ -58,7 +58,7 @@ export default async function AdminOrdersPage({ searchParams }: { searchParams: 
  </td>
  <td className="p-3 font-semibold text-[#171717]">{formatKES(o.total)}</td>
  <td className="p-3">
- <span className={`rounded-full px-2 py-0.5 text-[11px] font-bold ${o.paymentStatus === "SUCCESS" ? "bg-emerald-50 text-emerald-700" : o.paymentStatus === "PENDING" ? "bg-amber-50 text-amber-700" : "bg-panel text-[#6B6B6B]"}`}>
+ <span className={`rounded-full px-2 py-0.5 text-[11px] font-bold ${o.paymentStatus === "SUCCESSFUL" ? "bg-emerald-50 text-emerald-700" : o.paymentStatus === "PENDING" ? "bg-amber-50 text-amber-700" : "bg-panel text-[#6B6B6B]"}`}>
  {PAYMENT_STATUS_LABELS[o.paymentStatus]}{o.payments[0]?.mpesaReceipt ? ` | ${o.payments[0].mpesaReceipt}` : ""}
  </span>
  </td>
