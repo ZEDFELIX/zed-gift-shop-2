@@ -345,18 +345,20 @@ useEffect(() => {
   setStep("polling");
   }
 
- const deliveryFee = deliveryOptions.find((o) => o.method === form.deliveryMethod)?.fee ?? 0;
- const total = Math.max(0, cart.subtotal - cart.discount) + deliveryFee;
- const canSubmit =
- form.name.trim() &&
- /.+@.+\..+/.test(form.email) &&
- form.phone.trim().length >= 9 &&
- form.county &&
- form.town.trim() &&
- form.address.trim() &&
- (form.deliveryMethod === "PICKUP" || form.deliveryMethod)
- ? true
- : false;
+const deliveryFee = deliveryOptions.find((o) => o.method === form.deliveryMethod)?.fee ?? 0;
+  const total = Math.max(0, cart.subtotal - cart.discount) + deliveryFee;
+  const phoneDigits = form.phone.replace(/\D/g, "").replace(/^00/, "");
+  const phoneIsValid = /^(0|254)\d{9}$/.test(phoneDigits);
+  const canSubmit =
+  form.name.trim() &&
+  /.+@.+\..+/.test(form.email) &&
+  phoneIsValid &&
+  form.county &&
+  form.town.trim() &&
+  form.address.trim() &&
+  (form.deliveryMethod === "PICKUP" || form.deliveryMethod)
+  ? true
+  : false;
 
  function toggleReview() {
  if (step === "form") setStep("review");
@@ -403,12 +405,15 @@ useEffect(() => {
  <input id="co-name" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} className="field" placeholder="Jane Mwangi" />
  </div>
  <div>
- <label className="label" htmlFor="co-phone">M-PESA phone (07XX...)</label>
- <div className="relative">
- <Phone className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-[#6B6B6B]" />
- <input id="co-phone" value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })} className="field pl-9" placeholder="0712 345 678" inputMode="tel" />
- </div>
- </div>
+<label className="label" htmlFor="co-phone">M-PESA phone</label>
+  <div className="relative">
+  <Phone className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-[#6B6B6B]" />
+  <input id="co-phone" value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })} className={`field pl-9 ${form.phone && !phoneIsValid ? "border-red-400" : ""}`} placeholder="0712 345 678" inputMode="tel" autoComplete="tel-national" />
+  </div>
+  {form.phone && !phoneIsValid && (
+  <p className="mt-1 text-xs text-red-600">Enter a Kenyan mobile number, e.g. 0712 345 678.</p>
+  )}
+  </div>
  <div className="sm:col-span-2">
  <label className="label" htmlFor="co-email">Email (for order updates)</label>
  <input id="co-email" type="email" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} className="field" placeholder="you@example.com" />

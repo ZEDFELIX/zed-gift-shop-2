@@ -154,43 +154,85 @@ export async function stkPush(input: {
  }
 }
 
-export async function queryStkStatus(input: { checkoutRequestId: string; phone?: string }): Promise<{
- ok: boolean;
- resultCode?: string;
- resultDescription?: string;
- error?: string;
-}> {
- if (!mpesaConfigured()) return { ok: false, error: "M-PESA is not configured." };
- const timestamp = mpesaTimestamp();
- const password = await base64encode(`${MPESA_BUSINESS_SHORTCODE}${MPESA_PASSKEY}${timestamp}`);
- const body = {
- BusinessShortCode: MPESA_BUSINESS_SHORTCODE,
- Password: password,
- Timestamp: timestamp,
- CheckoutRequestID: input.checkoutRequestId,
- };
- try {
- const token = await getAccessToken();
- const res = await fetch(`${BASE_URL}/mpesa/stkpushquery/v1/query`, {
- method: "POST",
- headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" },
- body: JSON.stringify(body),
- cache: "no-store",
- });
- const data = (await res.json().catch(() => ({}))) as {
- ResultCode?: string | number;
- ResultDesc?: string;
- ResponseCode?: string;
- };
- if (!res.ok) return { ok: false, error: `M-PESA status query failed (${res.status}).` };
- return {
- ok: data.ResultCode === "0" || data.ResultCode === 0,
- resultCode: String(data.ResultCode ?? data.ResponseCode ?? ""),
- resultDescription: data.ResultDesc,
- };
- } catch (err) {
- return { ok: false, error: err instanceof MpesaError ? err.message : "Could not reach M-PESA right now." };
- }
+export type StkQueryResult = {
+  ok: boolean;
+  resultCode?: string;
+  resultDescription?: string;
+  amount?: number;
+  mpesaReceipt?: string;
+  transactionDate?: Date;
+  phone?: string;
+  error?: string;
+};
+
+/**
+ * Authoritative status lookup against Daraja. The STK callback body is a
+ * notification only, so payment state must be decided from this response.
+ */
+export async function queryStkStatus(input: { checkoutRequestId: string; phone?: string }): Promise<StkQueryResult> {
+  if (!mpesaConfigured()) return { ok: false, error: "M-PESA is not configured." };
+  const timestamp = mpesaTimestamp();
+  const password = await base64encode(`${MPESA_BUSINESS_SHORTCODE}${MPESA_PASSKEY}${timestamp}`);
+  const body = {
+    BusinessShortCode: MPESA_BUSINESS_SHORTCODE,
+    Password: password,
+    Timestamp: timestamp,
+    CheckoutRequestID: input.checkoutRequestId,
+  };
+  try {
+    const token = await getAccessToken();
+    const res = await fetch(`${BASE_URL}/mpesa/stkpushquery/v1/query`, {
+      method: "POST",
+      headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" },
+      body: JSON.stringify(body),
+      cache: "no-store",
+    });
+    const data = (await res.json().catch(() => ({}))) as {
+      ResultCode?: string | number;
+      ResultDesc?: string;
+      ResponseCode?: string;
+      CallbackMetadata?: { Item?: { Name: string; Value?: string | number }[] };
+    };
+    if (!res.ok) return { ok: false, error: `M-PESA status query failed (${res.status}).` };
+
+    const meta = Object.fromEntries(
+      (data.CallbackMetadata?.Item ?? []).map((i) => [i.Name, i.Value]),
+    ) as Record<string, string | number | undefined>;
+
+    return {
+      ok: String(data.ResultCode ?? data.ResponseCode ?? "") === "0",
+      resultCode: String(data.ResultCode ?? data.ResponseCode ?? ""),
+      resultDescription: data.ResultDesc,
+      amount: meta.Amount != null ? Number(meta.Amount) : undefined,
+      mpesaReceipt: meta.MpesaReceiptNumber != null ? String(meta.MpesaReceiptNumber) : undefined,
+      transactionDate: meta.TransactionDate != null ? parseMpesaDate(meta.TransactionDate) : undefined,
+      phone: meta.PhoneNumber != null ? String(meta.PhoneNumber) : undefined,
+    };
+  } catch (err) {
+    return { ok: false, error: err instanceof MpesaError ? err.message : "Could not reach M-PESA right now." };
+  }
+}
+
+function parseMpesaDate(raw: string | number | undefined): Date {
+  // Daraja sends TransactionDate as YYYYMMDDHHMMSS, not a unix timestamp.
+  const s = String(raw ?? "").trim();
+  if (/^\d{14}$/.test(s)) {
+    const dt = new Date(
+      Number(s.slice(0, 4)),
+      Number(s.slice(4, 6)) - 1,
+      Number(s.slice(6, 8)),
+      Number(s.slice(8, 10)),
+      Number(s.slice(10, 12)),
+      Number(s.slice(12, 14)),
+    );
+    if (!Number.isNaN(dt.getTime())) return dt;
+  }
+  const epoch = Number(s);
+  if (s && !Number.isNaN(epoch)) {
+    const dt = new Date(epoch * 1000);
+    if (!Number.isNaN(dt.getTime())) return dt;
+  }
+  return new Date();
 }
 
 export function webhookSecretMatches(value: string | null | undefined): boolean {

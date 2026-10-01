@@ -5,6 +5,7 @@ import { prisma } from "@/lib/prisma";
 import { stkPush } from "@/lib/mpesa";
 import { phoneSchema } from "@/lib/validations";
 import { updateOrderStatus, updatePaymentStatus, reserveInventoryForOrder, releaseInventoryForOrder } from "@/lib/data/orders";
+import { recordPaymentEvent, syncOrderToPaymentStatus } from "@/lib/payments";
 
 const schema = z.object({
   phone: z.string().min(9).max(15).pipe(phoneSchema),
@@ -58,7 +59,7 @@ const parsed = schema.safeParse(body);
 
   // Reuse a still-pending attempt; otherwise create a fresh payment record.
   let paymentRecord = order.payments[0];
-  const reusable = paymentRecord && paymentRecord.status === "PENDING";
+  const reusable = paymentRecord && (paymentRecord.status === "PENDING" || paymentRecord.status === "PROCESSING");
   if (!reusable) {
     paymentRecord = await prisma.payment.create({
       data: {
@@ -66,6 +67,7 @@ const parsed = schema.safeParse(body);
         provider: "M_PESA",
         status: "PENDING",
         amount,
+        currency: "KES",
         phone,
       },
     });
@@ -89,25 +91,48 @@ const parsed = schema.safeParse(body);
   if (!push.ok) {
     await prisma.payment.update({
       where: { id: paymentRecord.id },
-      data: { status: "FAILED", resultDescription: push.error ?? null },
+      data: { status: "FAILED", resultDescription: push.error ?? null, completedAt: new Date() },
     });
-    await updatePaymentStatus(orderId, "FAILED");
+    await recordPaymentEvent(paymentRecord.id, {
+      toStatus: "FAILED",
+      source: "stk-push",
+      note: push.error ?? "STK push rejected.",
+    });
+    await syncOrderToPaymentStatus(orderId, "FAILED");
     await releaseInventoryForOrder(orderId);
-    await updateOrderStatus(orderId, "CANCELLED");
     return NextResponse.json(
       { ok: false, error: push.error ?? "M-PESA STK push failed." },
       { status: 400 }
     );
   }
 
+  // The prompt is with the customer: the charge is in flight until Daraja
+  // confirms it, so the payment moves to PROCESSING rather than sitting PENDING.
+  const previousStatus = paymentRecord.status;
   await prisma.payment.update({
     where: { id: paymentRecord.id },
     data: {
       checkoutRequestId: push.checkoutRequestId,
       merchantRequestId: push.merchantRequestId ?? null,
-      status: "PENDING",
+      status: "PROCESSING",
+      initiatedAt: new Date(),
+      // STK prompts are valid for roughly one minute; expire abandoned attempts.
+      expiredAt: new Date(Date.now() + 60 * 1000),
+      resultCode: Number(push.responseCode) || null,
+      resultDescription: push.responseDescription ?? null,
     },
   });
+
+  if (previousStatus !== "PROCESSING") {
+    await recordPaymentEvent(paymentRecord.id, {
+      toStatus: "PROCESSING",
+      source: "stk-push",
+      note: "STK prompt sent; awaiting Daraja confirmation.",
+      metadata: { checkoutRequestId: push.checkoutRequestId },
+    });
+  }
+
+  await syncOrderToPaymentStatus(orderId, "PROCESSING");
 
   return NextResponse.json({
     ok: true,

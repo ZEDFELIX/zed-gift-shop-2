@@ -1,16 +1,65 @@
 import { z } from "zod";
 
+/**
+ * Kenyan mobile ranges. M-Pesa can only debit Safaricom numbers, so a
+ * broader list is kept for contact numbers and a stricter one for payments.
+ */
+const KENYAN_MOBILE_PREFIXES = [
+  "0700", "0701", "0702", "0703", "0704", "0705", "0706", "0707", "0708", "0709",
+  "0710", "0711", "0712", "0713", "0714", "0715", "0716", "0717", "0718", "0719",
+  "0720", "0721", "0722", "0723", "0724", "0725", "0726", "0727", "0728", "0729",
+  "0730", "0731", "0732", "0733", "0734", "0735", "0736", "0737", "0738", "0739",
+  "0740", "0741", "0742", "0743", "0744", "0745", "0746", "0747", "0748", "0749",
+  "0750", "0751", "0752", "0753", "0754", "0755", "0756", "0757", "0758", "0759",
+  "0760", "0761", "0762", "0763", "0764", "0765", "0766", "0767", "0768", "0769",
+  "0770", "0771", "0772", "0773", "0774", "0775", "0776", "0777", "0778", "0779",
+  "0780", "0781", "0782", "0783", "0784", "0785", "0786", "0787", "0788", "0789",
+  "0790", "0791", "0792", "0793", "0794", "0795", "0796", "0797", "0798", "0799",
+] as const;
+
+const SAFARICOM_PREFIXES = [
+  "0700", "0701", "0702", "0703", "0704", "0705", "0706", "0707", "0708", "0709",
+  "0710", "0711", "0712", "0713", "0714", "0715", "0716", "0717", "0718", "0719",
+  "0720", "0721", "0722", "0723", "0724", "0725", "0726", "0727", "0728", "0729",
+  "0740", "0741", "0742", "0743", "0744", "0745", "0746", "0747", "0748",
+  "0757", "0758", "0759", "0767", "0768", "0769",
+  "0790", "0791", "0792", "0793", "0794", "0795", "0796", "0797", "0798", "0799",
+] as const;
+
+/** Converts local (07…) and international (+254…) forms to 254XXXXXXXXX. */
+export function normalizeKenyanPhone(raw: string): string {
+  let digits = raw.replace(/\D/g, "");
+  if (digits.startsWith("00")) digits = digits.slice(2);
+  if (digits.startsWith("0")) digits = `254${digits.slice(1)}`;
+  return digits;
+}
+
+function isKenyanMobile(digits: string, allowed: readonly string[]): boolean {
+  if (digits.length !== 12 || !digits.startsWith("254")) return false;
+  // 254 + 9 digits; the national 4-digit prefix is 0 + the next three digits.
+  const nationalPrefix = `0${digits.slice(3, 6)}`;
+  return (allowed as readonly string[]).includes(nationalPrefix);
+}
+
 export const phoneSchema = z
- .string()
- .min(9, "Enter a valid phone number")
- .transform((v) => {
- const digits = v.replace(/\D/g, "");
- if (digits.startsWith("0")) return "254" + digits.slice(1);
- if (digits.startsWith("254")) return digits;
- if (!digits.startsWith("7") && !digits.startsWith("1")) return digits;
- if (digits.length === 9) return "254" + digits;
- return digits;
- });
+  .string()
+  .min(9, "Enter a valid phone number")
+  .transform(normalizeKenyanPhone)
+  .refine((v) => isKenyanMobile(v, KENYAN_MOBILE_PREFIXES), {
+    message: "Enter a valid Kenyan mobile number, for example 0712 345 678.",
+  });
+
+/** M-Pesa STK can only charge Safaricom numbers. */
+export const mpesaPhoneSchema = z
+  .string()
+  .min(9, "Enter a valid phone number")
+  .transform(normalizeKenyanPhone)
+  .refine((v) => isKenyanMobile(v, KENYAN_MOBILE_PREFIXES), {
+    message: "Enter a valid Kenyan mobile number, for example 0712 345 678.",
+  })
+  .refine((v) => isKenyanMobile(v, SAFARICOM_PREFIXES), {
+    message: "M-Pesa payments require a Safaricom number (0700-0729, 0740-0748 or 0757-0799).",
+  });
 
 export const emailSchema = z.string().email("Enter a valid email address").max(254);
 
