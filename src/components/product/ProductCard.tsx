@@ -130,7 +130,10 @@ export function ProductCard({
           )}
           <div className="mt-2 flex flex-col sm:flex-row gap-1">
             <button
-              onClick={(e) => window.open(`https://wa.me/?text=${encodeURIComponent(`Hello ZED Gift Shop, I would like to order:${product.name}\\nQuantity: 1\\nPrice: KSh ${product.price}\\n${product.personalizationEnabled ? `Personalization: ${product.personalizationFieldsJson ? 'See options' : ''}` : ''}\\n${window.location.origin}/product/${product.slug}`)}`, '_blank')
+              onClick={(e) => {
+                const text = `Hello ZED Gift Shop, I would like to order:\n${product.name}\nQuantity: 1\nPrice: KSh ${product.price}\n${product.personalizationEnabled && product.personalizationFieldsJson ? `Personalization: See options` : ''}\n${window.location.origin}/product/${product.slug}`;
+                window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
+              }}
               className="flex items-center gap-2 px-3 py-1.5 text-xs font-semibold text-rose-600 rounded-lg bg-rose-50 hover:bg-rose-100 transition-colors"
               aria-label="Order via WhatsApp"
             >
@@ -140,7 +143,10 @@ export function ProductCard({
               Order via WhatsApp
             </button>
             <button
-              onClick={(e) => window.open(`https://wa.me/${process.env.NEXT_PUBLIC_WHATSAPP_NUMBER ?? '254711436169'}?text=${encodeURIComponent(`Hi! I'd like to chat about ${product.name}`)}`, '_blank')
+              onClick={(e) => {
+                const text = `Hi! I'd like to chat about ${product.name}`;
+                window.open(`https://wa.me/${process.env.NEXT_PUBLIC_WHATSAPP_NUMBER ?? '254711436169'}?text=${encodeURIComponent(text)}`, '_blank');
+              }}
               className="flex items-center gap-2 px-3 py-1.5 text-xs font-semibold text-charcoal rounded-lg bg-white/80 hover:bg-charcoal/10 transition-colors"
               aria-label="Chat about this product"
             >
