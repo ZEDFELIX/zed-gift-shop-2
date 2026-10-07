@@ -1,7 +1,13 @@
 "use client";
 
 export function WhatsAppFloat() {
-  const number = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER ?? "254711436169";
+  const [number, setNumber] = useState(process.env.NEXT_PUBLIC_WHATSAPP_NUMBER ?? "254711436169");
+
+ useEffect(() => {
+  fetch("/api/storefront/settings", { cache: "no-store" }).then((r) => r.ok ? r.json() : null).then((data) => {
+   if (typeof data?.whatsappNumber === "string" && data.whatsappNumber.trim()) setNumber(data.whatsappNumber.trim());
+  }).catch(() => undefined);
+ }, []);
   const message = encodeURIComponent("Hello ZED Gift Shop, I would like to make an enquiry.");
   const href = `https://wa.me/${number}?text=${message}`;
 
