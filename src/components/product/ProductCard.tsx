@@ -2,7 +2,7 @@ import "server-only";
 
 import Image from "next/image";
 import Link from "next/link";
-import { Sparkles, Star } from "lucide-react";
+import { Star } from "lucide-react";
 import type { ProductWithRelations } from "@/lib/data/products";
 import { discountPercent, formatKES } from "@/lib/utils";
 import { WishlistButton } from "@/components/product/WishlistButton";
@@ -32,104 +32,107 @@ export function ProductCard({
   } else if (sale != null && sale > 0) {
     badge = { label: `Sale -${sale}%`, cls: "bg-rose-500 text-white" };
   } else if (personalizable) {
-    badge = { label: "Personalizable", cls: "bg-violet-100 text-violet-700" };
+    badge = { label: "Personalizable", cls: "bg-rose-100 text-rose-700" };
   } else if (isNew) {
     badge = { label: "New", cls: "bg-plum-800 text-white" };
   }
 
+  const imageStyle = image
+    ? { backgroundImage: `url("${image}")` }
+    : { backgroundColor: "var(--color-rose-light)" };
+
   return (
-    <article className="group flex h-full flex-col border border-edge bg-white">
-      <div className="relative bg-plum-50">
+    <article className="group border border-edge bg-white/80 backdrop-blur-md overflow-hidden rounded-xl shadow-sm transition-shadow hover:shadow-md">
+      <div className="relative group-hover:opacity-100 transition-opacity">
         <Link
           href={`/product/${product.slug}`}
-          className="block aspect-square"
+          className="block aspect-[4/5] overflow-hidden rounded-xl"
           aria-label={product.name}
         >
-          {image ? (
-            <Image
-              src={image}
-              alt={product.images[0]?.alt ?? product.name}
-              fill
-              sizes="(min-width:1280px) 22vw, (min-width:1024px) 30vw, (min-width:640px) 33vw, 50vw"
-              className="object-cover transition-opacity duration-200 group-hover:opacity-95"
-            />
-          ) : (
-            <span className="grid aspect-square place-items-center bg-plum-100 font-display text-2xl text-plum-600">
-              ZED
-            </span>
-          )}
+          <div
+            className="relative w-full h-full rounded-xl overflow-hidden transition-transform duration-500 group-hover:scale-105"
+            style={imageStyle}
+          >
+            {image ? (
+              <Image
+                src={image}
+                alt={product.images[0]?.alt ?? product.name}
+                fill
+                sizes="(min-width:1280px) 22vw, (min-width:1024px) 30vw, (min-width:640px) 33vw, 50vw"
+                className="object-cover transition-opacity duration-200 group-hover:opacity-95"
+              />
+            ) : (
+              <div className="absolute inset-0 flex items-center justify-center bg-rose-50 text-rose-400 font-display text-lg">
+                ZED
+              </div>
+            )}
+          </div>
         </Link>
 
         {badge ? (
           <span
-            className={`absolute left-3 top-3 px-2 py-1 text-[10px] font-semibold uppercase tracking-wide ${badge.cls}`}
+            className={`absolute left-3 top-3 px-2 py-1 text-[0.75rem] font-semibold uppercase tracking-wider ${badge.cls}` }
           >
             {badge.label}
           </span>
         ) : null}
-
-        <div className="absolute right-2 top-2">
-          <WishlistButton productId={product.id} initialInWishlist={inWishlist} />
-        </div>
       </div>
 
-      <div className="flex flex-1 flex-col p-4">
-        <div className="flex items-center justify-between gap-2">
-          <p className="min-w-0 truncate text-[11px] uppercase tracking-wide text-muted">
-            {product.categories[0]?.category.name ?? "Gift"}
-          </p>
+      <div className="p-4 flex flex-col flex-1">
+        <div className="flex items-center justify-between gap-2 mb-3">
+          <p className="text-[0.65rem] uppercase tracking-widest text-charcoal/60">{product.categories[0]?.category.name ?? "Gift"}</p>
           {product.ratingCount > 0 ? (
-            <span className="flex shrink-0 items-center gap-1 text-[11px] text-muted">
-              <Star className="size-3 fill-amber-400 text-amber-400" />
+            <span className="text-[0.65rem] text-charcoal/60">
+              <Star className="size-2 fill-rose-400" />
               {product.ratingAverage.toFixed(1)}
-              <span className="hidden sm:inline">({product.ratingCount})</span>
+              <span className="text-charcoal/40 hidden sm:inline">({product.ratingCount})</span>
             </span>
           ) : null}
         </div>
 
-        <h3 className="mt-1.5 min-h-[2.6rem] text-[15px] font-semibold leading-snug">
+        <h3 className="mt-1.5 min-h-[2.4rem] text-[13px] font-semibold leading-snug">
           <Link href={`/product/${product.slug}`} className="hover:text-rose-600">
             {product.name}
           </Link>
         </h3>
 
         {product.shortDescription ? (
-          <p className="mt-1 hidden line-clamp-2 text-[13px] leading-relaxed text-muted sm:block">
+          <p className="mt-1 text-[0.65rem] leading-relaxed text-charcoal/60 line-clamp-2">
             {product.shortDescription}
           </p>
         ) : null}
 
-        <div className="mt-3 flex flex-wrap items-baseline gap-2">
-          <p className="text-[16px] font-bold text-plum-950">{formatKES(product.price)}</p>
+        <div className="mt-2 flex flex-col sm:flex-row items-baseline gap-1.5">
+          <p className="text-[14px] font-bold text-charcoal-950">{formatKES(product.price)}</p>
           {product.compareAtPrice != null && product.compareAtPrice > product.price ? (
-            <p className="text-xs text-muted line-through">
+            <p className="text-xs text-charcoal/40 line-through">
               {formatKES(product.compareAtPrice)}
             </p>
           ) : null}
         </div>
 
-        <div className="mt-auto pt-3">
+        <div className="mt-auto pt-2">
           {canQuickAdd ? (
             <AddToCartButton productId={product.id} label="Add to cart" variant="outline" />
           ) : (
             <Link
               href={`/product/${product.slug}`}
-              className="flex items-center justify-center gap-1.5 border border-edge px-3 py-2.5 text-center text-xs font-semibold text-ink transition-colors hover:border-rose-400 hover:text-rose-600"
+              className="mt-1.5 flex items-center justify-center gap-1 border border-edge px-2.5 py-1.5 text-center text-xs font-semibold text-charcoal transition-colors hover:border-rose-300 hover:text-rose-600"
             >
               {personalizable ? (
                 <>
-                  <Sparkles className="size-3.5" /> Personalize
+                  <Star className="size-2.5" /> Personalize
                 </>
               ) : (
                 "View details"
               )}
             </Link>
           )}
-          {lowStock ? (
-            <p className="mt-2 text-[11px] font-medium text-rose-600">
+          {lowStock && (
+            <p className="mt-1 text-[0.55rem] font-medium text-rose-500">
               Only {product.quantity - product.reservedQuantity} left
             </p>
-          ) : null}
+          )}
         </div>
       </div>
     </article>

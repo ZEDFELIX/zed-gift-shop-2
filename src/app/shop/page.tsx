@@ -10,31 +10,31 @@ function boolParam(value: unknown) {
 export default async function ShopPage({ searchParams }: { searchParams: Promise<Record<string, string | string[] | undefined>> }) {
  const sp = await searchParams;
  const get = (k: string) => {
- const v = sp[k];
- return Array.isArray(v) ? v[0] : v;
+  const v = sp[k];
+  return Array.isArray(v) ? v[0] : v;
  };
 
  const filters = {
- q: get("q"),
- category: get("category"),
- occasion: get("occasion"),
- recipient: get("recipient"),
- collection: get("collection"),
- min: get("min") ? Number(get("min")) : undefined,
- max: get("max") ? Number(get("max")) : undefined,
- personalized: boolParam(get("personalized")),
- inStock: boolParam(get("inStock")),
- sort: get("sort"),
- page: get("page") ? Number(get("page")) : 1,
+  q: get("q")?.trim() ?? "",
+  category: get("category") ?? "",
+  occasion: get("occasion") ?? "",
+  recipient: get("recipient") ?? "",
+  collection: get("collection") ?? "",
+  min: get("min") ? Number(get("min")) : undefined,
+  max: get("max") ? Number(get("max")) : undefined,
+  personalized: boolParam(get("personalized")),
+  inStock: boolParam(get("inStock")),
+  sort: get("sort") ?? "featured",
+  page: get("page") ? Number(get("page")) : 1,
  } as const;
 
  return (
- <ListingPage
- title="Shop All Gifts"
- eyebrow="The full collection"
- description="Every gift in the ZED range - filter by occasion, recipient, budget and personalization."
- filters={{ ...filters }}
- href="/shop"
- />
+  <ListingPage
+   title="Shop All Gifts"
+   eyebrow="The full collection"
+   description="Every gift in the ZED range - filter by occasion, recipient, budget and personalization."
+   filters={{ ...filters }}
+   href="/shop"
+  />
  );
 }

@@ -8,49 +8,52 @@ import { showToast } from "@/lib/toast";
 export function WishlistButton({ productId, initialInWishlist = false }: { productId: string; initialInWishlist?: boolean }) {
  const [inWishlist, setInWishlist] = useState(initialInWishlist);
  const [busy, setBusy] = useState(false);
- const [popping, setPopping] = useState(false);
  const router = useRouter();
 
  async function toggle() {
- if (busy) return;
- setBusy(true);
- try {
- const res = await fetch("/api/wishlist/toggle", {
- method: "POST",
- headers: { "Content-Type": "application/json" },
- body: JSON.stringify({ productId }),
- });
- const data = (await res.json()) as { ok?: boolean; inWishlist?: boolean };
- const next = Boolean(data.inWishlist);
- setInWishlist(next);
- if (next) {
- setPopping(true);
- window.setTimeout(() => setPopping(false), 500);
- showToast("Added to your wishlist");
- } else {
- showToast("Removed from your wishlist");
- }
- router.refresh();
- } catch {
- // ignore transient failures
- } finally {
- setBusy(false);
- }
+  if (busy) return;
+  setBusy(true);
+  try {
+   const res = await fetch("/api/wishlist/toggle", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ productId }),
+   });
+   const data = (await res.json()) as { ok?: boolean; inWishlist?: boolean };
+   const next = Boolean(data.inWishlist);
+   setInWishlist(next);
+   if (next) {
+    showToast("Added to your wishlist");
+   } else {
+    showToast("Removed from your wishlist");
+   }
+   router.refresh();
+  } catch {
+   // ignore transient failures
+  } finally {
+   setBusy(false);
+  }
  }
 
  return (
- <button
- type="button"
- onClick={toggle}
- aria-label={inWishlist ? "Remove from wishlist" : "Add to wishlist"}
- aria-pressed={inWishlist}
- className={`grid size-10 place-items-center rounded-full border backdrop-blur transition-colors ${
- inWishlist
- ? "border-zed-900/60 bg-zed-950 text-white shadow-glass"
- : "border-white/55 bg-white/75 text-[#07111F] hover:border-soft-sage hover:text-deep-olive"
- } ${busy ? "opacity-60" : ""}`}
- >
- <Heart className={`size-5 ${inWishlist ? "fill-current" : ""} ${popping ? "animate-[heart-pop_0.45s_cubic-bezier(0.16,1,0.3,1)]" : ""}`} />
- </button>
+  <button
+   type="button"
+   onClick={toggle}
+   aria-label={inWishlist ? "Remove from wishlist" : "Add to wishlist"}
+   aria-pressed={inWishlist}
+   className={`rounded-full border border-charcoal/20 bg-white/80 backdrop-blur-sm transition-colors ${
+    inWishlist
+     ? "border-charcoal/30 bg-rose-100 text-rose-700 shadow-glass"
+     : "border-rose-200 text-rose-400 hover:border-rose-300 hover:text-rose-600"
+   } ${busy ? "opacity-60" : ""}`}
+   aria-describedby="wishlist-tooltip"
+   title={inWishlist ? "Remove from wishlist" : "Add to wishlist"}
+  >
+   <Heart
+    className={`size-4 fill-rose-500 ${
+     inWishlist ? "fill-current animate-[heart-beat_1s_infinite]" : ""
+    }`}
+   />
+  </button>
  );
 }

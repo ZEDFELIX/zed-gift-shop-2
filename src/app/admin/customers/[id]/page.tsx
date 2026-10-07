@@ -97,7 +97,7 @@ export default async function AdminCustomerPage({ params }: { params: Promise<{ 
               <li key={a.id} className="rounded-zed border border-edge p-3">
                 <p className="font-semibold text-[#07111F]">{a.label ?? "Address"}</p>
                 <p className="text-[#334155]">
-                  {[a.line1, a.line2, a.town, a.county].filter(Boolean).join(", ")}
+                  {[a.town, a.county].filter(Boolean).join(", ")}
                 </p>
               </li>
             ))}
