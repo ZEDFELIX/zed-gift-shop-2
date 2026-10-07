@@ -33,17 +33,17 @@ function openCart() {
   window.dispatchEvent(new CustomEvent("zed:open-cart"));
 }
 
-function Brand({ compact = false }: { compact?: boolean }) {
+function Brand({ storeName }: { storeName: string }) {
   return (
-    <Link href="/" className="flex shrink-0 items-center gap-2" aria-label={`${SITE.name} home`}>
+    <Link href="/" className="flex shrink-0 items-center gap-2" aria-label={`${storeName} home`}>
       <span className="grid size-8 place-items-center rounded-md bg-deep-olive font-display text-[13px] font-black text-white sm:size-10 sm:text-sm">
         Z2
       </span>
       <span className="flex flex-col leading-none">
         <span className="font-display text-base font-black tracking-[0.04em] text-[var(--color-ink)] sm:text-lg">
-          ZED GIFT SHOP
+          {storeName}
         </span>
-        <span className="mt-0.5 text-[9px] font-bold tracking-[0.36em] text-soft-sage">GIFT SHOP 2</span>
+        <span className="mt-0.5 text-[9px] font-bold tracking-[0.36em] text-soft-sage">GIFT SHOP</span>
       </span>
     </Link>
   );
@@ -54,6 +54,8 @@ export function HeaderContent({
   cartSubtotal,
   wishlistCount,
   announcement,
+  contactPhone,
+  storeName,
   isAuthed,
   userRole,
   featured,
@@ -62,6 +64,8 @@ export function HeaderContent({
   cartSubtotal: number;
   wishlistCount: number;
   announcement: string;
+  contactPhone: string;
+  storeName: string;
   isAuthed: boolean;
   userRole: "CUSTOMER" | "STAFF" | "ADMIN" | null;
   featured: NavFeaturedMap;
@@ -136,9 +140,9 @@ export function HeaderContent({
       {/* Utility bar — call us + same day delivery */}
       <div className="relative z-30 hidden border-b border-zed-900/15 bg-zed-950 text-white md:block">
         <div className="container-zed flex h-9 items-center justify-between gap-4 text-[12px]">
-          <a href={SITE.phoneHref} className="flex items-center gap-1.5 font-medium text-white/90 hover:text-white">
+          <a href={`tel:${contactPhone.replace(/\s+/g, "")}`} className="flex items-center gap-1.5 font-medium text-white/90 hover:text-white">
             <Phone className="size-3.5" />
-            Call us on: {SITE.phone} to place your order.
+            Call us on: {contactPhone} to place your order.
           </a>
           <p className="flex items-center gap-1.5 truncate font-medium text-white/70">
             <Clock className="size-3.5" />
@@ -159,7 +163,7 @@ export function HeaderContent({
             <Menu className="size-5" />
           </button>
 
-          <Brand />
+          <Brand storeName={storeName} />
 
           <form
             role="search"
@@ -183,7 +187,7 @@ export function HeaderContent({
               className="hidden items-center gap-2 rounded-md px-2.5 py-2 text-[13px] font-semibold text-[var(--color-ink)] hover:bg-zed-900/5 xl:flex"
             >
               <Phone className="size-4 text-soft-sage" />
-              {SITE.phoneDisplay}
+              {contactPhone}
             </a>
             <Link
               href={accountHref}
@@ -317,7 +321,7 @@ export function HeaderContent({
           />
           <div className="glass-strong absolute inset-y-0 left-0 flex w-[min(90vw,360px)] flex-col shadow-glass-lg">
             <div className="flex items-center justify-between border-b border-edge px-4 py-4">
-              <Brand />
+              <Brand storeName={storeName} />
               <button
                 type="button"
                 aria-label="Close menu"
@@ -367,7 +371,7 @@ export function HeaderContent({
                 href={SITE.phoneHref}
                 className="mb-2 flex items-center justify-center gap-2 rounded-md border border-edge px-4 py-3 text-sm font-semibold"
               >
-                <Phone className="size-4 text-soft-sage" /> {SITE.phoneDisplay}
+                <Phone className="size-4 text-soft-sage" /> {contactPhone}
               </a>
               {isAuthed && (userRole === "ADMIN" || userRole === "STAFF") && (
                 <Link
