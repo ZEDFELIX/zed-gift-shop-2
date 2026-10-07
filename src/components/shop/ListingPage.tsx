@@ -62,35 +62,35 @@ export async function ListingPage({
   ].filter(Boolean);
 
   return (
-    <div className="container-zed py-7 sm:py-10 lg:py-14">
-      <header className="mb-5 max-w-2xl sm:mb-6">
-        {eyebrow && <p className="eyebrow">{eyebrow}</p>}
-        <h1 className="mt-2 font-display text-3xl font-bold text-[var(--color-ink)] sm:text-4xl">
+    <div className="container-zed py-5 sm:py-7 lg:py-9">
+      <header className="mb-4 max-w-xl sm:mb-5">
+        
+        <h1 className="font-display text-2xl font-bold text-[var(--color-ink)] sm:text-3xl">
           {title}
         </h1>
-        {description ? (
+        {false && description ? (
           <p className="mt-2.5 max-w-xl text-[15px] leading-6 text-[var(--color-ink)]/80 sm:mt-3 sm:text-base sm:leading-relaxed">
             {description}
           </p>
         ) : null}
-        <p className="mt-2.5 text-sm text-[rgba(48,37,34,0.62)]">
+        <p className="mt-1 text-xs text-[rgba(48,37,34,0.62)]">
           {result.total} gift{result.total === 1 ? "" : "s"} available
         </p>
       </header>
 
-      <div className="mb-5 sm:mb-8">
+      <div className="mb-4 sm:mb-5">
         <ShopSearch initialValue={filters.q ?? ""} />
       </div>
 
       {activeFilters.length > 0 && (
-        <div className="mb-5 flex gap-2 overflow-x-auto pb-1 no-scrollbar sm:mb-6 sm:flex-wrap">
-          <span className="mr-1 shrink-0 self-center text-[11px] font-semibold uppercase tracking-[0.14em] text-[rgba(48,37,34,0.62)]">
+        <div className="mb-4 flex gap-1.5 overflow-x-auto pb-1 no-scrollbar sm:mb-5 sm:flex-wrap">
+          <span className="mr-1 shrink-0 self-center text-[10px] font-semibold uppercase tracking-[0.12em] text-[rgba(48,37,34,0.62)]">
             Filtered by
           </span>
           {activeFilters.map((filter) => (
             <span
               key={filter}
-              className="shrink-0 rounded-full glass-panel border border-white/60 px-3 py-1.5 text-xs font-medium text-[var(--color-ink)]"
+              className="shrink-0 rounded-full glass-panel border border-white/60 px-2.5 py-1 text-[11px] font-medium text-[var(--color-ink)]"
             >
               {filter}
             </span>
@@ -99,7 +99,7 @@ export async function ListingPage({
       )}
 
       {/* Mobile controls sit above the product grid. Desktop controls become the sidebar. */}
-      <div className="lg:flex lg:items-start lg:gap-8">
+      <div className="lg:flex lg:items-start lg:gap-5">
         <Suspense fallback={null}>
           <ShopControls
             categories={categories}
@@ -111,7 +111,7 @@ export async function ListingPage({
           />
         </Suspense>
 
-        <div className="mt-5 min-w-0 flex-1 lg:mt-0">
+        <div className="mt-4 min-w-0 flex-1 lg:mt-0">
           <ProductGrid products={result.items} />
           <Pagination
             page={result.page}
