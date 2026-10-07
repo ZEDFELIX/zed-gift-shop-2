@@ -368,7 +368,7 @@ export function HeaderContent({
             </nav>
             <div className="border-t border-edge p-3">
               <a
-                href={SITE.phoneHref}
+                href={`tel:${contactPhone.replace(/\s+/g, "")}`}
                 className="mb-2 flex items-center justify-center gap-2 rounded-md border border-edge px-4 py-3 text-sm font-semibold"
               >
                 <Phone className="size-4 text-soft-sage" /> {contactPhone}
