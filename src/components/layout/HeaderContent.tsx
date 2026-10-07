@@ -229,9 +229,10 @@ export function HeaderContent({
               </span>
             </button>
           </div>
-        </div></div></div>
+        </div>
+      </div></div>
 
-      {/* Primary nav with mega menus */
+      {/* Primary nav with mega menus */}
       <div className="relative z-30 hidden border-b border-edge bg-white lg:block" ref={navRef}>
         <div className="container-zed">
           <nav className="flex items-center" aria-label="Primary">
