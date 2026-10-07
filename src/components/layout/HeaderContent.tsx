@@ -148,7 +148,7 @@ export function HeaderContent({
       </div>
 
       {/* Main header row */}
-      <div className="sticky top-0 z-40 border-b border-edge bg-white/95 backdrop-blur-md">
+      <div className="sticky top-0 z-40 px-2 pt-2 sm:px-3 lg:px-5"><div className="zed-glass-nav rounded-2xl">
         <div className="container-zed flex h-[60px] items-center gap-2.5 px-4 lg:h-[74px] lg:gap-6 lg:px-10">
           <button
             type="button"
@@ -229,8 +229,7 @@ export function HeaderContent({
               </span>
             </button>
           </div>
-        </div>
-      </div>
+        </div></div>
 
       {/* Primary nav with mega menus */}
       <div className="relative z-30 hidden border-b border-edge bg-white lg:block" ref={navRef}>
