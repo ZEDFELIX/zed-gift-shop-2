@@ -2,12 +2,13 @@
 
 import { usePathname } from "next/navigation";
 import Link from "next/link";
-import { Boxes, CreditCard, Gift, LayoutDashboard, MapPin, Package, Settings, Star, Truck, Users } from "lucide-react";
+import { Boxes, CreditCard, Gift, LayoutDashboard, MapPin, Package, Settings, Star, Truck, Users, Tags } from "lucide-react";
 
 const TABS = [
   { href: "/admin", label: "Dashboard", icon: LayoutDashboard },
   { href: "/admin/orders", label: "Orders", icon: Package },
   { href: "/admin/products", label: "Products", icon: Gift },
+  { href: "/admin/categories", label: "Categories", icon: Tags },
   { href: "/admin/coupons", label: "Coupons", icon: CreditCard },
   { href: "/admin/deliveries", label: "Delivery", icon: Truck },
   { href: "/admin/inventory", label: "Inventory", icon: Boxes },
@@ -20,11 +21,11 @@ const TABS = [
 export function AdminNav() {
   const pathname = usePathname();
   return (
-    <nav className="flex gap-1 overflow-x-auto rounded-xl border border-charcoal/20 bg-white/80 p-2 lg:flex-col lg:overflow-visible">
+    <nav className="flex gap-1 overflow-x-auto rounded-2xl border border-charcoal/10 bg-white p-1.5 shadow-sm lg:flex-col lg:overflow-visible">
       {TABS.map(({ href, label, icon: Icon }) => {
         if (href === "/account") {
           return (
-            <Link key={href} href={href} className="flex shrink-0 items-center gap-2 rounded-xl px-4 py-2.5 text-sm font-semibold text-charcoal/60 hover:bg-rose-50 lg:mt-2">
+            <Link key={href} href={href} className="flex shrink-0 items-center gap-2 rounded-xl px-3.5 py-2.5 text-sm font-semibold text-charcoal/60 hover:bg-panel lg:mt-2">
               <Icon className="size-4" /> {label}
             </Link>
           );
@@ -34,7 +35,7 @@ export function AdminNav() {
           <Link
             key={href}
             href={href}
-            className={`flex shrink-0 items-center gap-2 rounded-xl px-4 py-2.5 text-sm font-semibold transition-colors ${active ? "bg-rose-50 text-rose-600" : "text-charcoal hover:bg-rose-50 hover:text-charcoal"}`}
+            className={`flex shrink-0 items-center gap-2 rounded-xl px-4 py-2.5 text-sm font-semibold transition-colors ${active ? "bg-rose-50 text-rose-700" : "text-charcoal/70 hover:bg-panel hover:text-charcoal"}`}
           >
             <Icon className="size-4" /> {label}
           </Link>
