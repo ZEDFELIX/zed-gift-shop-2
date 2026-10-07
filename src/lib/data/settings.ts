@@ -13,6 +13,18 @@ const DEFAULTS: Record<string, SettingValue> = {
   heroSubtitle: "Thoughtfully chosen gifts, personalized for the people who matter.",
   corporateEmail: "felixsimon877@gmail.com",
   maintenanceMode: false,
+  storeName: "ZED GIFT SHOP 2",
+  storeTagline: "Premium gifts, personalized for every occasion.",
+  footerDescription: "Premium gifts, personalized keepsakes and corporate gifting, delivered across Kenya.",
+  address: "Nairobi, Kenya",
+  hours: "Mon-Sat: 8:00 AM - 6:00 PM",
+  mapsHref: "https://maps.google.com/",
+  mapsEmbed: "",
+  whatsappNumber: "254711436169",
+  primaryColor: "#E5397F",
+  secondaryColor: "#6B2D5C",
+  accentColor: "#7C3AED",
+  backgroundColor: "#FFFFFF",
 };
 
 export async function getSetting(key: string): Promise<SettingValue> {
