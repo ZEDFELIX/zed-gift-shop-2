@@ -6,13 +6,14 @@ import {
   getFeaturedProducts,
   getFlashSaleProducts,
   getMostBoughtProducts,
+  type ProductWithRelations,
 } from "@/lib/data/products";
 import { prisma } from "@/lib/prisma";
 
 type SectionProps = {
   title: string;
   subtitle?: string;
-  products: any[];
+  products: ProductWithRelations[];
   href?: string;
 };
 
