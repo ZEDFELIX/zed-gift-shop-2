@@ -1,5 +1,7 @@
 "use client";
 
+import { useEffect, useState } from "react";
+
 export function WhatsAppFloat() {
   const [number, setNumber] = useState(process.env.NEXT_PUBLIC_WHATSAPP_NUMBER ?? "254711436169");
 
