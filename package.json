@@ -5,7 +5,7 @@
   "description": "ZED GIFT SHOP 2 — Premium Kenyan gifting & personalized products ecommerce.",
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "prisma db push && prisma db seed && next build",
     "start": "next start",
     "lint": "next lint",
     "typecheck": "tsc --noEmit",
