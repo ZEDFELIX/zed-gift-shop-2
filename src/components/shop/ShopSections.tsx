@@ -12,12 +12,11 @@ import { prisma } from "@/lib/prisma";
 
 type SectionProps = {
   title: string;
-  subtitle?: string;
   products: ProductWithRelations[];
   href?: string;
 };
 
-function Section({ title, subtitle, products, href }: SectionProps) {
+function Section({ title, products, href }: SectionProps) {
   if (!products.length) return null;
 
   return (
@@ -27,16 +26,13 @@ function Section({ title, subtitle, products, href }: SectionProps) {
           <h2 className="font-display text-xl font-bold text-[var(--color-ink)] sm:text-2xl">
             {title}
           </h2>
-          {subtitle ? (
-            <p className="mt-0.5 text-xs text-[rgba(48,37,34,0.62)]">{subtitle}</p>
-          ) : null}
         </div>
         {href ? (
           <Link
             href={href}
             className="shrink-0 text-xs font-semibold text-rose-600 hover:text-rose-700"
           >
-            View all →
+            View all
           </Link>
         ) : null}
       </div>
@@ -107,40 +103,33 @@ export async function ShopSections() {
     <div>
       <Section
         title="Flash Sale"
-        subtitle="Limited-time offers — grab them before they’re gone."
         products={effectiveFlashSale}
       />
       <Section
         title="On Sale"
-        subtitle="Special prices across selected ZED gifts."
         products={sale}
         href="/shop?deals=1"
       />
       <Section
         title="Most Bought"
-        subtitle="What customers are actually buying most."
         products={mostBought}
       />
       <Section
         title="Best Sellers"
-        subtitle="Popular picks from the ZED collection."
         products={bestSellers}
       />
       <Section
         title="New Arrivals"
-        subtitle="Fresh gifts added to the collection."
         products={newArrivals}
         href="/shop?sort=new"
       />
       <Section
         title="Personalized Gifts"
-        subtitle="Add a name, message or special touch."
         products={personalized}
         href="/shop?personalized=true"
       />
       <Section
         title="Corporate Gifts"
-        subtitle="Gifts for teams, clients and staff."
         products={corporateCategory}
       />
     </div>
