@@ -165,61 +165,6 @@ export async function getFeaturedProducts(limit = 8) {
  });
 }
 
-export async function getDealProducts(limit = 12) {
-  return prisma.product.findMany({
-    where: { status: "ACTIVE", compareAtPrice: { not: null } },
-    include: productInclude,
-    orderBy: { updatedAt: "desc" },
-    take: limit,
-  });
-}
-
-export async function getMostBoughtProducts(limit = 6) {
- const rows = await prisma.orderItem.groupBy({
-  by: ["productId"],
-  where: {
-   productId: { not: null },
-   order: {
-    paymentStatus: "SUCCESSFUL",
-    orderStatus: {
-     notIn: ["CANCELLED", "REFUNDED"],
-    },
-   },
-  },
-  _sum: { quantity: true },
-  orderBy: { _sum: { quantity: "desc" } },
-  take: limit,
- });
-
- const ids = rows.map((row) => row.productId).filter((id): id is string => Boolean(id));
- if (ids.length === 0) return [];
-
- const products = await prisma.product.findMany({
-  where: { id: { in: ids }, status: "ACTIVE" },
-  include: productInclude,
- });
-
- const rank = new Map(ids.map((id, index) => [id, index]));
- return products.sort((a, b) => (rank.get(a.id) ?? 999) - (rank.get(b.id) ?? 999));
-}
-
-export async function getFlashSaleProducts(limit = 6) {
- const products = await prisma.product.findMany({
-  where: {
-   status: "ACTIVE",
-   OR: [
-    { tags: { has: "flash-sale" } },
-    { tags: { has: "customer-service-week" } },
-    { collections: { some: { collection: { slug: "customer-service-week" } } } },
-   ],
-  },
-  include: productInclude,
-  orderBy: [{ featured: "desc" }, { updatedAt: "desc" }],
-  take: limit,
- });
- return products;
-}
-
 export async function getBestSellerProducts(limit = 6) {
   return prisma.product.findMany({
     where: { status: "ACTIVE", bestSeller: true },
