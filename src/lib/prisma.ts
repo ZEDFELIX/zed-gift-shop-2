@@ -3,7 +3,7 @@ import { PrismaClient } from "@prisma/client";
 const globalForPrisma = globalThis as unknown as { prisma?: PrismaClient };
 
 function getDatabaseUrl() {
- const url = process.env.DATABASE_URL;
+ const url = process.env.zedgiftshop2_PRISMA_DATABASE_URL ?? process.env.DATABASE_URL;
  if (!url) return undefined;
 
  const separator = url.includes("?") ? "&" : "?";
