@@ -10,12 +10,12 @@ export default async function AdminLayout({ children }: { children: React.ReactN
  if (!["ADMIN", "STAFF"].includes(user.role)) redirect("/account");
 
  return (
-  <div className="container-zed py-10 lg:py-14 bg-white/90">
-   <header className="mb-8 border-b border-charcoal/10">
-    <p className="eyebrow text-rose-500">Admin | {user.role === "ADMIN" ? "Owner" : "Staff"}</p>
-    <h1 className="mt-1 font-display text-3xl font-bold text-charcoal lg:text-4xl">ZED control room</h1>
+  <div className="container-zed py-6 lg:py-10">
+   <header className="mb-6">
+    <h1 className="font-display text-2xl font-bold text-charcoal lg:text-3xl">Admin</h1>
+    <p className="mt-1 text-sm text-charcoal/60">{user.role === "ADMIN" ? "Manage the store, content and settings." : "Manage products, orders and store operations."}</p>
    </header>
-   <div className="grid gap-6 lg:grid-cols-[220px_1fr] lg:items-start">
+   <div className="grid gap-5 lg:grid-cols-[220px_1fr] lg:items-start">
     <AdminNav />
     <div className="min-w-0">{children}</div>
    </div>
