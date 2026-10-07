@@ -83,7 +83,7 @@ function TrackContent() {
   return (
     <div className="container-zed max-w-2xl py-14 lg:py-20">
       <header className="text-center">
-        <p className="eyebrow text-rose-500">Where's my gift?</p>
+        <p className="eyebrow text-rose-500">Where&apos;s my gift?</p>
         <h1 className="mt-2 font-display text-3xl lg:text-5xl font-bold text-charcoal lg:text-6xl">
           Track your order
         </h1>
@@ -171,7 +171,7 @@ function TrackContent() {
             </div>
             {!paid && (
               <p className="mt-3 rounded-xl bg-rose-50/70 px-4 py-3 text-sm text-rose-600 backdrop-blur-sm">
-                This order isn't paid yet. Complete the M-PESA prompt on your phone or contact{" "}<span className="font-semibold text-rose-500">
+                This order isn&apos;t paid yet. Complete the M-PESA prompt on your phone or contact{" "}<span className="font-semibold text-rose-500">
                   +254 711 436169
                 </span> to help complete it.
               </p>
