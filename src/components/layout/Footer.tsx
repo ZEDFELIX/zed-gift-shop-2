@@ -2,6 +2,7 @@ import Link from "next/link";
 import { Facebook, Instagram, Mail, MapPin, Phone, Send } from "lucide-react";
 import { NAV_GROUPS, SITE } from "@/lib/constants";
 import { OpenCartLink } from "@/components/cart/OpenCartLink";
+import { getSettings } from "@/lib/data/settings";
 
 const ACCOUNT_LINKS = [
   { label: "My Account", href: "/account" },
@@ -19,16 +20,23 @@ const HELP_LINKS = [
   { label: "Terms of service", href: "/policies/terms" },
 ] as const;
 
-export function Footer() {
+export async function Footer() {
+  const settings = await getSettings();
+  const storeName = String(settings.storeName ?? SITE.name);
+  const description = String(settings.footerDescription ?? "");
+  const phone = String(settings.contactPhone ?? SITE.phoneDisplay);
+  const email = String(settings.contactEmail ?? SITE.email);
+  const address = String(settings.address ?? SITE.address);
+  const hours = String(settings.hours ?? SITE.hours);
+  const mapsHref = String(settings.mapsHref ?? SITE.mapsHref);
+  const mapsEmbed = String(settings.mapsEmbed ?? SITE.mapsEmbed);
   return (
     <footer className="zed-glass-footer mt-16 border-t border-white/10 text-white">
       <div className="container-zed grid gap-10 py-14 sm:grid-cols-2 lg:grid-cols-12">
         <div className="lg:col-span-3">
-          <p className="font-display text-lg font-black tracking-[0.06em]">ZED GIFT SHOP 2</p>
+          <p className="font-display text-lg font-black tracking-[0.06em]">{storeName}</p>
           <p className="mt-4 text-sm leading-relaxed text-white/70">
-            ZED Gift Shop 2 Nairobi Kenya is a highly trusted premium gift shop for more than 5 years. We
-            provide a wide range of premium gifts, door gifts, corporate gifts and are well known for our
-            expertise and customer focus in customising them according to your specifications.
+            {description}
           </p>
           <div className="mt-5 flex items-center gap-2">
             <a
@@ -77,19 +85,19 @@ export function Footer() {
           <ul className="mt-4 space-y-3 text-sm text-white/75">
             <li className="flex items-start gap-2">
               <Phone className="mt-0.5 size-4 shrink-0 text-champagne" />
-              <a href={SITE.phoneHref} className="hover:text-white">{SITE.phoneDisplay}</a>
+              <a href={`tel:${phone.replace(/\s+/g, "")}`} className="hover:text-white">{phone}</a>
             </li>
             <li className="flex items-start gap-2">
               <Mail className="mt-0.5 size-4 shrink-0 text-champagne" />
-              <a href={`mailto:${SITE.email}`} className="break-all hover:text-white">{SITE.email}</a>
+              <a href={`mailto:${email}`} className="break-all hover:text-white">{email}</a>
             </li>
             <li className="flex items-start gap-2">
               <MapPin className="mt-0.5 size-4 shrink-0 text-champagne" />
-              <a href={SITE.mapsHref} target="_blank" rel="noreferrer noopener" className="hover:text-white">
-                {SITE.address}
+              <a href={mapsHref} target="_blank" rel="noreferrer noopener" className="hover:text-white">
+                {address}
               </a>
             </li>
-            <li className="pt-1 text-white/55">{SITE.hours}</li>
+            <li className="pt-1 text-white/55">{hours}</li>
           </ul>
         </div>
 
@@ -133,14 +141,14 @@ export function Footer() {
         <div className="lg:col-span-1">
           <p className="text-[13px] font-bold uppercase tracking-[0.16em] text-white">Find Us</p>
           <a
-            href={SITE.mapsHref}
+            href={mapsHref}
             target="_blank"
             rel="noreferrer noopener"
             className="mt-4 block aspect-square w-full overflow-hidden rounded-lg border border-white/15"
           >
             <iframe
-              title={SITE.name}
-              src={SITE.mapsEmbed}
+              title={storeName}
+              src={mapsEmbed}
               className="size-full"
               loading="lazy"
               referrerPolicy="no-referrer-when-downgrade"
@@ -151,7 +159,7 @@ export function Footer() {
 
       <div className="border-t border-white/10">
         <div className="container-zed flex flex-col items-center justify-between gap-2 py-5 text-xs text-white/50 sm:flex-row">
-          <p>Copyright &copy; {new Date().getFullYear()} {SITE.name}, All rights reserved.</p>
+          <p>Copyright &copy; {new Date().getFullYear()} {storeName}, All rights reserved.</p>
           <p className="flex flex-wrap items-center justify-center gap-x-3 gap-y-1">
             <span>Prices in {SITE.currencyPrefix}</span>
             <span>Payments via M-Pesa, Visa, Mastercard &amp; Amex</span>
