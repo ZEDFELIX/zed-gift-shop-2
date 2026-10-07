@@ -6,7 +6,6 @@ import {
   getFeaturedProducts,
   getFlashSaleProducts,
   getMostBoughtProducts,
-  getRelatedProducts,
 } from "@/lib/data/products";
 import { prisma } from "@/lib/prisma";
 
