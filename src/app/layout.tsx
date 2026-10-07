@@ -10,6 +10,7 @@ import { CartDrawer } from "@/components/cart/CartDrawer";
 import { ToastHost } from "@/components/ui/ToastHost";
 import { ServiceWorkerReg } from "@/components/layout/ServiceWorkerReg";
 import "@/app/globals.css";
+import "@/app/glassmorphism.css";
 
 export const metadata: Metadata = buildMetadata({
  title: SITE.name,
@@ -32,7 +33,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       className={`${jost.variable} ${quicksand.variable} ${poppins.variable} ${libreBaskerville.variable}`}
       suppressHydrationWarning
     >
-    <body className="min-h-screen bg-pure-white text-ink font-sans antialiased" suppressHydrationWarning>
+    <body className="zed-page-bg min-h-screen bg-pure-white text-ink font-sans antialiased" suppressHydrationWarning>
     <script
     type="application/ld+json"
     dangerouslySetInnerHTML={{ __html: storeJsonLd }}
