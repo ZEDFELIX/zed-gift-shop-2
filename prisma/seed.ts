@@ -242,6 +242,7 @@ async function main() {
  await upsertCollection("personalized-picks", "Personalized Picks", "Made extra special with a name or message.");
  await upsertCollection("home-and-living", "Home & Living", "Objects that make a space feel like them.");
  await upsertCollection("gourmet", "Gourmet", "Eat, drink and celebrate.");
+ await upsertCollection("customer-service-week", "Customer Service Week", "Limited-time gifts and staff appreciation offers.", true);
 
  // ---- Products ----
   // Stagger publishedAt so "New Arrivals" ordering is stable and meaningful:
@@ -329,6 +330,23 @@ giftWrapAvailable: p.giftWrapAvailable ?? false,
  ? [...(p.collections ?? [])]
  : [...(p.collections ?? [])];
  await linkCollections(product.id, collections.length ? collections : ["new-arrivals"]);
+  }
+
+  // ---- Customer Service Week flash sale ----
+  const customerServiceWeekSlugs = [
+    "high-end-corporate-gift-hampers",
+    "company-branded-merchandise",
+    "personalized-business-gift-sets",
+    "custom-logo-jute-tote-bags",
+    "multi-colour-diary-2027",
+    "2027-diaries-personalized-by-rio-gift-shop",
+  ];
+  for (const slug of customerServiceWeekSlugs) {
+    const product = await prisma.product.findUnique({ where: { slug }, select: { id: true, tags: true } });
+    if (!product) continue;
+    const tags = Array.from(new Set([...product.tags, "flash-sale", "customer-service-week"]));
+    await prisma.product.update({ where: { id: product.id }, data: { tags } });
+    await linkCollections(product.id, ["customer-service-week"]);
   }
 
   if (missingCategoryRefs.size > 0) {
