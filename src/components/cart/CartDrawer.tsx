@@ -138,9 +138,9 @@ export function CartDrawer() {
             aria-hidden
           />
           <div
-            className="fixed right-0 inset-y-0 w-80 max-w-md border-l border-charcoal/20 bg-white/80 shadow-lg transform transition-transform duration-300 ease-in-out sm:static sm:shadow-2xl"
+            className="zed-glass-cart fixed right-0 inset-y-0 w-80 max-w-md transform transition-transform duration-300 ease-in-out sm:static sm:shadow-2xl"
           >
-            <header className="flex items-center justify-between border-b border-charcoal/10 bg-white/60 px-5 py-4 backdrop-blur-sm">
+            <header className="flex items-center justify-between border-b border-white/50 bg-white/35 px-5 py-4 backdrop-blur-md">
               <h2 className="font-display text-lg font-bold text-charcoal">
                 Your Cart{cart && cart.count > 0 ? ` (${cart.count})` : ""}
               </h2>
