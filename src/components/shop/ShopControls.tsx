@@ -100,7 +100,7 @@ export function ShopControls({
      <select
       value={sort}
       onChange={(e) => go("sort", e.target.value)}
-      className="field appearance-none pr-3 border border-charcoal/20 rounded-xl bg-white/20 px-3 py-2 text-sm"
+      className="field w-full appearance-none border border-charcoal/20 rounded-xl bg-white/20 px-3 py-2 text-sm"
       aria-label="Sort products"
      >
       {Object.entries(sortLabels).map(([key, label]) => (
@@ -186,9 +186,9 @@ placeholder={String(minPrice).length > 0 ? String(minPrice) : "Min"}
      <button
       type="button"
       onClick={clearAll}
-      className="ml-2 inline-flex items-center gap-1.5 text-sm font-semibold text-rose-600 underline underline-offset-2 hover:underline"
+      className="ml-auto inline-flex items-center gap-1.5 text-sm font-semibold text-rose-600 underline underline-offset-2 hover:underline"
      >
-      Go
+      Clear
      </button>
     </div>
    )}
@@ -198,7 +198,7 @@ placeholder={String(minPrice).length > 0 ? String(minPrice) : "Min"}
  return (
   <div className="space-y-3">
    {/* Mobile filter toggle */}
-   <div className="flex items-center justify-between gap-3 lg:hidden">
+   <div className="flex items-center justify-between gap-2 lg:hidden">
     <button
      type="button"
      onClick={() => setFiltersOpen(true)}
@@ -219,7 +219,6 @@ placeholder={String(minPrice).length > 0 ? String(minPrice) : "Min"}
       <option key={key} value={key}>{label}</option>
      ))}
     </select>
-    <ChevronDown className="pointer-events-none absolute right-3 top-1/2 size-3 -translate-y-1/2 text-charcoal/40" />
    </div>
 
    {/* Desktop sidebar */}
@@ -230,7 +229,7 @@ placeholder={String(minPrice).length > 0 ? String(minPrice) : "Min"}
    {/* Mobile filter drawer */}
    {filtersOpen && (
     <div className="fixed inset-0 z-[60] lg:hidden">
-     <div className="absolute inset-0 bg-charcoal/30" onClick={() => setFiltersOpen(false)} />
+     <div className="absolute inset-0 bg-charcoal/40" onClick={() => setFiltersOpen(false)} aria-hidden="true" />
      <div className="absolute inset-y-0 right-0 flex w-[min(90vw,380px)] flex-col bg-white/95 shadow-sm backdrop-blur-xl animate-[drawer_0.3s_cubic-bezier(0.16,1,0.3,1)_both]">
       <div className="flex items-center justify-between border-b border-charcoal/10 bg-white/80 px-4 py-3">
        <p className="font-display text-lg font-bold text-charcoal">Filters</p>
