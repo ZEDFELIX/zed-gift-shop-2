@@ -42,15 +42,15 @@ export function ProductCard({
     : { backgroundColor: "var(--color-rose-light)" };
 
   return (
-    <article className="group border border-edge bg-white/80 backdrop-blur-md overflow-hidden rounded-xl shadow-sm transition-shadow hover:shadow-md">
+    <article className="zed-product-card group overflow-hidden rounded-[1.25rem]">
       <div className="relative group-hover:opacity-100 transition-opacity">
         <Link
           href={`/product/${product.slug}`}
-          className="block aspect-[4/5] overflow-hidden rounded-xl"
+          className="zed-product-media block aspect-[4/5] overflow-hidden"
           aria-label={product.name}
         >
           <div
-            className="relative w-full h-full rounded-xl overflow-hidden transition-transform duration-500 group-hover:scale-105"
+            className="relative w-full h-full overflow-hidden transition-transform duration-500"
             style={imageStyle}
           >
             {image ? (
@@ -78,8 +78,8 @@ export function ProductCard({
         ) : null}
       </div>
 
-      <div className="p-4 flex flex-col flex-1">
-        <div className="flex items-center justify-between gap-2 mb-3">
+      <div className="flex flex-col flex-1 p-4">
+        <div className="mb-3 flex items-center justify-between gap-2">
           <p className="text-[0.65rem] uppercase tracking-widest text-charcoal/60">{product.categories[0]?.category.name ?? "Gift"}</p>
           {product.ratingCount > 0 ? (
             <span className="text-[0.65rem] text-charcoal/60">
@@ -90,7 +90,7 @@ export function ProductCard({
           ) : null}
         </div>
 
-        <h3 className="mt-1.5 min-h-[2.4rem] text-[13px] font-semibold leading-snug">
+        <h3 className="mt-1.5 min-h-[2.4rem] text-[13px] font-bold leading-snug">
           <Link href={`/product/${product.slug}`} className="hover:text-rose-600">
             {product.name}
           </Link>
