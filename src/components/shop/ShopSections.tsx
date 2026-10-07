@@ -101,45 +101,45 @@ export async function ShopSections() {
     }),
   ]);
 
-  const effectiveFlashSale = flashSale.length ? flashSale : sale;
+  const effectiveFlashSale = flashSale;
 
   return (
     <div>
       <Section
-        title="🔥 Flash Sale"
+        title="Flash Sale"
         subtitle="Limited-time offers — grab them before they’re gone."
         products={effectiveFlashSale}
       />
       <Section
-        title="🏷️ On Sale"
+        title="On Sale"
         subtitle="Special prices across selected ZED gifts."
         products={sale}
-        href="/shop?sort=price-asc"
+        href="/shop?deals=1"
       />
       <Section
-        title="🛍️ Most Bought"
+        title="Most Bought"
         subtitle="What customers are actually buying most."
-        products={mostBought.length ? mostBought : bestSellers}
+        products={mostBought}
       />
       <Section
-        title="⭐ Best Sellers"
+        title="Best Sellers"
         subtitle="Popular picks from the ZED collection."
         products={bestSellers}
       />
       <Section
-        title="✨ New Arrivals"
+        title="New Arrivals"
         subtitle="Fresh gifts added to the collection."
         products={newArrivals}
         href="/shop?sort=new"
       />
       <Section
-        title="🎁 Personalized Gifts"
+        title="Personalized Gifts"
         subtitle="Add a name, message or special touch."
         products={personalized}
         href="/shop?personalized=true"
       />
       <Section
-        title="💼 Corporate Gifts"
+        title="Corporate Gifts"
         subtitle="Gifts for teams, clients and staff."
         products={corporateCategory}
       />
