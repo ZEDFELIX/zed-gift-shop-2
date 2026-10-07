@@ -21,7 +21,7 @@ const HELP_LINKS = [
 
 export function Footer() {
   return (
-    <footer className="mt-16 border-t border-zed-900/15 bg-zed-950 text-white">
+    <footer className="zed-glass-footer mt-16 border-t border-white/10 text-white">
       <div className="container-zed grid gap-10 py-14 sm:grid-cols-2 lg:grid-cols-12">
         <div className="lg:col-span-3">
           <p className="font-display text-lg font-black tracking-[0.06em]">ZED GIFT SHOP 2</p>
