@@ -3,6 +3,7 @@ import "server-only";
 import { Metadata, Viewport } from "next";
 import { jost, libreBaskerville, poppins, quicksand } from "@/app/fonts";
 import { SITE } from "@/lib/constants";
+import { getSettings } from "@/lib/data/settings";
 import { buildMetadata, jsonLdStore } from "@/lib/seo";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
@@ -28,13 +29,22 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
  const storeJsonLd = JSON.stringify(jsonLdStore());
+ const settings = await getSettings();
+ const colors = {
+  "--color-rose-500": String(settings.primaryColor ?? "#E5397F"),
+  "--color-rose-600": String(settings.primaryColor ?? "#D61F6B"),
+  "--color-plum-800": String(settings.secondaryColor ?? "#6B2D5C"),
+  "--color-plum-900": String(settings.secondaryColor ?? "#4A1F42"),
+  "--color-violet-500": String(settings.accentColor ?? "#7C3AED"),
+  "--color-pure-white": String(settings.backgroundColor ?? "#FFFFFF"),
+ } as React.CSSProperties;
  return (
     <html
       lang="en"
       className={`${jost.variable} ${quicksand.variable} ${poppins.variable} ${libreBaskerville.variable}`}
       suppressHydrationWarning
     >
-    <body className="zed-page-bg min-h-screen bg-pure-white text-ink font-sans antialiased" suppressHydrationWarning>
+    <body style={colors} className="zed-page-bg min-h-screen bg-pure-white text-ink font-sans antialiased" suppressHydrationWarning>
     <script
     type="application/ld+json"
     dangerouslySetInnerHTML={{ __html: storeJsonLd }}
