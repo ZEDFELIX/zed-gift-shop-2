@@ -7,16 +7,16 @@ import { formatKES } from "@/lib/utils";
 
 export const dynamic = "force-dynamic";
 
-export async function generateMetadata({ params }: { params: { slug: string } }) {
- const { slug } = params;
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
+ const { slug } = await params;
  return {
   title: `ZED Gift Shop - ${slug}`,
   description: "ZED Gift Shop category page",
  };
 }
 
-export default async function ProductCategoryPage({ params }: { params: { slug: string } }) {
- const { slug } = params;
+export default async function ProductCategoryPage({ params }: { params: Promise<{ slug: string }> }) {
+ const { slug } = await params;
 
  const where = {
   categories: { some: { categoryId: { contains: slug, mode: "insensitive" } } },
