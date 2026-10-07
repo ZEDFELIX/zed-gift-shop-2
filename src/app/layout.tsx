@@ -77,7 +77,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
  Skip to content
  </a>
  <Header />
- <main id="main">{children}</main>
+ <main id="main" className="pb-20 lg:pb-0">{children}</main>
  <Footer />
   <CartDrawer />
   <ToastHost />
