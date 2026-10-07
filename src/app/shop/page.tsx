@@ -31,8 +31,6 @@ export default async function ShopPage({ searchParams }: { searchParams: Promise
  return (
   <ListingPage
    title="Shop All Gifts"
-   eyebrow="The full collection"
-   description="Every gift in the ZED range - filter by occasion, recipient, budget and personalization."
    filters={{ ...filters }}
    href="/shop"
   />
