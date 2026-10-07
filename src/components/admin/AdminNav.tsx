@@ -21,7 +21,7 @@ const TABS = [
 export function AdminNav() {
   const pathname = usePathname();
   return (
-    <nav className="flex gap-1 overflow-x-auto rounded-2xl border border-charcoal/10 bg-white p-1.5 shadow-sm lg:flex-col lg:overflow-visible">
+    <nav className="flex gap-1 overflow-x-auto overscroll-x-contain rounded-2xl border border-charcoal/10 bg-white p-1.5 shadow-sm lg:flex-col lg:overflow-visible">
       {TABS.map(({ href, label, icon: Icon }) => {
         if (href === "/account") {
           return (
