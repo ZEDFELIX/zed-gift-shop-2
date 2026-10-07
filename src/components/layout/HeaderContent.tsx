@@ -183,7 +183,7 @@ export function HeaderContent({
 
           <div className="ml-auto flex items-center gap-1 lg:gap-2">
             <a
-              href={SITE.phoneHref}
+              href={`tel:${contactPhone.replace(/\s+/g, "")}`}
               className="hidden items-center gap-2 rounded-md px-2.5 py-2 text-[13px] font-semibold text-[var(--color-ink)] hover:bg-zed-900/5 xl:flex"
             >
               <Phone className="size-4 text-soft-sage" />
