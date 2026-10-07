@@ -144,15 +144,21 @@ export async function Footer() {
             href={mapsHref}
             target="_blank"
             rel="noreferrer noopener"
-            className="mt-4 block aspect-square w-full overflow-hidden rounded-lg border border-white/15"
+            className="mt-4 block aspect-square w-full overflow-hidden rounded-lg border border-white/15 bg-white/5"
           >
-            <iframe
-              title={storeName}
-              src={mapsEmbed}
-              className="size-full"
-              loading="lazy"
-              referrerPolicy="no-referrer-when-downgrade"
-            />
+            {mapsEmbed ? (
+              <iframe
+                title={storeName}
+                src={mapsEmbed}
+                className="size-full"
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+              />
+            ) : (
+              <div className="grid size-full place-items-center p-4 text-center text-xs text-white/60">
+                Open location in Maps
+              </div>
+            )}
           </a>
         </div>
       </div>
