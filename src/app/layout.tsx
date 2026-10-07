@@ -9,6 +9,7 @@ import { Footer } from "@/components/layout/Footer";
 import { CartDrawer } from "@/components/cart/CartDrawer";
 import { ToastHost } from "@/components/ui/ToastHost";
 import { ServiceWorkerReg } from "@/components/layout/ServiceWorkerReg";
+import { WhatsAppFloat } from "@/components/layout/WhatsAppFloat";
 import "@/app/globals.css";
 import "@/app/glassmorphism.css";
 
@@ -49,6 +50,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
  <Footer />
   <CartDrawer />
   <ToastHost />
+  <WhatsAppFloat />
   <ServiceWorkerReg />
  </body>
  </html>
