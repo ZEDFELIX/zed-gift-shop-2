@@ -128,6 +128,28 @@ export function ProductCard({
               )}
             </Link>
           )}
+          <div className="mt-2 flex flex-col sm:flex-row gap-1">
+            <button
+              onClick={(e) => window.open(`https://wa.me/?text=${encodeURIComponent(`Hello ZED Gift Shop, I would like to order:${product.name}\\nQuantity: 1\\nPrice: KSh ${product.price}\\n${product.personalizationEnabled ? `Personalization: ${product.personalizationFieldsJson ? 'See options' : ''}` : ''}\\n${window.location.origin}/product/${product.slug}`)}`, '_blank')
+              className="flex items-center gap-2 px-3 py-1.5 text-xs font-semibold text-rose-600 rounded-lg bg-rose-50 hover:bg-rose-100 transition-colors"
+              aria-label="Order via WhatsApp"
+            >
+              <svg className="size-4" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M20.88 2H5.12C3.22 2 1.34 3.88 1.46 5.86L2.93 14H11.07L12.5 20.03L13.97 14H22.05C24.16 11.47 25.96 8.5 25.73 6.18L24.07 2.14C23.95 1.39 22.17 1 20.88 2ZM7.53 8.53l3.85 3.86L2 7.09l5.08-.06L7.53 8.53ZM4.63 10.08l2.06 2.02L3.5 17.6l5.35-.9c.47.46.97.73 1.48.73.86 0 1.56-.3 1.98-.68l1.06-1.04.96-2.35c.16-.37.28-.75.28-1.33v-.5c0-.94-.53-1.73-1.28-2.08L9 6.34l-1.06.95L5.38 2.36c-.36-.66-.95-1.06-1.65-1.06-1.06 0-1.68.7-1.68 1.75v.65z"/>
+              </svg>
+              Order via WhatsApp
+            </button>
+            <button
+              onClick={(e) => window.open(`https://wa.me/${process.env.NEXT_PUBLIC_WHATSAPP_NUMBER ?? '254711436169'}?text=${encodeURIComponent(`Hi! I'd like to chat about ${product.name}`)}`, '_blank')
+              className="flex items-center gap-2 px-3 py-1.5 text-xs font-semibold text-charcoal rounded-lg bg-white/80 hover:bg-charcoal/10 transition-colors"
+              aria-label="Chat about this product"
+            >
+              <svg className="size-4" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M20.88 2H5.12C3.22 2 1.34 3.88 1.46 5.86L2.93 14H11.07L12.5 20.03L13.97 14H22.05C24.16 11.47 25.96 8.5 25.73 6.18L24.07 2.14C23.95 1.39 22.17 1 20.88 2Z"/>
+              </svg>
+              Chat
+            </button>
+          </div>
           {lowStock && (
             <p className="mt-1 text-[0.55rem] font-medium text-rose-500">
               Only {product.quantity - product.reservedQuantity} left
