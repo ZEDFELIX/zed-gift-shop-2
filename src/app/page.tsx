@@ -64,6 +64,54 @@ export default async function HomePage({
   return (
     <>
       <div className="container-zed">
+        <section className="zed-hero mt-4 rounded-[2rem] p-6 sm:mt-6 sm:p-10 lg:p-14">
+          <div className="grid items-center gap-10 lg:grid-cols-[1.05fr_.95fr]">
+            <div className="relative z-10 max-w-2xl">
+              <span className="inline-flex rounded-full border border-white/70 bg-white/45 px-3.5 py-1.5 text-[11px] font-bold uppercase tracking-[0.2em] text-plum-800 backdrop-blur-md">
+                Make every moment special
+              </span>
+              <h1 className="mt-5 font-display text-4xl font-black leading-[1.02] tracking-[-.035em] text-ink sm:text-5xl lg:text-6xl">
+                Beautiful gifts for the moments that matter.
+              </h1>
+              <p className="mt-5 max-w-xl text-base leading-7 text-charcoal/80 sm:text-lg">
+                Discover thoughtful, premium and personalized gifts for birthdays, anniversaries,
+                graduations, weddings, corporate moments and every unforgettable occasion.
+              </p>
+              <div className="mt-7 flex flex-wrap gap-3">
+                <Link href="/shop" className="rounded-full bg-deep-olive px-6 py-3.5 text-sm font-bold text-white shadow-pop transition-transform hover:-translate-y-0.5 hover:text-white">
+                  Shop Now
+                </Link>
+                <Link href="/gifts" className="zed-hero-glass rounded-full px-6 py-3.5 text-sm font-bold text-ink transition-transform hover:-translate-y-0.5">
+                  Explore Gifts
+                </Link>
+              </div>
+              <div className="mt-8 flex flex-wrap gap-3 text-xs font-semibold text-charcoal/70">
+                {["Personalized gifts", "Same-day options", "Secure checkout"].map((item) => (
+                  <span key={item} className="rounded-full border border-white/65 bg-white/35 px-3 py-2 backdrop-blur-md">{item}</span>
+                ))}
+              </div>
+            </div>
+            <div className="relative min-h-[330px] sm:min-h-[390px]">
+              <div className="zed-hero-glass zed-float absolute left-[4%] top-[8%] w-[68%] rounded-[2rem] p-3 shadow-glass-lg">
+                <div className="overflow-hidden rounded-[1.5rem] bg-white/60">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src={featured[0]?.images?.[0]?.url ?? "/placeholders/product-01.svg"} alt={featured[0]?.name ?? "Featured ZED Gift"} loading="eager" className="aspect-[4/3] w-full object-cover" />
+                </div>
+              </div>
+              <div className="zed-hero-glass zed-float-delay absolute bottom-[5%] right-[2%] w-[58%] rounded-[1.5rem] p-4">
+                <p className="text-[10px] font-bold uppercase tracking-[.18em] text-soft-sage">Thoughtfully chosen</p>
+                <p className="mt-1 font-display text-lg font-bold text-ink">Gifts with a personal touch.</p>
+                <Link href="/shop" className="mt-3 inline-flex items-center gap-1 text-xs font-bold text-deep-olive">Find your gift <ArrowRight className="size-3.5" /></Link>
+              </div>
+              <div className="zed-hero-glass absolute right-[1%] top-[4%] grid size-14 place-items-center rounded-2xl text-xl shadow-glass">♡</div>
+              <div className="zed-hero-glass absolute bottom-[14%] left-[1%] rounded-2xl px-4 py-3 shadow-glass">
+                <p className="text-[10px] uppercase tracking-wider text-charcoal/60">Made for</p>
+                <p className="font-display text-sm font-bold text-ink">Someone special</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
         {/* Featured Categories */}
         {featured.length > 0 && (
           <section className="py-8 lg:py-10">
@@ -140,7 +188,7 @@ export default async function HomePage({
 
         {/* Flash Sales */}
         {deals.length > 0 && (
-          <section className="rounded-zed border border-edge bg-gradient-to-r from-panel to-warm-ivory py-8 lg:py-10">
+          <section className="zed-offer rounded-[2rem] py-8 lg:py-10">
             <div className="px-6 lg:px-10">
               <FlashSaleCountdown />
               <div className="mt-6 grid grid-cols-2 gap-4 md:grid-cols-3 xl:grid-cols-5">
@@ -177,7 +225,7 @@ export default async function HomePage({
               <Link
                 key={c.title}
                 href={c.href}
-                className="group relative aspect-[4/5] overflow-hidden rounded-zed bg-warm-ivory"
+                className="zed-category-card group relative aspect-[4/5] overflow-hidden rounded-[1.25rem] bg-warm-ivory"
               >
                 <span
                   className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105"
@@ -206,7 +254,7 @@ export default async function HomePage({
               <Link
                 key={r.title}
                 href={r.href}
-                className="group overflow-hidden rounded-zed border border-edge bg-white"
+                className="zed-category-card group overflow-hidden rounded-[1.25rem]"
               >
                 <span className="block aspect-square overflow-hidden bg-warm-ivory">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -248,7 +296,7 @@ export default async function HomePage({
             {TESTIMONIALS.slice(0, 4).map((t) => (
               <figure
                 key={t.author}
-                className="flex h-full flex-col rounded-zed border border-edge bg-white p-5"
+                className="zed-testimonial flex h-full flex-col rounded-[1.25rem] p-5"
               >
                 <div className="flex gap-0.5">
                   {Array.from({ length: 5 }).map((_, i) => (
@@ -274,7 +322,7 @@ export default async function HomePage({
               <Link
                 key={post.slug}
                 href={`/blog/${post.slug}`}
-                className="flex flex-col rounded-zed border border-edge bg-white p-5 transition-colors hover:border-soft-sage"
+                className="zed-blog-card flex flex-col rounded-[1.25rem] p-5 transition-colors"
               >
                 <p className="text-[11px] font-bold uppercase tracking-[0.14em] text-soft-sage">
                   {post.category}
