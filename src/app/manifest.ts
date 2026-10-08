@@ -16,19 +16,19 @@ export default function manifest(): MetadataRoute.Manifest {
  categories: ["shopping", "gifts"],
  icons: [
  {
- src: "/icon.svg",
+ src: "/icon-512.svg",
  sizes: "64x64",
  type: "image/svg+xml",
  purpose: "any",
  },
  {
- src: "/icon.svg",
+ src: "/icon-512.svg",
  sizes: "192x192",
  type: "image/svg+xml",
  purpose: "maskable",
  },
  {
- src: "/icon.svg",
+ src: "/icon-512.svg",
  sizes: "512x512",
  type: "image/svg+xml",
  purpose: "maskable",
@@ -40,13 +40,13 @@ export default function manifest(): MetadataRoute.Manifest {
  name: "Shop Gifts",
  short_name: "Shop",
  url: "/shop",
- icons: [{ src: "/icon.svg", sizes: "96x96" }],
+ icons: [{ src: "/icon-512.svg", sizes: "96x96" }],
  },
  {
  name: "Gift Builder",
  short_name: "Builder",
  url: "/gift-builder",
- icons: [{ src: "/icon.svg", sizes: "96x96" }],
+ icons: [{ src: "/icon-512.svg", sizes: "96x96" }],
  },
  ],
  prefer_related_applications: false,
