@@ -30,6 +30,7 @@ type ProductInitial = {
  giftWrapAvailable: boolean;
  giftMessageAvailable: boolean;
  images: string[];
+ videoUrl: string;
  categoryIds: string[];
  collectionIds: string[];
  variants: VariantRow[];
@@ -40,7 +41,7 @@ const emptyProduct: ProductInitial = {
  price: 0, compareAtPrice: null, sku: "", status: "DRAFT", featured: false, bestSeller: false,
  trackInventory: true, quantity: 0, lowStockThreshold: 5,
  personalizationEnabled: false, giftWrapAvailable: false, giftMessageAvailable: true,
- images: [], categoryIds: [], collectionIds: [], variants: [],
+ images: [], videoUrl: "", categoryIds: [], collectionIds: [], variants: [],
 };
 
 export function ProductForm({ product, categories, collections }: { product?: ProductInitial; categories: CategoryOption[]; collections: CollectionOption[] }) {
@@ -78,6 +79,7 @@ export function ProductForm({ product, categories, collections }: { product?: Pr
  compareAtPrice: form.compareAtPrice === null || form.compareAtPrice === 0 ? null : Number(form.compareAtPrice),
  price: Number(form.price),
  images: form.images,
+ videoUrl: form.videoUrl.trim(),
  };
  try {
  const res = await fetch(isEdit ? `/api/admin/products/${product!.id}` : "/api/admin/products", {
@@ -163,9 +165,32 @@ export function ProductForm({ product, categories, collections }: { product?: Pr
  <label className="label" htmlFor="pf-threshold">Low stock threshold</label>
  <input id="pf-threshold" type="number" min={0} className="field" value={form.lowStockThreshold} onChange={(e) => set("lowStockThreshold", Number(e.target.value))} />
  </div>
+ <div className="lg:col-span-2 rounded-zed border border-edge bg-white/60 p-4">
+ <div className="flex items-center justify-between gap-3">
  <div>
- <label className="label" htmlFor="pf-images">Image URLs (one per line, first is primary)</label>
- <textarea id="pf-images" className="field min-h-24 py-3" value={imageText} onChange={(e) => set("images", e.target.value.split("\n").map((s) => s.trim()).filter(Boolean))} />
+ <p className="label">Product media</p>
+ <p className="mt-1 text-xs text-[#334155]">Add up to 3 product pictures and 1 product video. The first picture is the main product image.</p>
+ </div>
+ <span className="rounded-full bg-zed-900/10 px-3 py-1 text-[11px] font-bold text-zed-700">{form.images.length}/3 images</span>
+ </div>
+ <div className="mt-3 grid gap-3 sm:grid-cols-3">
+ {[0,1,2].map((i) => (
+ <div key={i}>
+ <label className="label" htmlFor={`pf-image-${i}`}>Picture {i + 1}{i === 0 ? " (main)" : ""}</label>
+ <input id={`pf-image-${i}`} className="field" type="url" placeholder="https://..." value={form.images[i] ?? ""} onChange={(e) => {
+   const next = [...form.images];
+   if (e.target.value.trim()) next[i] = e.target.value.trim();
+   else next.splice(i, 1);
+   set("images", next.slice(0, 3));
+ }} />
+ </div>
+ ))}
+ </div>
+ <div className="mt-3">
+ <label className="label" htmlFor="pf-video">Product video (optional)</label>
+ <input id="pf-video" className="field" type="url" placeholder="https://.../product-video.mp4" value={form.videoUrl} onChange={(e) => set("videoUrl", e.target.value.trim())} />
+ <p className="mt-1 text-[11px] text-[#334155]">Use a direct video file URL such as MP4/WebM. The video will appear on the product page.</p>
+ </div>
  </div>
  <div className="lg:col-span-2 flex flex-wrap gap-4">
  {([
