@@ -2,7 +2,7 @@ import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import { formatKES } from "@/lib/utils";
 import { ORDER_STATUS_LABELS, PAYMENT_STATUS_LABELS } from "@/lib/constants";
-import { AlertTriangle, ArrowRight, Package, Receipt, Star, Truck } from "lucide-react";
+import { AlertTriangle, ArrowRight, Boxes, CreditCard, Gift, Package, Receipt, Settings, Star, Truck, Users } from "lucide-react";
 
 export const metadata = { title: "Admin dashboard" };
 
@@ -25,6 +25,15 @@ export default async function AdminDashboardPage() {
 
  const lowStock = lowStockRaw.filter((p) => p.quantity <= p.lowStockThreshold);
 
+ const quickActions = [
+  { href: "/admin/products/new", label: "Add product", icon: Gift },
+  { href: "/admin/orders", label: "Manage orders", icon: Package },
+  { href: "/admin/inventory", label: "Check inventory", icon: Boxes },
+  { href: "/admin/coupons", label: "Manage coupons", icon: CreditCard },
+  { href: "/admin/staff", label: "Manage staff", icon: Users },
+  { href: "/admin/settings", label: "Store settings", icon: Settings },
+ ];
+
  const paidOrders = orderCounts.find((o) => o.paymentStatus === "SUCCESSFUL")?._count._all ?? 0;
  const pendingOrders = orderCounts.find((o) => o.paymentStatus === "PENDING")?._count._all ?? 0;
 
@@ -45,6 +54,22 @@ export default async function AdminDashboardPage() {
  <p className="text-sm text-[#334155]">{label}</p>
  </div>
  ))}
+ </section>
+
+ <section className="rounded-zed border border-edge bg-white p-5">
+  <div>
+   <h2 className="font-display text-lg font-bold text-[#07111F]">Quick store controls</h2>
+   <p className="text-sm text-[#334155]">Manage the shop without touching the code.</p>
+  </div>
+  <div className="mt-4 grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
+   {quickActions.map(({ href, label, icon: Icon }) => (
+    <Link key={href} href={href} className="flex items-center gap-3 rounded-zed border border-edge bg-panel/50 p-3 text-sm font-semibold text-[#07111F] transition hover:border-soft-sage hover:bg-white">
+     <span className="grid size-9 place-items-center rounded-zed bg-white text-soft-sage"><Icon className="size-4" /></span>
+     {label}
+     <ArrowRight className="ml-auto size-4 text-[#334155]" />
+    </Link>
+   ))}
+  </div>
  </section>
 
  <section className="grid gap-6 lg:grid-cols-[1fr_320px]">
