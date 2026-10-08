@@ -1071,10 +1071,6 @@ function wizardReached(n: number): boolean {
  <dd>-{formatKES(cart.discount)}</dd>
  </div>
  )}
- <div className="flex justify-between text-[#07111F]">
- <dt>Delivery {form.deliveryMethod ? `(${(methods as Record<string, string>)[form.deliveryMethod]})` : ""}</dt>
- <dd>{deliveryFee === 0 ? "Free" : formatKES(deliveryFee)}</dd>
- </div>
  <div className="flex justify-between border-t border-white/40 pt-3 text-base font-bold text-[#07111F]">
  <dt>Total</dt>
  <dd>{formatKES(total)}</dd>
