@@ -28,6 +28,7 @@ import {
 import { formatKES } from "@/lib/utils";
 import type { NavFeaturedMap, MenuFeatured } from "@/lib/data/storefront";
 import { SearchPanel } from "@/components/search/SearchPanel";
+import { DownloadAppButton } from "@/components/layout/DownloadAppButton";
 
 function openCart() {
   window.dispatchEvent(new CustomEvent("zed:open-cart"));
@@ -281,6 +282,21 @@ export function HeaderContent({
         </div>
       </div>
 
+      {/* Mobile information bar */}
+      <div className="lg:hidden border-y border-edge/60 bg-zed-950 text-white">
+        <div className="flex items-center gap-3 overflow-x-auto px-3 py-2 text-[11px] font-medium no-scrollbar">
+          <a href={"tel:" + contactPhone.replace(/\s+/g, "")} className="flex shrink-0 items-center gap-1.5 whitespace-nowrap">
+            <Phone className="size-3.5 text-white/80" /> Call {contactPhone}
+          </a>
+          <span className="h-3.5 w-px shrink-0 bg-white/20" />
+          <span className="flex shrink-0 items-center gap-1.5 whitespace-nowrap text-white/80">
+            <Clock className="size-3.5" /> {announcement}
+          </span>
+          <span className="h-3.5 w-px shrink-0 bg-white/20" />
+          <DownloadAppButton className="flex shrink-0 items-center gap-1.5 whitespace-nowrap rounded-full bg-white px-3 py-1.5 font-bold text-zed-950" />
+        </div>
+      </div>
+
       {/* Category quick strip — horizontal scroller on mobile */}
       <div className="no-scrollbar flex items-center gap-2.5 overflow-x-auto border-t border-edge/60 bg-white/55 py-2 backdrop-blur-xl lg:hidden">
           {CATEGORY_STRIP.map((c) => (
@@ -373,6 +389,7 @@ export function HeaderContent({
               >
                 <Phone className="size-4 text-soft-sage" /> {contactPhone}
               </a>
+              <DownloadAppButton className="mb-2 flex w-full items-center justify-center gap-2 rounded-md border border-edge px-4 py-3 text-sm font-semibold text-[var(--color-ink)]" />
               {isAuthed && (userRole === "ADMIN" || userRole === "STAFF") && (
                 <Link
                   href="/admin"
