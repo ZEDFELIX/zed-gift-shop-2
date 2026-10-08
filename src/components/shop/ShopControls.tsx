@@ -230,7 +230,7 @@ placeholder={String(minPrice).length > 0 ? String(minPrice) : "Min"}
    {filtersOpen && (
     <div className="fixed inset-0 z-[60] lg:hidden">
      <div className="absolute inset-0 bg-charcoal/40" onClick={() => setFiltersOpen(false)} aria-hidden="true" />
-     <div className="absolute inset-y-0 right-0 flex w-[min(90vw,380px)] flex-col bg-white/95 shadow-sm backdrop-blur-xl animate-[drawer_0.3s_cubic-bezier(0.16,1,0.3,1)_both]">
+     <div className="absolute inset-y-0 left-0 flex w-[min(90vw,380px)] flex-col bg-white/95 shadow-sm backdrop-blur-xl animate-menu-in">
       <div className="flex items-center justify-between border-b border-charcoal/10 bg-white/80 px-4 py-3">
        <p className="font-display text-lg font-bold text-charcoal">Filters</p>
        <button
