@@ -401,7 +401,7 @@ useEffect(() => {
   setStep("polling");
   }
 
-const deliveryFee = deliveryOptions.find((o) => o.method === form.deliveryMethod)?.fee ?? 0;
+const deliveryFee = 0;
   const total = Math.max(0, cart.subtotal - cart.discount) + deliveryFee;
   const phoneDigits = form.phone.replace(/\D/g, "").replace(/^00/, "");
   const phoneIsValid = /^(0|254)\d{9}$/.test(phoneDigits);
@@ -929,7 +929,7 @@ function wizardReached(n: number): boolean {
   <>
   <h2 className="mt-4 font-display text-xl font-bold text-[#07111F]">Payment didn&apos;t go through</h2>
   <p className="mx-auto mt-2 max-w-sm text-sm text-[#334155]">
-  {error ?? (failedMethod === "M_PESA" ? "The M-PESA payment wasn&apos;t completed." : "The payment wasn&apos;t completed.")} Your order <strong>{orderRef.orderNumber}</strong> is saved and you can try again.
+  {error ?? (failedMethod === "M_PESA" ? "The M-PESA payment wasn&apos;t completed." : "The payment wasn&apos;t completed.")} Your order <strong>{orderRef.orderNumber}</strong> has been cancelled because the payment was not successful.
   </p>
   <div className="mt-5 flex flex-col items-center justify-center gap-2 sm:flex-row">
   <button type="button" onClick={retryPayment} disabled={retrying} className="flex items-center justify-center gap-2 rounded-zed bg-zed-950 px-6 py-3 text-sm font-bold text-white disabled:opacity-50">
