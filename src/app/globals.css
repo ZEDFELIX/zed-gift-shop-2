@@ -264,3 +264,9 @@ body{background:radial-gradient(circle at 10% 0%,rgba(233,213,241,.28),transpare
 .zed-product-card:hover,article[class*="glass"]:hover,.shop-product-card:hover{transform:translateY(-3px);box-shadow:inset 0 1px 0 rgba(255,255,255,1),0 22px 48px -28px rgba(107,45,92,.3)}
 .zed-product-card .zed-product-media{border-radius:18px;margin:8px;overflow:hidden;background:rgba(255,255,255,.45);box-shadow:inset 0 1px 0 rgba(255,255,255,.9)}
 @media(max-width:767px){.glass,.glass-card,.glass-panel,.glass-nav,.glass-strong,.zed-card,.zed-product-card,article[class*="glass"],.shop-product-card{border-radius:20px}.zed-product-card .zed-product-media{margin:7px;border-radius:16px}.zed-product-card{box-shadow:inset 0 1px 0 rgba(255,255,255,.95),0 12px 30px -24px rgba(42,31,45,.38)}}
+
+
+/* Auth form input fix: keep login/register fields interactive above glass layers. */
+.auth-field{position:relative;z-index:10;pointer-events:auto!important;user-select:text!important;-webkit-user-select:text!important;cursor:text;opacity:1!important;}
+.auth-field:disabled{pointer-events:auto;cursor:not-allowed;}
+.auth-field:focus{position:relative;z-index:20;}
