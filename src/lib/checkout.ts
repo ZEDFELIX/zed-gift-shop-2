@@ -101,7 +101,8 @@ const paymentMethod = input.paymentMethod ?? "M_PESA";
   if (!deliveryOption) {
     return { ok: false, error: "That delivery option isn't available for the selected area." };
   }
-  // Delivery charges are handled separately by phone.\n  const deliveryFee = 0;
+  // Delivery charges are handled separately by phone.
+  const deliveryFee = 0;
 
   // No minimum or maximum order-value restriction.
 
