@@ -199,6 +199,7 @@ export const contactSchema = z.object({
 
 export const productCreateSchema = z.object({
  name: z.string().min(2).max(200),
+ videoUrl: z.string().url().max(1000).optional().or(z.literal("")),
  slug: z.string().min(2).max(240).regex(/^[a-z0-9-]+$/, "Slug must be lowercase letters, numbers and hyphens"),
  headline: z.string().max(240).optional().or(z.literal("")),
  shortDescription: z.string().max(400).optional().or(z.literal("")),
