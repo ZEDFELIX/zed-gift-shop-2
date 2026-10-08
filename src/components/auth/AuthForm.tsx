@@ -58,7 +58,7 @@ export function AuthForm({ mode }: { mode: "login" | "register" }) {
  <label className="label" htmlFor="a-name">Full name</label>
  <div className="relative">
  <User className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-[#334155]" />
- <input id="a-name" className="field pl-9" placeholder="Jane Mwangi" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} required />
+ <input id="a-name" className="field auth-field pl-9 relative z-10 pointer-events-auto select-text" placeholder="Jane Mwangi" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} required />
  </div>
  </div>
  )}
@@ -67,7 +67,7 @@ export function AuthForm({ mode }: { mode: "login" | "register" }) {
  <label className="label" htmlFor="a-email">Email</label>
  <div className="relative">
  <Mail className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-[#334155]" />
- <input id="a-email" type="email" autoComplete="email" className="field pl-9" placeholder="you@example.com" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} required />
+ <input id="a-email" type="email" autoComplete="email" className="field auth-field pl-9 relative z-10 pointer-events-auto select-text" placeholder="you@example.com" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} required />
  </div>
  </div>
 
@@ -75,7 +75,7 @@ export function AuthForm({ mode }: { mode: "login" | "register" }) {
  <label className="label" htmlFor="a-password">Password</label>
  <div className="relative">
  <Lock className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-[#334155]" />
- <input id="a-password" type="password" autoComplete={isLogin ? "current-password" : "new-password"} className="field pl-9" placeholder="--------" value={form.password} onChange={(e) => setForm({ ...form, password: e.target.value })} required minLength={isLogin ? 1 : 8} />
+ <input id="a-password" type="password" autoComplete={isLogin ? "current-password" : "new-password"} className="field auth-field pl-9 relative z-10 pointer-events-auto select-text" placeholder="--------" value={form.password} onChange={(e) => setForm({ ...form, password: e.target.value })} required minLength={isLogin ? 1 : 8} />
  </div>
  {!isLogin && <p className="mt-1 text-xs text-[#334155]">At least 8 characters.</p>}
  </div>
