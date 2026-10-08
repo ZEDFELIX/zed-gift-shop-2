@@ -138,9 +138,9 @@ export function CartDrawer() {
             aria-hidden
           />
           <div
-            className="zed-glass-cart fixed right-0 inset-y-0 w-80 max-w-md transform transition-transform duration-300 ease-in-out sm:static sm:shadow-2xl"
+            className="zed-glass-cart fixed inset-y-0 right-0 flex h-dvh w-[min(94vw,420px)] max-w-md flex-col overflow-hidden transform transition-transform duration-300 ease-in-out sm:static sm:shadow-2xl"
           >
-            <header className="flex items-center justify-between border-b border-white/50 bg-white/35 px-5 py-4 backdrop-blur-md">
+            <header className="flex shrink-0 items-center justify-between border-b border-white/50 bg-white/35 px-4 py-3.5 backdrop-blur-md sm:px-5">
               <h2 className="font-display text-lg font-bold text-charcoal">
                 Your Cart{cart && cart.count > 0 ? ` (${cart.count})` : ""}
               </h2>
@@ -171,7 +171,7 @@ export function CartDrawer() {
               </div>
             ) : (
               <>
-                <div className="h-96 overflow-y-auto px-4 py-4 sm:px-5">
+                <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain px-3 py-3 sm:px-5 sm:py-4">
                   {cart.items.map((item) => (
                     <div
                       key={item.id}
@@ -225,7 +225,7 @@ export function CartDrawer() {
                               type="button"
                               aria-label="Decrease"
                               onClick={() => changeQty(item, -1)}
-                              className="size-8 rounded-sm hover:bg-charcoal/10"
+                              className="grid size-10 place-items-center rounded-sm hover:bg-charcoal/10"
                             >
                               <Minus className="size-3" />
                             </button>
@@ -234,7 +234,7 @@ export function CartDrawer() {
                               type="button"
                               aria-label="Increase"
                               onClick={() => changeQty(item, 1)}
-                              className="size-8 rounded-sm hover:bg-charcoal/10"
+                              className="grid size-10 place-items-center rounded-sm hover:bg-charcoal/10"
                             >
                               <Plus className="size-3" />
                             </button>
@@ -255,7 +255,7 @@ export function CartDrawer() {
                   ))}
                 </div>
                 {/* Coupon */}
-                <div className="pt-2">
+                <div className="shrink-0 border-t border-charcoal/10 bg-white/35 px-3 py-2.5 sm:px-5">
                   {cart.couponCode ? (
                     <div
                       className="flex items-center justify-between rounded-xl border border-charcoal/20 bg-white/80 px-3 py-2 text-sm backdrop-blur-sm"
@@ -277,13 +277,13 @@ export function CartDrawer() {
                         value={coupon}
                         onChange={(e) => setCoupon(e.target.value)}
                         placeholder="Coupon code"
-                        className="field text-sm uppercase border border-charcoal/20 rounded-xl bg-white/20 px-3 py-2"
+                        className="field min-w-0 flex-1 text-sm uppercase border border-charcoal/20 rounded-xl bg-white/20 px-3 py-2.5"
                         aria-label="Coupon code"
                       />
                       <button
                         type="submit"
                         disabled={!coupon.trim()}
-                        className="rounded-xl bg-rose-500 px-3 py-1.5 text-xs font-bold text-white uppercase tracking-wider"
+                        className="shrink-0 rounded-xl bg-rose-500 px-4 py-2.5 text-xs font-bold text-white uppercase tracking-wider"
                       >
                         Apply
                       </button>
@@ -294,7 +294,7 @@ export function CartDrawer() {
                   )}
                 </div>
                 {/* Footer */}
-                <footer className="border-t border-charcoal/10 bg-white/60 px-5 py-4 backdrop-blur-sm">
+                <footer className="shrink-0 border-t border-charcoal/10 bg-white/80 px-4 py-3.5 backdrop-blur-sm sm:px-5 sm:py-4">
                   <dl className="space-y-1.5 text-sm text-charcoal/60">
                     <div className="flex justify-between">
                       <dt>Subtotal</dt>
