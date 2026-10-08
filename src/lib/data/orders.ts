@@ -58,7 +58,7 @@ export async function createOrder(
   const tx = options.tx ?? prisma;
   const netTotal = Math.max(0, input.subtotal - input.discount);
 
-  let deliveryFee = options.deliveryFee;
+  // Delivery charges are handled separately by phone. Never add them to the order total.\n  let deliveryFee = 0;
   let estimatedDeliveryDate = options.estimatedDeliveryDate ?? null;
   let deliveryPartner = options.deliveryPartner ?? null;
 
