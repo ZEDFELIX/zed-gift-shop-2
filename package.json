@@ -5,7 +5,7 @@
   "description": "ZED GIFT SHOP 2 — Premium Kenyan gifting & personalized products ecommerce.",
   "scripts": {
     "dev": "next dev",
-    "build": "prisma db push && prisma db seed && next build",
+    "build": "next build",
     "start": "next start",
     "lint": "next lint",
     "typecheck": "tsc --noEmit",
@@ -16,7 +16,8 @@
     "db:seed": "prisma db seed",
     "db:images": "node --import tsx scripts/update-demo-images.ts",
     "db:setup": "npm run db:up && npm run db:push && npm run db:seed",
-    "postinstall": "prisma generate"
+    "postinstall": "prisma generate",
+    "vercel-build": "prisma generate && prisma migrate deploy && next build"
   },
   "prisma": {
     "seed": "node --import tsx prisma/seed.ts"
@@ -40,8 +41,6 @@
     "@tailwindcss/postcss": "^4.1.0",
     "@types/node": "^24.0.0",
     "@types/nodemailer": "^6.4.17",
-    "@types/react": "^19.1.0",
-    "@types/react-dom": "^19.1.0",
     "embedded-postgres": "18.4.0-beta.17",
     "eslint": "^9.39.5",
     "eslint-config-next": "^15.3.3",
