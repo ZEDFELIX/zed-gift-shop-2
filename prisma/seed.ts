@@ -142,6 +142,26 @@ type SeedProduct = {
  deliveryNote?: string;
 };
 
+const TEST_PRODUCT: SeedProduct = {
+  slug: "mpesa-stk-test-1-kes",
+  name: "M-PESA STK Test Product",
+  headline: "KES 1 payment test",
+  shortDescription: "Temporary product for testing the M-PESA STK Push.",
+  description: "Use this product only to test the Zed Gift Shop 2 M-PESA STK Push flow.",
+  price: 1,
+  sku: "ZED2-STK-TEST-1",
+  tags: ["test", "mpesa", "stk"],
+  quantity: 999,
+  categories: ["corporate"],
+  collections: ["new-arrivals"],
+  featured: false,
+  bestSeller: false,
+  personalizationEnabled: false,
+  giftWrapAvailable: false,
+  image: "mpesa-stk-test",
+  deliveryNote: "TEST PRODUCT — do not use for real orders.",
+};
+
 const PRODUCTS: SeedProduct[] = RIO_PRODUCTS.map((item) => ({
   slug: item.slug,
   name: item.name,
@@ -250,7 +270,7 @@ async function main() {
   const NEWEST = Date.UTC(2026, 8, 29, 9, 0, 0);
   const DAY = 24 * 60 * 60 * 1000;
 
-  for (const [index, p] of PRODUCTS.entries()) {
+  for (const [index, p] of allProducts.entries()) {
   const publishedAt = new Date(NEWEST - index * DAY);
  const product = await prisma.product.upsert({
  where: { slug: p.slug },
