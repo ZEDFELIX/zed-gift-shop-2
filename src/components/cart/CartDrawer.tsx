@@ -138,7 +138,7 @@ export function CartDrawer() {
             aria-hidden
           />
           <div
-            className="zed-glass-cart fixed inset-y-0 right-0 flex h-dvh w-[min(94vw,430px)] max-w-md flex-col overflow-hidden border-l border-white/70 bg-white/55 shadow-[-24px_0_70px_-35px_rgba(42,31,45,.38)] backdrop-blur-3xl transform transition-transform duration-300 ease-in-out sm:static sm:shadow-2xl"
+            className="zed-glass-cart fixed inset-y-0 left-0 flex h-dvh w-[min(94vw,430px)] max-w-md flex-col overflow-hidden border-r border-white/70 bg-white/55 shadow-[24px_0_70px_-35px_rgba(42,31,45,.38)] backdrop-blur-3xl transform transition-transform duration-300 ease-in-out sm:static sm:shadow-2xl"
           >
             <header className="flex shrink-0 items-center justify-between border-b border-white/70 bg-white/45 px-4 py-4 backdrop-blur-2xl sm:px-5">
               <h2 className="font-display text-lg font-bold text-charcoal">
