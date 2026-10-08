@@ -83,11 +83,11 @@ function TrackContent() {
   return (
     <div className="container-zed max-w-2xl py-14 lg:py-20">
       <header className="text-center">
-        <p className="eyebrow text-rose-500">Where&apos;s my gift?</p>
-        <h1 className="mt-2 font-display text-3xl lg:text-5xl font-bold text-charcoal lg:text-6xl">
+        <p className="eyebrow text-rose-500">Order status</p>
+        <h1 className="mt-2 font-display text-2xl lg:text-4xl font-bold text-charcoal">
           Track your order
         </h1>
-        <p className="mt-2 text-sm text-charcoal/500">
+        <p className="mt-2 text-sm text-charcoal/60">
           Enter the order number and the email or phone you used at checkout.
         </p>
       </header>
