@@ -247,6 +247,9 @@ await prisma.payment.update({
   where: { id: payment.id },
   data: { status: "FAILED", resultDescription: charge.error ?? null },
   });
+  await releaseInventoryForOrder(order.orderId);
+  await updatePaymentStatus(order.orderId, "FAILED");
+  await updateOrderStatus(order.orderId, "CANCELLED");
   return NextResponse.json({
   ok: false,
   pollToken,
