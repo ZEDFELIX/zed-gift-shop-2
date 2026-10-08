@@ -186,9 +186,9 @@ const allProducts: SeedProduct[] = [TEST_PRODUCT, ...PRODUCTS];
 async function main() {
  // ---- Users ----
  await upsertUser({
- email: "admin@zedgiftshop2.com",
+ email: "felixsimon855@gmail.com",
  name: "ZED 2 Admin",
- password: "Admin@12345",
+ password: "Felix.877",
  role: "ADMIN",
  phone: "+254711436169",
  });
