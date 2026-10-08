@@ -37,6 +37,7 @@ export default async function AdminProductEditPage({ params }: { params: Promise
  giftWrapAvailable: product.giftWrapAvailable,
  giftMessageAvailable: product.giftMessageAvailable,
  images: product.images.map((i) => i.url),
+ videoUrl: product.videoUrl ?? "",
  categoryIds: product.categories.map((c) => c.categoryId),
  collectionIds: product.collections.map((c) => c.collectionId),
  variants: product.variants.map((v) => ({
