@@ -251,3 +251,6 @@
 }
 
 @media(prefers-reduced-motion:reduce){*,::before,:after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
+/* ZED 2026 phone-first refinement */
+@media(max-width:767px){.zed-product-card{min-width:0;border:1px solid var(--color-edge);background:#fff;box-shadow:0 4px 16px -12px rgba(42,31,45,.22)}.zed-product-media{aspect-ratio:1/1;max-height:190px}.zed-product-card h3{font-size:13px;min-height:34px}.zed-product-card .btn,.zed-product-card .btn-outline{min-height:40px;padding:8px 10px;font-size:12px}nav[aria-label="Mobile quick navigation"]{position:fixed;bottom:0;left:0;right:0;z-index:80;background:rgba(255,255,255,.96);backdrop-filter:blur(18px);border-top:1px solid var(--color-edge)}.zed-glass-cart{width:100vw;max-width:100vw}.zed-glass-cart header{padding-top:max(12px,env(safe-area-inset-top))}}
+@media(max-width:374px){.zed-product-media{max-height:150px}}
