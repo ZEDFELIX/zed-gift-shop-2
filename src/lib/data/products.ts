@@ -12,6 +12,7 @@ export type ProductListFilters = {
  personalized?: boolean;
  inStock?: boolean;
  deals?: boolean;
+ flashSale?: boolean;
  rating?: number;
  sort?: string;
  page?: number;
@@ -222,6 +223,13 @@ export async function listProducts(filters: ProductListFilters) {
  }
  if (filters.personalized) conditions.push({ personalizationEnabled: true });
  if (filters.deals) conditions.push({ compareAtPrice: { not: null } });
+ if (filters.flashSale) conditions.push({
+   OR: [
+     { tags: { has: "flash-sale" } },
+     { tags: { has: "customer-service-week" } },
+     { collections: { some: { collection: { slug: "customer-service-week" } } } },
+   ],
+ });
  if (filters.categoryKind) {
  conditions.push({ categories: { some: { category: { kind: filters.categoryKind } } } });
  }
