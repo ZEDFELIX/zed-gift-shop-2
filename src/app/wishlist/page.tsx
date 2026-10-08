@@ -22,7 +22,7 @@ export default async function WishlistPage() {
  <div className="container-zed py-10 lg:py-14">
  <header className="flex flex-wrap items-end justify-between gap-4">
  <div>
- <p className="eyebrow">Saved gifts</p>
+ <p className="eyebrow">Saved</p>
  <h1 className="mt-2 font-display text-3xl font-bold text-[#07111F]">Your Wishlist</h1>
  </div>
  {user && (
