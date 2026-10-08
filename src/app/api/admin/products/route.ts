@@ -27,7 +27,7 @@ export async function POST(req: Request) {
  const images = (Array.isArray((body as { images?: unknown }).images) ? (body as { images: string[] }).images : [])
  .map((u: string) => String(u).trim())
  .filter(Boolean)
- .slice(0, 12);
+ .slice(0, 3);
 
  if (d.slug) {
  const clash = await prisma.product.findUnique({ where: { slug: d.slug } });
@@ -37,7 +37,8 @@ export async function POST(req: Request) {
  const product = await prisma.product.create({
  data: {
  name: d.name,
- slug: d.slug,
+videoUrl: d.videoUrl || null,
+slug: d.slug,
  headline: d.headline || null,
  shortDescription: d.shortDescription || null,
  description: d.description || null,
