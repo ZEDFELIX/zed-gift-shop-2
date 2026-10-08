@@ -32,11 +32,9 @@ export async function GET(req: Request) {
   const quote = await quoteDeliveryFor({ county, town, subtotal, allProductsCodEligible });
 
   return NextResponse.json({
-    options: quote.options,
+    options: quote.options.map((option) => ({ ...option, fee: 0 })),
     codAvailable: quote.codAvailable,
     codReason: quote.codReason,
-    minOrder: quote.minOrder,
-    maxOrder: quote.maxOrder,
     zone: quote.zone
       ? {
           name: quote.zone.name,
