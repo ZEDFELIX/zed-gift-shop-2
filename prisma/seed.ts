@@ -181,6 +181,8 @@ const PRODUCTS: SeedProduct[] = RIO_PRODUCTS.map((item) => ({
   image: item.slug,
 }));
 
+const allProducts: SeedProduct[] = [TEST_PRODUCT, ...PRODUCTS];
+
 async function main() {
  // ---- Users ----
  await upsertUser({
