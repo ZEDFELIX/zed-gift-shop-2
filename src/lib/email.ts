@@ -153,6 +153,16 @@ export async function sendPasswordReset(input: { to: string; resetUrl: string })
  return sendEmail({ to: input.to, subject, text, html: layout({ subject, text, html }).html });
 }
 
+export async function sendAdminPasswordReset(input: { to: string; resetUrl: string }) {
+ const subject = `Admin password change for ${SITE.name}`;
+ const text = `A password change was requested for your ${SITE.name} admin account. Change it here: ${input.resetUrl}. This link expires in 30 minutes. If you did not request this, you can ignore this email.`;
+ const html = `<p style="margin:0 0 12px;">A password change was requested for your <strong>${SITE.name}</strong> admin account.</p>
+ <p style="margin:0 0 16px;">Use the secure link below to choose a new password.</p>
+ <a href="${input.resetUrl}" style="display:inline-block;margin:8px 0 12px;background:#0F5C4D;color:#ffffff;padding:12px 20px;border-radius:8px;text-decoration:none;font-weight:bold;">Change admin password</a>
+ <p style="font-size:12px;color:#888;">This link expires in 30 minutes. If you did not request this, you can ignore this email.</p>`;
+ return sendEmail({ to: input.to, subject, text, html: layout({ subject, text, html }).html });
+}
+
 export async function sendOccasionReminder(input: { to: string; personName: string; occasion: string; date: string; shopUrl: string }) {
  const subject = `Don't forget ${input.personName}'s ${input.occasion} (${input.date})`;
  const text = `${input.personName}'s ${input.occasion} is on ${input.date}. Find a gift: ${input.shopUrl}`;
