@@ -138,9 +138,9 @@ export function CartDrawer() {
             aria-hidden
           />
           <div
-            className="zed-glass-cart fixed inset-y-0 right-0 flex h-dvh w-[min(94vw,420px)] max-w-md flex-col overflow-hidden transform transition-transform duration-300 ease-in-out sm:static sm:shadow-2xl"
+            className="zed-glass-cart fixed inset-y-0 right-0 flex h-dvh w-[min(94vw,430px)] max-w-md flex-col overflow-hidden border-l border-white/70 bg-white/55 shadow-[-24px_0_70px_-35px_rgba(42,31,45,.38)] backdrop-blur-3xl transform transition-transform duration-300 ease-in-out sm:static sm:shadow-2xl"
           >
-            <header className="flex shrink-0 items-center justify-between border-b border-white/50 bg-white/35 px-4 py-3.5 backdrop-blur-md sm:px-5">
+            <header className="flex shrink-0 items-center justify-between border-b border-white/70 bg-white/45 px-4 py-4 backdrop-blur-2xl sm:px-5">
               <h2 className="font-display text-lg font-bold text-charcoal">
                 Your Cart{cart && cart.count > 0 ? ` (${cart.count})` : ""}
               </h2>
@@ -175,12 +175,12 @@ export function CartDrawer() {
                   {cart.items.map((item) => (
                     <div
                       key={item.id}
-                      className="glass-panel rounded-xl p-3 border border-charcoal/10 hover:border-charcoal/15 transition-colors mb-4"
+                      className="glass-card rounded-2xl p-3 border border-white/70 bg-white/45 hover:border-white/90 transition-all mb-3"
                     >
                       <div className="flex gap-3">
                         <Link
                           href={`/product/${item.slug}`}
-                          className="relative size-20 shrink-0 overflow-hidden rounded-xl bg-rose-50"
+                          className="relative size-20 shrink-0 overflow-hidden rounded-2xl bg-white/45 ring-1 ring-white/70"
         >
                           {item.image ? (
                             <Image
@@ -220,7 +220,7 @@ export function CartDrawer() {
                           </div>
                         </div>
                         <div className="mt-2 flex items-center justify-between">
-                          <div className="flex items-center rounded-full border border-charcoal/20 bg-white/80">
+                          <div className="flex items-center rounded-full border border-white/80 bg-white/55 backdrop-blur-xl shadow-inner">
                             <button
                               type="button"
                               aria-label="Decrease"
@@ -255,7 +255,7 @@ export function CartDrawer() {
                   ))}
                 </div>
                 {/* Coupon */}
-                <div className="shrink-0 border-t border-charcoal/10 bg-white/35 px-3 py-2.5 sm:px-5">
+                <div className="shrink-0 border-t border-white/60 bg-white/45 px-3 py-3 backdrop-blur-2xl sm:px-5">
                   {cart.couponCode ? (
                     <div
                       className="flex items-center justify-between rounded-xl border border-charcoal/20 bg-white/80 px-3 py-2 text-sm backdrop-blur-sm"
@@ -294,7 +294,7 @@ export function CartDrawer() {
                   )}
                 </div>
                 {/* Footer */}
-                <footer className="shrink-0 border-t border-charcoal/10 bg-white/80 px-4 py-3.5 backdrop-blur-sm sm:px-5 sm:py-4">
+                <footer className="shrink-0 border-t border-white/70 bg-white/65 px-4 py-4 backdrop-blur-3xl sm:px-5 sm:py-4">
                   <dl className="space-y-1.5 text-sm text-charcoal/60">
                     <div className="flex justify-between">
                       <dt>Subtotal</dt>
