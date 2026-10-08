@@ -10,7 +10,7 @@ import { ShieldCheck, Truck } from "lucide-react";
 
 export const dynamic = "force-dynamic";
 
-export const metadata = { title: "Checkout", description: "Secure checkout with M-PESA STK Push, bank transfer, cash on delivery, or Flutterwave card payments." };
+export const metadata = { title: "Checkout", description: "Checkout with M-PESA STK Push, bank transfer, cash on delivery, or Flutterwave card payments." };
 
 export default async function CheckoutPage() {
  const [{ cart }, user] = await Promise.all([readCart().then(async ({ cart }) => ({ cart: cart ? await serializeCart(cart) : null })), getCurrentUser()]);
@@ -30,8 +30,8 @@ export default async function CheckoutPage() {
  return (
  <div className="container-zed py-10 lg:py-14">
  <header className="mb-8">
- <p className="eyebrow">Secure checkout</p>
- <h1 className="mt-2 font-display text-3xl font-bold text-[#07111F] lg:text-4xl">Almost there</h1>
+ <p className="eyebrow">Checkout</p>
+ <h1 className="mt-2 font-display text-2xl font-bold text-[#07111F] lg:text-4xl">Checkout</h1>
 <p className="mt-2 flex items-center gap-2 text-sm text-[#334155]">
   <ShieldCheck className="size-4 text-soft-sage" /> Checkout is protected. Pay by M-PESA, card, bank transfer, or cash on delivery.
   </p>
