@@ -35,7 +35,7 @@ export async function PATCH(req: Request, { params }: { params: Promise<{ id: st
  const images = (Array.isArray((body as { images?: unknown }).images) ? (body as { images: string[] }).images : [])
  .map((u: string) => String(u).trim())
  .filter(Boolean)
- .slice(0, 12);
+ .slice(0, 3);
 
  const product = await prisma.$transaction(async (tx) => {
  if (d.variants?.length) {
@@ -49,7 +49,8 @@ export async function PATCH(req: Request, { params }: { params: Promise<{ id: st
  where: { id },
  data: {
  name: d.name,
- slug: d.slug,
+videoUrl: d.videoUrl || null,
+slug: d.slug,
  headline: d.headline || null,
  shortDescription: d.shortDescription || null,
  description: d.description || null,
