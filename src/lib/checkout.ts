@@ -103,18 +103,7 @@ const paymentMethod = input.paymentMethod ?? "M_PESA";
   }
   const deliveryFee = deliveryOption.fee;
 
-  if (netTotal < quote.minOrder) {
-    return {
-      ok: false,
-      error: `This order is below the KES ${quote.minOrder.toLocaleString("en-KE")} minimum for ${quote.zone?.name ?? input.county}.`,
-    };
-  }
-  if (quote.maxOrder != null && netTotal > quote.maxOrder) {
-    return {
-      ok: false,
-      error: `This order is above the KES ${quote.maxOrder.toLocaleString("en-KE")} maximum for ${quote.zone?.name ?? input.county}.`,
-    };
-  }
+  // No minimum or maximum order-value restriction.
 
   // Cash on delivery is a zone and product decision, never a client preference.
   if (paymentMethod === "COD" && !quote.codAvailable) {
