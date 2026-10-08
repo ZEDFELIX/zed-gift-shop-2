@@ -105,13 +105,18 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
  <span className="absolute left-4 top-4 rounded-full bg-zed-950 px-3 py-1.5 text-xs font-bold text-white">-{sale}%</span>
  )}
  </div>
- <div className="grid grid-cols-5 gap-2 sm:gap-3">
- {product.images.slice(0, 5).map((img) => (
+ <div className="grid grid-cols-3 gap-2 sm:gap-4">
+ {product.images.slice(0, 3).map((img) => (
  <div key={img.id} className="glass-panel relative aspect-square overflow-hidden rounded-zed ring-1 ring-white/50">
  <Image src={img.url} alt={img.alt ?? product.name} fill sizes="120px" unoptimized className="object-cover" />
  </div>
  ))}
  </div>
+ {product.videoUrl && (
+  <div className="mt-3 overflow-hidden rounded-zed bg-black/5 ring-1 ring-white/50">
+   <video src={product.videoUrl} controls playsInline preload="metadata" className="aspect-video w-full object-cover" aria-label={`${product.name} product video`} />
+  </div>
+ )}
  </div>
 
  {/* Info */}
