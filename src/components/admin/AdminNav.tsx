@@ -2,12 +2,13 @@
 
 import { usePathname } from "next/navigation";
 import Link from "next/link";
-import { Boxes, CreditCard, Gift, LayoutDashboard, MapPin, Package, Settings, Star, Truck, Users, Tags } from "lucide-react";
+import { Boxes, CreditCard, Gift, LayoutDashboard, MapPin, Package, Settings, Star, Truck, Users, Tags, Zap } from "lucide-react";
 
 const TABS = [
   { href: "/admin", label: "Dashboard", icon: LayoutDashboard },
   { href: "/admin/orders", label: "Orders", icon: Package },
   { href: "/admin/products", label: "Products", icon: Gift },
+  { href: "/admin/flash-sale", label: "Flash Sale", icon: Zap },
   { href: "/admin/categories", label: "Categories", icon: Tags },
   { href: "/admin/coupons", label: "Coupons", icon: CreditCard },
   { href: "/admin/deliveries", label: "Delivery", icon: Truck },
