@@ -270,3 +270,8 @@ body{background:radial-gradient(circle at 10% 0%,rgba(233,213,241,.28),transpare
 .auth-field{position:relative;z-index:10;pointer-events:auto!important;user-select:text!important;-webkit-user-select:text!important;cursor:text;opacity:1!important;}
 .auth-field:disabled{pointer-events:auto;cursor:not-allowed;}
 .auth-field:focus{position:relative;z-index:20;}
+
+
+/* Horizontal product carousels: keep swipe gestures clean without visible scrollbars. */
+.scrollbar-none{scrollbar-width:none;-ms-overflow-style:none}
+.scrollbar-none::-webkit-scrollbar{display:none}
