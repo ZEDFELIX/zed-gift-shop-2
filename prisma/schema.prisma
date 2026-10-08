@@ -309,6 +309,7 @@ model Product {
  id String @id @default(cuid())
  slug String @unique
  name String
+ videoUrl String?
  headline String?
  description String?
  shortDescription String?
