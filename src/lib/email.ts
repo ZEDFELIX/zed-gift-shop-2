@@ -61,7 +61,7 @@ async function transport() {
  return {
  send: async (mail: EmailData) => {
  const info = await transporter.sendMail({
- from: fromName ? `"${fromName}" <${SITE.email}>` : fromAddress,
+ from: fromAddress.includes("<") ? fromAddress : `"${fromName}" <${fromAddress}>`,
  to: mail.to,
  subject: mail.subject,
  text: mail.text,
