@@ -48,6 +48,7 @@ async function main() {
       password,
       email_confirm: true,
       user_metadata: { ...(authUser.user_metadata ?? {}), name },
+      app_metadata: { ...(authUser.app_metadata ?? {}), role: "ADMIN" },
     });
     if (error || !data.user) {
       throw new Error(`Could not synchronize administrator Auth identity: ${error?.message ?? "unknown error"}`);
@@ -59,6 +60,7 @@ async function main() {
       password,
       email_confirm: true,
       user_metadata: { name },
+      app_metadata: { role: "ADMIN" },
     });
     if (error || !data.user) {
       throw new Error(`Could not create administrator Auth identity: ${error?.message ?? "unknown error"}`);
@@ -83,6 +85,7 @@ async function main() {
     failedLoginAttempts: 0,
     lockedUntil: null,
     authUserId: authUser.id,
+    updatedAt: new Date().toISOString(),
   };
 
   const result = existing
