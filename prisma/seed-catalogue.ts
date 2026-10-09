@@ -45,7 +45,13 @@ async function main() {
   for (const [index, parent] of RIO_CATEGORIES.entries()) {
     await prisma.category.upsert({
       where: { slug: parent.slug },
-      update: {},
+      update: {
+        name: parent.name,
+        kind: "CATEGORY",
+        parentId: null,
+        sortOrder: index,
+        active: true,
+      },
       create: {
         slug: parent.slug,
         name: parent.name,
@@ -61,7 +67,13 @@ async function main() {
     for (const [childIndex, child] of (parent.children ?? []).entries()) {
       await prisma.category.upsert({
         where: { slug: child.slug },
-        update: {},
+        update: {
+          name: child.name,
+          kind: "CATEGORY",
+          parent: { connect: { slug: parent.slug } },
+          sortOrder: childIndex,
+          active: true,
+        },
         create: {
           slug: child.slug,
           name: child.name,
