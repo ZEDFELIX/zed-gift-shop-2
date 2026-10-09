@@ -1,18 +1,41 @@
-name: ZED Gift Shop Build Check
+name: ZED Gift Shop CI
+
 on:
   push:
     branches: [main]
   workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: zed-gift-shop-ci-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
-  build:
+  validate:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - name: Checkout source
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
         with:
           node-version: 24
           cache: npm
-      - run: npm install
-      - run: npx prisma generate
-      - run: npm run typecheck
-      - run: npm run build:app
+
+      - name: Install locked dependencies
+        run: npm ci
+
+      - name: Generate Prisma client
+        run: npx prisma generate
+
+      - name: Type-check application
+        run: npm run typecheck
+
+      - name: Build Next.js application
+        run: npm run build:app
+
+      - name: Report dependency advisories
+        run: npm run audit:report
