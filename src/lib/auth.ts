@@ -1,14 +1,8 @@
 import "server-only";
 
-import { cookies } from "next/headers";
-import { SignJWT, jwtVerify } from "jose";
 import bcrypt from "bcryptjs";
-import { prisma } from "@/lib/prisma";
-import { COOKIE_KEYS } from "@/lib/constants";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import { createSupabaseAdminClient } from "@/lib/supabase/admin";
-
-const SESSION_COOKIE = COOKIE_KEYS.session;
 
 export type SessionPayload = {
  sub: string;
@@ -25,29 +19,6 @@ function getSecret(): Uint8Array {
  throw new Error("AUTH_SECRET is not configured. Set it in your environment.");
  }
  return new TextEncoder().encode(secret);
-}
-
-export async function signSession(payload: SessionPayload): Promise<string> {
- return await new SignJWT({ role: payload.role, email: payload.email, name: payload.name })
- .setProtectedHeader({ alg: "HS256" })
- .setSubject(payload.sub)
- .setIssuedAt()
- .setExpirationTime("30d")
- .sign(getSecret());
-}
-
-export async function verifySessionToken(token: string): Promise<SessionPayload | null> {
- try {
- const { payload } = await jwtVerify(token, getSecret(), { algorithms: ["HS256"] });
- return {
- sub: payload.sub as string,
- role: payload.role as SessionPayload["role"],
- email: payload.email as string,
- name: payload.name as string,
- };
- } catch {
- return null;
- }
 }
 
 export async function getSession(): Promise<SessionPayload | null> {
@@ -86,30 +57,6 @@ export async function getSession(): Promise<SessionPayload | null> {
    role,
    email: profile.email,
    name: profile.name,
- };
-}
-
-export async function setSessionCookie(payload: SessionPayload) {
- const store = await cookies();
- const token = await signSession(payload);
- store.set(SESSION_COOKIE, token, {
- httpOnly: true,
- secure: process.env.NODE_ENV === "production",
- sameSite: "lax",
- path: "/",
- maxAge: 60 * 60 * 24 * 30,
- });
-}
-
-export function clearSessionCookie() {
- return {
- name: SESSION_COOKIE,
- value: "",
- httpOnly: true,
- secure: process.env.NODE_ENV === "production",
- sameSite: "lax" as const,
- path: "/",
- maxAge: 0,
  };
 }
 
@@ -153,41 +100,4 @@ export async function hashPassword(password: string): Promise<string> {
 
 export async function verifyPassword(password: string, hash: string): Promise<boolean> {
  return bcrypt.compare(password, hash);
-}
-
-export async function createPasswordResetToken(email: string): Promise<string | null> {
- const user = await prisma.user.findUnique({ where: { email } });
- if (!user) return null;
- const raw = randomToken();
- await prisma.passwordReset.create({
- data: {
- userId: user.id,
- tokenHash: await hashPassword(raw),
- expiresAt: new Date(Date.now() + 60 * 60 * 1000),
- },
- });
- return raw;
-}
-
-export async function resetPassword(token: string, newPassword: string): Promise<boolean> {
- const resets = await prisma.passwordReset.findMany({
- where: { usedAt: null, expiresAt: { gt: new Date() } },
- });
- for (const r of resets) {
- if (await verifyPassword(token, r.tokenHash)) {
- const hash = await hashPassword(newPassword);
- await prisma.$transaction([
- prisma.user.update({ where: { id: r.userId }, data: { passwordHash: hash } }),
- prisma.passwordReset.update({ where: { id: r.id }, data: { usedAt: new Date() } }),
- ]);
- return true;
- }
- }
- return false;
-}
-
-function randomToken(): string {
- return [...crypto.getRandomValues(new Uint8Array(24))]
- .map((b) => b.toString(16).padStart(2, "0"))
- .join("");
 }
