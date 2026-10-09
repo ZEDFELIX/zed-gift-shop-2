@@ -5,8 +5,9 @@ generator client {
 }
 
 datasource db {
- provider = "postgresql"
- url = env("zedgiftshop2_PRISMA_DATABASE_URL")
+  provider  = "postgresql"
+  url       = env("zedgiftshop_POSTGRES_PRISMA_URL")
+  directUrl = env("zedgiftshop_POSTGRES_URL_NON_POOLING")
 }
 
 // ---------- Enums ----------
