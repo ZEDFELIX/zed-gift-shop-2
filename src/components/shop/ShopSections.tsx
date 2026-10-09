@@ -26,7 +26,7 @@ function Section({ title, products, href, flash = false, swipe = false }: Sectio
       </div>
       <div className={swipe
         ? "flex snap-x snap-mandatory gap-3 overflow-x-auto pb-2 touch-pan-x overscroll-x-contain scrollbar-none"
-        : "grid grid-cols-3 gap-2 sm:grid-cols-3 sm:gap-3 lg:grid-cols-3"}>
+        : "grid grid-cols-3 gap-2 sm:grid-cols-3 sm:gap-3 lg:grid-cols-4"}>
         {products.map((product) => (
           <div key={product.id} className={swipe ? "min-w-[72vw] snap-start sm:min-w-[260px] lg:min-w-[280px]" : ""}>
             <ProductCard product={product} />
