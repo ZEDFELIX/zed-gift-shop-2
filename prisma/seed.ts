@@ -185,13 +185,20 @@ const allProducts: SeedProduct[] = [TEST_PRODUCT, ...PRODUCTS];
 
 async function main() {
  // ---- Users ----
- await upsertUser({
- email: "felixsimon855@gmail.com",
- name: "ZED 2 Admin",
- password: "Felix.877",
- role: "ADMIN",
- phone: "+254711436169",
- });
+ const adminEmail = process.env.ZED_ADMIN_EMAIL?.trim().toLowerCase();
+ const adminPassword = process.env.ZED_ADMIN_PASSWORD;
+ if (adminEmail && adminPassword && adminPassword.length >= 16) {
+   await upsertUser({
+     email: adminEmail,
+     name: "ZED 2 Admin",
+     password: adminPassword,
+     role: "ADMIN",
+   });
+ } else {
+   console.warn(
+     "Skipping admin seed: configure ZED_ADMIN_EMAIL and ZED_ADMIN_PASSWORD (at least 16 characters) in Vercel.",
+   );
+ }
  await upsertUser({
  email: "staff@zedgiftshop2.com",
  name: "ZED 2 Staff",
