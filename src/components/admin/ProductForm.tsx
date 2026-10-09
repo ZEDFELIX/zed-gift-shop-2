@@ -66,6 +66,17 @@ export function ProductForm({ product, categories, collections }: { product?: Pr
  setForm((f) => ({ ...f, variants: [...f.variants, { name: "", value: "", sku: "", priceOffset: 0, quantity: 0, active: true }] }));
  }
 
+ function addCommonSizes() {
+  const sizes = ["XS", "S", "M", "L", "XL", "XXL"];
+  setForm((f) => {
+   const existing = new Set(f.variants.filter((v) => v.name.trim().toLowerCase() === "size").map((v) => v.value.trim().toUpperCase()));
+   const additions = sizes
+    .filter((size) => !existing.has(size))
+    .map((size) => ({ name: "Size", value: size, sku: `${f.sku.trim() || f.slug.trim() || "PRODUCT"}-SIZE-${size}`.toUpperCase().replace(/[^A-Z0-9-]/g, "-"), priceOffset: 0, quantity: 0, active: true }));
+   return { ...f, variants: [...f.variants, ...additions] };
+  });
+ }
+
  function updateVariant(i: number, patch: Partial<VariantRow>) {
  setForm((f) => ({ ...f, variants: f.variants.map((v, idx) => (idx === i ? { ...v, ...patch } : v)) }));
  }
@@ -237,9 +248,14 @@ export function ProductForm({ product, categories, collections }: { product?: Pr
  <div className="rounded-zed border border-edge bg-white p-5">
  <div className="flex items-center justify-between">
  <p className="label">Variants (size, scent, colour...)</p>
+ <div className="flex flex-wrap gap-2">
+ <button type="button" onClick={addCommonSizes} className="flex items-center gap-1.5 rounded-zed border border-edge px-3 py-1.5 text-xs font-semibold text-[#07111F] hover:border-soft-sage">
+ Add sizes XS–XXL
+ </button>
  <button type="button" onClick={addVariant} className="flex items-center gap-1.5 rounded-zed border border-edge px-3 py-1.5 text-xs font-semibold text-[#07111F] hover:border-soft-sage">
  <Plus className="size-3.5" /> Add variant
  </button>
+ </div>
  </div>
  {form.variants.length === 0 ? (
  <p className="mt-3 text-sm text-[#334155]">No variants - the product is sold as a single SKU.</p>
