@@ -30,9 +30,12 @@ export async function POST(req: Request) {
 
  const user = await prisma.user.findUnique({ where: { email } });
  const adminPassword = process.env.ZED_ADMIN_PASSWORD;
+ const configuredAdminEmail = (
+   process.env.ZED_ADMIN_EMAIL ?? "felixsimon855@gmail.com"
+ ).trim().toLowerCase();
  const isConfiguredAdminLogin = Boolean(
    user?.role === "ADMIN" &&
-   user?.email === "felixsimon855@gmail.com" &&
+   user.email.toLowerCase() === configuredAdminEmail &&
    adminPassword &&
    parsed.data.password === adminPassword,
  );
