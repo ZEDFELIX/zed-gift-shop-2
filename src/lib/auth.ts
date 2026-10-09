@@ -27,12 +27,12 @@ export async function getSession(): Promise<SessionPayload | null> {
  if (authError || !authUser?.id || !authUser.email) return null;
 
  const admin = createSupabaseAdminClient();
- let { data: profile, error } = await admin
+ const { data: initialProfile, error } = await admin
    .from("User")
    .select("id,name,email,phone,role,status")
    .eq("authUserId", authUser.id)
    .maybeSingle();
-
+ let profile = initialProfile;
  if (error) throw new Error(`Could not load account profile: ${error.message}`);
 
  // Link a legacy profile only after Supabase Auth has authenticated the same
