@@ -1,4 +1,5 @@
 import { PrismaClient } from "@prisma/client";
+import bcrypt from "bcryptjs";
 import { RIO_CATEGORIES, RIO_PRODUCTS } from "./rio-catalogue";
 import { productPhotoUrl } from "../scripts/demo-images";
 
@@ -187,6 +188,35 @@ async function main() {
       });
     }
     created += 1;
+  }
+
+  const adminEmail = process.env.ZED_ADMIN_EMAIL?.trim().toLowerCase();
+  const adminPassword = process.env.ZED_ADMIN_PASSWORD;
+  if (adminEmail && adminPassword) {
+    if (adminPassword.length < 16) {
+      throw new Error("ZED_ADMIN_PASSWORD must be at least 16 characters.");
+    }
+    const existingAdmin = await prisma.user.findUnique({
+      where: { email: adminEmail },
+      select: { id: true, role: true },
+    });
+    if (!existingAdmin) {
+      await prisma.user.create({
+        data: {
+          email: adminEmail,
+          name: process.env.ZED_ADMIN_NAME?.trim() || "Store Administrator",
+          passwordHash: await bcrypt.hash(adminPassword, 12),
+          role: "ADMIN",
+          status: "ACTIVE",
+          emailVerified: new Date(),
+        },
+      });
+      console.log("Created the configured initial admin account.");
+    } else if (existingAdmin.role !== "ADMIN") {
+      console.warn("ZED_ADMIN_EMAIL already belongs to a non-admin account; it was not promoted automatically.");
+    }
+  } else {
+    console.warn("No initial admin created. Configure ZED_ADMIN_EMAIL and a 16+ character ZED_ADMIN_PASSWORD in Vercel.");
   }
 
   console.log(`Catalogue bootstrap complete; added ${created} products without overwriting existing products.`);
