@@ -1,18 +1,47 @@
 "use client";
 
-import { Suspense, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import { CheckCircle2, Loader2, Lock } from "lucide-react";
+import { createSupabaseBrowserClient } from "@/lib/supabase/client";
 
 function ResetForm() {
  const searchParams = useSearchParams();
  const router = useRouter();
- const token = searchParams.get("token") ?? "";
+ const code = searchParams.get("code") ?? "";
  const [password, setPassword] = useState("");
  const [confirm, setConfirm] = useState("");
  const [status, setStatus] = useState<"idle" | "loading" | "done">("idle");
+ const [recoveryReady, setRecoveryReady] = useState(false);
+ const [verifying, setVerifying] = useState(Boolean(code));
  const [error, setError] = useState<string | null>(null);
+
+ useEffect(() => {
+   if (!code) {
+     setVerifying(false);
+     setError("Missing recovery code. Open the latest password-reset link from your email.");
+     return;
+   }
+   let active = true;
+   const supabase = createSupabaseBrowserClient();
+   void supabase.auth.exchangeCodeForSession(code).then(({ error: exchangeError }) => {
+     if (!active) return;
+     setVerifying(false);
+     if (exchangeError) {
+       setRecoveryReady(false);
+       setError("That reset link is invalid or has expired. Request a new one.");
+     } else {
+       setRecoveryReady(true);
+       setError(null);
+     }
+   }).catch(() => {
+     if (!active) return;
+     setVerifying(false);
+     setError("Could not verify this reset link. Request a new one.");
+   });
+   return () => { active = false; };
+ }, [code]);
 
  async function submit(e: React.FormEvent) {
  e.preventDefault();
@@ -26,7 +55,7 @@ function ResetForm() {
  const res = await fetch("/api/auth/reset-password", {
  method: "POST",
  headers: { "Content-Type": "application/json" },
- body: JSON.stringify({ token, password }),
+ body: JSON.stringify({ password }),
  });
  const data = (await res.json()) as { error?: string };
  if (!res.ok) {
@@ -61,8 +90,9 @@ function ResetForm() {
  <p className="eyebrow">One last step</p>
  <h1 className="mt-2 font-display text-2xl font-bold text-[#07111F]">Choose a new password</h1>
  </div>
- {!token && <p className="rounded-zed bg-amber-50/70 px-4 py-3 text-sm text-amber-800 backdrop-blur-sm">Missing reset token. Open the link from your email again.</p>}
- {token && (
+ {verifying && <p className="rounded-zed bg-amber-50/70 px-4 py-3 text-sm text-amber-800 backdrop-blur-sm">Verifying your password-reset link…</p>}
+ {code && !recoveryReady && !verifying && error && <p className="rounded-zed bg-red-50/70 px-4 py-3 text-sm text-red-700 backdrop-blur-sm">{error}</p>}
+ {recoveryReady && (
  <>
  <div>
  <label className="label" htmlFor="rp-password">New password</label>
