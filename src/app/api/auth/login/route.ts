@@ -42,11 +42,12 @@ export async function POST(req: Request) {
   }
 
   const admin = createSupabaseAdminClient();
-  let { data: profile, error } = await admin
+  const { data: initialProfile, error } = await admin
     .from("User")
     .select("id,name,email,phone,role,status")
     .eq("authUserId", authData.user.id)
     .maybeSingle();
+  let profile = initialProfile;
 
   if (error) {
     await supabase.auth.signOut();
