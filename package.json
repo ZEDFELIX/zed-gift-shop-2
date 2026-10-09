@@ -5,7 +5,7 @@
   "description": "ZED GIFT SHOP 2 — Premium Kenyan gifting & personalized products ecommerce.",
   "scripts": {
     "dev": "next dev",
-    "build": "prisma generate && prisma migrate deploy && next build",
+    "build": "prisma generate && prisma migrate resolve --rolled-back 20260101000000_init_backend_ecosystem && prisma migrate deploy && next build",
     "start": "next start",
     "lint": "next lint",
     "typecheck": "tsc --noEmit",
@@ -17,7 +17,8 @@
     "db:images": "node --import tsx scripts/update-demo-images.ts",
     "db:setup": "npm run db:up && npm run db:push && npm run db:seed",
     "postinstall": "prisma generate",
-    "vercel-build": "prisma generate && prisma migrate deploy && next build"
+    "vercel-build": "prisma generate && prisma migrate resolve --rolled-back 20260101000000_init_backend_ecosystem && prisma migrate deploy && next build",
+    "build:app": "next build"
   },
   "prisma": {
     "seed": "node --import tsx prisma/seed.ts"
