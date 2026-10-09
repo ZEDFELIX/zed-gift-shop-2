@@ -50,8 +50,20 @@ const { order, totals } = result;
  amount: totals.total,
  phone,
  });
- } catch {
- return NextResponse.json({ error: "Failed to create payment record." }, { status: 500 });
+ } catch (error) {
+   // The order has already reserved inventory. If payment setup fails, cancel
+   // the order and release stock so a failed checkout cannot strand inventory.
+   const cleanup = await Promise.allSettled([
+     releaseInventoryForOrder(order.orderId),
+     updateOrderStatus(order.orderId, "CANCELLED"),
+   ]);
+   if (cleanup.some((result) => result.status === "rejected")) {
+     console.error("[checkout] failed to clean up order after payment-record failure", {
+       orderId: order.orderId,
+       error: error instanceof Error ? error.message : String(error),
+     });
+   }
+   return NextResponse.json({ error: "Failed to create payment record." }, { status: 500 });
  }
 
 // Cash on delivery: the order is real but unsettled until the rider collects.
