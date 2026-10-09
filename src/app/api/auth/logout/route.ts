@@ -1,6 +1,5 @@
 import { NextResponse } from "next/server";
-import { cookies } from "next/headers";
-import { COOKIE_KEYS } from "@/lib/constants";
+import { createSupabaseServerClient } from "@/lib/supabase/server";
 import { getSession } from "@/lib/auth";
 import { writeAuditLog } from "@/lib/audit";
 
@@ -8,15 +7,8 @@ export const runtime = "nodejs";
 
 export async function POST() {
   const session = await getSession();
-  const store = await cookies();
-
-  store.set(COOKIE_KEYS.session, "", {
-    httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
-    sameSite: "lax",
-    path: "/",
-    maxAge: 0,
-  });
+  const supabase = await createSupabaseServerClient();
+  const { error } = await supabase.auth.signOut();
 
   if (session) {
     await writeAuditLog({
@@ -29,5 +21,8 @@ export async function POST() {
     });
   }
 
+  if (error) {
+    return NextResponse.json({ error: "Could not end the session. Please try again." }, { status: 500 });
+  }
   return NextResponse.json({ ok: true });
 }
