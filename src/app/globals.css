@@ -1,6 +1,6 @@
 @import "tailwindcss";
 
-@theme {
+ :root {\n  --font-jost: "Trebuchet MS", Arial, sans-serif;\n  --font-quicksand: "Trebuchet MS", Arial, sans-serif;\n  --font-poppins: Arial, Helvetica, sans-serif;\n  --font-libre-baskerville: Georgia, "Times New Roman", serif;\n}\n\n@theme {
   --font-sans: var(--font-jost), ui-sans-serif, system-ui, sans-serif;
   --font-display: var(--font-quicksand), var(--font-jost), ui-sans-serif, system-ui, sans-serif;
   --font-serif: var(--font-libre-baskerville), Georgia, serif;
