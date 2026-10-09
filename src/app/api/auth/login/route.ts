@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
-import { prisma } from "@/lib/prisma";
 import { loginSchema } from "@/lib/validations";
-import { verifyPassword, setSessionCookie } from "@/lib/auth";
+import { createSupabaseServerClient } from "@/lib/supabase/server";
+import { createSupabaseAdminClient } from "@/lib/supabase/admin";
 import { rateLimit, RATE_LIMITS } from "@/lib/rate-limit";
 
 export const runtime = "nodejs";
@@ -31,32 +31,63 @@ export async function POST(req: Request) {
     );
   }
 
-  const user = await prisma.user.findUnique({ where: { email } });
-  const passwordValid = user?.passwordHash
-    ? await verifyPassword(parsed.data.password, user.passwordHash)
-    : false;
+  const supabase = await createSupabaseServerClient();
+  const { data: authData, error: authError } = await supabase.auth.signInWithPassword({
+    email,
+    password: parsed.data.password,
+  });
 
-  // A configured environment secret is used only to bootstrap the initial
-  // account in the seed step. It is never a permanent login bypass: all
-  // subsequent logins must match the stored password hash.
-  if (!user || user.status !== "ACTIVE" || !passwordValid) {
+  if (authError || !authData.user) {
     return NextResponse.json({ error: "Incorrect email or password." }, { status: 401 });
   }
 
-  await setSessionCookie({
-    sub: user.id,
-    role: user.role,
-    email: user.email,
-    name: user.name,
-  });
+  const admin = createSupabaseAdminClient();
+  let { data: profile, error } = await admin
+    .from("User")
+    .select("id,name,email,phone,role,status")
+    .eq("authUserId", authData.user.id)
+    .maybeSingle();
 
+  if (error) {
+    await supabase.auth.signOut();
+    return NextResponse.json({ error: "Unable to load your account. Please try again." }, { status: 500 });
+  }
+
+  // Support existing customer profiles created before the Supabase Auth migration.
+  if (!profile && authData.user.email) {
+    const legacy = await admin.from("User")
+      .select("id,name,email,phone,role,status")
+      .eq("email", authData.user.email.toLowerCase())
+      .maybeSingle();
+    if (legacy.error) {
+      await supabase.auth.signOut();
+      return NextResponse.json({ error: "Unable to load your account. Please try again." }, { status: 500 });
+    }
+    if (legacy.data) {
+      const linked = await admin.from("User")
+        .update({ authUserId: authData.user.id, updatedAt: new Date().toISOString() })
+        .eq("id", legacy.data.id);
+      if (linked.error) {
+        await supabase.auth.signOut();
+        return NextResponse.json({ error: "Unable to link your account. Please contact support." }, { status: 500 });
+      }
+      profile = legacy.data;
+    }
+  }
+
+  if (!profile || profile.status !== "ACTIVE") {
+    await supabase.auth.signOut();
+    return NextResponse.json({ error: "Incorrect email or password." }, { status: 401 });
+  }
+
+  const role = profile.role === "ADMIN" || profile.role === "STAFF" ? profile.role : "CUSTOMER";
   return NextResponse.json({
     user: {
-      id: user.id,
-      name: user.name,
-      email: user.email,
-      phone: user.phone,
-      role: user.role,
+      id: profile.id,
+      name: profile.name,
+      email: profile.email,
+      phone: profile.phone,
+      role,
     },
   });
 }
