@@ -54,7 +54,7 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Unable to load your account. Please try again." }, { status: 500 });
   }
 
-  // Support existing customer profiles created before the Supabase Auth migration.
+  // Support legacy profiles, but link only after Supabase Auth verifies the same email.
   if (!profile && authData.user.email) {
     const legacy = await admin.from("User")
       .select("id,name,email,phone,role,status")
@@ -78,10 +78,24 @@ export async function POST(req: Request) {
 
   if (!profile || profile.status !== "ACTIVE") {
     await supabase.auth.signOut();
-    return NextResponse.json({ error: "Incorrect email or password." }, { status: 401 });
+    return NextResponse.json({ error: "Your account is not active or has no store profile. Contact the store administrator." }, { status: 403 });
   }
 
   const role = profile.role === "ADMIN" || profile.role === "STAFF" ? profile.role : "CUSTOMER";
+
+  // Middleware authorizes /admin using trusted app_metadata. Synchronize it from
+  // the database profile only after password authentication and profile checks.
+  const currentAuthRole = authData.user.app_metadata?.role;
+  if (currentAuthRole !== role) {
+    const { error: metadataError } = await admin.auth.admin.updateUserById(authData.user.id, {
+      app_metadata: { ...(authData.user.app_metadata ?? {}), role },
+    });
+    if (metadataError) {
+      await supabase.auth.signOut();
+      return NextResponse.json({ error: "Unable to verify your account permissions. Please try again." }, { status: 500 });
+    }
+  }
+
   return NextResponse.json({
     user: {
       id: profile.id,
