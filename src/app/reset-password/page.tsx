@@ -5,6 +5,7 @@ import { useSearchParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import { CheckCircle2, Loader2, Lock } from "lucide-react";
 import { createSupabaseBrowserClient } from "@/lib/supabase/client";
+import type { AuthError } from "@supabase/supabase-js";
 
 function ResetForm() {
  const searchParams = useSearchParams();
@@ -25,7 +26,8 @@ function ResetForm() {
    }
    let active = true;
    const supabase = createSupabaseBrowserClient();
-   void supabase.auth.exchangeCodeForSession(code).then(({ error: exchangeError }) => {
+   void supabase.auth.exchangeCodeForSession(code).then((result: { error: AuthError | null }) => {
+     const exchangeError = result.error;
      if (!active) return;
      setVerifying(false);
      if (exchangeError) {
