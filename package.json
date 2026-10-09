@@ -5,7 +5,7 @@
   "description": "ZED GIFT SHOP 2 — Premium Kenyan gifting & personalized products ecommerce.",
   "scripts": {
     "dev": "next dev",
-    "build": "prisma generate && prisma migrate deploy && node --import tsx prisma/seed-catalogue.ts && npm run audit:report && next build",
+    "build": "prisma generate && prisma migrate deploy && node --import tsx prisma/seed-catalogue.ts && next build",
     "start": "next start",
     "lint": "next lint",
     "typecheck": "tsc --noEmit",
@@ -17,7 +17,7 @@
     "db:images": "node --import tsx scripts/update-demo-images.ts",
     "db:setup": "npm run db:up && npm run db:push && npm run db:seed",
     "postinstall": "prisma generate",
-    "vercel-build": "prisma generate && prisma migrate deploy && node --import tsx prisma/seed-catalogue.ts && npm run audit:report && next build",
+    "vercel-build": "prisma generate && prisma migrate deploy && node --import tsx prisma/seed-catalogue.ts && next build",
     "build:app": "next build",
     "audit:report": "node scripts/audit-report.mjs"
   },
@@ -34,7 +34,7 @@
     "jose": "^6.2.12",
     "lucide-react": "^0.525.0",
     "next": "15.5.27",
-    "nodemailer": "^7.0.0",
+    "nodemailer": "10.0.16",
     "react": "19.3.0",
     "react-dom": "19.3.0",
     "zod": "^3.25.76"
@@ -42,7 +42,6 @@
   "devDependencies": {
     "@tailwindcss/postcss": "^4.1.0",
     "@types/node": "^24.0.0",
-    "@types/nodemailer": "^6.4.17",
     "embedded-postgres": "18.4.0-beta.17",
     "eslint": "^9.39.5",
     "eslint-config-next": "^15.3.3",
@@ -57,6 +56,8 @@
   "overrides": {
     "next": {
       "postcss": "8.5.28"
-    }
+    },
+    "sharp": "0.35.5",
+    "source-map-js": "1.2.2"
   }
 }
