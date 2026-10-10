@@ -14,7 +14,7 @@ export const SITE = {
   address: "3rd Floor Avenue House, Nairobi, Kenya",
   mapsHref: "https://maps.app.goo.gl/R5eMKk1EHTcMpseJA",
   mapsEmbed:
-  "https://maps.google.com/maps?q=Rio%20Gift%20Shop&t=m&z=15&output=embed&iwloc=near",
+  "https://maps.google.com/maps?q=ZED%20Gift%20Shop%20Nairobi&t=m&z=15&output=embed&iwloc=near",
   hours: "Mon – Sun, 08:00 – 19:00",
   currency: "KES",
   currencyPrefix: "KShs",

@@ -68,26 +68,16 @@ export function ProductCard({
             )}
           </div>
         </Link>
-
-        {badge ? (
-          <span
-            className={`absolute left-3 top-3 px-2 py-1 text-[0.75rem] font-semibold uppercase tracking-wider ${badge.cls}` }
-          >
-            {badge.label}
-          </span>
-        ) : null}
       </div>
 
       <div className="flex flex-col flex-1 p-2.5 sm:p-3">
         <div className="mb-1 flex items-center justify-between gap-2">
           <p className="hidden">{product.categories[0]?.category.name ?? "Gift"}</p>
-          {false ? (
-            <span className="text-[0.65rem] text-charcoal/60">
-              <Star className="size-2 fill-rose-400" />
-              {product.ratingAverage.toFixed(1)}
-              <span className="text-charcoal/40 hidden sm:inline">({product.ratingCount})</span>
-            </span>
-          ) : null}
+          <span className="text-[0.65rem] text-charcoal/60">
+            <Star className="size-2 fill-rose-400" />
+            {product.ratingAverage.toFixed(1)}
+            <span className="text-charcoal/40 hidden sm:inline">({product.ratingCount})</span>
+          </span>
         </div>
 
         <h3 className="mt-1 min-h-[2.2rem] text-[12px] font-semibold leading-snug sm:text-[13px]">
@@ -96,7 +86,7 @@ export function ProductCard({
           </Link>
         </h3>
 
-        {false && product.shortDescription ? (
+        {product.shortDescription ? (
           <p className="mt-1 text-[0.65rem] leading-relaxed text-charcoal/60 line-clamp-2">
             {product.shortDescription}
           </p>
@@ -128,7 +118,7 @@ export function ProductCard({
               )}
             </Link>
           )}
-          {false && lowStock && (
+          {lowStock && (
             <p className="mt-1 text-[0.55rem] font-medium text-rose-500">
               Only {product.quantity - product.reservedQuantity} left
             </p>

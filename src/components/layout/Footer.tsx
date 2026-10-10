@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Facebook, Instagram, Mail, MapPin, Phone, Send } from "lucide-react";
+import { Facebook, Instagram, Mail, MapPin, Phone, Send, TikTok } from "lucide-react";
 import { NAV_GROUPS, SITE } from "@/lib/constants";
 import { OpenCartLink } from "@/components/cart/OpenCartLink";
 import { getSettings } from "@/lib/data/settings";
@@ -75,7 +75,7 @@ export async function Footer() {
               aria-label="TikTok"
               className="grid size-9 place-items-center rounded-full border border-white/20 text-white/80 transition-colors hover:border-champagne hover:text-white"
             >
-              <Send className="size-4" />
+              <TikTok className="size-4" />
             </a>
           </div>
         </div>
