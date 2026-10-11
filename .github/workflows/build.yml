@@ -3,6 +3,8 @@ name: ZED Gift Shop CI
 on:
   push:
     branches: [main]
+  pull_request:
+    branches: [main]
   workflow_dispatch:
 
 permissions:
@@ -22,11 +24,11 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 24
+          node-version: 22
           cache: npm
 
-      - name: Install locked dependencies
-        run: npm ci
+      - name: Install dependencies (match Vercel's npm install behavior)
+        run: npm install --no-audit --no-fund
 
       - name: Generate Prisma client
         run: npx prisma generate
@@ -39,3 +41,6 @@ jobs:
 
       - name: Report dependency advisories
         run: npm run audit:report
+
+      - name: Fail on high or critical dependency vulnerabilities
+        run: npm audit --audit-level=high

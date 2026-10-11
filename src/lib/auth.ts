@@ -113,6 +113,21 @@ export async function requireAdmin() {
  return user;
 }
 
+/**
+ * Enforce permissions from the current database user record, not only the
+ * role claim embedded in the session token. Call this inside every protected
+ * server action and API route before reading or mutating protected data.
+ */
+export async function requireRole(
+ allowedRoles: ReadonlyArray<SessionPayload["role"]>,
+) {
+ const user = await getCurrentUser();
+ if (!user || !allowedRoles.includes(user.role as SessionPayload["role"])) {
+ throw new Error(user ? "FORBIDDEN" : "AUTH_REQUIRED");
+ }
+ return user;
+}
+
 export async function hashPassword(password: string): Promise<string> {
  return bcrypt.hash(password, 12);
 }

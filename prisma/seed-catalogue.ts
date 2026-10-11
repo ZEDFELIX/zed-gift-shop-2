@@ -202,52 +202,8 @@ async function main() {
     created += 1;
   }
 
-  const adminEmail = process.env.ZED_ADMIN_EMAIL?.trim().toLowerCase();
-  const adminPassword = process.env.ZED_ADMIN_PASSWORD;
-  if (adminEmail && adminPassword) {
-    if (adminPassword.length < 16) {
-      throw new Error("ZED_ADMIN_PASSWORD must be at least 16 characters.");
-    }
-    const passwordHash = await bcrypt.hash(adminPassword, 12);
-    const adminName = process.env.ZED_ADMIN_NAME?.trim() || "Store Administrator";
-    const existingAdmin = await prisma.user.findUnique({
-      where: { email: adminEmail },
-      select: { id: true },
-    });
-
-    if (!existingAdmin) {
-      await prisma.user.create({
-        data: {
-          email: adminEmail,
-          name: adminName,
-          passwordHash,
-          role: "ADMIN",
-          status: "ACTIVE",
-          emailVerified: new Date(),
-        },
-      });
-      console.log("Created the configured initial admin account.");
-    } else {
-      // The configured owner-controlled admin identity is authoritative.
-      // Keep the account ID and all related customer/order records, but
-      // synchronize its password hash and restore admin access on deploy.
-      await prisma.user.update({
-        where: { id: existingAdmin.id },
-        data: {
-          name: adminName,
-          passwordHash,
-          role: "ADMIN",
-          status: "ACTIVE",
-          failedLoginAttempts: 0,
-          lockedUntil: null,
-          emailVerified: new Date(),
-        },
-      });
-      console.log("Synchronized the configured admin password and access.");
-    }
-  } else {
-    console.warn("No initial admin created. Configure ZED_ADMIN_EMAIL and a 16+ character ZED_ADMIN_PASSWORD in Vercel.");
-  }
+  // Administrator creation and password resets are handled exclusively by seed-admin.ts.
+  // Keep catalogue seeding from silently rotating credentials on every build.
 
   console.log(`Catalogue bootstrap complete; added ${created} products without overwriting existing products.`);
 }
