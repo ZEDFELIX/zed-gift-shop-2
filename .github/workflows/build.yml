@@ -3,6 +3,8 @@ name: ZED Gift Shop CI
 on:
   push:
     branches: [main]
+  pull_request:
+    branches: [main]
   workflow_dispatch:
 
 permissions:
@@ -36,6 +38,9 @@ jobs:
 
       - name: Build Next.js application
         run: npm run build:app
+
+      - name: Fail on high or critical dependency vulnerabilities
+        run: npm audit --audit-level=high
 
       - name: Report dependency advisories
         run: npm run audit:report
