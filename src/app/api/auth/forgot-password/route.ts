@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 import { emailSchema } from "@/lib/validations";
 import { createPasswordResetToken } from "@/lib/auth";
-import { sendPasswordReset } from "@/lib/email";
+import { isEmailConfigured, sendPasswordReset } from "@/lib/email";
 import { rateLimit, RATE_LIMITS } from "@/lib/rate-limit";
 import { SITE } from "@/lib/constants";
 
@@ -21,6 +21,14 @@ export async function POST(req: Request) {
  return NextResponse.json({ error: "Enter a valid email address." }, { status: 400 });
  }
 
+ // Fail clearly for every address when mail is not configured, without revealing account existence.
+ if (!isEmailConfigured()) {
+   return NextResponse.json(
+     { error: "Password reset email is temporarily unavailable. Please try again later or contact the shop administrator." },
+     { status: 503 },
+   );
+ }
+
  const email = parsed.data.email.toLowerCase();
  const rl = await rateLimit(`forgot:${email}`, RATE_LIMITS.contact);
  if (!rl.ok) {
@@ -29,10 +37,17 @@ export async function POST(req: Request) {
 
  const token = await createPasswordResetToken(email);
  if (token) {
- await sendPasswordReset({
- to: email,
- resetUrl: `${SITE.url}/reset-password?token=${token}`,
- });
+  const result = await sendPasswordReset({
+   to: email,
+   resetUrl: `${SITE.url}/reset-password?token=${token}`,
+  });
+  if (!result.ok) {
+   console.error("[auth] password reset email could not be delivered.");
+   return NextResponse.json(
+     { error: "We couldn't send the reset email right now. Please try again later or contact the shop administrator." },
+     { status: 503 },
+   );
+  }
  }
 
  // Always return success so we don't reveal whether an account exists.
