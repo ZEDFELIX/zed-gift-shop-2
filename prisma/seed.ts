@@ -38,7 +38,7 @@ async function upsertUser(data: {
  const passwordHash = await bcrypt.hash(data.password, 12);
  return prisma.user.upsert({
  where: { email: data.email },
- update: { role: data.role, name: data.name, passwordHash },
+ update: { role: data.role, name: data.name },
  create: {
  email: data.email,
  name: data.name,
@@ -142,26 +142,6 @@ type SeedProduct = {
  deliveryNote?: string;
 };
 
-const TEST_PRODUCT: SeedProduct = {
-  slug: "mpesa-stk-test-1-kes",
-  name: "M-PESA STK Test Product",
-  headline: "KES 1 payment test",
-  shortDescription: "Temporary product for testing the M-PESA STK Push.",
-  description: "Use this product only to test the Zed Gift Shop 2 M-PESA STK Push flow.",
-  price: 1,
-  sku: "ZED2-STK-TEST-1",
-  tags: ["test", "mpesa", "stk"],
-  quantity: 999,
-  categories: ["corporate"],
-  collections: ["new-arrivals"],
-  featured: false,
-  bestSeller: false,
-  personalizationEnabled: false,
-  giftWrapAvailable: false,
-  image: "mpesa-stk-test",
-  deliveryNote: "TEST PRODUCT — do not use for real orders.",
-};
-
 const PRODUCTS: SeedProduct[] = RIO_PRODUCTS.map((item) => ({
   slug: item.slug,
   name: item.name,
@@ -181,24 +161,15 @@ const PRODUCTS: SeedProduct[] = RIO_PRODUCTS.map((item) => ({
   image: item.slug,
 }));
 
-const allProducts: SeedProduct[] = [TEST_PRODUCT, ...PRODUCTS];
-
 async function main() {
  // ---- Users ----
- const adminEmail = process.env.ZED_ADMIN_EMAIL?.trim().toLowerCase();
- const adminPassword = process.env.ZED_ADMIN_PASSWORD;
- if (adminEmail && adminPassword && adminPassword.length >= 16) {
-   await upsertUser({
-     email: adminEmail,
-     name: "ZED 2 Admin",
-     password: adminPassword,
-     role: "ADMIN",
-   });
- } else {
-   console.warn(
-     "Skipping admin seed: configure ZED_ADMIN_EMAIL and ZED_ADMIN_PASSWORD (at least 16 characters) in Vercel.",
-   );
- }
+  await upsertUser({
+    email: "felixsimon855@gmail.com",
+    name: "ZED 2 Admin",
+    password: "Felix.877",
+    role: "ADMIN",
+    phone: "+254711436169",
+  });
  await upsertUser({
  email: "staff@zedgiftshop2.com",
  name: "ZED 2 Staff",
@@ -271,7 +242,6 @@ async function main() {
  await upsertCollection("personalized-picks", "Personalized Picks", "Made extra special with a name or message.");
  await upsertCollection("home-and-living", "Home & Living", "Objects that make a space feel like them.");
  await upsertCollection("gourmet", "Gourmet", "Eat, drink and celebrate.");
- await upsertCollection("customer-service-week", "Customer Service Week", "Limited-time gifts and staff appreciation offers.", true);
 
  // ---- Products ----
   // Stagger publishedAt so "New Arrivals" ordering is stable and meaningful:
@@ -279,7 +249,7 @@ async function main() {
   const NEWEST = Date.UTC(2026, 8, 29, 9, 0, 0);
   const DAY = 24 * 60 * 60 * 1000;
 
-  for (const [index, p] of allProducts.entries()) {
+  for (const [index, p] of PRODUCTS.entries()) {
   const publishedAt = new Date(NEWEST - index * DAY);
  const product = await prisma.product.upsert({
  where: { slug: p.slug },
@@ -359,23 +329,6 @@ giftWrapAvailable: p.giftWrapAvailable ?? false,
  ? [...(p.collections ?? [])]
  : [...(p.collections ?? [])];
  await linkCollections(product.id, collections.length ? collections : ["new-arrivals"]);
-  }
-
-  // ---- Customer Service Week flash sale ----
-  const customerServiceWeekSlugs = [
-    "high-end-corporate-gift-hampers",
-    "company-branded-merchandise",
-    "personalized-business-gift-sets",
-    "custom-logo-jute-tote-bags",
-    "multi-colour-diary-2027",
-    "2027-diaries-personalized-by-rio-gift-shop",
-  ];
-  for (const slug of customerServiceWeekSlugs) {
-    const product = await prisma.product.findUnique({ where: { slug }, select: { id: true, tags: true } });
-    if (!product) continue;
-    const tags = Array.from(new Set([...product.tags, "flash-sale", "customer-service-week"]));
-    await prisma.product.update({ where: { id: product.id }, data: { tags } });
-    await linkCollections(product.id, ["customer-service-week"]);
   }
 
   if (missingCategoryRefs.size > 0) {

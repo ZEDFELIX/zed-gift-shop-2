@@ -6,6 +6,9 @@ import { requireAdmin, requireUser, type SessionPayload } from "@/lib/auth";
 import { can, type Permission } from "@/lib/audit";
 import { logger } from "@/lib/logger";
 
+export { route as authRoute };
+export { route as apiRoute };
+
 /**
  * Shared REST plumbing.
  *

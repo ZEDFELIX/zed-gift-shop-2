@@ -67,29 +67,32 @@ export async function setSessionCookie(payload: SessionPayload) {
  });
 }
 
-export function clearSessionCookie() {
- return {
- name: SESSION_COOKIE,
- value: "",
- httpOnly: true,
- secure: process.env.NODE_ENV === "production",
- sameSite: "lax" as const,
- path: "/",
- maxAge: 0,
- };
+export async function clearSessionCookie() {
+  const store = await cookies();
+  store.set(SESSION_COOKIE, "", {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "lax",
+    path: "/",
+    maxAge: 0,
+  });
 }
 
 export async function getCurrentUser() {
- const session = await getSession();
- if (!session) return null;
- const user = await prisma.user.findUnique({
- where: { id: session.sub },
- select: {
- id: true, name: true, email: true, phone: true, role: true,
- emailVerified: true, createdAt: true,
- },
- });
- return user;
+  const session = await getSession();
+  if (!session) return null;
+  try {
+    const user = await prisma.user.findUnique({
+      where: { id: session.sub },
+      select: {
+        id: true, name: true, email: true, phone: true, role: true,
+        emailVerified: true, createdAt: true,
+      },
+    });
+    return user;
+  } catch {
+    return null;
+  }
 }
 
 export async function requireUser() {
@@ -122,34 +125,36 @@ export async function verifyPassword(password: string, hash: string): Promise<bo
 }
 
 export async function createPasswordResetToken(email: string): Promise<string | null> {
- const user = await prisma.user.findUnique({ where: { email } });
- if (!user) return null;
- const raw = randomToken();
- await prisma.passwordReset.create({
- data: {
- userId: user.id,
- tokenHash: await hashPassword(raw),
- expiresAt: new Date(Date.now() + 60 * 60 * 1000),
- },
- });
- return raw;
+  const user = await prisma.user.findUnique({ where: { email } });
+  if (!user) return null;
+  const raw = randomToken();
+  await prisma.passwordReset.create({
+    data: {
+      userId: user.id,
+      tokenHash: await hashPassword(raw),
+      expiresAt: new Date(Date.now() + 30 * 60 * 1000),
+    },
+  });
+  return raw;
 }
 
 export async function resetPassword(token: string, newPassword: string): Promise<boolean> {
- const resets = await prisma.passwordReset.findMany({
- where: { usedAt: null, expiresAt: { gt: new Date() } },
- });
- for (const r of resets) {
- if (await verifyPassword(token, r.tokenHash)) {
- const hash = await hashPassword(newPassword);
- await prisma.$transaction([
- prisma.user.update({ where: { id: r.userId }, data: { passwordHash: hash } }),
- prisma.passwordReset.update({ where: { id: r.id }, data: { usedAt: new Date() } }),
- ]);
- return true;
- }
- }
- return false;
+  const resets = await prisma.passwordReset.findMany({
+    where: { usedAt: null, expiresAt: { gt: new Date() } },
+    orderBy: { createdAt: "desc" },
+    take: 20,
+  });
+  for (const r of resets) {
+    if (await verifyPassword(token, r.tokenHash)) {
+      const hash = await hashPassword(newPassword);
+      await prisma.$transaction([
+        prisma.user.update({ where: { id: r.userId }, data: { passwordHash: hash } }),
+        prisma.passwordReset.update({ where: { id: r.id }, data: { usedAt: new Date() } }),
+      ]);
+      return true;
+    }
+  }
+  return false;
 }
 
 function randomToken(): string {
