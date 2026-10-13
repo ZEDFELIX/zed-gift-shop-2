@@ -149,7 +149,7 @@ export async function sendPasswordReset(input: { to: string; resetUrl: string })
  const text = `Reset your password here: ${input.resetUrl}. This link expires in 1 hour.`;
  const html = `<p style="margin:0 0 12px;">We received a request to reset your password. Click below to choose a new one.</p>
  <a href="${input.resetUrl}" style="display:inline-block;margin:8px 0 12px;background:#0F5C4D;color:#ffffff;padding:12px 20px;border-radius:8px;text-decoration:none;font-weight:bold;">Reset password</a>
- <p style="font-size:12px;color:#888;">This link expires in 30 minutes. If you didn't request this, you can ignore this email.</p>`;
+ <p style="font-size:12px;color:#888;">This link expires in 1 hour. If you didn't request this, you can ignore this email.</p>`;
  return sendEmail({ to: input.to, subject, text, html: layout({ subject, text, html }).html });
 }
 
