@@ -1,5 +1,6 @@
 import { getSettings } from "@/lib/data/settings";
 import { SettingsForm } from "@/components/admin/SettingsForm";
+import { PasswordForm } from "@/components/account/PasswordForm";
 
 export const dynamic = "force-dynamic";
 export const metadata = { title: "Settings | Admin" };
@@ -7,6 +8,8 @@ export const metadata = { title: "Settings | Admin" };
 export default async function AdminSettingsPage() {
  const s = await getSettings();
  return (
+ <div className="space-y-6">
+ <PasswordForm />
  <SettingsForm
  initial={{
  announcementText: String(s.announcementText ?? ""),
@@ -31,5 +34,6 @@ export default async function AdminSettingsPage() {
  backgroundColor: String(s.backgroundColor ?? "#FFFFFF"),
  }}
  />
+ </div>
  );
 }
