@@ -75,6 +75,14 @@ async function transport() {
 
 export type SendResult = { ok: boolean; messageId?: string; error?: string };
 
+/** Return whether a supported email provider has the minimum configuration. */
+export function isEmailConfigured(): boolean {
+  if ((process.env.EMAIL_ENABLED ?? "true") !== "true") return false;
+  const provider = (process.env.EMAIL_PROVIDER ?? "smtp").toLowerCase();
+  if (provider === "resend") return Boolean(process.env.RESEND_API_KEY);
+  return Boolean(process.env.EMAIL_HOST ?? process.env.SMTP_HOST);
+}
+
 /**
  * Email is best-effort for the order flow: a mail outage must not roll back a
  * paid order. But the failure is reported back to the caller so it can be
