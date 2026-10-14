@@ -4,7 +4,7 @@ import { getOrdersForUser } from "@/lib/data/orders";
 import { prisma } from "@/lib/prisma";
 import { formatKES } from "@/lib/utils";
 import { ORDER_STATUS_LABELS, PAYMENT_STATUS_LABELS } from "@/lib/constants";
-import { ArrowRight, Package, Sparkles } from "lucide-react";
+import { ArrowRight, Package, ShieldCheck, Sparkles } from "lucide-react";
 
 export const metadata = { title: "My account" };
 
@@ -17,9 +17,23 @@ export default async function AccountOverviewPage() {
  prisma.wishlistItem.count({ where: { wishlist: { userId: user.id } } }),
  ]);
 
- return (
- <div className="space-y-6">
- <section className="glass-card rounded-zed p-6">
+  return (
+  <div className="space-y-6">
+  {(user.role === "ADMIN" || user.role === "STAFF") && (
+  <section className="flex flex-wrap items-center justify-between gap-3 rounded-zed bg-zed-950 p-5 text-white">
+  <div className="flex items-center gap-3">
+  <span className="grid size-10 place-items-center rounded-full bg-white/15"><ShieldCheck className="size-5" /></span>
+  <div>
+  <p className="font-display text-lg font-bold">You&apos;re signed in as {user.role === "ADMIN" ? "an admin" : "staff"}</p>
+  <p className="text-sm text-white/70">Jump to the admin dashboard to manage orders, products and settings.</p>
+  </div>
+  </div>
+  <Link href="/admin" className="flex items-center gap-1.5 rounded-zed bg-white px-4 py-2.5 text-sm font-bold text-zed-950 transition-colors hover:bg-white/85">
+  Open admin <ArrowRight className="size-4" />
+  </Link>
+  </section>
+  )}
+  <section className="glass-card rounded-zed p-6">
  <div className="flex flex-wrap items-center justify-between gap-3">
  <div>
  <p className="font-display text-lg font-bold text-[#07111F]">{user.name}</p>

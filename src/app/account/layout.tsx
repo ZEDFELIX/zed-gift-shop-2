@@ -18,10 +18,10 @@ export default async function AccountLayout({ children }: { children: React.Reac
  <h1 className="mt-1 font-display text-3xl font-bold text-[#07111F]">Hello, {user.name.split(" ")[0]}</h1>
  </div>
  </header>
- <div className="grid gap-6 lg:grid-cols-[220px_1fr] lg:items-start">
- <AccountNav />
- <div className="min-w-0">{children}</div>
- </div>
+  <div className="grid gap-6 lg:grid-cols-[220px_1fr] lg:items-start">
+  <AccountNav isStaff={user.role === "ADMIN" || user.role === "STAFF"} />
+  <div className="min-w-0">{children}</div>
+  </div>
  </div>
  );
 }

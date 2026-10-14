@@ -12,6 +12,7 @@ import {
   Menu,
   Phone,
   Search,
+  ShieldCheck,
   ShoppingBag,
   User,
   X,
@@ -196,6 +197,15 @@ export function HeaderContent({
               {isAuthed ? <User className="size-4 text-soft-sage" /> : <LogIn className="size-4 text-soft-sage" />}
               <span className="hidden sm:inline">{isAuthed ? "My Account" : "My Account"}</span>
             </Link>
+            {(userRole === "ADMIN" || userRole === "STAFF") && (
+              <Link
+                href="/admin"
+                className="hidden items-center gap-2 rounded-md bg-zed-950 px-3 py-2 text-[13px] font-bold text-white transition-colors hover:bg-zed-900 sm:flex"
+              >
+                <ShieldCheck className="size-4" />
+                <span>Admin</span>
+              </Link>
+            )}
             <DownloadAppPopup className="hidden items-center gap-2 rounded-md border border-edge px-3 py-2 text-[13px] font-semibold text-[var(--color-ink)] hover:bg-zed-900/5 lg:flex" />
             <Link
               href="/wishlist"
