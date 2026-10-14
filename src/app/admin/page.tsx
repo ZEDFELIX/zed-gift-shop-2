@@ -7,21 +7,21 @@ import { AlertTriangle, ArrowRight, Boxes, CreditCard, Gift, Package, Receipt, S
 export const metadata = { title: "Admin dashboard" };
 
 export default async function AdminDashboardPage() {
- const [
- orderCounts,
- recentOrders,
- productCounts,
- lowStockRaw,
- reviewCounts,
- revenueAgg,
- ] = await Promise.all([
- prisma.order.groupBy({ by: ["paymentStatus"], _count: { _all: true } }),
- prisma.order.findMany({ orderBy: { createdAt: "desc" }, take: 8, include: { items: true, payments: { take: 1, orderBy: { createdAt: "desc" } } } }),
- prisma.product.groupBy({ by: ["status"], _count: { _all: true } }),
- prisma.product.findMany({ where: { status: "ACTIVE" }, select: { id: true, name: true, quantity: true, lowStockThreshold: true }, orderBy: { quantity: "asc" }, take: 6 }),
- prisma.review.groupBy({ by: ["status"], _count: { _all: true } }),
- prisma.order.aggregate({ where: { paymentStatus: "SUCCESSFUL" }, _sum: { total: true }, _count: true }),
- ]);
+const [
+  orderCounts,
+  recentOrders,
+  productCounts,
+  lowStockRaw,
+  reviewCounts,
+  revenueAgg,
+] = await Promise.all([
+  prisma.order.groupBy({ by: ["paymentStatus"], _count: { _all: true } }),
+  prisma.order.findMany({ orderBy: { createdAt: "desc" }, take: 8, include: { items: true, payments: { take: 1, orderBy: { createdAt: "desc" } } } }),
+  prisma.product.groupBy({ by: ["status"], _count: { _all: true } }),
+  prisma.product.findMany({ where: { status: "ACTIVE" }, select: { id: true, name: true, quantity: true, lowStockThreshold: true }, orderBy: { quantity: "asc" }, take: 6 }),
+  prisma.review.groupBy({ by: ["status"], _count: { _all: true } }),
+  prisma.order.aggregate({ where: { paymentStatus: "SUCCESSFUL" }, _sum: { total: true }, _count: true }),
+]);
 
  const lowStock = lowStockRaw.filter((p) => p.quantity <= p.lowStockThreshold);
 
@@ -62,15 +62,15 @@ export default async function AdminDashboardPage() {
    <p className="text-sm text-[#334155]">Manage the shop without touching the code.</p>
   </div>
   <div className="mt-4 grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
-   {quickActions.map(({ href, label, icon: Icon }) => (
+{quickActions.map(({ href, label, icon: Icon }) => (
     <Link key={href} href={href} className="flex items-center gap-3 rounded-zed border border-edge bg-panel/50 p-3 text-sm font-semibold text-[#07111F] transition hover:border-soft-sage hover:bg-white">
      <span className="grid size-9 place-items-center rounded-zed bg-white text-soft-sage"><Icon className="size-4" /></span>
      {label}
      <ArrowRight className="ml-auto size-4 text-[#334155]" />
     </Link>
    ))}
-  </div>
- </section>
+   </div>
+  </section>
 
  <section className="grid gap-6 lg:grid-cols-[1fr_320px]">
  <div className="rounded-zed border border-edge bg-white p-6">

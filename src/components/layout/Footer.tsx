@@ -174,7 +174,7 @@ export async function Footer() {
 
       <div className="border-t border-white/10">
         <div className="container-zed flex flex-col items-center justify-between gap-2 py-5 text-xs text-white/50 sm:flex-row">
-          <p>Copyright &copy; {String(settings.copyrightText ?? DEFAULTS.copyrightText).replace('{year}', new Date().getFullYear()).replace('{storeName}', storeName)}</p>
+          <p>Copyright &copy; {String(settings.copyrightText ?? DEFAULTS.copyrightText).replace(String(new Date().getFullYear()), String(storeName))}</p>
           <p className="flex flex-wrap items-center justify-center gap-x-3 gap-y-1">
             <span>Prices in {SITE.currencyPrefix}</span>
             <span>Payments via M-Pesa, Visa, Mastercard &amp; Amex</span>

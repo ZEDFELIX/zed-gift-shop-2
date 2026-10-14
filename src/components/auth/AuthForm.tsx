@@ -28,13 +28,16 @@ export function AuthForm({ mode }: { mode: "login" | "register" }) {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(form),
       });
-      const data = (await res.json()) as { error?: string; user?: { id: string } };
+      const data = (await res.json()) as { error?: string; user?: { id: string; role?: string } };
       if (!res.ok || !data.user) {
         setError(data.error ?? "Something went wrong. Please try again.");
         setLoading(false);
         return;
       }
-      const safeNext = next.startsWith("/") && !next.startsWith("//") ? next : "/account";
+      const role = data.user.role ?? "CUSTOMER";
+      const isStaff = role === "ADMIN" || role === "STAFF";
+      const defaultNext = isStaff && next === "/account" ? "/admin" : "/account";
+      const safeNext = next.startsWith("/") && !next.startsWith("//") ? (next === "/account" ? defaultNext : next) : defaultNext;
       router.push(safeNext);
       router.refresh();
     } catch {
