@@ -16,39 +16,39 @@ export default function manifest(): MetadataRoute.Manifest {
  categories: ["shopping", "gifts"],
  icons: [
  {
- src: "/icon-512.svg",
- sizes: "64x64",
- type: "image/svg+xml",
+ src: "/icon-512.png",
+ sizes: "192x192",
+ type: "image/png",
  purpose: "any",
  },
  {
- src: "/icon-512.svg",
- sizes: "192x192",
- type: "image/svg+xml",
- purpose: "maskable",
+ src: "/icon-512.png",
+ sizes: "512x512",
+ type: "image/png",
+ purpose: "any",
  },
  {
- src: "/icon-512.svg",
+ src: "/icon-512.png",
  sizes: "512x512",
- type: "image/svg+xml",
+ type: "image/png",
  purpose: "maskable",
  },
  ],
  screenshots: [],
- shortcuts: [
- {
- name: "Shop Gifts",
- short_name: "Shop",
- url: "/shop",
- icons: [{ src: "/icon-512.svg", sizes: "96x96" }],
- },
- {
- name: "Gift Builder",
- short_name: "Builder",
- url: "/gift-builder",
- icons: [{ src: "/icon-512.svg", sizes: "96x96" }],
- },
- ],
+  shortcuts: [
+  {
+  name: "Shop Gifts",
+  short_name: "Shop",
+  url: "/shop",
+  icons: [{ src: "/icon-192.png", sizes: "96x96" }],
+  },
+  {
+  name: "Gift Builder",
+  short_name: "Builder",
+  url: "/gift-builder",
+  icons: [{ src: "/icon-192.png", sizes: "96x96" }],
+  },
+  ],
  prefer_related_applications: false,
  };
 }

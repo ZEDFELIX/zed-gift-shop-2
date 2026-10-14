@@ -12,8 +12,8 @@ async function main() {
     throw new Error("Admin bootstrap requires ZED_ADMIN_EMAIL.");
   }
 
-  if (password && password.length < 16) {
-    throw new Error("ZED_ADMIN_PASSWORD must be at least 16 characters.");
+  if (password && password.length < 8) {
+    throw new Error("ZED_ADMIN_PASSWORD must be at least 8 characters.");
   }
 
   const existing = await prisma.user.findUnique({ where: { email } });
@@ -46,7 +46,7 @@ async function main() {
   } else {
     if (!password) {
       throw new Error(
-        "Creating the initial admin requires ZED_ADMIN_PASSWORD of at least 16 characters.",
+        "Creating the initial admin requires ZED_ADMIN_PASSWORD of at least 8 characters.",
       );
     }
 

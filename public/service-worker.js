@@ -1,4 +1,4 @@
-const CACHE_NAME = "zed-gift-shop-v2";
+const CACHE_NAME = "zed-gift-shop-v3";
 const APP_SHELL = [
  "/",
  "/shop",
@@ -12,7 +12,8 @@ const APP_SHELL = [
  "/faq",
  "/wishlist",
  "/account",
- "/icon.svg",
+ "/icon.png",
+ "/logo.png",
  "/manifest.webmanifest",
 ];
 

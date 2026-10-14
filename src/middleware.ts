@@ -37,6 +37,17 @@ const API_ORIGINS = new Set(
    .map((o) => o.trim())
    .filter(Boolean),
 );
+// Entries in ALLOWED_ORIGINS are a mix of full origins (https://host) and bare
+// hosts, so normalise both sides to hosts before comparing.
+const API_HOSTS = new Set(
+ [...API_ORIGINS].flatMap((entry) => {
+   try {
+     return [new URL(entry).host];
+   } catch {
+     return [entry.replace(/^https?:\/\//, "").replace(/\/.*$/, "")];
+   }
+ }),
+);
 
 /**
  * Same-origin check for cookie-authenticated state changes.
@@ -60,9 +71,9 @@ function csrfRejected(req: NextRequest): boolean {
    return true;
  }
 
- const selfHost = req.headers.get("host");
- if (selfHost && originHost === selfHost) return false;
- if (API_ORIGINS.has(origin)) return false;
+  const selfHost = req.headers.get("host");
+  if (selfHost && originHost === selfHost) return false;
+  if (API_ORIGINS.has(origin) || API_HOSTS.has(originHost)) return false;
 
  // Provider webhook/callback endpoints authenticate by signature, not cookies.
  const p = req.nextUrl.pathname;

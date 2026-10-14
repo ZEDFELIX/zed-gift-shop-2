@@ -36,16 +36,15 @@ function openCart() {
 
 function Brand({ storeName }: { storeName: string }) {
   return (
-    <Link href="/" className="flex shrink-0 items-center gap-2" aria-label={`${storeName} home`}>
-      <span className="grid size-8 place-items-center rounded-md bg-deep-olive font-display text-[13px] font-black text-white sm:size-10 sm:text-sm">
-        Z2
-      </span>
-      <span className="flex flex-col leading-none">
-        <span className="font-display text-base font-black tracking-[0.04em] text-[var(--color-ink)] sm:text-lg">
-          {storeName}
-        </span>
-        <span className="mt-0.5 text-[9px] font-bold tracking-[0.36em] text-soft-sage">GIFT SHOP</span>
-      </span>
+    <Link href="/" className="flex shrink-0 items-center" aria-label={`${storeName} home`}>
+      <Image
+        src="/logo.png"
+        alt={storeName}
+        width={1120}
+        height={448}
+        priority
+        className="h-9 w-auto sm:h-11"
+      />
     </Link>
   );
 }

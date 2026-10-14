@@ -18,8 +18,9 @@ async function transport() {
  const provider = (process.env.EMAIL_PROVIDER ?? "smtp").toLowerCase();
 
  if (provider === "resend") {
- const apiKey = process.env.RESEND_API_KEY;
- if (!apiKey) throw new Error("RESEND_API_KEY is not set.");
+ // .env.example documents EMAIL_API_KEY; deployments in the wild use both names.
+ const apiKey = process.env.RESEND_API_KEY ?? process.env.EMAIL_API_KEY;
+ if (!apiKey) throw new Error("RESEND_API_KEY (or EMAIL_API_KEY) is not set.");
  return {
  send: async (mail: EmailData) => {
  const res = await fetch("https://api.resend.com/emails", {
@@ -79,7 +80,7 @@ export type SendResult = { ok: boolean; messageId?: string; error?: string };
 export function isEmailConfigured(): boolean {
   if ((process.env.EMAIL_ENABLED ?? "true") !== "true") return false;
   const provider = (process.env.EMAIL_PROVIDER ?? "smtp").toLowerCase();
-  if (provider === "resend") return Boolean(process.env.RESEND_API_KEY);
+  if (provider === "resend") return Boolean(process.env.RESEND_API_KEY ?? process.env.EMAIL_API_KEY);
   return Boolean(process.env.EMAIL_HOST ?? process.env.SMTP_HOST);
 }
 
