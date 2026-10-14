@@ -43,7 +43,7 @@ function Brand({ storeName }: { storeName: string }) {
         width={180}
         height={70}
         priority
-        className="block h-8 w-auto max-w-[132px] object-contain object-center sm:h-9 sm:max-w-[160px] lg:h-11 lg:max-w-[180px]"
+        className="block h-8 w-auto max-w-[132px] object-contain object-center mix-blend-multiply sm:h-9 sm:max-w-[160px] lg:h-10 lg:max-w-[180px]"
       />
     </Link>
   );
