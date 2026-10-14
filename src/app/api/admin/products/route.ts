@@ -5,6 +5,22 @@ import { productCreateSchema } from "@/lib/validations";
 
 export const runtime = "nodejs";
 
+export async function GET(req: Request) {
+  try {
+    await requireAdmin();
+  } catch {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+  const { searchParams } = new URL(req.url);
+  const limit = Math.min(Number(searchParams.get("limit")) || 100, 500);
+  const products = await prisma.product.findMany({
+    select: { id: true, name: true, quantity: true, status: true, tags: true },
+    orderBy: { name: "asc" },
+    take: limit,
+  });
+  return NextResponse.json({ products });
+}
+
 export async function POST(req: Request) {
  try {
  await requireAdmin();
