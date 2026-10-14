@@ -69,7 +69,7 @@ export default async function OrderDetailPage({ params }: { params: Promise<{ or
  <dl className="mt-4 space-y-1.5 border-t border-white/40 pt-4 text-sm">
  <div className="flex justify-between text-[#07111F]"><dt>Subtotal</dt><dd>{formatKES(order.subtotal)}</dd></div>
  {order.discount > 0 && <div className="flex justify-between text-deep-olive"><dt>Discount{order.couponCode ? ` (${order.couponCode})` : ""}</dt><dd>-{formatKES(order.discount)}</dd></div>}
- <div className="flex justify-between text-[#07111F]"><dt>Delivery</dt><dd>{order.deliveryFee === 0 ? "Free" : formatKES(order.deliveryFee)}</dd></div>
+ <div className="flex justify-between text-[#07111F]"><dt>Delivery</dt><dd>{order.deliveryFee > 0 ? formatKES(order.deliveryFee) : ""}</dd></div>
  <div className="flex justify-between border-t border-white/40 pt-2 text-base font-bold text-[#07111F]"><dt>Total</dt><dd>{formatKES(order.total)}</dd></div>
  </dl>
  </section>

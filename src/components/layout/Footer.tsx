@@ -36,13 +36,13 @@ export async function Footer() {
     <footer className="zed-glass-footer mt-16 border-t border-white/10 text-white">
       <div className="container-zed grid gap-10 py-14 sm:grid-cols-2 lg:grid-cols-12">
         <div className="lg:col-span-3">
-          <Image
-            src="/logo.png"
-            alt={storeName}
-            width={1120}
-            height={448}
-            className="h-14 w-auto brightness-0 invert"
-          />
+<Image
+          src="/logo.png"
+          alt={storeName}
+          width={400}
+          height={160}
+          className="h-14 w-auto object-cover object-center"
+        />
           <p className="mt-4 text-sm leading-relaxed text-white/70">
             {description}
           </p>
