@@ -27,7 +27,6 @@ export function DownloadAppButton({ className = "" }: { className?: string }) {
 }
 
 export function DownloadAppPopup({ className = "" }: { className?: string }) {
-  const [isOpen, setIsOpen] = useState(false);
   const [showNow, setShowNow] = useState(false);
 
   // Show popup after 30 seconds on page load, but only once per session
@@ -49,9 +48,8 @@ export function DownloadAppPopup({ className = "" }: { className?: string }) {
     };
   }, []);
 
-  // When user clicks "Install" or "Got it", mark as dismissed
+  // When user clicks "Install", mark as dismissed
   function handleClose() {
-    setIsOpen(false);
     setShowNow(false);
     localStorage.setItem("appPopupDismissed", "true");
   }
@@ -60,7 +58,7 @@ export function DownloadAppPopup({ className = "" }: { className?: string }) {
 
   return (
     <div
-      className="fixed bottom-0 left-0 z-50 mx-6 transform translate-y-full transition-transform duration-500 ease-out bg-white/90 backdrop-blur-xl rounded-2xl p-6 shadow-2xl max-w-sm w-full"
+      className="fixed bottom-6 left-6 z-50 w-[calc(100vw-3rem)] max-w-sm bg-white/90 backdrop-blur-xl rounded-2xl p-6 shadow-2xl"
     >
       <div className="flex items-start gap-3">
         <div className="size-8 rounded-full bg-zed-950 text-white flex items-center justify-center shrink-0">
