@@ -3,7 +3,7 @@ import Image from "next/image";
 import { Facebook, Instagram, Mail, MapPin, Phone, Send, Music2 } from "lucide-react";
 import { NAV_GROUPS, SITE } from "@/lib/constants";
 import { OpenCartLink } from "@/components/cart/OpenCartLink";
-import { DownloadAppButton } from "@/components/layout/DownloadAppButton";
+import { DownloadAppPopup } from "@/components/layout/DownloadAppButton";
 import { getSettings, DEFAULTS } from "@/lib/data/settings";
 
 const ACCOUNT_LINKS = [
