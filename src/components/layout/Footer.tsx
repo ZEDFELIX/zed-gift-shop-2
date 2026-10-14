@@ -39,9 +39,10 @@ export async function Footer() {
  <Image
            src="/logo.png"
            alt={storeName}
-           width={180}
-           height={70}
-           className="h-8 w-auto object-cover object-center"
+           width={522}
+           height={186}
+           className="h-8 w-auto object-contain object-center"
+           style={{ filter: "drop-shadow(0 0 7px rgba(255,255,255,0.28))" }}
          />
          <p className="mt-4 text-sm leading-relaxed text-white/70">
            {description}
