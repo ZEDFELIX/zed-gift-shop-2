@@ -627,7 +627,7 @@ function wizardReached(n: number): boolean {
   <p className="text-xs text-[#334155]">{opt.description}</p>
   </div>
   </div>
-  <p className="shrink-0 text-sm font-bold text-[#07111F]">{opt.fee === 0 ? "Free" : formatKES(opt.fee)}</p>
+  <p className="shrink-0 text-sm font-bold text-[#07111F]">{formatKES(opt.fee)}</p>
   </button>
   ))}
   </div>

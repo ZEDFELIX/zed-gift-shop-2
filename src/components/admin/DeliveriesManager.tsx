@@ -151,7 +151,7 @@ export function DeliveriesManager() {
  </p>
  </div>
  <div className="flex items-center gap-2">
- <p className="font-bold text-[#07111F]">{z.fee === 0 ? "Free" : formatKES(z.fee)}</p>
+ <p className="font-bold text-[#07111F]">{formatKES(z.fee)}</p>
  <button type="button" onClick={() => toggleActive(z)} className="rounded-zed border border-edge px-3 py-1.5 text-xs font-semibold text-[#07111F] hover:border-soft-sage">{z.active ? "Pause" : "Activate"}</button>
  <button type="button" onClick={() => remove(z.id)} className="rounded-zed border border-red-100 p-1.5 text-red-500 hover:bg-red-50" aria-label="Delete zone">
  <Trash2 className="size-4" />

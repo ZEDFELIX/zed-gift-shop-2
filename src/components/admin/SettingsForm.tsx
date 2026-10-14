@@ -5,26 +5,29 @@ import { useRouter } from "next/navigation";
 import { Loader2, Save } from "lucide-react";
 
 type SettingsShape = {
- announcementText: string;
- freeShippingThreshold: number;
- contactPhone: string;
- contactEmail: string;
- heroTitle: string;
- heroSubtitle: string;
- corporateEmail: string;
- maintenanceMode: boolean;
- storeName: string;
- storeTagline: string;
- footerDescription: string;
- address: string;
- hours: string;
- mapsHref: string;
- mapsEmbed: string;
- whatsappNumber: string;
- primaryColor: string;
- secondaryColor: string;
- accentColor: string;
- backgroundColor: string;
+  announcementText: string;
+  freeShippingThreshold: number;
+  contactPhone: string;
+  contactEmail: string;
+  heroTitle: string;
+  heroSubtitle: string;
+  corporateEmail: string;
+  maintenanceMode: boolean;
+  storeName: string;
+  storeTagline: string;
+  footerDescription: string;
+  address: string;
+  hours: string;
+  mapsHref: string;
+  mapsEmbed: string;
+  whatsappNumber: string;
+  primaryColor: string;
+  secondaryColor: string;
+  accentColor: string;
+  backgroundColor: string;
+  returnPolicy: string;
+  newsletterEmail: string;
+  copyrightText: string;
 };
 
 export function SettingsForm({ initial }: { initial: SettingsShape }) {
@@ -111,6 +114,9 @@ export function SettingsForm({ initial }: { initial: SettingsShape }) {
      <div><label className="label">Maps link</label><input className="field" value={form.mapsHref} onChange={(e)=>set("mapsHref",e.target.value)} /></div>
      <div><label className="label">Maps embed URL</label><input className="field" value={form.mapsEmbed} onChange={(e)=>set("mapsEmbed",e.target.value)} /></div>
      <div><label className="label">Free shipping threshold (KES)</label><input className="field" type="number" min={0} value={form.freeShippingThreshold} onChange={(e)=>set("freeShippingThreshold",Number(e.target.value))} /></div>
+     <div className="sm:col-span-2"><label className="label">Return policy</label><textarea className="field min-h-24 py-3" value={form.returnPolicy} onChange={(e)=>set("returnPolicy",e.target.value)} /></div>
+     <div><label className="label">Newsletter email</label><input className="field" type="email" value={form.newsletterEmail} onChange={(e)=>set("newsletterEmail",e.target.value)} /></div>
+     <div className="sm:col-span-2"><label className="label">Copyright text</label><input className="field" value={form.copyrightText} onChange={(e)=>set("copyrightText",e.target.value)} /></div>
     </div>
    </section>
 

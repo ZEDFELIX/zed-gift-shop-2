@@ -4,7 +4,7 @@ import { prisma } from "@/lib/prisma";
 
 export type SettingValue = string | number | boolean | null | Record<string, unknown> | unknown[];
 
-const DEFAULTS: Record<string, SettingValue> = {
+export const DEFAULTS: Record<string, SettingValue> = {
   announcementText: "SAME-DAY NAIROBI DELIVERY - COUNTRYWIDE DELIVERY - SECURE M-PESA CHECKOUT",
   freeShippingThreshold: 0,
   contactPhone: "+254711436169",
@@ -25,6 +25,9 @@ const DEFAULTS: Record<string, SettingValue> = {
   secondaryColor: "#6B2D5C",
   accentColor: "#7C3AED",
   backgroundColor: "#FFFFFF",
+  returnPolicy: "Returns accepted within 30 days of delivery for unworn and undamaged items with original receipt.",
+  newsletterEmail: "info@zedgiftshop2.com",
+  copyrightText: "Copyright &copy; {year} {storeName}, All rights reserved.",
 };
 
 export async function getSetting(key: string): Promise<SettingValue> {

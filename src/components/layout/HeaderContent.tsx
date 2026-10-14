@@ -40,10 +40,10 @@ function Brand({ storeName }: { storeName: string }) {
       <Image
         src="/logo.png"
         alt={storeName}
-        width={400}
-        height={160}
+        width={180}
+        height={70}
         priority
-        className="h-9 w-auto sm:h-11 object-cover object-center"
+        className="h-6 w-auto sm:h-8 object-cover object-center"
       />
     </Link>
   );

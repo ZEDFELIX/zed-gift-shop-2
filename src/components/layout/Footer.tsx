@@ -4,7 +4,7 @@ import { Facebook, Instagram, Mail, MapPin, Phone, Send, Music2 } from "lucide-r
 import { NAV_GROUPS, SITE } from "@/lib/constants";
 import { OpenCartLink } from "@/components/cart/OpenCartLink";
 import { DownloadAppButton } from "@/components/layout/DownloadAppButton";
-import { getSettings } from "@/lib/data/settings";
+import { getSettings, DEFAULTS } from "@/lib/data/settings";
 
 const ACCOUNT_LINKS = [
   { label: "My Account", href: "/account" },
@@ -35,14 +35,14 @@ export async function Footer() {
   return (
     <footer className="zed-glass-footer mt-16 border-t border-white/10 text-white">
       <div className="container-zed grid gap-10 py-14 sm:grid-cols-2 lg:grid-cols-12">
-        <div className="lg:col-span-3">
-<Image
-          src="/logo.png"
-          alt={storeName}
-          width={400}
-          height={160}
-          className="h-14 w-auto object-cover object-center"
-        />
+<div className="lg:col-span-3">
+ <Image
+           src="/logo.png"
+           alt={storeName}
+           width={180}
+           height={70}
+           className="h-8 w-auto object-cover object-center"
+         />
           <p className="mt-4 text-sm leading-relaxed text-white/70">
             {description}
           </p>
@@ -174,7 +174,7 @@ export async function Footer() {
 
       <div className="border-t border-white/10">
         <div className="container-zed flex flex-col items-center justify-between gap-2 py-5 text-xs text-white/50 sm:flex-row">
-          <p>Copyright &copy; {new Date().getFullYear()} {storeName}, All rights reserved.</p>
+          <p>Copyright &copy; {String(settings.copyrightText ?? DEFAULTS.copyrightText).replace('{year}', new Date().getFullYear()).replace('{storeName}', storeName)}</p>
           <p className="flex flex-wrap items-center justify-center gap-x-3 gap-y-1">
             <span>Prices in {SITE.currencyPrefix}</span>
             <span>Payments via M-Pesa, Visa, Mastercard &amp; Amex</span>
