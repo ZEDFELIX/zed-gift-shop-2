@@ -1,61 +1,71 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { Download } from "lucide-react";
-
-interface BeforeInstallPromptEvent extends Event {
-  prompt: () => Promise<void>;
-  userChoice: Promise<{
-    outcome: "accepted" | "dismissed";
-    platform: string;
-  }>;
-}
+import { useState } from "react";
 
 export function DownloadAppButton({ className = "" }: { className?: string }) {
-  const [promptEvent, setPromptEvent] = useState<BeforeInstallPromptEvent | null>(null);
-  const [installed, setInstalled] = useState(false);
+  const [showPopup, setShowPopup] = useState(false);
 
-  useEffect(() => {
-    const onBeforeInstall = (event: Event) => {
-      event.preventDefault();
-      setPromptEvent(event as BeforeInstallPromptEvent);
-    };
-    const onInstalled = () => {
-      setInstalled(true);
-      setPromptEvent(null);
-    };
-
-    window.addEventListener("beforeinstallprompt", onBeforeInstall);
-    window.addEventListener("appinstalled", onInstalled);
-
-    return () => {
-      window.removeEventListener("beforeinstallprompt", onBeforeInstall);
-      window.removeEventListener("appinstalled", onInstalled);
-    };
-  }, []);
-
-  async function installApp() {
-    if (promptEvent) {
-      await promptEvent.prompt();
-      const result = await promptEvent.userChoice;
-      if (result.outcome === "accepted") setInstalled(true);
-      setPromptEvent(null);
-      return;
-    }
-
-    alert("To install ZED Gift Shop, open your browser menu and choose “Add to Home screen” or “Install app”.");
+  function handleClick() {
+    setShowPopup(true);
   }
 
-  if (installed) return null;
+  function handleClose() {
+    setShowPopup(false);
+  }
 
   return (
     <button
       type="button"
-      onClick={installApp}
+      onClick={handleClick}
       className={className}
       aria-label="Download ZED Gift Shop app"
     >
-      <Download className="size-4" />
+      <span>Download App</span>
+    </button>
+  );
+}
+
+export function DownloadAppPopup({ className = "" }: { className?: string }) {
+  if (showPopup === undefined) return null;
+
+  if (showPopup) {
+    return (
+      <div
+        className="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-xl bg-black/60"
+      >
+        <div
+          className="bg-white rounded-xl p-8 max-w-sm w-full shadow-2xl transform scale-95"
+        >
+          <h3 className="text-xl font-bold text-zed-950 mb-4">Install ZED Gift Shop</h3>
+          <p className="text-charcoal/70 mb-6">
+            Install the app to your home screen for quick access and push notifications.
+          </p>
+          <ul className="space-y-3 text-sm text-charcoal/60">
+            <li>
+              • iOS: Tap "Share" → "Add to Home Screen"
+            </li>
+            <li>
+              • Android: Tap menu → "Install app" → "Install"
+            </li>
+          </ul>
+          <button
+            onClick={handleClose}
+            className="mt-6 w-full rounded-zed bg-zed-950 px-4 py-2 text-sm font-bold text-white hover:bg-zed-900 transition-colors"
+          >
+            Got it
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <button
+      type="button"
+      onClick={handleClick}
+      className={className}
+      aria-label="Download ZED Gift Shop app"
+    >
       <span>Download App</span>
     </button>
   );

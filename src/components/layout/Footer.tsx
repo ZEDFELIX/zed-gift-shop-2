@@ -43,9 +43,9 @@ export async function Footer() {
            height={70}
            className="h-8 w-auto object-cover object-center"
          />
-          <p className="mt-4 text-sm leading-relaxed text-white/70">
-            {description}
-          </p>
+         <p className="mt-4 text-sm leading-relaxed text-white/70">
+           {description}
+         </p>
           <div className="mt-5 flex items-center gap-2">
             <a
               href={SITE.social.x}
@@ -86,7 +86,7 @@ export async function Footer() {
               <Music2 className="size-4" />
             </a>
           </div>
-          <DownloadAppButton className="mt-5 inline-flex items-center gap-2 rounded-full border border-white/25 px-4 py-2 text-sm font-semibold text-white transition-colors hover:border-white/60" />
+          <DownloadAppPopup className="mt-5 inline-flex items-center gap-2 rounded-full border border-white/25 px-4 py-2 text-sm font-semibold text-white transition-colors hover:border-white/60" />
         </div>
 
         <div className="lg:col-span-2">
