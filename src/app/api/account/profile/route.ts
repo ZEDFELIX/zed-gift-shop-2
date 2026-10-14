@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { getCurrentUser } from "@/lib/auth";
+import { clearSessionCookie, getCurrentUser } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { emailSchema } from "@/lib/validations";
 import { z } from "zod";
@@ -39,11 +39,27 @@ export async function PATCH(req: Request) {
  data.email = parsed.data.email.toLowerCase();
  }
 
- const updated = await prisma.user.update({
- where: { id: user.id },
- data,
- select: { id: true, name: true, email: true, phone: true, role: true },
- });
+  const updated = await prisma.user.update({
+  where: { id: user.id },
+  data,
+  select: { id: true, name: true, email: true, phone: true, role: true },
+  });
 
- return NextResponse.json({ user: updated });
+  return NextResponse.json({ user: updated });
+}
+
+export async function DELETE() {
+  const user = await getCurrentUser();
+  if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+
+  if (user.role === "ADMIN") {
+    const adminCount = await prisma.user.count({ where: { role: "ADMIN", status: "ACTIVE" } });
+    if (adminCount <= 1) {
+      return NextResponse.json({ error: "You cannot delete the last admin account. Ask another admin to remove it." }, { status: 400 });
+    }
+  }
+
+  await prisma.user.delete({ where: { id: user.id } });
+  await clearSessionCookie();
+  return NextResponse.json({ success: true });
 }
