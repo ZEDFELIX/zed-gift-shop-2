@@ -45,7 +45,7 @@ export function DownloadAppPopup({ className = "" }: { className?: string }) {
               • iOS: Tap {"Share"} {"→"} {"Add to Home Screen"}
             </li>
             <li>
-              • Android: Tap menu → "Install app" → "Install"
+              • Android: Tap menu → {"Install app"} {"→"} {"Install"}
             </li>
           </ul>
           <button
