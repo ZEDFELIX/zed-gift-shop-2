@@ -3,6 +3,7 @@ import Image from "next/image";
 import { Facebook, Instagram, Mail, MapPin, Phone, Send, Music2 } from "lucide-react";
 import { NAV_GROUPS, SITE } from "@/lib/constants";
 import { OpenCartLink } from "@/components/cart/OpenCartLink";
+import { DownloadAppButton } from "@/components/layout/DownloadAppButton";
 import { getSettings } from "@/lib/data/settings";
 
 const ACCOUNT_LINKS = [
@@ -85,6 +86,7 @@ export async function Footer() {
               <Music2 className="size-4" />
             </a>
           </div>
+          <DownloadAppButton className="mt-5 inline-flex items-center gap-2 rounded-full border border-white/25 px-4 py-2 text-sm font-semibold text-white transition-colors hover:border-white/60" />
         </div>
 
         <div className="lg:col-span-2">

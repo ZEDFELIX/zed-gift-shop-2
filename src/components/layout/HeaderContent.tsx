@@ -196,6 +196,7 @@ export function HeaderContent({
               {isAuthed ? <User className="size-4 text-soft-sage" /> : <LogIn className="size-4 text-soft-sage" />}
               <span className="hidden sm:inline">{isAuthed ? "My Account" : "My Account"}</span>
             </Link>
+            <DownloadAppButton className="hidden items-center gap-2 rounded-md border border-edge px-3 py-2 text-[13px] font-semibold text-[var(--color-ink)] hover:bg-zed-900/5 lg:flex" />
             <Link
               href="/wishlist"
               aria-label={`Wishlist (${wishlistCount})`}

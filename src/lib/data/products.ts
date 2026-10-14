@@ -1,5 +1,6 @@
 import { prisma } from "@/lib/prisma";
 import { Prisma } from "@prisma/client";
+import { getSetting } from "@/lib/data/settings";
 
 export type ProductListFilters = {
  q?: string;
@@ -137,6 +138,31 @@ export async function getFlashSaleProducts(limit = 6) {
     orderBy: [{ featured: "desc" }, { updatedAt: "desc" }],
     take: limit,
   });
+}
+
+export type FlashSaleSettings = {
+  title: string;
+  subtitle: string;
+  startsAt: string;
+  endsAt: string;
+  active: boolean;
+};
+
+export async function getFlashSaleSettings(): Promise<FlashSaleSettings> {
+  const [title, subtitle, startsAt, endsAt, active] = await Promise.all([
+    getSetting("flashSaleTitle"),
+    getSetting("flashSaleSubtitle"),
+    getSetting("flashSaleStartsAt"),
+    getSetting("flashSaleEndsAt"),
+    getSetting("flashSaleActive"),
+  ]);
+  return {
+    title: typeof title === "string" ? title : "Customer Service Week Sale",
+    subtitle: typeof subtitle === "string" ? subtitle : "Limited-time offers on selected gifts.",
+    startsAt: typeof startsAt === "string" ? startsAt : "",
+    endsAt: typeof endsAt === "string" ? endsAt : "",
+    active: active !== false,
+  };
 }
 
 // Every sort ends with a unique tiebreaker so that paginated listings stay

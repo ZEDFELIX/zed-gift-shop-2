@@ -1,26 +1,28 @@
 import Link from "next/link";
 import { ProductCard } from "@/components/product/ProductCard";
 import { FlashSaleCountdown } from "@/components/shop/FlashSaleCountdown";
+import type { FlashSaleSettings } from "@/lib/data/products";
 import {
   getBestSellerProducts,
   getDealProducts,
   getFeaturedProducts,
   getFlashSaleProducts,
+  getFlashSaleSettings,
   getMostBoughtProducts,
   type ProductWithRelations,
 } from "@/lib/data/products";
 import { prisma } from "@/lib/prisma";
 
-type SectionProps = { title: string; products: ProductWithRelations[]; href?: string; flash?: boolean; swipe?: boolean };
+type SectionProps = { title: string; products: ProductWithRelations[]; href?: string; flash?: boolean; swipe?: boolean; flashSale?: FlashSaleSettings };
 
-function Section({ title, products, href, flash = false, swipe = false }: SectionProps) {
+function Section({ title, products, href, flash = false, swipe = false, flashSale }: SectionProps) {
   if (!products.length) return null;
   return (
     <section className="mb-9 sm:mb-11">
       <div className="mb-3 flex items-center justify-between gap-2">
         <h2 className="font-display text-xl font-bold text-[var(--color-ink)] sm:text-2xl">{title}</h2>
         <div className="flex min-w-0 items-center gap-2">
-          {flash && <FlashSaleCountdown />}
+          {flash && flashSale && <FlashSaleCountdown startsAt={flashSale.startsAt} endsAt={flashSale.endsAt} active={flashSale.active} />}
           {href && <Link href={href} className="shrink-0 rounded-full border border-rose-200 px-3 py-1 text-xs font-semibold text-rose-600 transition-colors hover:bg-rose-50 hover:text-rose-700">See more</Link>}
         </div>
       </div>
@@ -38,13 +40,14 @@ function Section({ title, products, href, flash = false, swipe = false }: Sectio
 }
 
 export async function ShopSections() {
-  const [flashSale, sale, mostBought, bestSellers, newArrivals, personalized, corporateCategory] = await Promise.all([
+  const [flashSale, sale, mostBought, bestSellers, newArrivals, personalized, corporateCategory, flashSaleSettings] = await Promise.all([
     getFlashSaleProducts(6), getDealProducts(6), getMostBoughtProducts(6), getBestSellerProducts(6), getFeaturedProducts(6),
     prisma.product.findMany({ where: { status: "ACTIVE", personalizationEnabled: true }, include: { images: { orderBy: { sortOrder: "asc" } }, categories: { include: { category: true } }, collections: { include: { collection: true } }, variants: { where: { active: true }, orderBy: { name: "asc" } } }, orderBy: [{ featured: "desc" }, { publishedAt: "desc" }], take: 6 }),
     prisma.product.findMany({ where: { status: "ACTIVE", categories: { some: { category: { OR: [{ slug: "corporate-gifts-kenya" }, { slug: "corporate", kind: "OCCASION" }] } } } }, include: { images: { orderBy: { sortOrder: "asc" } }, categories: { include: { category: true } }, collections: { include: { collection: true } }, variants: { where: { active: true }, orderBy: { name: "asc" } } }, orderBy: [{ featured: "desc" }, { publishedAt: "desc" }], take: 6 }),
+    getFlashSaleSettings(),
   ]);
   return <div>
-    <Section title="Flash Sale" products={flashSale} flash href="/shop?flashSale=1" swipe />
+    <Section title="Flash Sale" products={flashSale} flash href="/shop?flashSale=1" swipe flashSale={flashSaleSettings} />
     <Section title="On Sale" products={sale} href="/shop?deals=1" />
     <Section title="Most Bought" products={mostBought} />
     <Section title="Best Sellers" products={bestSellers} />
