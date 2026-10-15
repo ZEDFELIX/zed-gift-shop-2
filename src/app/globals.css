@@ -282,3 +282,36 @@ body{background:radial-gradient(circle at 10% 0%,rgba(233,213,241,.28),transpare
 /* Horizontal product carousels: keep swipe gestures clean without visible scrollbars. */
 .scrollbar-none{scrollbar-width:none;-ms-overflow-style:none}
 .scrollbar-none::-webkit-scrollbar{display:none}
+
+
+/* Responsive logo sizing: preserve the image ratio and keep the mark inside the header. */
+.navbar-logo-container {
+  min-width: 0;
+  max-width: 100%;
+  align-self: stretch;
+  display: flex;
+  align-items: center;
+  flex: 0 1 auto;
+  overflow: hidden;
+}
+.navbar-logo {
+  display: block;
+  height: clamp(24px, 7vw, 34px);
+  width: auto;
+  max-width: clamp(64px, 22vw, 104px);
+  object-fit: contain;
+  object-position: left center;
+  flex: 0 1 auto;
+}
+@media (min-width: 481px) and (max-width: 1023px) {
+  .navbar-logo {
+    height: 38px;
+    max-width: 150px;
+  }
+}
+@media (min-width: 1024px) {
+  .navbar-logo {
+    height: clamp(40px, 4vw, 52px);
+    max-width: clamp(150px, 16vw, 220px);
+  }
+}
