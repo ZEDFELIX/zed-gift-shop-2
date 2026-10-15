@@ -47,7 +47,7 @@ export async function ShopSections() {
     getFlashSaleSettings(),
   ]);
   return <div>
-    <Section title="Flash Sale" products={flashSale} flash href="/shop?flashSale=1" flashSale={flashSaleSettings} />
+    <Section title="Flash Sale" products={flashSale} flash href="/shop?flashSale=1" swipe flashSale={flashSaleSettings} />
     <Section title="On Sale" products={sale} href="/shop?deals=1" />
     <Section title="Most Bought" products={mostBought} href="/shop?sort=popular" />
     <Section title="Best Sellers" products={bestSellers} href="/shop?bestSeller=1" />
