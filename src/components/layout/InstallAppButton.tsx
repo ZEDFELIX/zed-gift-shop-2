@@ -50,7 +50,7 @@ export function InstallAppButton() {
         type="button"
         onClick={installApp}
         aria-label="Install Zed Gift Shop app"
-        className="fixed bottom-5 left-4 z-[70] rounded-full border border-white/70 bg-[#4A2F31] px-4 py-3 text-sm font-semibold text-white shadow-lg transition hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-[#E5397F] focus:ring-offset-2"
+        className="fixed bottom-5 left-4 z-[70] rounded-full border border-white/70 bg-zed-950 px-4 py-3 text-sm font-semibold text-white shadow-lg transition hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-zed-900 focus:ring-offset-2"
       >
         ↓ Install App
       </button>
@@ -60,7 +60,7 @@ export function InstallAppButton() {
             role="dialog"
             aria-modal="true"
             aria-labelledby="install-app-title"
-            className="w-full max-w-sm rounded-2xl bg-white p-5 text-[#2A1F2D] shadow-2xl"
+            className="w-full max-w-sm rounded-2xl bg-white p-5 text-[#07111F] shadow-2xl"
             onClick={(event) => event.stopPropagation()}
           >
             <div className="mb-3 flex items-start justify-between gap-4">
@@ -72,7 +72,7 @@ export function InstallAppButton() {
             <p className="mb-3 text-sm text-slate-600">Tap the browser menu (⋮), then choose <strong>Install app</strong> or <strong>Add to Home screen</strong>.</p>
             <p className="mb-2 text-sm font-semibold">On iPhone (Safari)</p>
             <p className="mb-4 text-sm text-slate-600">Tap Share, then choose <strong>Add to Home Screen</strong>.</p>
-            <button type="button" onClick={() => setShowHelp(false)} className="w-full rounded-xl bg-[#4A2F31] px-4 py-3 text-sm font-semibold text-white">Got it</button>
+            <button type="button" onClick={() => setShowHelp(false)} className="w-full rounded-xl bg-zed-950 px-4 py-3 text-sm font-semibold text-white">Got it</button>
           </section>
         </div>
       )}

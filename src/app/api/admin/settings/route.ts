@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { getCurrentUser, requireAdmin } from "@/lib/auth";
+import { requirePermission } from "@/lib/api";
 import { setSetting, type SettingValue } from "@/lib/data/settings";
 import { z } from "zod";
 
@@ -10,12 +10,12 @@ const schema = z.object({
 export const runtime = "nodejs";
 
 export async function PATCH(req: Request) {
- try {
- await requireAdmin();
- } catch {
- return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
- }
- const admin = await getCurrentUser();
+  let admin;
+  try {
+    admin = await requirePermission("settings.manage");
+  } catch {
+    return NextResponse.json({ error: "Only the store owner can change settings." }, { status: 403 });
+  }
 
  let body: unknown;
  try {

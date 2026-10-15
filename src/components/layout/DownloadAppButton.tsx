@@ -9,6 +9,7 @@ type BIPEvent = Event & {
 };
 
 const INSTALLED_KEY = "zed:app-installed";
+const DISMISSED_KEY = "appPopupDismissed";
 
 function isIOS(): boolean {
   if (typeof window === "undefined" || typeof navigator === "undefined") return false;
@@ -121,12 +122,31 @@ export function DownloadAppPopup() {
   const { deferred, installed, install, ios } = useInstallPrompt();
   // Shown immediately on every visit until the app is installed. Closing it
   // only hides it for this page load - installed devices never see it again.
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(false);
   const [busy, setBusy] = useState(false);
 
-  // Closing only hides it for this visit - installed devices never see it.
+  // Shown immediately on first visit only. Closing it - or installing -
+  // dismisses it forever on that device.
+  useEffect(() => {
+    let hide = false;
+    try {
+      hide =
+        window.localStorage.getItem(INSTALLED_KEY) === "true" ||
+        window.localStorage.getItem(DISMISSED_KEY) === "true";
+    } catch {
+      hide = false;
+    }
+    setOpen(!hide);
+  }, [installed]);
+
+  // Closing (or installing) dismisses it forever on that device.
   function handleClose() {
     setOpen(false);
+    try {
+      window.localStorage.setItem(DISMISSED_KEY, "true");
+    } catch {
+      // Ignore storage failures.
+    }
   }
 
   useEffect(() => {
