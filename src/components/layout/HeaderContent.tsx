@@ -37,7 +37,7 @@ function openCart() {
 
 function Brand({ storeName }: { storeName: string }) {
   return (
-    <Link href="/" className="navbar-logo-container flex shrink-0 items-center" aria-label={`${storeName} home`}>
+    <Link href="/" className="navbar-logo-container flex min-w-0 items-center" aria-label={`${storeName} home`}>
       <Image
         src="/logo.png"
         alt={storeName}
