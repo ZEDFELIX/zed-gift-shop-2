@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import { getCurrentUser } from "@/lib/auth";
+import { can } from "@/lib/audit";
 import { formatKES } from "@/lib/utils";
 import { ORDER_STATUS_LABELS, PAYMENT_STATUS_LABELS } from "@/lib/constants";
 import { AlertTriangle, ArrowRight, Boxes, CreditCard, Gift, Package, Receipt, Settings, Star, Truck, Users } from "lucide-react";
@@ -28,14 +29,18 @@ export default async function AdminDashboardPage() {
 
  const lowStock = lowStockRaw.filter((p) => p.quantity <= p.lowStockThreshold);
 
- const quickActions = [
-  { href: "/admin/products/new", label: "Add product", icon: Gift },
-  { href: "/admin/orders", label: "Manage orders", icon: Package },
-  { href: "/admin/inventory", label: "Check inventory", icon: Boxes },
-  { href: "/admin/coupons", label: "Manage coupons", icon: CreditCard },
-  { href: "/admin/staff", label: "Manage staff", icon: Users },
-  { href: "/admin/settings", label: "Store settings", icon: Settings },
- ];
+  const quickActions = [
+   { href: "/admin/products/new", label: "Add product", icon: Gift },
+   { href: "/admin/orders", label: "Manage orders", icon: Package },
+   { href: "/admin/inventory", label: "Check inventory", icon: Boxes },
+   { href: "/admin/coupons", label: "Manage coupons", icon: CreditCard },
+   ...(can(me?.role, "staff.manage")
+     ? [{ href: "/admin/staff", label: "Manage staff", icon: Users }]
+     : []),
+   ...(can(me?.role, "settings.manage")
+     ? [{ href: "/admin/settings", label: "Store settings", icon: Settings }]
+     : []),
+  ];
 
  const paidOrders = orderCounts.find((o) => o.paymentStatus === "SUCCESSFUL")?._count._all ?? 0;
  const pendingOrders = orderCounts.find((o) => o.paymentStatus === "PENDING")?._count._all ?? 0;

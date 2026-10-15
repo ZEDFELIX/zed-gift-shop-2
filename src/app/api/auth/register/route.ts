@@ -2,21 +2,27 @@ import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { registerSchema } from "@/lib/validations";
 import { hashPassword, signSession, setSessionCookie } from "@/lib/auth";
+import { rateLimit, RATE_LIMITS } from "@/lib/rate-limit";
 
 export const runtime = "nodejs";
 
 export async function POST(req: Request) {
- let body: unknown;
- try {
- body = await req.json();
- } catch {
- return NextResponse.json({ error: "Invalid request body." }, { status: 400 });
- }
+  let body: unknown;
+  try {
+  body = await req.json();
+  } catch {
+  return NextResponse.json({ error: "Invalid request body." }, { status: 400 });
+  }
 
- const parsed = registerSchema.safeParse(body);
- if (!parsed.success) {
- return NextResponse.json({ error: parsed.error.issues[0]?.message ?? "Please check your details." }, { status: 400 });
- }
+  const parsed = registerSchema.safeParse(body);
+  if (!parsed.success) {
+  return NextResponse.json({ error: parsed.error.issues[0]?.message ?? "Please check your details." }, { status: 400 });
+  }
+
+  const rl = await rateLimit(`register:${parsed.data.email.toLowerCase()}`, RATE_LIMITS.register);
+  if (!rl.ok) {
+    return NextResponse.json({ error: "Too many accounts created. Try again later." }, { status: 429 });
+  }
 
  const existing = await prisma.user.findUnique({ where: { email: parsed.data.email.toLowerCase() } });
  if (existing) {

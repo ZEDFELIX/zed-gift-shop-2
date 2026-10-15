@@ -38,9 +38,10 @@ export async function rateLimit(key: string, opts: { limit: number; windowSecond
 }
 
 export const RATE_LIMITS = {
- smsOtp: { limit: 5, windowSeconds: 300 },
- login: { limit: 8, windowSeconds: 300 },
- mpesaPush: { limit: 6, windowSeconds: 600 },
- contact: { limit: 5, windowSeconds: 3600 },
- checkout: { limit: 12, windowSeconds: 600 },
+  smsOtp: { limit: 5, windowSeconds: 300 },
+  login: { limit: 8, windowSeconds: 300 },
+  register: { limit: 5, windowSeconds: 3600 },
+  mpesaPush: { limit: 6, windowSeconds: 600 },
+  contact: { limit: 5, windowSeconds: 3600 },
+  checkout: { limit: 12, windowSeconds: 600 },
 } as const;

@@ -2,28 +2,31 @@
 
 import { usePathname } from "next/navigation";
 import Link from "next/link";
-import { Boxes, CreditCard, Gift, LayoutDashboard, MapPin, Package, Settings, Star, Truck, Users, Tags, Zap } from "lucide-react";
+import { BarChart3, Boxes, CreditCard, Gift, LayoutDashboard, MapPin, Package, ScrollText, Settings, Star, Truck, Users, Tags, Zap } from "lucide-react";
 
 const TABS = [
-  { href: "/admin", label: "Dashboard", icon: LayoutDashboard },
-  { href: "/admin/orders", label: "Orders", icon: Package },
-  { href: "/admin/products", label: "Products", icon: Gift },
-  { href: "/admin/flash-sale", label: "Flash Sale", icon: Zap },
-  { href: "/admin/categories", label: "Categories", icon: Tags },
-  { href: "/admin/coupons", label: "Coupons", icon: CreditCard },
-  { href: "/admin/deliveries", label: "Delivery", icon: Truck },
-  { href: "/admin/inventory", label: "Inventory", icon: Boxes },
-  { href: "/admin/reviews", label: "Reviews", icon: Star },
-  { href: "/admin/settings", label: "Settings", icon: Settings },
-  { href: "/admin/staff", label: "Staff", icon: Users },
-  { href: "/account", label: "Back to store", icon: MapPin },
+  { href: "/admin", label: "Dashboard", icon: LayoutDashboard, adminOnly: false },
+  { href: "/admin/orders", label: "Orders", icon: Package, adminOnly: false },
+  { href: "/admin/products", label: "Products", icon: Gift, adminOnly: false },
+  { href: "/admin/flash-sale", label: "Flash Sale", icon: Zap, adminOnly: false },
+  { href: "/admin/categories", label: "Categories", icon: Tags, adminOnly: false },
+  { href: "/admin/coupons", label: "Coupons", icon: CreditCard, adminOnly: false },
+  { href: "/admin/deliveries", label: "Delivery", icon: Truck, adminOnly: false },
+  { href: "/admin/inventory", label: "Inventory", icon: Boxes, adminOnly: false },
+  { href: "/admin/reviews", label: "Reviews", icon: Star, adminOnly: false },
+  { href: "/admin/analytics", label: "Analytics", icon: BarChart3, adminOnly: false },
+  { href: "/admin/settings", label: "Settings", icon: Settings, adminOnly: true },
+  { href: "/admin/staff", label: "Staff", icon: Users, adminOnly: true },
+  { href: "/admin/audit-logs", label: "Audit logs", icon: ScrollText, adminOnly: true },
+  { href: "/account", label: "Back to store", icon: MapPin, adminOnly: false },
 ];
 
-export function AdminNav() {
+export function AdminNav({ isAdmin = false }: { isAdmin?: boolean }) {
   const pathname = usePathname();
+  const tabs = TABS.filter((t) => isAdmin || !t.adminOnly);
   return (
     <nav className="grid grid-cols-2 gap-1 rounded-2xl border border-charcoal/10 bg-white p-1.5 shadow-sm sm:grid-cols-3 lg:flex lg:flex-col lg:overflow-visible">
-      {TABS.map(({ href, label, icon: Icon }) => {
+      {tabs.map(({ href, label, icon: Icon }) => {
         if (href === "/account") {
           return (
             <Link key={href} href={href} className="flex min-w-0 items-center gap-2 rounded-xl px-3 py-2.5 text-xs font-semibold text-charcoal/60 hover:bg-panel lg:mt-2">

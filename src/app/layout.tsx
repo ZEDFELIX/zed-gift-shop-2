@@ -6,12 +6,8 @@ import { jost, libreBaskerville, poppins, quicksand } from "@/app/fonts";
 import { SITE } from "@/lib/constants";
 import { getSettings } from "@/lib/data/settings";
 import { buildMetadata, jsonLdStore } from "@/lib/seo";
-import { Header } from "@/components/layout/Header";
-import { Footer } from "@/components/layout/Footer";
-import { CartDrawer } from "@/components/cart/CartDrawer";
 import { ToastHost } from "@/components/ui/ToastHost";
 import { ServiceWorkerReg } from "@/components/layout/ServiceWorkerReg";
-import { WhatsAppFloat } from "@/components/layout/WhatsAppFloat";
 import "@/app/globals.css";
 import "@/app/glassmorphism.css";
 
@@ -70,20 +66,10 @@ export default async function RootLayout({ children }: { children: React.ReactNo
     type="application/ld+json"
     dangerouslySetInnerHTML={{ __html: storeJsonLd }}
     />
- <a
- href="#main"
- className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-zed focus:bg-white focus:px-4 focus:py-2 focus:shadow-raised"
- >
- Skip to content
- </a>
- <Header />
- <main id="main" className="pb-20 lg:pb-0">{children}</main>
- <Footer />
-  <CartDrawer />
-  <ToastHost />
-  <WhatsAppFloat />
-  <ServiceWorkerReg />
- </body>
+  {children}
+   <ToastHost />
+   <ServiceWorkerReg />
+  </body>
  </html>
  );
 }
