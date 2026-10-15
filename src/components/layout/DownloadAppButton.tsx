@@ -179,7 +179,7 @@ export function DownloadAppPopup({ className = "" }: { className?: string }) {
   if (!showNow || installed) return null;
 
   return (
-    <div className="fixed bottom-6 left-6 z-50 w-[calc(100vw-3rem)] max-w-sm bg-white/90 backdrop-blur-xl rounded-2xl p-6 shadow-2xl">
+    <div className="fixed bottom-24 left-6 z-50 w-[calc(100vw-3rem)] max-w-sm bg-white/90 backdrop-blur-xl rounded-2xl p-6 shadow-2xl">
       <div className="flex items-start gap-3">
         <div className="size-8 rounded-full bg-zed-950 text-white flex items-center justify-center shrink-0">
           <Download className="size-4" />
