@@ -315,3 +315,55 @@ body{background:radial-gradient(circle at 10% 0%,rgba(233,213,241,.28),transpare
     max-width: clamp(150px, 16vw, 220px);
   }
 }
+
+
+/* ZED Gift Shop live-shop polish — safe sizing-only overrides */
+.navbar-logo-container {
+  min-width: 0;
+  max-width: min(42vw, 220px);
+  flex: 0 1 auto;
+  overflow: hidden;
+}
+.navbar-logo {
+  display: block;
+  height: clamp(24px, 3.2vw, 44px);
+  width: auto;
+  max-width: 100%;
+  object-fit: contain;
+  object-position: left center;
+  flex-shrink: 1;
+}
+@media (max-width: 767px) {
+  .navbar-logo-container {
+    max-width: min(34vw, 132px);
+  }
+  .navbar-logo {
+    height: clamp(23px, 6vw, 32px);
+    max-width: 100%;
+  }
+  /* Keep the header controls from forcing the logo outside the bar. */
+  header .navbar-logo-container,
+  [role="banner"] .navbar-logo-container {
+    min-width: 0;
+  }
+  .zed-product-card,
+  .shop-product-card {
+    min-width: 0;
+    height: 100%;
+  }
+  .zed-product-card img,
+  .shop-product-card img {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    object-fit: contain;
+  }
+}
+@media (max-width: 374px) {
+  .navbar-logo-container { max-width: 30vw; }
+  .navbar-logo { height: 22px; }
+}
+@media (min-width: 1024px) {
+  .navbar-logo-container { max-width: 240px; }
+  .navbar-logo { height: clamp(38px, 3.2vw, 48px); }
+}
