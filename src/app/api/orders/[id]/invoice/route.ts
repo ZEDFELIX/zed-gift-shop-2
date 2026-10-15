@@ -43,6 +43,7 @@ async function loadOrder(id: string) {
           bankReference: true,
           completedAt: true,
           transactionDate: true,
+          createdAt: true,
         },
       },
     },

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Zap } from "lucide-react";
 import { ProductCard } from "@/components/product/ProductCard";
 import { FlashSaleCountdown } from "@/components/shop/FlashSaleCountdown";
 import type { FlashSaleSettings } from "@/lib/data/products";
@@ -33,13 +34,18 @@ function Section({ title, products, href, flash = false, swipe = false, flashSal
     return (
       <section className="mb-9 rounded-[1.75rem] border border-black/5 p-4 shadow-glass sm:mb-11 sm:p-6" style={{ backgroundColor: boxColor }}>
         <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
-          <div className="min-w-0">
-            <h2 className="font-display text-xl font-bold sm:text-2xl" style={{ color: textColor }}>
-              {flashSale.title || title}
-            </h2>
-            {flashSale.subtitle ? (
-              <p className="mt-0.5 text-sm opacity-70" style={{ color: textColor }}>{flashSale.subtitle}</p>
-            ) : null}
+          <div className="flex min-w-0 items-center gap-2.5">
+            <span className="grid size-10 shrink-0 place-items-center rounded-2xl bg-rose-500 text-white shadow-glass sm:size-11">
+              <Zap className="size-5 fill-current sm:size-6" />
+            </span>
+            <div className="min-w-0">
+              <h2 className="font-display text-2xl font-black uppercase leading-none tracking-tight sm:text-3xl" style={{ color: textColor }}>
+                {flashSale.title || title}
+              </h2>
+              {flashSale.subtitle ? (
+                <p className="mt-1 text-sm opacity-70" style={{ color: textColor }}>{flashSale.subtitle}</p>
+              ) : null}
+            </div>
           </div>
           <div className="flex min-w-0 items-center gap-2">
             <FlashSaleCountdown startsAt={flashSale.startsAt} endsAt={flashSale.endsAt} active={flashSale.active} />

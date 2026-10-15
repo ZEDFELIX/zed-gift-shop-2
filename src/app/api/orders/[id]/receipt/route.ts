@@ -50,6 +50,7 @@ export async function GET(req: Request, { params }: { params: Promise<{ id: stri
           bankReference: true,
           completedAt: true,
           transactionDate: true,
+          createdAt: true,
         },
       },
     },

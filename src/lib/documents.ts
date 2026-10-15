@@ -20,6 +20,7 @@ export type DocPayment = {
   bankReference: string | null;
   completedAt: Date | null;
   transactionDate: Date | null;
+  createdAt: Date;
 };
 
 export type DocOrder = {
@@ -243,6 +244,18 @@ export async function buildInvoicePdf(order: DocOrder, biz: DocBusiness): Promis
   billTo(ctx, order);
   itemsTable(ctx, order);
   totals(ctx, order);
+  const paidTotal = amountPaid(order);
+  if (order.payments.length > 0) {
+    paymentHistory(ctx, order.payments);
+    ensure(ctx, 40);
+    text(ctx, "Amount paid", PAGE_W - MARGIN - 170, 10, { color: ctx.grey });
+    text(ctx, kes(paidTotal), PAGE_W - MARGIN, 10, { bold: true, align: "right" });
+    ctx.y -= 15;
+    ensure(ctx, 20);
+    text(ctx, "Balance due", PAGE_W - MARGIN - 170, 10, { color: ctx.grey });
+    text(ctx, order.total - paidTotal > 0 ? kes(order.total - paidTotal) : "Cleared", PAGE_W - MARGIN, 10, { bold: true, align: "right" });
+    ctx.y -= 15;
+  }
   footer(ctx, [
     `Payment status: ${order.paymentStatus === "SUCCESSFUL" ? "PAID" : "PENDING — pay via M-PESA to confirm this order."}`,
     "Thank you for shopping with us. For help, reply with your order number on WhatsApp or email.",
@@ -265,8 +278,33 @@ export function paymentLabel(provider: string): string {
   return "M-PESA";
 }
 
+export function paymentDate(p: DocPayment): Date {
+  return new Date(p.completedAt ?? p.transactionDate ?? p.createdAt);
+}
+
 export function paymentReference(p: DocPayment): string {
   return p.mpesaReceipt ?? p.transactionCode ?? p.txRef ?? p.bankReference ?? "—";
+}
+
+function paymentHistory(ctx: Ctx, payments: DocPayment[]) {
+  if (payments.length === 0) return;
+  ensure(ctx, 40);
+  text(ctx, "PAYMENT HISTORY", MARGIN, 9, { bold: true, color: ctx.grey });
+  ctx.y -= 14;
+  const sorted = [...payments].sort(
+    (a, b) => paymentDate(a).getTime() - paymentDate(b).getTime(),
+  );
+  for (const p of sorted) {
+    ensure(ctx, 32);
+    text(ctx, `${dateStr(paymentDate(p))}  ·  ${paymentLabel(p.provider)}  ·  ${kes(p.amount)}  ·  ${p.status}`, MARGIN, 10, { maxWidth: PAGE_W - MARGIN * 2 });
+    ctx.y -= 14;
+    const ref = paymentReference(p);
+    if (ref !== "—") {
+      text(ctx, `Ref: ${ref}`, MARGIN + 12, 9, { color: ctx.grey, maxWidth: PAGE_W - MARGIN * 2 - 12 });
+      ctx.y -= 12;
+    }
+  }
+  ctx.y -= 4;
 }
 
 export async function buildReceiptPdf(order: DocOrder, biz: DocBusiness): Promise<Uint8Array> {
@@ -297,6 +335,8 @@ export async function buildReceiptPdf(order: DocOrder, biz: DocBusiness): Promis
     text(ctx, value, PAGE_W - MARGIN, 10, { bold: true, align: "right" });
     ctx.y -= 15;
   }
+
+  paymentHistory(ctx, order.payments);
 
   footer(ctx, [
     `Linked invoice: ${invoiceNumber(order.orderNumber)}.`,
