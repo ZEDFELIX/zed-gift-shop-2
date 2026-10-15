@@ -198,22 +198,22 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
 
  {/* USPs */}
  <div className="glass-card mt-8 grid gap-3 rounded-zed p-5 sm:grid-cols-2">
- <div className="flex items-center gap-2.5 text-sm text-[var(--color-ink)]">
- <Truck className="size-5 shrink-0 text-soft-sage" />
- Same-day in Nairobi, 1-3 days countrywide
- </div>
- <div className="flex items-center gap-2.5 text-sm text-[var(--color-ink)]">
- <ShieldCheck className="size-5 shrink-0 text-soft-sage" />
- Secure M-PESA STK Push payment
- </div>
- <div className="flex items-center gap-2.5 text-sm text-[var(--color-ink)]">
- <Quote className="size-5 shrink-0 text-soft-sage" />
- Handwritten-style gift note included
- </div>
- <div className="flex items-center gap-2.5 text-sm text-[var(--color-ink)]">
- <span className="grid size-5 shrink-0 place-items-center rounded bg-zed-950 text-[10px] font-black text-white">KES</span>
- Transparent pricing in Kenyan Shillings
- </div>
+  <div className="flex items-center gap-2.5 text-sm text-[var(--color-ink)]">
+  <Truck className="size-5 shrink-0 text-soft-sage" />
+  Same-day Nairobi · 1–3 days countrywide
+  </div>
+  <div className="flex items-center gap-2.5 text-sm text-[var(--color-ink)]">
+  <ShieldCheck className="size-5 shrink-0 text-soft-sage" />
+  Secure M-PESA payment
+  </div>
+  <div className="flex items-center gap-2.5 text-sm text-[var(--color-ink)]">
+  <Quote className="size-5 shrink-0 text-soft-sage" />
+  Free gift note included
+  </div>
+  <div className="flex items-center gap-2.5 text-sm text-[var(--color-ink)]">
+  <span className="grid size-5 shrink-0 place-items-center rounded bg-zed-950 text-[10px] font-black text-white">KES</span>
+  Prices in KES
+  </div>
  </div>
  </div>
  </div>
@@ -257,9 +257,9 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
  <div className="mt-8 grid gap-10 lg:grid-cols-2">
  <div className="space-y-4">
  {reviews.length === 0 && (
- <p className="glass-panel rounded-zed border border-dashed border-white/50 px-5 py-8 text-sm text-[rgba(48,37,34,0.62)]">
- No reviews yet. Bought this gift? Tell us how it went.
- </p>
+  <p className="glass-panel rounded-zed border border-dashed border-white/50 px-5 py-8 text-sm text-[rgba(48,37,34,0.62)]">
+  No reviews yet.
+  </p>
  )}
  {reviews.slice(0, 6).map((r) => (
  <article key={r.id} className="glass-card rounded-zed p-5">
@@ -292,7 +292,7 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
 
  <div>
  <h3 className="font-display text-lg font-bold text-[var(--color-ink)]">Write a review</h3>
- <p className="mb-4 mt-1 text-sm text-[rgba(48,37,34,0.62)]">Reviews are approved before they appear.</p>
+  <p className="mb-4 mt-1 text-sm text-[rgba(48,37,34,0.62)]">Reviews appear after approval.</p>
  <ReviewForm productId={product.id} />
  </div>
  </div>

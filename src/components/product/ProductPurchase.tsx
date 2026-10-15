@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Check, Minus, Plus, ShieldCheck, ShoppingBag, Sparkles, Truck } from "lucide-react";
+import { Check, Minus, Plus, ShieldCheck, ShoppingBag, Sparkles } from "lucide-react";
 import { formatKES } from "@/lib/utils";
 
 type Variant = { id: string; name: string; value: string; priceOffset: number; inStock: boolean };
@@ -107,16 +107,12 @@ export function ProductPurchase({
 
  return (
  <div className="space-y-6">
- {/* Views & reviews summary */}
- <div className="flex items-center gap-3 text-sm text-[#334155]">
- <span className="flex items-center gap-1 text-[#07111F]">
- <Sparkles className="size-4 text-soft-sage" /> Available online
- </span>
- <span className="text-edge-strong">|</span>
- <span className="flex items-center gap-1">
- <Truck className="size-4 text-soft-sage" /> Same-day Nairobi, countrywide 1-3 days
- </span>
- </div>
+  {/* Views & reviews summary */}
+  <div className="flex items-center gap-3 text-sm text-[#334155]">
+  <span className="flex items-center gap-1 text-[#07111F]">
+  <Sparkles className="size-4 text-soft-sage" /> Available online
+  </span>
+  </div>
 
  {/* Variants */}
  {variantGroups.map((group) => (
@@ -162,9 +158,9 @@ export function ProductPurchase({
  <p className="flex items-center gap-2 text-sm font-bold text-[#07111F]">
  <Sparkles className="size-4" /> Personalize
  </p>
- <p className="mt-1 text-xs text-[#07111F]">
- We engrave or print this exactly as written - double-check spelling.
- </p>
+  <p className="mt-1 text-xs text-[#07111F]">
+  Printed exactly as written - check spelling.
+  </p>
  <div className="mt-3 space-y-3">
  {personalizationFields.map((field) => (
  <div key={field.key}>
@@ -232,7 +228,7 @@ export function ProductPurchase({
  <span className={`grid size-5 place-items-center rounded border ${useGiftMessage ? "border-soft-sage bg-zed-950 text-white" : "border-white/60 bg-white/40"}`}>
  {useGiftMessage && <Check className="size-3.5" />}
  </span>
- Include a handwritten-style gift note
+  Include a gift note
  </button>
  {useGiftMessage && (
  <div className="mt-3 grid gap-3">
@@ -285,12 +281,12 @@ export function ProductPurchase({
 
  <div className="max-w-sm">
  {inStock ? (
- <button
- type="button"
- onClick={addToCart}
- disabled={busy}
- className="inline-flex w-full items-center justify-center gap-2 rounded-zed bg-zed-950 px-6 py-4 text-sm font-bold uppercase tracking-wider text-white transition-colors hover:bg-zed-950 hover:text-white disabled:opacity-60"
- >
+  <button
+  type="button"
+  onClick={addToCart}
+  disabled={busy}
+  className="inline-flex w-full items-center justify-center gap-2 rounded-zed bg-zed-950 px-5 py-3 text-[13px] font-bold uppercase tracking-wider text-white transition-colors hover:bg-zed-950 hover:text-white disabled:opacity-60"
+  >
  <ShoppingBag className="size-4" />
  {busy ? "Adding..." : "Add to cart"}
  </button>
@@ -299,11 +295,10 @@ export function ProductPurchase({
  Currently out of stock
  </p>
  )}
- {error && <p className="mt-2 text-sm text-red-600">{error}</p>}
- <p className="mt-3 flex items-center justify-center gap-2 text-center text-xs text-[#334155]">
- <ShieldCheck className="size-4 text-soft-sage" /> Secure M-PESA checkout | Free gift box with every order
- </p>
- <p className="mt-1 text-center text-xs text-[#334155]">Free in Nairobi on this item.</p>
+  {error && <p className="mt-2 text-sm text-red-600">{error}</p>}
+  <p className="mt-3 flex items-center justify-center gap-2 text-center text-xs text-[#334155]">
+  <ShieldCheck className="size-4 text-soft-sage" /> Secure M-PESA checkout · Free gift box included
+  </p>
  </div>
  </div>
  );

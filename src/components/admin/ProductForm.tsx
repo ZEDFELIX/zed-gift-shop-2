@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { ArrowLeft, Check, Loader2, Plus, Trash2 } from "lucide-react";
+import { ArrowLeft, Check, ImagePlus, Loader2, Plus, Trash2, Upload } from "lucide-react";
 import Link from "next/link";
 
 type CategoryOption = { id: string; name: string; kind: string };
@@ -46,10 +46,12 @@ const emptyProduct: ProductInitial = {
 
 export function ProductForm({ product, categories, collections }: { product?: ProductInitial; categories: CategoryOption[]; collections: CollectionOption[] }) {
  const router = useRouter();
- const [form, setForm] = useState<ProductInitial>(product ?? emptyProduct);
- const [busy, setBusy] = useState(false);
- const [error, setError] = useState<string | null>(null);
- const isEdit = Boolean(product?.id);
+  const [form, setForm] = useState<ProductInitial>(product ?? emptyProduct);
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [uploadingIdx, setUploadingIdx] = useState<number | null>(null);
+  const [uploadError, setUploadError] = useState<string | null>(null);
+  const isEdit = Boolean(product?.id);
 
  function set<K extends keyof ProductInitial>(key: K, value: ProductInitial[K]) {
  setForm((f) => ({ ...f, [key]: value }));
@@ -112,7 +114,31 @@ export function ProductForm({ product, categories, collections }: { product?: Pr
  }
  }
 
- const imageText = form.images.join("\n");
+  async function uploadFile(i: number, file: File) {
+    setUploadError(null);
+    if (file.size > 8 * 1024 * 1024) {
+      setUploadError("Pictures must be 8 MB or smaller.");
+      return;
+    }
+    setUploadingIdx(i);
+    try {
+      const body = new FormData();
+      body.append("file", file);
+      const res = await fetch("/api/admin/uploads", { method: "POST", body });
+      const data = (await res.json()) as { url?: string; error?: string };
+      if (!res.ok || !data.url) {
+        setUploadError(data.error ?? "Upload failed. Try again.");
+        return;
+      }
+      const next = [...form.images];
+      next[i] = data.url;
+      set("images", next.slice(0, 3));
+    } catch {
+      setUploadError("Network error. Try again.");
+    } finally {
+      setUploadingIdx(null);
+    }
+  }
 
  return (
  <form onSubmit={submit} className="space-y-5">
@@ -184,19 +210,42 @@ export function ProductForm({ product, categories, collections }: { product?: Pr
  </div>
  <span className="rounded-full bg-zed-900/10 px-3 py-1 text-[11px] font-bold text-zed-700">{form.images.length}/3 images</span>
  </div>
- <div className="mt-3 grid gap-3 sm:grid-cols-3">
- {[0,1,2].map((i) => (
- <div key={i}>
- <label className="label" htmlFor={`pf-image-${i}`}>Picture {i + 1}{i === 0 ? " (main)" : ""}</label>
- <input id={`pf-image-${i}`} className="field" type="url" placeholder="https://..." value={form.images[i] ?? ""} onChange={(e) => {
-   const next = [...form.images];
-   if (e.target.value.trim()) next[i] = e.target.value.trim();
-   else next.splice(i, 1);
-   set("images", next.slice(0, 3));
- }} />
- </div>
- ))}
- </div>
+  <div className="mt-3 grid gap-3 sm:grid-cols-3">
+  {[0,1,2].map((i) => (
+  <div key={i}>
+  <label className="label" htmlFor={`pf-image-${i}`}>Picture {i + 1}{i === 0 ? " (main)" : ""}</label>
+  {form.images[i] ? (
+    <img src={form.images[i]} alt={`Picture ${i + 1} preview`} className="mb-2 aspect-square w-full rounded-zed border border-edge object-cover" />
+  ) : (
+    <span className="mb-2 grid aspect-square w-full place-items-center rounded-zed border border-dashed border-edge bg-white/40 text-[#334155]">
+      <ImagePlus className="size-6" />
+    </span>
+  )}
+  <input id={`pf-image-${i}`} className="field" type="url" placeholder="https://..." value={form.images[i] ?? ""} onChange={(e) => {
+    const next = [...form.images];
+    if (e.target.value.trim()) next[i] = e.target.value.trim();
+    else next.splice(i, 1);
+    set("images", next.slice(0, 3));
+  }} />
+  <label className="mt-2 flex cursor-pointer items-center justify-center gap-1.5 rounded-zed border border-edge bg-white/60 px-3 py-2 text-xs font-bold text-[#07111F] hover:border-soft-sage">
+    {uploadingIdx === i ? <Loader2 className="size-3.5 animate-spin" /> : <Upload className="size-3.5" />}
+    {uploadingIdx === i ? "Uploading..." : "Upload from device"}
+    <input
+      type="file"
+      accept="image/*"
+      className="sr-only"
+      disabled={uploadingIdx !== null}
+      onChange={(e) => {
+        const file = e.target.files?.[0];
+        e.target.value = "";
+        if (file) void uploadFile(i, file);
+      }}
+    />
+  </label>
+  </div>
+  ))}
+  </div>
+  {uploadError && <p className="mt-2 rounded-zed bg-red-50 px-4 py-2.5 text-sm text-red-700">{uploadError}</p>}
  <div className="mt-3">
  <label className="label" htmlFor="pf-video">Product video (optional)</label>
  <input id="pf-video" className="field" type="url" placeholder="https://.../product-video.mp4" value={form.videoUrl} onChange={(e) => set("videoUrl", e.target.value.trim())} />
