@@ -6,7 +6,6 @@ import Link from "next/link";
 import { ChevronRight, Quote, ShieldCheck, Star, Truck } from "lucide-react";
 import { getProductBySlug, getRelatedProducts, productSeoTitle } from "@/lib/data/products";
 import { getSetting } from "@/lib/data/settings";
-import { SITE } from "@/lib/constants";
 import { listApprovedReviews, ratingBreakdown } from "@/lib/data/reviews";
 import { buildMetadata, jsonLdBreadcrumb, jsonLdProduct } from "@/lib/seo";
 import { discountPercent, formatKES } from "@/lib/utils";
@@ -98,14 +97,14 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
  <div className="space-y-3">
  <div className="relative aspect-square overflow-hidden rounded-zed bg-white/45">
  {product.images[0]?.url ? (
- <Image
- src={product.images[0].url}
- alt={product.images[0].alt ?? product.name}
- fill
- sizes="(min-width:1024px) 50vw, 100vw"
- unoptimized
- className="object-cover"
- />
+  <Image
+  src={product.images[0].url}
+  alt={product.images[0].alt ?? product.name}
+  fill
+  sizes="(min-width:1024px) 50vw, 100vw"
+  unoptimized
+  className="object-contain"
+  />
  ) : (
  <span className="grid aspect-square place-items-center font-display text-4xl text-soft-sage">ZED</span>
  )}
@@ -116,7 +115,7 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
  <div className="grid grid-cols-3 gap-2 sm:gap-4">
  {product.images.slice(0, 3).map((img) => (
  <div key={img.id} className="glass-panel relative aspect-square overflow-hidden rounded-zed ring-1 ring-white/50">
- <Image src={img.url} alt={img.alt ?? product.name} fill sizes="120px" unoptimized className="object-cover" />
+  <Image src={img.url} alt={img.alt ?? product.name} fill sizes="120px" unoptimized className="object-contain" />
  </div>
  ))}
  </div>
@@ -202,7 +201,6 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
   giftMessageAvailable={product.giftMessageAvailable}
   inStock={inStock}
   productName={product.name}
-  productUrl={`${SITE.url}/product/${product.slug}`}
   whatsappNumber={typeof whatsappNumber === "string" && whatsappNumber.trim() ? whatsappNumber.trim() : "254711436169"}
   />
  </div>

@@ -37,21 +37,16 @@ export function ProductCard({
     badge = { label: "New", cls: "bg-plum-800 text-white" };
   }
 
-  const imageStyle = image
-    ? { backgroundImage: `url("${image}")` }
-    : { backgroundColor: "var(--color-rose-light)" };
-
   return (
     <article className="zed-product-card group overflow-hidden rounded-lg">
       <div className="relative group-hover:opacity-100 transition-opacity">
         <Link
           href={`/product/${product.slug}`}
-          className="zed-product-media block aspect-square overflow-hidden"
+          className="zed-product-media block aspect-square overflow-hidden bg-white"
           aria-label={product.name}
         >
           <div
-            className="relative w-full h-full overflow-hidden transition-transform duration-500"
-            style={imageStyle}
+            className="relative w-full h-full overflow-hidden bg-white transition-transform duration-500"
           >
             {image ? (
               <Image
@@ -59,7 +54,7 @@ export function ProductCard({
                 alt={product.images[0]?.alt ?? product.name}
                 fill
                 sizes="(min-width:1280px) 23vw, (min-width:768px) 31vw, 46vw"
-                className="object-cover transition-opacity duration-200 group-hover:opacity-95"
+                className="object-contain transition-opacity duration-200 group-hover:opacity-95"
               />
             ) : (
               <div className="absolute inset-0 flex items-center justify-center bg-rose-50 text-rose-400 font-display text-lg">

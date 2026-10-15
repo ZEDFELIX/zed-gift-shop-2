@@ -9,6 +9,7 @@ import { ShopControls } from "@/components/shop/ShopControls";
 import { ShopSearch } from "@/components/shop/ShopSearch";
 import { Pagination } from "@/components/shop/Pagination";
 import { ShopSections } from "@/components/shop/ShopSections";
+import { PromoSlideshowSection } from "@/components/shop/PromoSlideshowSection";
 
 const SORT_LABELS: Record<string, string> = {
   featured: "Featured",
@@ -135,7 +136,14 @@ export async function ListingPage({
         </Suspense>
 
         <div className="mt-4 min-w-0 flex-1 lg:mt-0">
-          {activeFilters.length === 0 ? <ShopSections /> : <ProductGrid products={result.items} />}
+          {activeFilters.length === 0 ? (
+            <>
+              {href === "/shop" ? <PromoSlideshowSection /> : null}
+              <ShopSections />
+            </>
+          ) : (
+            <ProductGrid products={result.items} />
+          )}
           {activeFilters.length > 0 ? <Pagination
             page={result.page}
             pages={result.pages}

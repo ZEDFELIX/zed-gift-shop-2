@@ -20,7 +20,6 @@ export function ProductPurchase({
   giftMessageAvailable,
   inStock,
   productName,
-  productUrl,
   whatsappNumber,
 }: {
   productId: string;
@@ -34,7 +33,6 @@ export function ProductPurchase({
   giftMessageAvailable: boolean;
   inStock: boolean;
   productName?: string;
-  productUrl?: string;
   whatsappNumber?: string;
 }) {
  const router = useRouter();
@@ -315,7 +313,7 @@ export function ProductPurchase({
   {whatsappNumber && productName ? (
     <a
       href={`https://wa.me/${whatsappNumber}?text=${encodeURIComponent(
-        `Hello ZED Gift Shop, I'd like to order:\n${productName} - ${formatKES(price)} x ${quantity}\n${productUrl ?? `/product/${slug}`}`,
+        `Hello ZED Gift Shop, I'd like to order: ${productName} - ${formatKES(price)} x ${quantity}`,
       )}`}
       target="_blank"
       rel="noopener noreferrer"
