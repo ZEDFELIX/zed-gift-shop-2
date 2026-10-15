@@ -214,10 +214,30 @@ export function ProductForm({ product, categories, collections }: { product?: Pr
  <label className="label" htmlFor="pf-price">Price (KES)</label>
  <input id="pf-price" type="number" min={0} className="field" value={form.price} onChange={(e) => set("price", Number(e.target.value))} required />
  </div>
- <div>
- <label className="label" htmlFor="pf-compare">Compare at (KES)</label>
- <input id="pf-compare" type="number" min={0} className="field" value={form.compareAtPrice ?? ""} onChange={(e) => set("compareAtPrice", e.target.value ? Number(e.target.value) : null)} />
- </div>
+  <div>
+  <label className="label" htmlFor="pf-compare">Compare at (KES)</label>
+  <input id="pf-compare" type="number" min={0} className="field" value={form.compareAtPrice ?? ""} onChange={(e) => set("compareAtPrice", e.target.value ? Number(e.target.value) : null)} />
+  </div>
+  <div>
+  <label className="label" htmlFor="pf-discount">Discount % (sets the compare-at price)</label>
+  <input
+    id="pf-discount"
+    type="number"
+    min={0}
+    max={95}
+    className="field"
+    value={form.price > 0 && (form.compareAtPrice ?? 0) > form.price ? Math.round((1 - form.price / (form.compareAtPrice as number)) * 100) : ""}
+    placeholder="e.g. 20"
+    onChange={(e) => {
+      const pct = Math.min(95, Math.max(0, Number(e.target.value) || 0));
+      if (pct <= 0 || form.price <= 0) {
+        set("compareAtPrice", null);
+      } else {
+        set("compareAtPrice", Math.round(form.price / (1 - pct / 100)));
+      }
+    }}
+  />
+  </div>
  <div>
  <label className="label" htmlFor="pf-status">Status</label>
  <select id="pf-status" className="field" value={form.status} onChange={(e) => set("status", e.target.value)}>

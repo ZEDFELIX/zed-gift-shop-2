@@ -15,7 +15,7 @@ import {
 } from "@/lib/data/products";
 import { prisma } from "@/lib/prisma";
 
-type SectionProps = { title: string; products: ProductWithRelations[]; href?: string; flash?: boolean; swipe?: boolean; flashSale?: FlashSaleSettings };
+type SectionProps = { title: string; products: ProductWithRelations[]; href?: string; flash?: boolean; swipe?: boolean; flashSale?: FlashSaleSettings; titleColor?: string };
 
 /** Picks readable title text (ink or white) for any admin-chosen box color. */
 function contrastText(hex: string): string {
@@ -26,7 +26,7 @@ function contrastText(hex: string): string {
   return lum > 0.6 ? "var(--color-ink)" : "#FFFFFF";
 }
 
-function Section({ title, products, href, flash = false, swipe = false, flashSale }: SectionProps) {
+function Section({ title, products, href, flash = false, swipe = false, flashSale, titleColor }: SectionProps) {
   if (!products.length) return null;
   if (flash && flashSale) {
     const boxColor = isHexColor(flashSale.boxColor) ? flashSale.boxColor : FLASH_SALE_DEFAULT_BOX_COLOR;
@@ -67,7 +67,7 @@ function Section({ title, products, href, flash = false, swipe = false, flashSal
   return (
     <section className="mb-9 sm:mb-11">
       <div className="mb-3 flex items-center justify-between gap-2">
-        <h2 className="font-display text-xl font-bold text-[var(--color-ink)] sm:text-2xl">{title}</h2>
+        <h2 className={`font-display text-xl font-bold sm:text-2xl ${titleColor ?? "text-[var(--color-ink)]"}`}>{title}</h2>
         <div className="flex min-w-0 items-center gap-2">
           {flash && flashSale && <FlashSaleCountdown startsAt={flashSale.startsAt} endsAt={flashSale.endsAt} active={flashSale.active} />}
           {href && <Link href={href} className="shrink-0 rounded-full border border-rose-200 px-3 py-1 text-xs font-semibold text-rose-600 transition-colors hover:bg-rose-50 hover:text-rose-700">See more</Link>}
@@ -98,7 +98,7 @@ export async function ShopSections() {
     <Section title="On Sale" products={sale} href="/shop?deals=1" />
     <Section title="Most Bought" products={mostBought} href="/shop?sort=popular" />
     <Section title="Best Sellers" products={bestSellers} href="/shop?bestSeller=1" />
-    <Section title="New Arrivals" products={newArrivals} href="/shop?sort=new" />
+    <Section title="New Arrivals" products={newArrivals} href="/shop?sort=new" titleColor="text-violet-600" />
     <Section title="Personalized Gifts" products={personalized} href="/shop?personalized=true" />
     <Section title="Corporate Gifts" products={corporateCategory} href="/shop?category=corporate-gifts-kenya" />
   </div>;
