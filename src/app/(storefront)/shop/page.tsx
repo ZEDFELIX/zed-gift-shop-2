@@ -1,7 +1,12 @@
 import { ListingPage } from "@/components/shop/ListingPage";
+import { buildMetadata } from "@/lib/seo";
 
 export const dynamic = "force-dynamic";
-export const metadata = { title: "Shop All Gifts", description: "Browse the full ZED GIFT SHOP catalogue - personalized keepsakes, gift boxes, corporate gifts and more, delivered across Kenya." };
+export const metadata = buildMetadata({
+  title: "Shop All Gifts",
+  description: "Browse the full ZED GIFT SHOP catalogue - personalized keepsakes, gift boxes, corporate gifts and more, delivered across Kenya.",
+  path: "/shop",
+});
 
 function boolParam(value: unknown) {
  return value === "1" || value === "true";

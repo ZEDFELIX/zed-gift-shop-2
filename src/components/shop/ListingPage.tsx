@@ -2,6 +2,7 @@ import "server-only";
 
 import { Suspense } from "react";
 import { listProducts, type ProductListFilters } from "@/lib/data/products";
+import { jsonLdItemList } from "@/lib/seo";
 import { listCategories } from "@/lib/data/catalog";
 import { ProductGrid } from "@/components/shop/ProductGrid";
 import { ShopControls } from "@/components/shop/ShopControls";
@@ -69,6 +70,22 @@ export async function ListingPage({
 
   return (
     <div className="container-zed py-5 sm:py-7 lg:py-9">
+      {activeFilters.length > 0 && result.items.length > 0 && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(
+              jsonLdItemList(
+                result.items.map((p) => ({
+                  name: p.name,
+                  path: `/product/${p.slug}`,
+                  image: p.images[0]?.url ?? null,
+                })),
+              ),
+            ),
+          }}
+        />
+      )}
       <header className="mb-4 max-w-xl sm:mb-5">
         
         <h1 className="font-display text-2xl font-bold text-[var(--color-ink)] sm:text-3xl">

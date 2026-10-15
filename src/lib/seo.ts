@@ -95,14 +95,28 @@ export function jsonLdStore() {
 }
 
 export function jsonLdBreadcrumb(items: { name: string; path: string }[]) {
- return {
+  return {
  "@context": "https://schema.org",
- "@type": "BreadcrumbList",
- itemListElement: items.map((item, i) => ({
- "@type": "ListItem",
- position: i + 1,
- name: item.name,
- item: absolute(item.path),
- })),
- };
+  "@type": "BreadcrumbList",
+  itemListElement: items.map((item, i) => ({
+  "@type": "ListItem",
+  position: i + 1,
+  name: item.name,
+  item: absolute(item.path),
+  })),
+  };
+}
+
+export function jsonLdItemList(items: { name: string; path: string; image?: string | null }[]) {
+  return {
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  itemListElement: items.slice(0, 20).map((item, i) => ({
+  "@type": "ListItem",
+  position: i + 1,
+  name: item.name,
+  url: absolute(item.path),
+  ...(item.image ? { image: absolute(item.image) } : {}),
+  })),
+  };
 }
