@@ -76,8 +76,17 @@ export function SettingsForm({ initial }: { initial: SettingsShape }) {
      <div><label className="label">Store name</label><input className="field" value={form.storeName} onChange={(e)=>set("storeName",e.target.value)} /></div>
      <div><label className="label">Tagline</label><input className="field" value={form.storeTagline} onChange={(e)=>set("storeTagline",e.target.value)} /></div>
      <div className="sm:col-span-2"><label className="label">Footer description</label><textarea className="field min-h-24 py-3" value={form.footerDescription} onChange={(e)=>set("footerDescription",e.target.value)} /></div>
-    </div>
-   </section>
+     </div>
+    </section>
+
+    <section className="rounded-zed border border-edge bg-white p-6">
+     <h2 className="font-display text-xl font-bold text-[#07111F]">Phone numbers</h2>
+     <p className="mt-1 text-sm text-[#334155]">The call number in the header, footer and policies, and the WhatsApp number for chats and order buttons. Use international format starting with 254.</p>
+     <div className="mt-5 grid gap-4 sm:grid-cols-2">
+      <div><label className="label">Call phone</label><input className="field" value={form.contactPhone} onChange={(e)=>set("contactPhone",e.target.value)} placeholder="+254..." /></div>
+      <div><label className="label">WhatsApp number</label><input className="field" value={form.whatsappNumber} onChange={(e)=>set("whatsappNumber",e.target.value)} placeholder="254..." /></div>
+     </div>
+    </section>
 
    <section className="rounded-zed border border-edge bg-white p-6">
     <h2 className="font-display text-xl font-bold text-[#07111F]">Storefront colours</h2>
@@ -104,8 +113,6 @@ export function SettingsForm({ initial }: { initial: SettingsShape }) {
      <div className="sm:col-span-2"><label className="label">Announcement bar</label><input className="field" value={form.announcementText} onChange={(e)=>set("announcementText",e.target.value)} /></div>
      <div><label className="label">Hero title</label><input className="field" value={form.heroTitle} onChange={(e)=>set("heroTitle",e.target.value)} /></div>
      <div><label className="label">Hero subtitle</label><input className="field" value={form.heroSubtitle} onChange={(e)=>set("heroSubtitle",e.target.value)} /></div>
-     <div><label className="label">Contact phone</label><input className="field" value={form.contactPhone} onChange={(e)=>set("contactPhone",e.target.value)} /></div>
-     <div><label className="label">WhatsApp number</label><input className="field" value={form.whatsappNumber} onChange={(e)=>set("whatsappNumber",e.target.value)} /></div>
      <div><label className="label">Contact email</label><input className="field" type="email" value={form.contactEmail} onChange={(e)=>set("contactEmail",e.target.value)} /></div>
      <div><label className="label">Corporate email</label><input className="field" type="email" value={form.corporateEmail} onChange={(e)=>set("corporateEmail",e.target.value)} /></div>
      <div><label className="label">Address</label><input className="field" value={form.address} onChange={(e)=>set("address",e.target.value)} /></div>

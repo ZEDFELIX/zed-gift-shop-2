@@ -1,9 +1,13 @@
 import { Truck, RotateCcw, ShieldCheck, MapPin } from "lucide-react";
 import { SITE } from "@/lib/constants";
+import { getSettings } from "@/lib/data/settings";
 
 export const metadata = { title: "Delivery & Returns | ZED Gift Shop", description: "Same-day Nairobi delivery, countrywide shipping, and our returns policy. How ZED Gift Shop gets your gifts to you." };
 
 export default async function DeliveryPolicyPage() {
+  const settings = await getSettings();
+  const policyPhone = String(settings.contactPhone ?? SITE.phone);
+  const policyPhoneHref = `tel:${policyPhone.replace(/\s+/g, "")}`;
   return (
  <div className="container-zed max-w-3xl py-12">
  <p className="eyebrow text-soft-sage">Policies</p>
@@ -45,7 +49,7 @@ export default async function DeliveryPolicyPage() {
  <h3 className="font-semibold text-[#07111F]">How refunds work</h3>
  <p className="mt-1">Approved refunds are sent back to the M-PESA account used for payment. Refunds are processed within 5 working days after the returned item is received by us.</p>
  </div>
- <p className="text-[#334155]">Questions? Call or WhatsApp <a className="font-semibold text-soft-sage underline" href={SITE.phoneHref}>{SITE.phone}</a>.</p>
+  <p className="text-[#334155]">Questions? Call or WhatsApp <a className="font-semibold text-soft-sage underline" href={policyPhoneHref}>{policyPhone}</a>.</p>
  </div>
  </section>
 
