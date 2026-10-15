@@ -9,7 +9,6 @@ type BIPEvent = Event & {
 };
 
 const INSTALLED_KEY = "zed:app-installed";
-const DISMISSED_KEY = "appPopupDismissed";
 
 function isIOS(): boolean {
   if (typeof window === "undefined" || typeof navigator === "undefined") return false;
@@ -118,68 +117,49 @@ export function DownloadAppButton({ className = "" }: { className?: string }) {
   );
 }
 
-export function DownloadAppPopup({ className = "" }: { className?: string }) {
-  void className;
+export function DownloadAppPopup() {
   const { deferred, installed, install, ios } = useInstallPrompt();
-  const [showNow, setShowNow] = useState(false);
+  // Shown immediately on every visit until the app is installed. Closing it
+  // only hides it for this page load - installed devices never see it again.
+  const [open, setOpen] = useState(true);
   const [busy, setBusy] = useState(false);
 
-  // Show popup after 30 seconds on page load, but only until installed/dismissed.
-  useEffect(() => {
-    if (installed) {
-      setShowNow(false);
-      return;
-    }
-    let dismissed = false;
-    try {
-      dismissed = window.localStorage.getItem(DISMISSED_KEY) === "true";
-    } catch {
-      dismissed = false;
-    }
-    if (dismissed) {
-      setShowNow(false);
-      return;
-    }
-
-    const timer = window.setTimeout(() => {
-      setShowNow(true);
-    }, 30000);
-
-    const onHelp = () => setShowNow(true);
-    window.addEventListener("zed:show-install-help", onHelp);
-    return () => {
-      window.clearTimeout(timer);
-      window.removeEventListener("zed:show-install-help", onHelp);
-    };
-  }, [installed]);
-
-  function dismiss() {
-    setShowNow(false);
-    try {
-      window.localStorage.setItem(DISMISSED_KEY, "true");
-    } catch {
-      // Ignore storage failures.
-    }
+  // Closing only hides it for this visit - installed devices never see it.
+  function handleClose() {
+    setOpen(false);
   }
+
+  useEffect(() => {
+    const onHelp = () => setOpen(true);
+    window.addEventListener("zed:show-install-help", onHelp);
+    return () => window.removeEventListener("zed:show-install-help", onHelp);
+  }, []);
 
   async function handleInstall() {
     if (busy) return;
     setBusy(true);
     try {
-      const outcome = await install();
+      await install();
       // Accepted installs hide forever via the installed flag; anything else
-      // just closes this reminder.
-      dismiss();
-      void outcome;
+      // just closes this reminder until the next visit.
+      setOpen(false);
     } finally {
       setBusy(false);
     }
   }
 
-  if (!showNow || installed) return null;
+  if (!open || installed) return null;
 
   return (
     <div className="fixed bottom-24 left-6 z-50 w-[calc(100vw-3rem)] max-w-sm bg-white/90 backdrop-blur-xl rounded-2xl p-6 shadow-2xl">
+      <button
+        type="button"
+        onClick={handleClose}
+        aria-label="Close"
+        className="absolute right-3 top-3 grid size-8 place-items-center rounded-full text-charcoal/50 transition-colors hover:bg-black/5 hover:text-charcoal"
+      >
+        ×
+      </button>
       <div className="flex items-start gap-3">
         <div className="size-8 rounded-full bg-zed-950 text-white flex items-center justify-center shrink-0">
           <Download className="size-4" />

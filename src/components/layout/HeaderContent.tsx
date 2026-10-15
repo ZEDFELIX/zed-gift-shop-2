@@ -29,7 +29,7 @@ import {
 import { formatKES } from "@/lib/utils";
 import type { NavFeaturedMap, MenuFeatured } from "@/lib/data/storefront";
 import { SearchPanel } from "@/components/search/SearchPanel";
-import { DownloadAppPopup } from "@/components/layout/DownloadAppButton";
+import { DownloadAppButton } from "@/components/layout/DownloadAppButton";
 
 function openCart() {
   window.dispatchEvent(new CustomEvent("zed:open-cart"));
@@ -206,7 +206,7 @@ export function HeaderContent({
                 <span>Admin</span>
               </Link>
             )}
-            <DownloadAppPopup className="hidden items-center gap-2 rounded-md border border-edge px-3 py-2 text-[13px] font-semibold text-[var(--color-ink)] hover:bg-zed-900/5 lg:flex" />
+            <DownloadAppButton className="hidden items-center gap-2 rounded-md border border-edge px-3 py-2 text-[13px] font-semibold text-[var(--color-ink)] hover:bg-zed-900/5 lg:flex" />
             <Link
               href="/wishlist"
               aria-label={`Wishlist (${wishlistCount})`}
@@ -303,7 +303,7 @@ export function HeaderContent({
             <Clock className="size-3.5" /> {announcement}
           </span>
           <span className="h-3.5 w-px shrink-0 bg-white/20" />
-          <DownloadAppPopup className="flex shrink-0 items-center gap-1.5 whitespace-nowrap rounded-full bg-white px-3 py-1.5 font-bold text-zed-950" />
+          <DownloadAppButton className="flex shrink-0 items-center gap-1.5 whitespace-nowrap rounded-full bg-white px-3 py-1.5 font-bold text-zed-950" />
         </div>
       </div>
 
@@ -399,7 +399,7 @@ export function HeaderContent({
               >
                 <Phone className="size-4 text-soft-sage" /> {contactPhone}
               </a>
-              <DownloadAppPopup className="mb-2 flex w-full items-center justify-center gap-2 rounded-md border border-edge px-4 py-3 text-sm font-semibold text-[var(--color-ink)]" />
+              <DownloadAppButton className="mb-2 flex w-full items-center justify-center gap-2 rounded-md border border-edge px-4 py-3 text-sm font-semibold text-[var(--color-ink)]" />
               {isAuthed && userRole === "ADMIN" && (
                 <Link
                   href="/admin"

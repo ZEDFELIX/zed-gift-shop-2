@@ -5,6 +5,7 @@ import { WhatsAppFloat } from "@/components/layout/WhatsAppFloat";
 import { ConsentBanner } from "@/components/analytics/ConsentBanner";
 import { Trackers } from "@/components/analytics/Trackers";
 import { InstallAppButton } from "@/components/layout/InstallAppButton";
+import { DownloadAppPopup } from "@/components/layout/DownloadAppButton";
 
 export default function StorefrontLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -23,6 +24,7 @@ export default function StorefrontLayout({ children }: { children: React.ReactNo
       <Trackers />
       <ConsentBanner />
       <InstallAppButton />
+      <DownloadAppPopup />
     </>
   );
 }
