@@ -43,9 +43,9 @@ export function ShopControls({
  }, [filtersOpen]);
 
  const sort = (params.get("sort") || "featured") as string;
- const activeFilterCount = ["category", "occasion", "recipient", "collection", "personalized", "inStock", "min", "max"].filter(
-  (k) => params.get(k),
- ).length;
+  const activeFilterCount = ["category", "occasion", "recipient", "collection", "personalized", "inStock", "min", "max", "deals", "flashSale", "bestSeller"].filter(
+   (k) => params.get(k),
+  ).length;
 
  function go(key: string, value: string) {
   router.push(`${pathname}?${updateUrl(params, key, value)}`);
@@ -151,14 +151,32 @@ placeholder={String(minPrice).length > 0 ? String(minPrice) : "Min"}
      Personalized only
     </label>
     <label className="mt-2 flex cursor-pointer items-center gap-2 text-sm text-charcoal">
-     <input
-      type="checkbox"
-      checked={Boolean(params.get("inStock"))}
-      onChange={(e) => go("inStock", e.target.checked ? "1" : "")}
-      className="size-4 accent-rose-500 rounded"
-     />
-     In stock only
-    </label>
+      <input
+       type="checkbox"
+       checked={Boolean(params.get("inStock"))}
+       onChange={(e) => go("inStock", e.target.checked ? "1" : "")}
+       className="size-4 accent-rose-500 rounded"
+      />
+      In stock only
+     </label>
+    <label className="mt-2 flex cursor-pointer items-center gap-2 text-sm text-charcoal">
+      <input
+       type="checkbox"
+       checked={Boolean(params.get("deals"))}
+       onChange={(e) => go("deals", e.target.checked ? "1" : "")}
+       className="size-4 accent-rose-500 rounded"
+      />
+      On sale only
+     </label>
+    <label className="mt-2 flex cursor-pointer items-center gap-2 text-sm text-charcoal">
+      <input
+       type="checkbox"
+       checked={Boolean(params.get("bestSeller"))}
+       onChange={(e) => go("bestSeller", e.target.checked ? "1" : "")}
+       className="size-4 accent-rose-500 rounded"
+      />
+      Best sellers only
+     </label>
    </div>
 
    {occasions.length > 0 && (

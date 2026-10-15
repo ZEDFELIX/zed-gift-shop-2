@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
+import { getCurrentUser } from "@/lib/auth";
 import { formatKES } from "@/lib/utils";
 import { ORDER_STATUS_LABELS, PAYMENT_STATUS_LABELS } from "@/lib/constants";
 import { AlertTriangle, ArrowRight, Boxes, CreditCard, Gift, Package, Receipt, Settings, Star, Truck, Users } from "lucide-react";
@@ -7,7 +8,9 @@ import { AlertTriangle, ArrowRight, Boxes, CreditCard, Gift, Package, Receipt, S
 export const metadata = { title: "Admin dashboard" };
 
 export default async function AdminDashboardPage() {
-const [
+  const me = await getCurrentUser().catch(() => null);
+  const isAdmin = me?.role === "ADMIN";
+  const [
   orderCounts,
   recentOrders,
   productCounts,
@@ -37,12 +40,14 @@ const [
  const paidOrders = orderCounts.find((o) => o.paymentStatus === "SUCCESSFUL")?._count._all ?? 0;
  const pendingOrders = orderCounts.find((o) => o.paymentStatus === "PENDING")?._count._all ?? 0;
 
- const cards = [
- { label: "Paid orders", value: paidOrders, icon: Package, tint: "bg-emerald-50 text-emerald-700" },
- { label: "Awaiting payment", value: pendingOrders, icon: Receipt, tint: "bg-amber-50 text-amber-700" },
- { label: "Revenue (paid)", value: formatKES(revenueAgg._sum.total ?? 0), icon: Truck, tint: "bg-warm-white text-deep-olive" },
- { label: "Active products", value: productCounts.find((p) => p.status === "ACTIVE")?._count._all ?? 0, icon: Package, tint: "bg-warm-white text-deep-olive" },
- ];
+  const cards = [
+  { label: "Paid orders", value: paidOrders, icon: Package, tint: "bg-emerald-50 text-emerald-700" },
+  { label: "Awaiting payment", value: pendingOrders, icon: Receipt, tint: "bg-amber-50 text-amber-700" },
+  ...(isAdmin
+    ? [{ label: "Revenue (paid)", value: formatKES(revenueAgg._sum.total ?? 0), icon: Truck, tint: "bg-warm-white text-deep-olive" }]
+    : []),
+  { label: "Active products", value: productCounts.find((p) => p.status === "ACTIVE")?._count._all ?? 0, icon: Package, tint: "bg-warm-white text-deep-olive" },
+  ];
 
  return (
  <div className="space-y-6">

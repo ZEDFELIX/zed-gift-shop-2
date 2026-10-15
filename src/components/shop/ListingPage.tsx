@@ -11,6 +11,7 @@ import { ShopSections } from "@/components/shop/ShopSections";
 
 const SORT_LABELS: Record<string, string> = {
   featured: "Featured",
+  popular: "Most popular",
   new: "Newest",
   "price-asc": "Price: Low to High",
   "price-desc": "Price: High to Low",
@@ -58,6 +59,10 @@ export async function ListingPage({
     filters.collection ? filters.collection.replace(/-/g, " ") : undefined,
     filters.personalized ? "Personalized" : undefined,
     filters.inStock ? "In stock" : undefined,
+    filters.flashSale ? "Flash sale" : undefined,
+    filters.deals ? "On sale" : undefined,
+    filters.bestSeller ? "Best sellers" : undefined,
+    filters.sort && filters.sort !== "featured" ? SORT_LABELS[filters.sort] ?? filters.sort : undefined,
     filters.min != null ? `KES ${filters.min}+` : undefined,
     filters.max != null ? `up to KES ${filters.max}` : undefined,
   ].filter(Boolean);

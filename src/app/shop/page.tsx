@@ -24,6 +24,8 @@ export default async function ShopPage({ searchParams }: { searchParams: Promise
   max: get("max") ? Number(get("max")) : undefined,
   personalized: boolParam(get("personalized")),
   flashSale: boolParam(get("flashSale")),
+  deals: boolParam(get("deals")),
+  bestSeller: boolParam(get("bestSeller")),
   inStock: boolParam(get("inStock")),
   sort: get("sort") ?? "featured",
   page: get("page") ? Number(get("page")) : 1,

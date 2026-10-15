@@ -10,10 +10,11 @@ export type ProductListFilters = {
  collection?: string;
  min?: number;
  max?: number;
- personalized?: boolean;
- inStock?: boolean;
- deals?: boolean;
- flashSale?: boolean;
+  personalized?: boolean;
+  inStock?: boolean;
+  deals?: boolean;
+  flashSale?: boolean;
+  bestSeller?: boolean;
  rating?: number;
  sort?: string;
  page?: number;
@@ -174,6 +175,7 @@ const sortMap: Record<string, Prisma.ProductOrderByWithRelationInput[]> = {
   "price-desc": [{ price: "desc" }, { id: "asc" }],
   new: [{ publishedAt: "desc" }, { id: "asc" }],
   newest: [{ publishedAt: "desc" }, { id: "asc" }],
+  popular: [{ ratingCount: "desc" }, { ratingAverage: "desc" }, { id: "asc" }],
   rating: [{ ratingAverage: "desc" }, { ratingCount: "desc" }, { id: "asc" }],
   name: [{ name: "asc" }, { id: "asc" }],
 };
@@ -247,8 +249,9 @@ export async function listProducts(filters: ProductListFilters) {
  if (filters.collection) {
  conditions.push({ collections: { some: { collection: { slug: filters.collection } } } });
  }
- if (filters.personalized) conditions.push({ personalizationEnabled: true });
- if (filters.deals) conditions.push({ compareAtPrice: { not: null } });
+  if (filters.personalized) conditions.push({ personalizationEnabled: true });
+  if (filters.deals) conditions.push({ compareAtPrice: { not: null } });
+  if (filters.bestSeller) conditions.push({ bestSeller: true });
  if (filters.flashSale) conditions.push({
    OR: [
      { tags: { has: "flash-sale" } },

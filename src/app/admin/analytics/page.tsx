@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { requireAdmin } from "@/lib/auth";
+import { getCurrentUser, requireAdmin } from "@/lib/auth";
 import { formatKES } from "@/lib/utils";
 import {
   dashboardMetrics,
@@ -30,6 +30,8 @@ export default async function AdminAnalyticsPage({
   searchParams: Promise<{ preset?: string; from?: string; to?: string; bucket?: string }>;
 }) {
   await requireAdmin();
+  const me = await getCurrentUser().catch(() => null);
+  const isAdmin = me?.role === "ADMIN";
   const sp = await searchParams;
   const preset = sp.preset ?? "30d";
   const bucket = (["day", "week", "month", "year"].includes(sp.bucket ?? "") ? sp.bucket : "day") as "day" | "week" | "month" | "year";
@@ -47,20 +49,22 @@ export default async function AdminAnalyticsPage({
   ]);
 
   const maxRevenue = Math.max(1, ...series.map((s) => s.revenue));
-  const kpis = [
-    { label: "Revenue (all time)", value: formatKES(metrics.totalSales) },
-    { label: "Revenue in range", value: formatKES(series.reduce((s, r) => s + r.revenue, 0)) },
-    { label: "To-day revenue", value: formatKES(metrics.todaysSales) },
+  const maxOrders = Math.max(1, ...series.map((s) => s.orders));
+  const allKpis = [
+    { label: "Revenue (all time)", value: formatKES(metrics.totalSales), revenue: true },
+    { label: "Revenue in range", value: formatKES(series.reduce((s, r) => s + r.revenue, 0)), revenue: true },
+    { label: "To-day revenue", value: formatKES(metrics.todaysSales), revenue: true },
     { label: "Orders", value: String(metrics.orders) },
     { label: "Pending orders", value: String(metrics.pendingOrders) },
     { label: "Customers", value: String(metrics.customers) },
-    { label: "Average order value", value: formatKES(customers.aov) },
+    { label: "Average order value", value: formatKES(customers.aov), revenue: true },
     { label: "Repeat customers", value: String(customers.returning) },
     { label: "Stock value", value: formatKES(inventory.stockValue) },
     { label: "Units available", value: String(inventory.unitsAvailable) },
     { label: "Low stock", value: String(metrics.lowStock) },
     { label: "Out of stock", value: String(metrics.outOfStock) },
   ];
+  const kpis = isAdmin ? allKpis : allKpis.filter((k) => !k.revenue);
 
   return (
     <div className="space-y-6">
@@ -100,7 +104,7 @@ export default async function AdminAnalyticsPage({
           <h2 className="font-display text-lg font-bold text-[#07111F]">Sales</h2>
           {series.length === 0 ? (
             <p className="mt-2 text-sm text-[#334155]">No paid orders in this range.</p>
-          ) : (
+          ) : isAdmin ? (
             <ul className="mt-4 space-y-2.5">
               {series.map((s) => (
                 <li key={s.bucket} className="flex items-center gap-3 text-sm">
@@ -112,6 +116,20 @@ export default async function AdminAnalyticsPage({
                   </span>
                   <span className="w-24 shrink-0 text-right font-semibold text-[#07111F]">{formatKES(s.revenue)}</span>
                   <span className="w-10 shrink-0 text-right text-xs text-[#334155]">{s.orders}</span>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <ul className="mt-4 space-y-2.5">
+              {series.map((s) => (
+                <li key={s.bucket} className="flex items-center gap-3 text-sm">
+                  <span className="w-24 shrink-0 text-xs text-[#334155]">
+                    {new Date(s.bucket).toLocaleDateString("en-KE", { day: "numeric", month: "short", year: "2-digit" })}
+                  </span>
+                  <span className="h-2.5 flex-1 overflow-hidden rounded-full bg-panel">
+                    <span className="block h-full rounded-full bg-deep-olive" style={{ width: `${Math.round((s.orders / maxOrders) * 100)}%` }} />
+                  </span>
+                  <span className="w-16 shrink-0 text-right font-semibold text-[#07111F]">{s.orders} orders</span>
                 </li>
               ))}
             </ul>
@@ -132,8 +150,8 @@ export default async function AdminAnalyticsPage({
       </section>
 
       <section className="grid gap-6 lg:grid-cols-3">
-        <TopList title="Best sellers" rows={best} />
-        <TopList title="Slow movers" rows={worst} />
+        <TopList title="Best sellers" rows={best} hideRevenue={!isAdmin} />
+        <TopList title="Slow movers" rows={worst} hideRevenue={!isAdmin} />
         <div className="rounded-zed border border-edge bg-white p-6">
           <h2 className="font-display text-lg font-bold text-[#07111F]">Low stock</h2>
           <ul className="mt-3 divide-y divide-edge text-sm">
@@ -153,7 +171,7 @@ export default async function AdminAnalyticsPage({
   );
 }
 
-function TopList({ title, rows }: { title: string; rows: { productId: string; name: string; units: number; revenue: number }[] }) {
+function TopList({ title, rows, hideRevenue = false }: { title: string; rows: { productId: string; name: string; units: number; revenue: number }[]; hideRevenue?: boolean }) {
   return (
     <div className="rounded-zed border border-edge bg-white p-6">
       <h2 className="font-display text-lg font-bold text-[#07111F]">{title}</h2>
@@ -163,7 +181,7 @@ function TopList({ title, rows }: { title: string; rows: { productId: string; na
             <span className="truncate pr-2 text-[#07111F]">{r.name}</span>
             <span className="shrink-0 text-right">
               <span className="font-semibold text-[#07111F]">{r.units}</span>
-              <span className="ml-2 text-xs text-[#334155]">{formatKES(r.revenue)}</span>
+              {!hideRevenue && <span className="ml-2 text-xs text-[#334155]">{formatKES(r.revenue)}</span>}
             </span>
           </li>
         ))}
