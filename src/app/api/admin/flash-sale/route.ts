@@ -6,33 +6,37 @@ export const runtime = "nodejs";
 
 export async function GET() {
  try { await requireAdmin(); } catch { return NextResponse.json({ error: "Unauthorized" }, { status: 401 }); }
- const [title, subtitle, startsAt, endsAt, active] = await Promise.all([
-  prisma.adminSetting.findUnique({ where: { key: "flashSaleTitle" } }),
-  prisma.adminSetting.findUnique({ where: { key: "flashSaleSubtitle" } }),
-  prisma.adminSetting.findUnique({ where: { key: "flashSaleStartsAt" } }),
-  prisma.adminSetting.findUnique({ where: { key: "flashSaleEndsAt" } }),
-  prisma.adminSetting.findUnique({ where: { key: "flashSaleActive" } }),
- ]);
- return NextResponse.json({
-  title: title ? JSON.parse(title.value) : "Customer Service Week Sale",
-  subtitle: subtitle ? JSON.parse(subtitle.value) : "Limited-time offers on selected gifts.",
-  startsAt: startsAt ? JSON.parse(startsAt.value) : "",
-  endsAt: endsAt ? JSON.parse(endsAt.value) : "",
-  active: active ? Boolean(JSON.parse(active.value)) : false,
- });
+  const [title, subtitle, startsAt, endsAt, active, boxColor] = await Promise.all([
+   prisma.adminSetting.findUnique({ where: { key: "flashSaleTitle" } }),
+   prisma.adminSetting.findUnique({ where: { key: "flashSaleSubtitle" } }),
+   prisma.adminSetting.findUnique({ where: { key: "flashSaleStartsAt" } }),
+   prisma.adminSetting.findUnique({ where: { key: "flashSaleEndsAt" } }),
+   prisma.adminSetting.findUnique({ where: { key: "flashSaleActive" } }),
+   prisma.adminSetting.findUnique({ where: { key: "flashSaleBoxColor" } }),
+  ]);
+  return NextResponse.json({
+   title: title ? JSON.parse(title.value) : "Customer Service Week Sale",
+   subtitle: subtitle ? JSON.parse(subtitle.value) : "Limited-time offers on selected gifts.",
+   startsAt: startsAt ? JSON.parse(startsAt.value) : "",
+   endsAt: endsAt ? JSON.parse(endsAt.value) : "",
+   active: active ? Boolean(JSON.parse(active.value)) : false,
+   boxColor: boxColor && /^#[0-9a-fA-F]{6}$/.test(String(JSON.parse(boxColor.value))) ? String(JSON.parse(boxColor.value)) : "#FBE9EE",
+  });
 }
 
 export async function PATCH(req: Request) {
  try { await requireAdmin(); } catch { return NextResponse.json({ error: "Unauthorized" }, { status: 401 }); }
  const body = await req.json();
- const productIds = Array.isArray(body.productIds) ? body.productIds.filter((id: unknown): id is string => typeof id === "string") : [];
- const values = [
-  ["flashSaleTitle", String(body.title ?? "").trim()],
-  ["flashSaleSubtitle", String(body.subtitle ?? "").trim()],
-  ["flashSaleStartsAt", String(body.startsAt ?? "")],
-  ["flashSaleEndsAt", String(body.endsAt ?? "")],
-  ["flashSaleActive", Boolean(body.active)],
- ] as const;
+  const productIds = Array.isArray(body.productIds) ? body.productIds.filter((id: unknown): id is string => typeof id === "string") : [];
+  const boxColor = typeof body.boxColor === "string" && /^#[0-9a-fA-F]{6}$/.test(body.boxColor.trim()) ? body.boxColor.trim() : "#FBE9EE";
+  const values = [
+   ["flashSaleTitle", String(body.title ?? "").trim()],
+   ["flashSaleSubtitle", String(body.subtitle ?? "").trim()],
+   ["flashSaleStartsAt", String(body.startsAt ?? "")],
+   ["flashSaleEndsAt", String(body.endsAt ?? "")],
+   ["flashSaleActive", Boolean(body.active)],
+   ["flashSaleBoxColor", boxColor],
+  ] as const;
  await prisma.$transaction(async (tx) => {
   for (const [key, value] of values) {
    await tx.adminSetting.upsert({ where: { key }, update: { value: JSON.stringify(value) }, create: { key, value: JSON.stringify(value) } });

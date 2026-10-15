@@ -147,15 +147,23 @@ export type FlashSaleSettings = {
   startsAt: string;
   endsAt: string;
   active: boolean;
+  boxColor: string;
 };
 
+export const FLASH_SALE_DEFAULT_BOX_COLOR = "#FBE9EE";
+
+export function isHexColor(value: unknown): value is string {
+  return typeof value === "string" && /^#[0-9a-fA-F]{6}$/.test(value);
+}
+
 export async function getFlashSaleSettings(): Promise<FlashSaleSettings> {
-  const [title, subtitle, startsAt, endsAt, active] = await Promise.all([
+  const [title, subtitle, startsAt, endsAt, active, boxColor] = await Promise.all([
     getSetting("flashSaleTitle"),
     getSetting("flashSaleSubtitle"),
     getSetting("flashSaleStartsAt"),
     getSetting("flashSaleEndsAt"),
     getSetting("flashSaleActive"),
+    getSetting("flashSaleBoxColor"),
   ]);
   return {
     title: typeof title === "string" ? title : "Customer Service Week Sale",
@@ -163,6 +171,7 @@ export async function getFlashSaleSettings(): Promise<FlashSaleSettings> {
     startsAt: typeof startsAt === "string" ? startsAt : "",
     endsAt: typeof endsAt === "string" ? endsAt : "",
     active: active !== false,
+    boxColor: isHexColor(boxColor) ? boxColor : FLASH_SALE_DEFAULT_BOX_COLOR,
   };
 }
 

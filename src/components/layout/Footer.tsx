@@ -1,96 +1,20 @@
-import Link from "next/link";
-import Image from "next/image";
-import { Facebook, Instagram, Mail, MapPin, Phone, Send, Music2 } from "lucide-react";
-import { NAV_GROUPS, SITE } from "@/lib/constants";
-import { OpenCartLink } from "@/components/cart/OpenCartLink";
-import { DownloadAppPopup } from "@/components/layout/DownloadAppButton";
+import { Mail, MapPin, Phone } from "lucide-react";
+import { SITE } from "@/lib/constants";
 import { getSettings, DEFAULTS } from "@/lib/data/settings";
-
-const ACCOUNT_LINKS = [
-  { label: "My Account", href: "/account" },
-  { label: "Checkout", href: "/checkout" },
-  { label: "About Us", href: "/about" },
-  { label: "Blog", href: "/blog" },
-] as const;
-
-const HELP_LINKS = [
-  { label: "Track your order", href: "/track" },
-  { label: "Contact us", href: "/contact" },
-  { label: "FAQs", href: "/faq" },
-  { label: "Delivery information", href: "/policies/delivery" },
-  { label: "Privacy policy", href: "/policies/privacy" },
-  { label: "Terms of service", href: "/policies/terms" },
-] as const;
 
 export async function Footer() {
   const settings = await getSettings();
   const storeName = String(settings.storeName ?? SITE.name);
-  const description = String(settings.footerDescription ?? "");
   const phone = String(settings.contactPhone ?? SITE.phoneDisplay);
   const email = String(settings.contactEmail ?? SITE.email);
   const address = String(settings.address ?? SITE.address);
   const hours = String(settings.hours ?? SITE.hours);
   const mapsHref = String(settings.mapsHref ?? SITE.mapsHref);
-  const mapsEmbed = String(settings.mapsEmbed ?? SITE.mapsEmbed);
+  const description = String(settings.footerDescription ?? "");
   return (
     <footer className="zed-glass-footer mt-16 border-t border-white/10 text-white">
-      <div className="container-zed grid gap-10 py-14 sm:grid-cols-2 lg:grid-cols-12">
-<div className="lg:col-span-3">
- <Image
-           src="/logo.png"
-           alt={storeName}
-           width={522}
-           height={186}
-           className="h-8 w-auto object-contain object-center"
-           style={{ filter: "drop-shadow(0 0 7px rgba(255,255,255,0.28))" }}
-         />
-         <p className="mt-4 text-sm leading-relaxed text-white/70">
-           {description}
-         </p>
-          <div className="mt-5 flex items-center gap-2">
-            <a
-              href={SITE.social.x}
-              target="_blank"
-              rel="noreferrer noopener"
-              aria-label="X"
-              className="grid size-9 place-items-center rounded-full border border-white/20 text-white/80 transition-colors hover:border-champagne hover:text-white"
-            >
-              <svg viewBox="0 0 24 24" className="size-4 fill-current" aria-hidden>
-                <path d="M18.9 2H22l-6.8 7.8L23.2 22h-6.3l-4.9-6.4L6.4 22H3.3l7.3-8.3L1.6 2H8l4.4 5.9L18.9 2Zm-1.1 18h1.7L7.1 3.9H5.3L17.8 20Z" />
-              </svg>
-            </a>
-            <a
-              href={SITE.social.facebook}
-              target="_blank"
-              rel="noreferrer noopener"
-              aria-label="Facebook"
-              className="grid size-9 place-items-center rounded-full border border-white/20 text-white/80 transition-colors hover:border-champagne hover:text-white"
-            >
-              <Facebook className="size-4" />
-            </a>
-            <a
-              href={SITE.social.instagram}
-              target="_blank"
-              rel="noreferrer noopener"
-              aria-label="Instagram"
-              className="grid size-9 place-items-center rounded-full border border-white/20 text-white/80 transition-colors hover:border-champagne hover:text-white"
-            >
-              <Instagram className="size-4" />
-            </a>
-            <a
-              href={SITE.social.tiktok}
-              target="_blank"
-              rel="noreferrer noopener"
-              aria-label="TikTok"
-              className="grid size-9 place-items-center rounded-full border border-white/20 text-white/80 transition-colors hover:border-champagne hover:text-white"
-            >
-              <Music2 className="size-4" />
-            </a>
-          </div>
-          <DownloadAppPopup className="mt-5 inline-flex items-center gap-2 rounded-full border border-white/25 px-4 py-2 text-sm font-semibold text-white transition-colors hover:border-white/60" />
-        </div>
-
-        <div className="lg:col-span-2">
+      <div className="container-zed grid gap-8 py-10 sm:grid-cols-2">
+        <div>
           <p className="text-[13px] font-bold uppercase tracking-[0.16em] text-white">Get In Touch</p>
           <ul className="mt-4 space-y-3 text-sm text-white/75">
             <li className="flex items-start gap-2">
@@ -111,75 +35,20 @@ export async function Footer() {
           </ul>
         </div>
 
-        <div className="lg:col-span-2">
-          <p className="text-[13px] font-bold uppercase tracking-[0.16em] text-white">Shop Categories</p>
-          <ul className="mt-4 space-y-2.5 text-sm text-white/75">
-            {NAV_GROUPS.map((g) => (
-              <li key={g.href}>
-                <Link href={g.href} className="hover:text-white">{g.label}</Link>
-              </li>
-            ))}
-            <li><Link href="/shop" className="hover:text-white">Shop All</Link></li>
-          </ul>
-        </div>
-
-        <div className="lg:col-span-2">
-          <p className="text-[13px] font-bold uppercase tracking-[0.16em] text-white">My Account</p>
-          <ul className="mt-4 space-y-2.5 text-sm text-white/75">
-            <li>
-              <OpenCartLink className="text-left transition-colors hover:text-white" />
-            </li>
-            {ACCOUNT_LINKS.map((l) => (
-              <li key={l.href}>
-                <Link href={l.href} className="hover:text-white">{l.label}</Link>
-              </li>
-            ))}
-          </ul>
-        </div>
-
-        <div className="lg:col-span-2">
-          <p className="text-[13px] font-bold uppercase tracking-[0.16em] text-white">Help</p>
-          <ul className="mt-4 space-y-2.5 text-sm text-white/75">
-            {HELP_LINKS.map((l) => (
-              <li key={l.href}>
-                <Link href={l.href} className="hover:text-white">{l.label}</Link>
-              </li>
-            ))}
-          </ul>
-        </div>
-
-        <div className="lg:col-span-1">
-          <p className="text-[13px] font-bold uppercase tracking-[0.16em] text-white">Find Us</p>
-          <a
-            href={mapsHref}
-            target="_blank"
-            rel="noreferrer noopener"
-            className="mt-4 block aspect-square w-full overflow-hidden rounded-lg border border-white/15 bg-white/5"
-          >
-            {mapsEmbed ? (
-              <iframe
-                title={storeName}
-                src={mapsEmbed}
-                className="size-full"
-                loading="lazy"
-                referrerPolicy="no-referrer-when-downgrade"
-              />
-            ) : (
-              <div className="grid size-full place-items-center p-4 text-center text-xs text-white/60">
-                Open location in Maps
-              </div>
-            )}
-          </a>
+        <div className="sm:text-right">
+          <p className="font-display text-xl font-bold text-white">{storeName}</p>
+          {description ? (
+            <p className="mt-2 text-sm leading-relaxed text-white/60">
+              {description}
+            </p>
+          ) : null}
         </div>
       </div>
 
       <div className="border-t border-white/10">
         <div className="container-zed flex flex-col items-center justify-between gap-2 py-5 text-xs text-white/50 sm:flex-row">
           <p>Copyright &copy; {String(settings.copyrightText ?? DEFAULTS.copyrightText).replace(String(new Date().getFullYear()), String(storeName))}</p>
-          <p className="flex flex-wrap items-center justify-center gap-x-3 gap-y-1">
-            <span>Prices in {SITE.currencyPrefix}</span>
-            <span>Payments via M-Pesa, Visa, Mastercard &amp; Amex</span>
-          </p>
+          <p>Prices in {SITE.currencyPrefix}</p>
         </div>
       </div>
     </footer>

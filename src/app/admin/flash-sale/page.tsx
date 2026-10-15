@@ -24,6 +24,7 @@ export default function FlashSaleAdminPage() {
   const [startsAt, setStartsAt] = useState("");
   const [endsAt, setEndsAt] = useState("");
   const [active, setActive] = useState(true);
+  const [boxColor, setBoxColor] = useState("#FBE9EE");
   const [busy, setBusy] = useState(false);
   const [message, setMessage] = useState("");
 
@@ -37,6 +38,7 @@ export default function FlashSaleAdminPage() {
       setStartsAt(sale.startsAt ?? "");
       setEndsAt(sale.endsAt ?? "");
       setActive(Boolean(sale.active));
+      setBoxColor(typeof sale.boxColor === "string" && /^#[0-9a-fA-F]{6}$/.test(sale.boxColor) ? sale.boxColor : "#FBE9EE");
       setProducts(data.products ?? []);
       setSelected(data.products?.filter((p: Product) => p.tags?.includes("flash-sale")).map((p: Product) => p.id) ?? []);
     });
@@ -56,7 +58,7 @@ export default function FlashSaleAdminPage() {
       const res = await fetch("/api/admin/flash-sale", {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ title, subtitle, startsAt, endsAt, active, productIds: selected }),
+        body: JSON.stringify({ title, subtitle, startsAt, endsAt, active, boxColor, productIds: selected }),
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error ?? "Couldn't save flash sale.");
@@ -83,14 +85,21 @@ export default function FlashSaleAdminPage() {
           <div><label className="label">Sale message</label><input className="field" value={subtitle} onChange={(e)=>setSubtitle(e.target.value)} /></div>
           <div><label className="label">Start time</label><input className="field" type="datetime-local" value={startsAt} onChange={(e)=>setStartsAt(e.target.value)} /></div>
           <div><label className="label">End time</label><input className="field" type="datetime-local" value={endsAt} onChange={(e)=>setEndsAt(e.target.value)} /></div>
+          <div>
+            <label className="label">Sale box color</label>
+            <div className="flex gap-2">
+              <input type="color" value={boxColor} onChange={(e)=>setBoxColor(e.target.value)} className="h-11 w-14 shrink-0 rounded-md border border-edge bg-white p-1" aria-label="Sale box color" />
+              <input className="field" value={boxColor} onChange={(e)=>setBoxColor(e.target.value)} pattern="^#[0-9A-Fa-f]{6}$" />
+            </div>
+          </div>
         </div>
         <label className="mt-5 flex items-center gap-3 text-sm font-semibold"><input type="checkbox" checked={active} onChange={(e)=>setActive(e.target.checked)} className="size-4" /> Flash sale enabled</label>
       </section>
 
       <section className="rounded-zed border border-edge bg-white p-6">
         <h3 className="font-display text-lg font-bold">Countdown preview</h3>
-        <p className="text-sm text-[#334155]">This is the timer customers see above the Flash Sale section.</p>
-        <div className="mt-4 rounded-zed bg-panel px-4 py-6">
+        <p className="text-sm text-[#334155]">This is the timer customers see above the Flash Sale section, on your chosen box color.</p>
+        <div className="mt-4 rounded-zed px-4 py-6" style={{ backgroundColor: /^#[0-9a-fA-F]{6}$/.test(boxColor) ? boxColor : "#FBE9EE" }}>
           <FlashSaleCountdown startsAt={startsAt} endsAt={endsAt} active={active} />
         </div>
       </section>
