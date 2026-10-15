@@ -39,7 +39,7 @@ function Section({ title, products, href, flash = false, swipe = false, flashSal
               <Zap className="size-5 fill-current sm:size-6" />
             </span>
             <div className="min-w-0">
-              <h2 className="font-display text-2xl font-black uppercase italic leading-none tracking-tight sm:text-3xl" style={{ color: textColor }}>
+              <h2 className="font-ui text-2xl font-extrabold uppercase leading-none tracking-tight sm:text-3xl" style={{ color: textColor }}>
                 {flashSale.title || title}
               </h2>
               {flashSale.subtitle ? (
