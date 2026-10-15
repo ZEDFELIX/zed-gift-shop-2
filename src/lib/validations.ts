@@ -207,7 +207,8 @@ export const productCreateSchema = z.object({
  price: z.coerce.number().int().min(0).max(100_000_000),
  compareAtPrice: z.coerce.number().int().min(0).max(100_000_000).nullable().optional(),
  sku: z.string().max(80).optional().or(z.literal("")),
- tags: z.array(z.string()).max(20).optional(),
+  tags: z.array(z.string()).max(20).optional(),
+  personalizationFieldsJson: z.string().max(5000).nullable().optional(),
  status: z.enum(["DRAFT", "ACTIVE", "ARCHIVED"]).default("ACTIVE"),
  featured: z.coerce.boolean().optional(),
  bestSeller: z.coerce.boolean().optional(),
@@ -230,12 +231,71 @@ export const productCreateSchema = z.object({
  active: z.coerce.boolean().default(true),
  }),
  )
- .max(40)
- .optional(),
+  .max(40)
+  .optional(),
+});
+
+export const personalizationFieldSchema = z.object({
+  key: z.string().min(1).max(60),
+  label: z.string().min(1).max(80),
+  type: z.enum(["text", "textarea"]).default("text"),
+  required: z.coerce.boolean().default(false),
+  maxLength: z.coerce.number().int().min(1).max(500).optional(),
+});
+
+export type PersonalizationField = z.infer<typeof personalizationFieldSchema>;
+
+function slugifyKey(label: string, fallback: string): string {
+  const slug = label
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "")
+    .slice(0, 60);
+  return slug || fallback;
+}
+
+/**
+ * Parses the product form's personalization-fields JSON into a storable string.
+ * Returns null when empty. Throws an Error with a user-facing message when invalid.
+ */
+export function parsePersonalizationFieldsJson(raw: unknown): string | null {
+  if (raw == null) return null;
+  if (typeof raw !== "string" || !raw.trim()) return null;
+  let arr: unknown;
+  try {
+    arr = JSON.parse(raw);
+  } catch {
+    throw new Error("Personalization fields are not valid JSON.");
+  }
+  const parsed = z.array(personalizationFieldSchema).max(10).safeParse(arr);
+  if (!parsed.success) {
+    throw new Error(parsed.error.issues[0]?.message ?? "Check the personalization fields.");
+  }
+  if (parsed.data.length === 0) return null;
+  const seen = new Set<string>();
+  const normalized = parsed.data.map((f, i) => {
+    let key = slugifyKey(f.key, `field-${i + 1}`);
+    let n = 2;
+    while (seen.has(key)) key = `${slugifyKey(f.key, `field-${i + 1}`)}-${n++}`;
+    seen.add(key);
+    return { ...f, key };
+  });
+  return JSON.stringify(normalized);
+}
+
+export const giftWrapCreateSchema = z.object({
+  name: z.string().min(2).max(120),
+  sku: z.string().max(80).optional().or(z.literal("")),
+  price: z.coerce.number().int().min(0).max(10_000_000),
+  image: z.string().url().max(1000).optional().or(z.literal("")),
+  description: z.string().max(1000).optional().or(z.literal("")),
+  active: z.coerce.boolean().default(true),
+  sortOrder: z.coerce.number().int().min(0).max(9999).default(0),
 });
 
 export const categoryCreateSchema = z.object({
- name: z.string().min(2).max(120),
+  name: z.string().min(2).max(120),
  slug: z.string().min(2).max(140).regex(/^[a-z0-9-]+$/),
  kind: z.enum(["CATEGORY", "OCCASION", "RECIPIENT"]).default("CATEGORY"),
  description: z.string().max(2000).optional().or(z.literal("")),

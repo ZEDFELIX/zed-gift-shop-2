@@ -35,14 +35,37 @@ type ProductInitial = {
  categoryIds: string[];
  collectionIds: string[];
  variants: VariantRow[];
+ tags: string[];
+ personalizationFieldsJson?: string;
 };
+
+type P13nField = { label: string; type: "text" | "textarea"; required: boolean; maxLength?: number };
+
+function parseP13n(raw: string | undefined): P13nField[] {
+  if (!raw) return [];
+  try {
+    const arr: unknown = JSON.parse(raw);
+    if (!Array.isArray(arr)) return [];
+    return arr
+      .filter((f): f is Record<string, unknown> => typeof f === "object" && f !== null)
+      .map((f) => ({
+        label: String(f.label ?? ""),
+        type: f.type === "textarea" ? ("textarea" as const) : ("text" as const),
+        required: Boolean(f.required),
+        maxLength: typeof f.maxLength === "number" && f.maxLength > 0 ? Math.min(500, Math.floor(f.maxLength)) : undefined,
+      }))
+      .filter((f) => f.label.trim());
+  } catch {
+    return [];
+  }
+}
 
 const emptyProduct: ProductInitial = {
  name: "", slug: "", headline: "", shortDescription: "", description: "",
  price: 0, compareAtPrice: null, sku: "", status: "DRAFT", featured: false, bestSeller: false,
  trackInventory: true, quantity: 0, lowStockThreshold: 5,
- personalizationEnabled: false, giftWrapAvailable: false, giftMessageAvailable: true,
- images: [], videoUrl: "", categoryIds: [], collectionIds: [], variants: [],
+  personalizationEnabled: false, giftWrapAvailable: false, giftMessageAvailable: true,
+  images: [], videoUrl: "", categoryIds: [], collectionIds: [], variants: [], tags: [],
 };
 
 export function ProductForm({ product, categories, collections }: { product?: ProductInitial; categories: CategoryOption[]; collections: CollectionOption[] }) {
@@ -52,6 +75,8 @@ export function ProductForm({ product, categories, collections }: { product?: Pr
   const [error, setError] = useState<string | null>(null);
   const [uploadingIdx, setUploadingIdx] = useState<number | null>(null);
   const [uploadError, setUploadError] = useState<string | null>(null);
+  const [tagsText, setTagsText] = useState((product?.tags ?? []).join(", "));
+  const [p13n, setP13n] = useState<P13nField[]>(() => parseP13n(product?.personalizationFieldsJson));
   const isEdit = Boolean(product?.id);
 
  function set<K extends keyof ProductInitial>(key: K, value: ProductInitial[K]) {
@@ -88,13 +113,15 @@ export function ProductForm({ product, categories, collections }: { product?: Pr
  e.preventDefault();
  setBusy(true);
  setError(null);
- const payload = {
- ...form,
- compareAtPrice: form.compareAtPrice === null || form.compareAtPrice === 0 ? null : Number(form.compareAtPrice),
- price: Number(form.price),
- images: form.images,
- videoUrl: form.videoUrl.trim(),
- };
+  const payload = {
+  ...form,
+  compareAtPrice: form.compareAtPrice === null || form.compareAtPrice === 0 ? null : Number(form.compareAtPrice),
+  price: Number(form.price),
+  images: form.images,
+  videoUrl: form.videoUrl.trim(),
+  tags: tagsText.split(",").map((t) => t.trim().toLowerCase().replace(/\s+/g, "-")).filter(Boolean).slice(0, 20),
+  personalizationFieldsJson: p13n.length ? JSON.stringify(p13n) : "",
+  };
  try {
  const res = await fetch(isEdit ? `/api/admin/products/${product!.id}` : "/api/admin/products", {
  method: isEdit ? "PATCH" : "POST",
@@ -175,10 +202,14 @@ export function ProductForm({ product, categories, collections }: { product?: Pr
  <label className="label" htmlFor="pf-short">Short description</label>
  <input id="pf-short" className="field" value={form.shortDescription} onChange={(e) => set("shortDescription", e.target.value)} maxLength={400} />
  </div>
- <div className="lg:col-span-2">
- <label className="label" htmlFor="pf-desc">Description</label>
- <textarea id="pf-desc" className="field min-h-32 py-3" value={form.description} onChange={(e) => set("description", e.target.value)} />
- </div>
+  <div className="lg:col-span-2">
+  <label className="label" htmlFor="pf-desc">Description</label>
+  <textarea id="pf-desc" className="field min-h-32 py-3" value={form.description} onChange={(e) => set("description", e.target.value)} />
+  </div>
+  <div className="lg:col-span-2">
+  <label className="label" htmlFor="pf-tags">Tags (comma separated - shown as pills on the product page)</label>
+  <input id="pf-tags" className="field" value={tagsText} onChange={(e) => setTagsText(e.target.value)} placeholder="valentine, for-her, under-2000" />
+  </div>
  <div>
  <label className="label" htmlFor="pf-price">Price (KES)</label>
  <input id="pf-price" type="number" min={0} className="field" value={form.price} onChange={(e) => set("price", Number(e.target.value))} required />
@@ -267,12 +298,47 @@ export function ProductForm({ product, categories, collections }: { product?: Pr
  <label key={key} className="flex items-center gap-2 text-sm text-[#07111F]">
  <input type="checkbox" checked={form[key] as boolean} onChange={(e) => set(key, e.target.checked as never)} className="size-4 accent-deep-olive" />
  {label}
- </label>
- ))}
- </div>
- </div>
+  </label>
+  ))}
+  </div>
+  </div>
 
- <div className="grid gap-4 rounded-zed border border-edge bg-white p-5 lg:grid-cols-2">
+  <div className="rounded-zed border border-edge bg-white p-5">
+  <div className="flex items-center justify-between gap-3">
+  <div>
+  <p className="label">Personalization fields</p>
+  <p className="mt-1 text-xs text-[#334155]">These inputs appear on the product page when “Personalizable” is on. Customers type into them before adding to cart.</p>
+  </div>
+  <button type="button" onClick={() => setP13n((f) => [...f, { label: "", type: "text", required: false }])} className="flex items-center gap-1.5 rounded-zed border border-edge px-3 py-1.5 text-xs font-semibold text-[#07111F] hover:border-soft-sage">
+  <Plus className="size-3.5" /> Add field
+  </button>
+  </div>
+  {p13n.length === 0 ? (
+  <p className="mt-3 text-sm text-[#334155]">No custom inputs - customers just pick options and quantity.</p>
+  ) : (
+  <ul className="mt-3 space-y-3">
+  {p13n.map((f, i) => (
+  <li key={i} className="grid gap-3 rounded-zed glass-panel p-3 sm:grid-cols-[1fr_130px_110px_90px_auto]">
+  <input className="field" placeholder="Label (e.g. Name to engrave)" value={f.label} onChange={(e) => setP13n((all) => all.map((x, idx) => (idx === i ? { ...x, label: e.target.value } : x)))} required />
+  <select className="field" value={f.type} onChange={(e) => setP13n((all) => all.map((x, idx) => (idx === i ? { ...x, type: e.target.value as "text" | "textarea" } : x)))} aria-label="Field type">
+  <option value="text">Short text</option>
+  <option value="textarea">Long text</option>
+  </select>
+  <input type="number" min={1} max={500} className="field" placeholder="Max chars" value={f.maxLength ?? ""} onChange={(e) => setP13n((all) => all.map((x, idx) => (idx === i ? { ...x, maxLength: e.target.value ? Number(e.target.value) : undefined } : x)))} aria-label="Maximum characters" />
+  <label className="flex items-center gap-2 text-sm text-[#07111F]">
+  <input type="checkbox" checked={f.required} onChange={(e) => setP13n((all) => all.map((x, idx) => (idx === i ? { ...x, required: e.target.checked } : x)))} className="size-4 accent-deep-olive" />
+  Required
+  </label>
+  <button type="button" onClick={() => setP13n((all) => all.filter((_, idx) => idx !== i))} className="justify-self-center rounded-zed border border-red-100 p-2 text-red-500 hover:bg-red-50" aria-label="Remove field">
+  <Trash2 className="size-4" />
+  </button>
+  </li>
+  ))}
+  </ul>
+  )}
+  </div>
+
+  <div className="grid gap-4 rounded-zed border border-edge bg-white p-5 lg:grid-cols-2">
  <div>
  <p className="label">Categories</p>
  <div className="mt-1 max-h-56 space-y-1.5 overflow-y-auto rounded-zed border border-edge p-3">

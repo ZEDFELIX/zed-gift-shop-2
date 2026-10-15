@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { requireAdmin } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
-import { productCreateSchema } from "@/lib/validations";
+import { parsePersonalizationFieldsJson, productCreateSchema } from "@/lib/validations";
 
 export const runtime = "nodejs";
 
@@ -39,8 +39,14 @@ export async function POST(req: Request) {
  if (!parsed.success) {
  return NextResponse.json({ error: parsed.error.issues[0]?.message ?? "Please check the form." }, { status: 400 });
  }
- const d = parsed.data;
- const images = (Array.isArray((body as { images?: unknown }).images) ? (body as { images: string[] }).images : [])
+  const d = parsed.data;
+  let personalizationFieldsJson: string | null = null;
+  try {
+    personalizationFieldsJson = parsePersonalizationFieldsJson((body as { personalizationFieldsJson?: unknown }).personalizationFieldsJson);
+  } catch (e) {
+    return NextResponse.json({ error: e instanceof Error ? e.message : "Check the personalization fields." }, { status: 400 });
+  }
+  const images = (Array.isArray((body as { images?: unknown }).images) ? (body as { images: string[] }).images : [])
  .map((u: string) => String(u).trim())
  .filter(Boolean)
  .slice(0, 3);
@@ -68,8 +74,9 @@ slug: d.slug,
  trackInventory: d.trackInventory,
  quantity: d.quantity ?? 0,
  lowStockThreshold: d.lowStockThreshold ?? 5,
- personalizationEnabled: d.personalizationEnabled ?? false,
- giftWrapAvailable: d.giftWrapAvailable ?? false,
+  personalizationEnabled: d.personalizationEnabled ?? false,
+  personalizationFieldsJson,
+  giftWrapAvailable: d.giftWrapAvailable ?? false,
  giftMessageAvailable: d.giftMessageAvailable ?? true,
  publishedAt: d.status === "ACTIVE" ? new Date() : null,
  images:

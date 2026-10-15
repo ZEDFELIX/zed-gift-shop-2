@@ -4,7 +4,7 @@ import { getCurrentUser } from "@/lib/auth";
 import { can } from "@/lib/audit";
 import { formatKES } from "@/lib/utils";
 import { ORDER_STATUS_LABELS, PAYMENT_STATUS_LABELS } from "@/lib/constants";
-import { AlertTriangle, ArrowRight, Boxes, CreditCard, Gift, Package, Receipt, Settings, Star, Truck, Users } from "lucide-react";
+import { AlertTriangle, ArrowRight, Boxes, CreditCard, Gift, Package, Receipt, Ribbon, Settings, Star, Truck, Users } from "lucide-react";
 
 export const metadata = { title: "Admin dashboard" };
 
@@ -34,6 +34,7 @@ export default async function AdminDashboardPage() {
    { href: "/admin/orders", label: "Manage orders", icon: Package },
    { href: "/admin/inventory", label: "Check inventory", icon: Boxes },
    { href: "/admin/coupons", label: "Manage coupons", icon: CreditCard },
+   { href: "/admin/gift-wrap", label: "Gift wrap", icon: Ribbon },
    ...(can(me?.role, "staff.manage")
      ? [{ href: "/admin/staff", label: "Manage staff", icon: Users }]
      : []),
