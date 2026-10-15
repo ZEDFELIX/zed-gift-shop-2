@@ -1,10 +1,11 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { requireAdmin } from "@/lib/auth";
+import { getCurrentUser, requireAdmin } from "@/lib/auth";
 import { getCustomerAdmin } from "@/lib/data/admin";
 import { formatKES, formatDate, formatDateTime } from "@/lib/utils";
 import { ORDER_STATUS_LABELS, PAYMENT_STATUS_LABELS } from "@/lib/constants";
 import { CustomerStatusControl } from "@/components/admin/CustomerStatusControl";
+import { CustomerProfileControl } from "@/components/admin/CustomerProfileControl";
 
 export const dynamic = "force-dynamic";
 export const metadata = { title: "Customer | Admin" };
@@ -14,6 +15,8 @@ export default async function AdminCustomerPage({ params }: { params: Promise<{ 
   const { id } = await params;
   const customer = await getCustomerAdmin(id);
   if (!customer) notFound();
+  const me = await getCurrentUser();
+  const canEdit = me?.role === "ADMIN";
 
   const addresses = customer.addresses ?? [];
   const orders = customer.orders ?? [];
@@ -31,6 +34,9 @@ export default async function AdminCustomerPage({ params }: { params: Promise<{ 
           <h1 className="font-display text-2xl font-bold text-[#07111F]">{customer.name}</h1>
           <p className="text-sm text-[#334155]">{customer.email}</p>
           {customer.phone && <p className="text-sm text-[#334155]">{customer.phone}</p>}
+          {canEdit && (
+            <CustomerProfileControl customerId={customer.id} initialName={customer.name} initialPhone={customer.phone ?? ""} />
+          )}
 
           <dl className="mt-4 grid gap-3 sm:grid-cols-3">
             <Stat label="Orders" value={String(customer._count.orders)} />
@@ -45,7 +51,11 @@ export default async function AdminCustomerPage({ params }: { params: Promise<{ 
             Last sign-in: {customer.lastLoginAt ? formatDateTime(customer.lastLoginAt) : "never"}
           </p>
           <div className="mt-3">
-            <CustomerStatusControl customerId={customer.id} initialStatus={customer.status} />
+            {canEdit ? (
+              <CustomerStatusControl customerId={customer.id} initialStatus={customer.status} />
+            ) : (
+              <p className="text-sm font-semibold text-[#07111F]">{customer.status}</p>
+            )}
           </div>
         </div>
       </section>

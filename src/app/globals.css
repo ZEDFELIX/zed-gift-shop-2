@@ -9,7 +9,7 @@
 
 @theme {
   --font-sans: var(--font-jost), ui-sans-serif, system-ui, sans-serif;
-  --font-display: var(--font-quicksand), var(--font-jost), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-libre-baskerville), Georgia, "Times New Roman", serif;
   --font-serif: var(--font-libre-baskerville), Georgia, serif;
   --font-ui: var(--font-poppins), var(--font-jost), ui-sans-serif, system-ui, sans-serif;
 
@@ -335,10 +335,10 @@ body{background:radial-gradient(circle at 10% 0%,rgba(233,213,241,.28),transpare
 }
 @media (max-width: 767px) {
   .navbar-logo-container {
-    max-width: min(34vw, 132px);
+    max-width: min(42vw, 155px);
   }
   .navbar-logo {
-    height: clamp(23px, 6vw, 32px);
+    height: clamp(28px, 7vw, 38px);
     max-width: 100%;
   }
   /* Keep the header controls from forcing the logo outside the bar. */
@@ -360,8 +360,8 @@ body{background:radial-gradient(circle at 10% 0%,rgba(233,213,241,.28),transpare
   }
 }
 @media (max-width: 374px) {
-  .navbar-logo-container { max-width: 30vw; }
-  .navbar-logo { height: 22px; }
+  .navbar-logo-container { max-width: 36vw; }
+  .navbar-logo { height: 26px; }
 }
 @media (min-width: 1024px) {
   .navbar-logo-container { max-width: 240px; }

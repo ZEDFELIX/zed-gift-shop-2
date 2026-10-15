@@ -1,15 +1,10 @@
 import { Truck, RotateCcw, ShieldCheck, MapPin } from "lucide-react";
 import { SITE } from "@/lib/constants";
-import { getSettings } from "@/lib/data/settings";
 
 export const metadata = { title: "Delivery & Returns | ZED Gift Shop", description: "Same-day Nairobi delivery, countrywide shipping, and our returns policy. How ZED Gift Shop gets your gifts to you." };
 
 export default async function DeliveryPolicyPage() {
- const s = await getSettings();
- const threshold = Number(s.freeShippingThreshold ?? 0);
- const thresholdText = threshold > 0 ? `free above ${new Intl.NumberFormat("en-KE").format(threshold)} KES` : "free on orders whose delivery cost is waived by a coupon";
-
- return (
+  return (
  <div className="container-zed max-w-3xl py-12">
  <p className="eyebrow text-soft-sage">Policies</p>
  <h1 className="mt-2 font-display text-4xl font-black text-[#07111F]">Delivery & Returns</h1>
@@ -19,7 +14,7 @@ export default async function DeliveryPolicyPage() {
  <div className="mt-4 space-y-6 text-sm leading-relaxed text-[#07111F]">
  <div>
  <h3 className="font-semibold text-[#07111F]">Same-day Nairobi delivery</h3>
- <p className="mt-1">Orders placed before 5:00pm are delivered the same day across Nairobi. Same-day is dispatched with our own riders, with live WhatsApp updates, at a flat rate of KES 600 ({thresholdText}).</p>
+  <p className="mt-1">Orders placed before 5:00pm are delivered the same day across Nairobi. Same-day is dispatched with our own riders, with live WhatsApp updates, at a flat rate of KES 600.</p>
  </div>
  <div>
  <h3 className="font-semibold text-[#07111F]">Countrywide delivery</h3>

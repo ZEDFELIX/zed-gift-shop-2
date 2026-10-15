@@ -48,6 +48,11 @@ export function ProductCard({
           <div
             className="relative w-full h-full overflow-hidden bg-white transition-transform duration-500"
           >
+            {badge && (
+              <span className={`absolute left-2 top-2 z-10 rounded-full px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide shadow ${badge.cls}`}>
+                {badge.label}
+              </span>
+            )}
             {image ? (
               <Image
                 src={image}

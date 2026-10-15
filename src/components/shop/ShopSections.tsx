@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Zap } from "lucide-react";
+import { ArrowRight, Zap } from "lucide-react";
 import { ProductCard } from "@/components/product/ProductCard";
 import { FlashSaleCountdown } from "@/components/shop/FlashSaleCountdown";
 import type { FlashSaleSettings } from "@/lib/data/products";
@@ -39,7 +39,7 @@ function Section({ title, products, href, flash = false, swipe = false, flashSal
               <Zap className="size-5 fill-current sm:size-6" />
             </span>
             <div className="min-w-0">
-              <h2 className="font-display text-2xl font-black uppercase leading-none tracking-tight sm:text-3xl" style={{ color: textColor }}>
+              <h2 className="font-display text-2xl font-black uppercase italic leading-none tracking-tight sm:text-3xl" style={{ color: textColor }}>
                 {flashSale.title || title}
               </h2>
               {flashSale.subtitle ? (
@@ -52,11 +52,14 @@ function Section({ title, products, href, flash = false, swipe = false, flashSal
             {href && <Link href={href} className="shrink-0 rounded-full border border-rose-200 bg-white/70 px-3 py-1 text-xs font-semibold text-rose-600 transition-colors hover:bg-rose-50 hover:text-rose-700">See more</Link>}
           </div>
         </div>
+        <div className="mb-3 flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-[0.14em] opacity-60" style={{ color: textColor }}>
+          Swipe <ArrowRight className="size-3.5 animate-pulse" />
+        </div>
         <div className={swipe
           ? "flex snap-x snap-mandatory gap-3 overflow-x-auto pb-2 touch-pan-x overscroll-x-contain scrollbar-none"
           : "grid grid-cols-3 gap-2 sm:grid-cols-3 sm:gap-3 lg:grid-cols-4"}>
           {products.map((product) => (
-            <div key={product.id} className={swipe ? "min-w-[44vw] snap-start sm:min-w-[240px] lg:min-w-[260px]" : ""}>
+            <div key={product.id} className={swipe ? "min-w-[30vw] snap-start sm:min-w-[240px] lg:min-w-[260px]" : ""}>
               <ProductCard product={product} />
             </div>
           ))}
@@ -76,11 +79,11 @@ function Section({ title, products, href, flash = false, swipe = false, flashSal
       <div className={swipe
         ? "flex snap-x snap-mandatory gap-3 overflow-x-auto pb-2 touch-pan-x overscroll-x-contain scrollbar-none"
         : "grid grid-cols-3 gap-2 sm:grid-cols-3 sm:gap-3 lg:grid-cols-4"}>
-        {products.map((product) => (
-          <div key={product.id} className={swipe ? "min-w-[72vw] snap-start sm:min-w-[260px] lg:min-w-[280px]" : ""}>
-            <ProductCard product={product} />
-          </div>
-        ))}
+  {products.map((product) => (
+  <div key={product.id} className={swipe ? "min-w-[30vw] snap-start sm:min-w-[240px] lg:min-w-[260px]" : ""}>
+  <ProductCard product={product} />
+  </div>
+  ))}
       </div>
     </section>
   );
@@ -98,7 +101,7 @@ export async function ShopSections() {
     <Section title="On Sale" products={sale} href="/shop?deals=1" />
     <Section title="Most Bought" products={mostBought} href="/shop?sort=popular" />
     <Section title="Best Sellers" products={bestSellers} href="/shop?bestSeller=1" />
-    <Section title="New Arrivals" products={newArrivals} href="/shop?sort=new" titleColor="text-violet-600" />
+    <Section title="New Arrivals" products={newArrivals} href="/shop?sort=new" titleColor="text-rose-600" />
     <Section title="Personalized Gifts" products={personalized} href="/shop?personalized=true" />
     <Section title="Corporate Gifts" products={corporateCategory} href="/shop?category=corporate-gifts-kenya" />
   </div>;

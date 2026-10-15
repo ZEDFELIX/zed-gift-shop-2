@@ -32,7 +32,6 @@ export default async function AdminSettingsPage() {
   <SettingsForm
 initial={{
   announcementText: String(s.announcementText ?? ""),
-  freeShippingThreshold: Number(s.freeShippingThreshold ?? 0),
   contactPhone: String(s.contactPhone ?? ""),
   contactEmail: String(s.contactEmail ?? ""),
   heroTitle: String(s.heroTitle ?? ""),

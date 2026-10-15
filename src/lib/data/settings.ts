@@ -6,7 +6,6 @@ export type SettingValue = string | number | boolean | null | Record<string, unk
 
 export const DEFAULTS: Record<string, SettingValue> = {
   announcementText: "SAME-DAY NAIROBI DELIVERY - COUNTRYWIDE DELIVERY - SECURE M-PESA CHECKOUT",
-  freeShippingThreshold: 0,
   contactPhone: "+254711436169",
   contactEmail: "felixsimon877@gmail.com",
   heroTitle: "GIFTS THAT SAY MORE.",

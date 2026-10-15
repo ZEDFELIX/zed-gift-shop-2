@@ -102,7 +102,7 @@ export async function ListingPage({
       </header>
 
       <div className="mb-4 sm:mb-5">
-        <ShopSearch initialValue={filters.q ?? ""} />
+        {(href !== "/shop" || activeFilters.length > 0) && <ShopSearch initialValue={filters.q ?? ""} />}
       </div>
 
       {activeFilters.length > 0 && (
