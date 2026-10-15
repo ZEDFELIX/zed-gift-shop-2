@@ -19,7 +19,7 @@ export default async function AccountOverviewPage() {
 
   return (
   <div className="space-y-6">
-  {(user.role === "ADMIN" || user.role === "STAFF") && (
+  {(user.role === "ADMIN") && (
   <section className="flex flex-wrap items-center justify-between gap-3 rounded-zed bg-zed-950 p-5 text-white">
   <div className="flex items-center gap-3">
   <span className="grid size-10 place-items-center rounded-full bg-white/15"><ShieldCheck className="size-5" /></span>

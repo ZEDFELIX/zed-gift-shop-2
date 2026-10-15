@@ -19,7 +19,7 @@ export default async function AccountLayout({ children }: { children: React.Reac
  </div>
  </header>
   <div className="grid gap-6 lg:grid-cols-[220px_1fr] lg:items-start">
-  <AccountNav isStaff={user.role === "ADMIN" || user.role === "STAFF"} />
+  <AccountNav isAdmin={user.role === "ADMIN"} />
   <div className="min-w-0">{children}</div>
   </div>
  </div>

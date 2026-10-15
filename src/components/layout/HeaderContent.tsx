@@ -197,7 +197,7 @@ export function HeaderContent({
               {isAuthed ? <User className="size-4 text-soft-sage" /> : <LogIn className="size-4 text-soft-sage" />}
               <span className="hidden sm:inline">{isAuthed ? "My Account" : "My Account"}</span>
             </Link>
-            {(userRole === "ADMIN" || userRole === "STAFF") && (
+            {userRole === "ADMIN" && (
               <Link
                 href="/admin"
                 className="hidden items-center gap-2 rounded-md bg-zed-950 px-3 py-2 text-[13px] font-bold text-white transition-colors hover:bg-zed-900 sm:flex"
@@ -400,7 +400,7 @@ export function HeaderContent({
                 <Phone className="size-4 text-soft-sage" /> {contactPhone}
               </a>
               <DownloadAppPopup className="mb-2 flex w-full items-center justify-center gap-2 rounded-md border border-edge px-4 py-3 text-sm font-semibold text-[var(--color-ink)]" />
-              {isAuthed && (userRole === "ADMIN" || userRole === "STAFF") && (
+              {isAuthed && userRole === "ADMIN" && (
                 <Link
                   href="/admin"
                   onClick={() => setMobileOpen(false)}

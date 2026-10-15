@@ -12,9 +12,9 @@ const TABS = [
   { href: "/account/settings", label: "Settings", icon: Settings },
 ];
 
-export function AccountNav({ isStaff = false }: { isStaff?: boolean }) {
+export function AccountNav({ isAdmin = false }: { isAdmin?: boolean }) {
   const pathname = usePathname();
-  const tabs = isStaff
+  const tabs = isAdmin
     ? [...TABS, { href: "/admin", label: "Admin dashboard", icon: LayoutDashboard }]
     : TABS;
   return (
