@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 import { ArrowLeft, Check, ImagePlus, Loader2, Plus, Trash2, Upload } from "lucide-react";
 import Link from "next/link";
 
@@ -215,7 +216,9 @@ export function ProductForm({ product, categories, collections }: { product?: Pr
   <div key={i}>
   <label className="label" htmlFor={`pf-image-${i}`}>Picture {i + 1}{i === 0 ? " (main)" : ""}</label>
   {form.images[i] ? (
-    <img src={form.images[i]} alt={`Picture ${i + 1} preview`} className="mb-2 aspect-square w-full rounded-zed border border-edge object-cover" />
+    <span className="relative mb-2 block aspect-square w-full overflow-hidden rounded-zed border border-edge">
+      <Image src={form.images[i]} alt={`Picture ${i + 1} preview`} fill sizes="200px" unoptimized className="object-cover" />
+    </span>
   ) : (
     <span className="mb-2 grid aspect-square w-full place-items-center rounded-zed border border-dashed border-edge bg-white/40 text-[#334155]">
       <ImagePlus className="size-6" />
