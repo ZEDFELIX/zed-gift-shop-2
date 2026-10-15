@@ -284,42 +284,34 @@ body{background:radial-gradient(circle at 10% 0%,rgba(233,213,241,.28),transpare
 .scrollbar-none::-webkit-scrollbar{display:none}
 
 
-/* Responsive brand mark: keep the existing logo entirely within the header row. */
+/* Responsive logo sizing: preserve the image ratio and keep the mark inside the header. */
 .navbar-logo-container {
   min-width: 0;
   max-width: 100%;
-  max-height: 100%;
-  overflow: hidden;
   align-self: stretch;
   display: flex;
   align-items: center;
   flex: 0 1 auto;
+  overflow: hidden;
 }
 .navbar-logo {
   display: block;
-  width: clamp(68px, 15vw, 190px);
-  max-width: 100%;
-  max-height: 48px;
-  height: auto;
+  height: clamp(24px, 7vw, 34px);
+  width: auto;
+  max-width: clamp(64px, 22vw, 104px);
   object-fit: contain;
-  object-position: center;
+  object-position: left center;
   flex: 0 1 auto;
 }
-@media (max-width: 480px) {
+@media (min-width: 481px) and (max-width: 1023px) {
   .navbar-logo {
-    width: clamp(68px, 22vw, 100px);
-    max-height: 32px;
-  }
-}
-@media (min-width: 481px) and (max-width: 767px) {
-  .navbar-logo {
-    width: clamp(100px, 18vw, 140px);
-    max-height: 36px;
+    height: 38px;
+    max-width: 150px;
   }
 }
 @media (min-width: 1024px) {
   .navbar-logo {
-    width: clamp(150px, 14vw, 190px);
-    max-height: 48px;
+    height: clamp(40px, 4vw, 52px);
+    max-width: clamp(150px, 16vw, 220px);
   }
 }
