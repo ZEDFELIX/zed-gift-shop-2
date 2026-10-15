@@ -37,14 +37,14 @@ function openCart() {
 
 function Brand({ storeName }: { storeName: string }) {
   return (
-    <Link href="/" className="flex shrink-0 items-center" aria-label={`${storeName} home`}>
+    <Link href="/" className="navbar-logo-container flex shrink-0 items-center" aria-label={`${storeName} home`}>
       <Image
         src="/logo.png"
         alt={storeName}
         width={522}
         height={186}
         priority
-        className="block h-6 w-auto max-w-[100px] object-contain object-center sm:h-9 sm:max-w-[160px] lg:h-12 lg:max-w-[200px]"
+        className="navbar-logo block object-contain object-center"
       />
     </Link>
   );
