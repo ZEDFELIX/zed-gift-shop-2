@@ -17,6 +17,11 @@ export function ShopSearch({ initialValue = "" }: { initialValue?: string }) {
     if (q) params.set("q", q);
     else params.delete("q");
     params.delete("page");
+    if (q) {
+      import("@/lib/analytics").then(({ trackEvent }) => {
+        trackEvent("search", { search_term: q });
+      }).catch(() => undefined);
+    }
     router.push(`${pathname}?${params.toString()}`);
   }
 

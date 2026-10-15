@@ -2,6 +2,8 @@ import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { CartDrawer } from "@/components/cart/CartDrawer";
 import { WhatsAppFloat } from "@/components/layout/WhatsAppFloat";
+import { ConsentBanner } from "@/components/analytics/ConsentBanner";
+import { Trackers } from "@/components/analytics/Trackers";
 
 export default function StorefrontLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -17,6 +19,8 @@ export default function StorefrontLayout({ children }: { children: React.ReactNo
       <Footer />
       <CartDrawer />
       <WhatsAppFloat />
+      <Trackers />
+      <ConsentBanner />
     </>
   );
 }

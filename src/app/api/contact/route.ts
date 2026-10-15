@@ -24,23 +24,32 @@ export async function POST(req: Request) {
  if (!parsed.success) {
  return NextResponse.json({ error: parsed.error.issues[0]?.message ?? "Please check your message." }, { status: 400 });
  }
- const d = parsed.data;
+  const d = parsed.data;
 
- const html = `
- <h2>New message from ${d.name}</h2>
- <p><strong>Email:</strong> ${d.email}</p>
- <p><strong>Phone:</strong> ${d.phone || "-"}</p>
- <p><strong>Subject:</strong> ${d.subject}</p>
- <hr/>
- <p>${d.message.replace(/\n/g, "<br/>")}</p>
- `;
+  const esc = (v: string) =>
+    v.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+  const isQuote = Boolean(d.company?.trim() || d.quantity);
+  const subject = isQuote ? `[Quote] ${d.company?.trim() || d.name} - ${d.subject}` : `[ZED Contact] ${d.subject}`;
 
- await sendEmail({
- to: SITE.email,
- subject: `[ZED Contact] ${d.subject}`,
- html,
- replyTo: d.email,
- });
+  const html = `
+  <h2>New ${isQuote ? "bulk quote request" : "message"} from ${esc(d.name)}</h2>
+  <p><strong>Email:</strong> ${esc(d.email)}</p>
+  <p><strong>Phone:</strong> ${esc(d.phone || "-")}</p>
+  ${d.company?.trim() ? `<p><strong>Company:</strong> ${esc(d.company.trim())}</p>` : ""}
+  ${d.quantity ? `<p><strong>Quantity:</strong> ${d.quantity}</p>` : ""}
+  ${d.budget?.trim() ? `<p><strong>Budget:</strong> ${esc(d.budget.trim())}</p>` : ""}
+  ${d.deadline?.trim() ? `<p><strong>Deadline:</strong> ${esc(d.deadline.trim())}</p>` : ""}
+  <p><strong>Subject:</strong> ${esc(d.subject)}</p>
+  <hr/>
+  <p>${esc(d.message).replace(/\n/g, "<br/>")}</p>
+  `;
+
+  await sendEmail({
+  to: SITE.email,
+  subject,
+  html,
+  replyTo: d.email,
+  });
 
  return NextResponse.json({ ok: true });
 }

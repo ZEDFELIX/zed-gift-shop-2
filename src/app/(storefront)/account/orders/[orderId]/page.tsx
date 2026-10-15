@@ -6,6 +6,7 @@ import { getOrderById } from "@/lib/data/orders";
 import { formatKES } from "@/lib/utils";
 import { ORDER_STATUS_STEPS, PAYMENT_STATUS_LABELS } from "@/lib/constants";
 import { ArrowLeft, MapPin } from "lucide-react";
+import { OrderDocButtons } from "@/components/orders/OrderDocButtons";
 
 export const metadata = { title: "Order details", robots: { index: false } };
 
@@ -31,13 +32,16 @@ export default async function OrderDetailPage({ params }: { params: Promise<{ or
  <p className="font-display text-lg font-bold text-[#07111F]">{order.orderNumber}</p>
  <p className="text-sm text-[#334155]">{order.createdAt.toLocaleDateString("en-KE", { dateStyle: "full" })}</p>
  </div>
- <div className="text-right">
- <p className="text-sm text-[#334155]">Total</p>
- <p className="font-display text-xl font-bold text-[#07111F]">{formatKES(order.total)}</p>
- <p className={`text-xs font-semibold ${order.paymentStatus === "SUCCESSFUL" ? "text-emerald-600" : "text-amber-600"}`}>
- {PAYMENT_STATUS_LABELS[order.paymentStatus] ?? order.paymentStatus}{receipt ? ` | ${receipt}` : ""}
- </p>
- </div>
+  <div className="text-right">
+  <p className="text-sm text-[#334155]">Total</p>
+  <p className="font-display text-xl font-bold text-[#07111F]">{formatKES(order.total)}</p>
+  <p className={`text-xs font-semibold ${order.paymentStatus === "SUCCESSFUL" ? "text-emerald-600" : "text-amber-600"}`}>
+  {PAYMENT_STATUS_LABELS[order.paymentStatus] ?? order.paymentStatus}{receipt ? ` | ${receipt}` : ""}
+  </p>
+  <div className="mt-2 flex justify-end">
+  <OrderDocButtons orderId={order.id} isPaid={order.paymentStatus === "SUCCESSFUL"} compact />
+  </div>
+  </div>
  </div>
 
  <ol className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-4">

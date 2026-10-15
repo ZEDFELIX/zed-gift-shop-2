@@ -190,11 +190,15 @@ export const newsletterSchema = z.object({
 });
 
 export const contactSchema = z.object({
- name: z.string().min(2).max(120),
- email: emailSchema,
- phone: phoneSchema.optional().or(z.literal("")),
- subject: z.string().min(2).max(150),
- message: z.string().min(5).max(3000),
+  name: z.string().min(2).max(120),
+  email: emailSchema,
+  phone: phoneSchema.optional().or(z.literal("")),
+  subject: z.string().min(2).max(150),
+  message: z.string().min(5).max(3000),
+  company: z.string().max(160).optional().or(z.literal("")),
+  quantity: z.coerce.number().int().min(1).max(100000).optional(),
+  budget: z.string().max(120).optional().or(z.literal("")),
+  deadline: z.string().max(120).optional().or(z.literal("")),
 });
 
 export const productCreateSchema = z.object({

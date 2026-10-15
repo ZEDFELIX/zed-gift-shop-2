@@ -9,27 +9,33 @@ type Variant = { id: string; name: string; value: string; priceOffset: number; i
 type WrapOption = { id: string; name: string; price: number; active: boolean };
 
 export function ProductPurchase({
- productId,
- slug,
- basePrice,
- compareAtPrice,
- variants,
- personalizationFields,
- giftWrapOptions,
- giftWrapAvailable,
- giftMessageAvailable,
- inStock,
+  productId,
+  slug,
+  basePrice,
+  compareAtPrice,
+  variants,
+  personalizationFields,
+  giftWrapOptions,
+  giftWrapAvailable,
+  giftMessageAvailable,
+  inStock,
+  productName,
+  productUrl,
+  whatsappNumber,
 }: {
- productId: string;
- slug: string;
- basePrice: number;
- compareAtPrice: number | null;
- variants: Variant[];
- personalizationFields: { key: string; label: string; type: string; required?: boolean; maxLength?: number }[];
- giftWrapOptions: WrapOption[];
- giftWrapAvailable: boolean;
- giftMessageAvailable: boolean;
- inStock: boolean;
+  productId: string;
+  slug: string;
+  basePrice: number;
+  compareAtPrice: number | null;
+  variants: Variant[];
+  personalizationFields: { key: string; label: string; type: string; required?: boolean; maxLength?: number }[];
+  giftWrapOptions: WrapOption[];
+  giftWrapAvailable: boolean;
+  giftMessageAvailable: boolean;
+  inStock: boolean;
+  productName?: string;
+  productUrl?: string;
+  whatsappNumber?: string;
 }) {
  const router = useRouter();
  const [selections, setSelections] = useState<Record<string, string>>({});
@@ -93,12 +99,22 @@ export function ProductPurchase({
  headers: { "Content-Type": "application/json" },
  body: JSON.stringify(payload),
  });
- const data = (await res.json()) as { ok?: boolean; error?: string };
- if (!res.ok || !data.ok) {
- setError(data.error ?? "Could not add to cart.");
- return;
- }
- window.dispatchEvent(new CustomEvent("zed:open-cart"));
+  const data = (await res.json()) as { ok?: boolean; error?: string };
+  if (!res.ok || !data.ok) {
+  setError(data.error ?? "Could not add to cart.");
+  return;
+  }
+  try {
+    const { trackEvent } = await import("@/lib/analytics");
+    trackEvent("add_to_cart", {
+      currency: "KES",
+      value: price * quantity,
+      items: [{ item_id: productId, item_name: productName ?? slug, quantity }],
+    });
+  } catch {
+    // Analytics must never break shopping.
+  }
+  window.dispatchEvent(new CustomEvent("zed:open-cart"));
  router.refresh();
  } finally {
  setBusy(false);
@@ -296,6 +312,20 @@ export function ProductPurchase({
  </p>
  )}
   {error && <p className="mt-2 text-sm text-red-600">{error}</p>}
+  {whatsappNumber && productName ? (
+    <a
+      href={`https://wa.me/${whatsappNumber}?text=${encodeURIComponent(
+        `Hello ZED Gift Shop, I'd like to order:\n${productName} - ${formatKES(price)} x ${quantity}\n${productUrl ?? `/product/${slug}`}`,
+      )}`}
+      target="_blank"
+      rel="noopener noreferrer"
+      data-track="whatsapp_click"
+      data-track-value={productName}
+      className="mt-2 flex w-full items-center justify-center gap-2 rounded-zed bg-[#25D366] px-5 py-3 text-[13px] font-bold text-white transition-transform hover:scale-[1.01]"
+    >
+      Order on WhatsApp
+    </a>
+  ) : null}
   <p className="mt-3 flex items-center justify-center gap-2 text-center text-xs text-[#334155]">
   <ShieldCheck className="size-4 text-soft-sage" /> Secure M-PESA checkout · Free gift box included
   </p>

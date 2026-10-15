@@ -3,6 +3,7 @@ import { getCurrentUser } from "@/lib/auth";
 import { getOrdersForUser } from "@/lib/data/orders";
 import { formatKES } from "@/lib/utils";
 import { ORDER_STATUS_LABELS, PAYMENT_STATUS_LABELS } from "@/lib/constants";
+import { OrderDocButtons } from "@/components/orders/OrderDocButtons";
 
 export const metadata = { title: "My orders" };
 
@@ -22,28 +23,33 @@ export default async function AccountOrdersPage() {
 
  return (
  <div className="space-y-4">
- {orders.map((o) => {
- const receipt = o.payments[0]?.mpesaReceipt;
- return (
- <Link key={o.id} href={`/account/orders/${o.id}`} className="glass-card block rounded-zed p-5 transition-all hover:-translate-y-1 hover:shadow-glass-lg">
- <div className="flex flex-wrap items-center justify-between gap-3">
- <div>
- <p className="font-bold text-[#07111F]">{o.orderNumber}</p>
- <p className="text-sm text-[#334155]">{o.createdAt.toLocaleDateString("en-KE", { weekday: "short", day: "numeric", month: "short", year: "numeric" })}</p>
- </div>
- <p className="font-bold text-[#07111F]">{formatKES(o.total)}</p>
- </div>
- <div className="mt-3 flex flex-wrap items-center gap-2 text-xs">
- <span className={`rounded-full px-2.5 py-1 font-semibold ${o.paymentStatus === "SUCCESSFUL" ? "bg-emerald-50 text-emerald-700" : "bg-amber-50 text-amber-700"}`}>
- {PAYMENT_STATUS_LABELS[o.paymentStatus] ?? o.paymentStatus}
- </span>
- <span className="rounded-full bg-white/45 px-2.5 py-1 font-semibold text-[#07111F]">{ORDER_STATUS_LABELS[o.orderStatus] ?? o.orderStatus}</span>
- {receipt && <span className="rounded-full bg-white/45 px-2.5 py-1 text-[#334155]">Receipt {receipt}</span>}
- <span className="text-[#334155]">| {o.items.length} item{o.items.length === 1 ? "" : "s"} | {o.county}</span>
- </div>
- </Link>
- );
- })}
+  {orders.map((o) => {
+  const receipt = o.payments[0]?.mpesaReceipt;
+  return (
+  <div key={o.id} className="glass-card rounded-zed p-5 transition-all hover:-translate-y-1 hover:shadow-glass-lg">
+  <Link href={`/account/orders/${o.id}`} className="block">
+  <div className="flex flex-wrap items-center justify-between gap-3">
+  <div>
+  <p className="font-bold text-[#07111F]">{o.orderNumber}</p>
+  <p className="text-sm text-[#334155]">{o.createdAt.toLocaleDateString("en-KE", { weekday: "short", day: "numeric", month: "short", year: "numeric" })}</p>
+  </div>
+  <p className="font-bold text-[#07111F]">{formatKES(o.total)}</p>
+  </div>
+  <div className="mt-3 flex flex-wrap items-center gap-2 text-xs">
+  <span className={`rounded-full px-2.5 py-1 font-semibold ${o.paymentStatus === "SUCCESSFUL" ? "bg-emerald-50 text-emerald-700" : "bg-amber-50 text-amber-700"}`}>
+  {PAYMENT_STATUS_LABELS[o.paymentStatus] ?? o.paymentStatus}
+  </span>
+  <span className="rounded-full bg-white/45 px-2.5 py-1 font-semibold text-[#07111F]">{ORDER_STATUS_LABELS[o.orderStatus] ?? o.orderStatus}</span>
+  {receipt && <span className="rounded-full bg-white/45 px-2.5 py-1 text-[#334155]">Receipt {receipt}</span>}
+  <span className="text-[#334155]">| {o.items.length} item{o.items.length === 1 ? "" : "s"} | {o.county}</span>
+  </div>
+  </Link>
+  <div className="mt-3 border-t border-white/40 pt-3">
+  <OrderDocButtons orderId={o.id} isPaid={o.paymentStatus === "SUCCESSFUL"} compact />
+  </div>
+  </div>
+  );
+  })}
  </div>
  );
 }

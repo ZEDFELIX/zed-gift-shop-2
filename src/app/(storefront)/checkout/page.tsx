@@ -5,6 +5,7 @@ import { readCart, serializeCart } from "@/lib/cart";
 import { getCurrentUser } from "@/lib/auth";
 import { KENYA_COUNTIES } from "@/lib/constants";
 import { CheckoutForm } from "@/components/checkout/CheckoutForm";
+import { TrackPageView } from "@/components/analytics/Trackers";
 import { SITE, bankTransferConfigured } from "@/lib/constants";
 import { ShieldCheck, Truck } from "lucide-react";
 
@@ -27,9 +28,13 @@ export default async function CheckoutPage() {
  );
  }
 
- return (
- <div className="container-zed py-10 lg:py-14">
- <header className="mb-8">
+  return (
+  <div className="container-zed py-10 lg:py-14">
+  <TrackPageView
+    event="begin_checkout"
+    params={{ currency: "KES", value: cart.subtotal, items: cart.items.map((i) => ({ item_id: i.productId, quantity: i.quantity })) }}
+  />
+  <header className="mb-8">
  <p className="eyebrow">Checkout</p>
  <h1 className="mt-2 font-display text-2xl font-bold text-[#07111F] lg:text-4xl">Checkout</h1>
 <p className="mt-2 flex items-center gap-2 text-sm text-[#334155]">

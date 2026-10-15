@@ -5,30 +5,38 @@ import { Loader2, Send } from "lucide-react";
 import { showToast } from "@/lib/toast";
 
 export function ContactForm() {
- const [form, setForm] = useState({ name: "", email: "", phone: "", subject: "", message: "" });
- const [busy, setBusy] = useState(false);
- const [done, setDone] = useState(false);
- const [error, setError] = useState<string | null>(null);
+  const [form, setForm] = useState({ name: "", email: "", phone: "", subject: "", message: "", company: "", quantity: "", budget: "", deadline: "" });
+  const [isQuote, setIsQuote] = useState(false);
+  const [busy, setBusy] = useState(false);
+  const [done, setDone] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
- async function submit(e: React.FormEvent) {
- e.preventDefault();
- setBusy(true);
- setError(null);
- const res = await fetch("/api/contact", {
- method: "POST",
- headers: { "Content-Type": "application/json" },
- body: JSON.stringify(form),
- });
- const data = (await res.json()) as { error?: string };
- if (!res.ok) {
- setError(data.error ?? "Couldn't send your message. Please try again.");
- setBusy(false);
- return;
- }
- setDone(true);
- setBusy(false);
- showToast("Message sent - we'll reply within one working day", "success");
- }
+  async function submit(e: React.FormEvent) {
+  e.preventDefault();
+  setBusy(true);
+  setError(null);
+  const res = await fetch("/api/contact", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({
+  ...form,
+  quantity: form.quantity.trim() ? Number(form.quantity) : undefined,
+  company: isQuote ? form.company : "",
+  }),
+  });
+  const data = (await res.json()) as { error?: string };
+  if (!res.ok) {
+  setError(data.error ?? "Couldn't send your message. Please try again.");
+  setBusy(false);
+  return;
+  }
+  setDone(true);
+  setBusy(false);
+  import("@/lib/analytics").then(({ trackEvent }) => {
+  trackEvent("generate_lead", { value: isQuote ? "quote" : "contact" });
+  }).catch(() => undefined);
+  showToast(isQuote ? "Quote request sent - we'll reply within one working day" : "Message sent - we'll reply within one working day", "success");
+  }
 
  if (done) {
  return (
@@ -41,9 +49,33 @@ export function ContactForm() {
  );
  }
 
- return (
- <form onSubmit={submit} className="glass-card space-y-4 rounded-zed p-6 sm:p-8">
- <div className="grid gap-4 sm:grid-cols-2">
+  return (
+  <form onSubmit={submit} className="glass-card space-y-4 rounded-zed p-6 sm:p-8">
+  <label className="flex cursor-pointer items-center gap-2 text-sm font-semibold text-[#07111F]">
+  <input type="checkbox" checked={isQuote} onChange={(e) => setIsQuote(e.target.checked)} className="size-4 accent-rose-500" />
+  I need a corporate / bulk quote
+  </label>
+  {isQuote && (
+  <div className="grid gap-4 sm:grid-cols-2">
+  <div>
+  <label className="label" htmlFor="cf-company">Company / organization</label>
+  <input id="cf-company" className="field" value={form.company} onChange={(e) => setForm({ ...form, company: e.target.value })} required={isQuote} minLength={2} />
+  </div>
+  <div>
+  <label className="label" htmlFor="cf-quantity">Quantity needed</label>
+  <input id="cf-quantity" className="field" inputMode="numeric" value={form.quantity} onChange={(e) => setForm({ ...form, quantity: e.target.value.replace(/[^0-9]/g, "") })} required={isQuote} />
+  </div>
+  <div>
+  <label className="label" htmlFor="cf-budget">Budget per gift (optional)</label>
+  <input id="cf-budget" className="field" placeholder="e.g. KES 1,500" value={form.budget} onChange={(e) => setForm({ ...form, budget: e.target.value })} />
+  </div>
+  <div>
+  <label className="label" htmlFor="cf-deadline">Needed by (optional)</label>
+  <input id="cf-deadline" className="field" placeholder="e.g. 20 Dec" value={form.deadline} onChange={(e) => setForm({ ...form, deadline: e.target.value })} />
+  </div>
+  </div>
+  )}
+  <div className="grid gap-4 sm:grid-cols-2">
  <div>
  <label className="label" htmlFor="cf-name">Full name</label>
  <input id="cf-name" className="field" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} required minLength={2} />

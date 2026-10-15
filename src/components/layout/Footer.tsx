@@ -19,7 +19,7 @@ export async function Footer() {
           <ul className="mt-4 space-y-3 text-sm text-white/75">
             <li className="flex items-start gap-2">
               <Phone className="mt-0.5 size-4 shrink-0 text-champagne" />
-              <a href={`tel:${phone.replace(/\s+/g, "")}`} className="hover:text-white">{phone}</a>
+              <a href={`tel:${phone.replace(/\s+/g, "")}`} data-track="phone_click" className="hover:text-white">{phone}</a>
             </li>
             <li className="flex items-start gap-2">
               <Mail className="mt-0.5 size-4 shrink-0 text-champagne" />

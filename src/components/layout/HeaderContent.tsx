@@ -141,7 +141,7 @@ export function HeaderContent({
       {/* Utility bar — call us + same day delivery */}
       <div className="relative z-30 hidden border-b border-zed-900/15 bg-zed-950 text-white md:block">
         <div className="container-zed flex h-9 items-center justify-between gap-4 text-[12px]">
-          <a href={`tel:${contactPhone.replace(/\s+/g, "")}`} className="flex items-center gap-1.5 font-medium text-white/90 hover:text-white">
+          <a href={`tel:${contactPhone.replace(/\s+/g, "")}`} data-track="phone_click" className="flex items-center gap-1.5 font-medium text-white/90 hover:text-white">
             <Phone className="size-3.5" />
             Call us on: {contactPhone} to place your order.
           </a>

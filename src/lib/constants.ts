@@ -36,7 +36,7 @@ export type NavColumn = { title: string; href?: string; children: NavChild[] };
 export type NavGroup = { label: string; href: string; columns: NavColumn[] };
 
 const occasionColumn = (prefix: string): NavColumn => ({
-  title: "Gifts By Occassion",
+  title: "Gifts By Occasion",
   href: `/product-category/${prefix}`,
   children: [
   { label: "Secret Santa", href: `/product-category/${prefix}/secret-santa-gifts` },
@@ -78,7 +78,7 @@ export const NAV_GROUPS: NavGroup[] = [
     title: "Most Popular Gifts",
     children: [
       { label: "Belts", href: "/product-category/promotional-gifts/leather-belts" },
-      { label: "Jewerly", href: "/product-category/pendant-necklaces" },
+      { label: "Jewelry", href: "/product-category/pendant-necklaces" },
       { label: "Wallets", href: "/product-category/men-gifts/mens-leather-wallets" },
       { label: "Tie Sets", href: "/product-category/promotional-gifts/tie-sets" },
       { label: "Cufflinks", href: "/product-category/men-gifts/cufflinks" },
@@ -125,7 +125,7 @@ export const NAV_GROUPS: NavGroup[] = [
     {
     title: "Most Popular",
     children: [
-      { label: "Jewerly", href: "/product-category/pendant-necklaces" },
+      { label: "Jewelry", href: "/product-category/pendant-necklaces" },
       { label: "Watches", href: "/product-category/men-watches-on-sale/ladies-watches" },
       { label: "Bracelets", href: "/product-category/kenya-bracelets/bracelets-for-women" },
       { label: "Clutch Bags", href: "/product-category/ladies-gifts/ladies-clutch-bags" },
@@ -367,7 +367,7 @@ export const NAV_GROUPS: NavGroup[] = [
     ],
   },
   {
-    label: "Jewerly",
+    label: "Jewelry",
     href: "/product-category/pendant-necklaces",
     columns: [
     {

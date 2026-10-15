@@ -5,6 +5,7 @@ import { getOrderById } from "@/lib/data/orders";
 import { formatKES } from "@/lib/utils";
 import { ORDER_STATUS_LABELS, PAYMENT_STATUS_LABELS, PAYMENT_STATUS_LABELS as _ } from "@/lib/constants";
 import { OrderStatusController } from "@/components/admin/OrderStatusController";
+import { OrderDocButtons } from "@/components/orders/OrderDocButtons";
 import { ArrowLeft } from "lucide-react";
 
 export const dynamic = "force-dynamic";
@@ -34,10 +35,13 @@ export default async function AdminOrderPage({ params }: { params: Promise<{ ord
  {PAYMENT_STATUS_LABELS[order.paymentStatus]}
  </span>
  <span className="ml-2 rounded-full bg-panel px-2.5 py-1 text-xs font-bold text-[#07111F]">{ORDER_STATUS_LABELS[order.orderStatus]}</span>
- <p className="mt-1.5 font-display text-lg font-bold text-[#07111F]">{formatKES(order.total)}</p>
- </div>
- </div>
- </div>
+  <p className="mt-1.5 font-display text-lg font-bold text-[#07111F]">{formatKES(order.total)}</p>
+  <div className="mt-2 flex justify-end">
+  <OrderDocButtons orderId={order.id} isPaid={order.paymentStatus === "SUCCESSFUL"} compact />
+  </div>
+  </div>
+  </div>
+  </div>
 
  <div className="grid gap-6 lg:grid-cols-[1fr_360px]">
  <div className="space-y-6">

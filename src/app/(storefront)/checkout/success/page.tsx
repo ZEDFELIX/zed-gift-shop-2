@@ -2,6 +2,8 @@ import Link from "next/link";
 import { getOrderByNumber, ORDER_STATUS_STEPS } from "@/lib/data/orders";
 import { formatKES } from "@/lib/utils";
 import { CheckCircle2, Package, QrCode } from "lucide-react";
+import { OrderDocButtons } from "@/components/orders/OrderDocButtons";
+import { TrackPageView } from "@/components/analytics/Trackers";
 
 export const dynamic = "force-dynamic";
 
@@ -24,9 +26,15 @@ export default async function CheckoutSuccessPage({ searchParams }: { searchPara
  const isPaid = data.paymentStatus === "SUCCESSFUL";
  const statusLabel = ORDER_STATUS_STEPS.find((s) => s.status === data.orderStatus)?.label ?? data.orderStatus;
 
- return (
- <div className="container-zed max-w-2xl py-14 lg:py-20">
- <div className="text-center">
+  return (
+  <div className="container-zed max-w-2xl py-14 lg:py-20">
+  {isPaid && (
+  <TrackPageView
+    event="purchase"
+    params={{ currency: "KES", value: data.total, transaction_id: data.orderNumber }}
+  />
+  )}
+  <div className="text-center">
  {isPaid ? (
  <span className="glass-strong mx-auto grid size-16 place-items-center rounded-full text-[#07111F]">
  <CheckCircle2 className="size-9 text-soft-sage" />
@@ -75,14 +83,18 @@ export default async function CheckoutSuccessPage({ searchParams }: { searchPara
  </div>
  </div>
 
- <div className="mt-6 flex flex-wrap items-center justify-center gap-2">
- <Link href={`/track?order=${data.orderNumber}`} className="rounded-zed bg-zed-950 px-5 py-3 text-sm font-bold text-white">
- Track order
- </Link>
- <Link href="/shop" className="rounded-zed glass-panel px-5 py-3 text-sm font-semibold text-[#07111F] hover:text-deep-olive">
- Continue shopping
- </Link>
- </div>
+  <div className="mt-6 flex flex-wrap items-center justify-center gap-2">
+  <Link href={`/track?order=${data.orderNumber}`} className="rounded-zed bg-zed-950 px-5 py-3 text-sm font-bold text-white">
+  Track order
+  </Link>
+  <Link href="/shop" className="rounded-zed glass-panel px-5 py-3 text-sm font-semibold text-[#07111F] hover:text-deep-olive">
+  Continue shopping
+  </Link>
+  </div>
+
+  <div className="mt-4 flex flex-wrap items-center justify-center gap-2">
+  <OrderDocButtons orderId={data.id} isPaid={isPaid} />
+  </div>
 
  <p className="mt-8 flex items-center justify-center gap-1.5 text-center text-xs text-[#334155]">
  <QrCode className="size-4" /> Keep your order number handy for quick order lookup.

@@ -217,6 +217,11 @@ method?: string;
 
   setOrderRef({ orderId: data.orderId!, orderNumber: data.orderNumber!, pollToken: data.pollToken ?? "" });
   setOrderTotal(data.total ?? null);
+  try {
+    if (data.orderId && data.pollToken) sessionStorage.setItem(`zed:order-token:${data.orderId}`, data.pollToken);
+  } catch {
+    // Private browsing - signed-in owners can still download documents.
+  }
 
   if (data.configured === false || data.payment?.configured === false) {
   setError(data.error ?? data.payment?.error ?? "Payment is not configured on this store yet. Contact the shop to arrange payment.");

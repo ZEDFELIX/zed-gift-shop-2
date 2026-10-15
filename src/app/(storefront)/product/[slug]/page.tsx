@@ -5,12 +5,15 @@ import Image from "next/image";
 import Link from "next/link";
 import { ChevronRight, Quote, ShieldCheck, Star, Truck } from "lucide-react";
 import { getProductBySlug, getRelatedProducts, productSeoTitle } from "@/lib/data/products";
+import { getSetting } from "@/lib/data/settings";
+import { SITE } from "@/lib/constants";
 import { listApprovedReviews, ratingBreakdown } from "@/lib/data/reviews";
 import { buildMetadata, jsonLdBreadcrumb, jsonLdProduct } from "@/lib/seo";
 import { discountPercent, formatKES } from "@/lib/utils";
 import { ProductCard } from "@/components/product/ProductCard";
 import { ProductPurchase } from "@/components/product/ProductPurchase";
 import { ReviewForm } from "@/components/product/ReviewForm";
+import { TrackPageView } from "@/components/analytics/Trackers";
 import { prisma } from "@/lib/prisma";
 
 export const dynamic = "force-dynamic";
@@ -33,12 +36,13 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
  const product = await getProductBySlug(slug);
  if (!product) notFound();
 
- const [reviews, wrapOptions, related, categories] = await Promise.all([
- listApprovedReviews(product.id),
- prisma.giftWrap.findMany({ where: { active: true }, orderBy: { sortOrder: "asc" } }),
- getRelatedProducts(product.id, product.categories.map((c) => c.categoryId)),
- Promise.resolve(product.categories.map((c) => c.category)),
- ]);
+  const [reviews, wrapOptions, related, categories, whatsappNumber] = await Promise.all([
+  listApprovedReviews(product.id),
+  prisma.giftWrap.findMany({ where: { active: true }, orderBy: { sortOrder: "asc" } }),
+  getRelatedProducts(product.id, product.categories.map((c) => c.categoryId)),
+  Promise.resolve(product.categories.map((c) => c.category)),
+  getSetting("whatsappNumber"),
+  ]);
 
  const breakdown = ratingBreakdown(reviews);
  const sale = discountPercent(product.price, product.compareAtPrice);
@@ -63,9 +67,13 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
  availability: inStock ? "in" : "out",
  });
 
- return (
- <div className="container-zed py-8 lg:py-12">
- <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(productJsonLd) }} />
+  return (
+  <div className="container-zed py-8 lg:py-12">
+  <TrackPageView
+    event="view_item"
+    params={{ currency: "KES", value: product.price, items: [{ item_id: product.id, item_name: product.name }] }}
+  />
+  <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(productJsonLd) }} />
  <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumb) }} />
 
  {/* Breadcrumbs */}
@@ -191,9 +199,12 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
  personalizationFields={personalizationFields}
  giftWrapOptions={wrapOptions.map((w) => ({ id: w.id, name: w.name, price: w.price, active: w.active }))}
  giftWrapAvailable={product.giftWrapAvailable}
- giftMessageAvailable={product.giftMessageAvailable}
- inStock={inStock}
- />
+  giftMessageAvailable={product.giftMessageAvailable}
+  inStock={inStock}
+  productName={product.name}
+  productUrl={`${SITE.url}/product/${product.slug}`}
+  whatsappNumber={typeof whatsappNumber === "string" && whatsappNumber.trim() ? whatsappNumber.trim() : "254711436169"}
+  />
  </div>
 
  {/* USPs */}

@@ -19,6 +19,7 @@ export function WhatsAppFloat() {
       target="_blank"
       rel="noopener noreferrer"
       aria-label="Chat with ZED Gift Shop on WhatsApp"
+      data-track="whatsapp_click"
       className="fixed bottom-20 right-4 z-[90] sm:bottom-5 sm:right-5 flex size-14 items-center justify-center rounded-full bg-[#25D366] text-white shadow-lg transition-transform duration-200 hover:scale-105 hover:shadow-xl focus:outline-none focus:ring-4 focus:ring-[#25D366]/30"
     >
       <svg viewBox="0 0 24 24" className="size-7" fill="currentColor" aria-hidden="true">
