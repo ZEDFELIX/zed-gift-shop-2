@@ -1,9 +1,9 @@
 export const SITE = {
-  name: "ZED GIFT SHOP 2",
-  shortName: "ZED GIFT SHOP 2",
+  name: "ZED GIFT SHOP",
+  shortName: "ZED GIFT SHOP",
   tagline: "Gifts For Every Occasion",
   description:
-  "ZED Gift Shop 2 is a trusted online gift shop in Nairobi offering premium, personalized and same-day gift delivery services across Kenya.",
+  "ZED Gift Shop is a trusted online gift shop in Nairobi offering premium, personalized and same-day gift delivery services across Kenya.",
   url: (process.env.NEXT_PUBLIC_SITE_URL ?? "").trim() || (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "https://zed-gift-shop-2.vercel.app"),
   phone: "+254 740 282041",
   phoneDisplay: "0711 667 733",
@@ -462,15 +462,15 @@ export const TESTIMONIALS = [
   },
   {
     author: "Ann Muthoni",
-    text: "Excellent service from start to finish. The delivery was very timely, and I was impressed by the amazing quality of the gift. Everything was exactly as promised, beautifully done, carefully packaged, and clearly prepared with attention to detail. Thank you ZED Gift Shop 2 for making the entire experience so smooth. Keep up the amazing work!",
+    text: "Excellent service from start to finish. The delivery was very timely, and I was impressed by the amazing quality of the gift. Everything was exactly as promised, beautifully done, carefully packaged, and clearly prepared with attention to detail. Thank you ZED Gift Shop for making the entire experience so smooth. Keep up the amazing work!",
   },
   {
     author: "Patricia Bete",
-    text: "Such a lovely experience, bought a gift from ZED Gift Shop 2 and the service was so amazing. Highly recommend!",
+    text: "Such a lovely experience, bought a gift from ZED Gift Shop and the service was so amazing. Highly recommend!",
   },
   {
     author: "Jane Wairimu",
-    text: "ZED Gift Shop 2 has given me 3 gifts so far all very nice and packaged beautifully. Continue doing a good job!",
+    text: "ZED Gift Shop has given me 3 gifts so far all very nice and packaged beautifully. Continue doing a good job!",
   },
 ] as const;
 
@@ -527,8 +527,8 @@ export const HOMEPAGE_BLOG = [
 
 export const SEO_BLOCK_SECTIONS = [
   {
-    heading: "Why Choose ZED Gift Shop 2?",
-    body: "Welcome to ZED Gift Shop 2, your trusted online gift centre in Nairobi offering premium, personalized, and same-day gift delivery services across Kenya. We are a highly trusted premium gift shop with more than 5 years of experience, providing a wide range of premium gifts, door gifts, corporate gifts and customising them to your specifications.",
+    heading: "Why Choose ZED Gift Shop?",
+    body: "Welcome to ZED Gift Shop, your trusted online gift centre in Nairobi offering premium, personalized, and same-day gift delivery services across Kenya. We are a highly trusted premium gift shop with more than 5 years of experience, providing a wide range of premium gifts, door gifts, corporate gifts and customising them to your specifications.",
   },
   {
     heading: "Wide Variety of Gifts Online in Kenya",

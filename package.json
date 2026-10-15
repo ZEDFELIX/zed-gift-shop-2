@@ -2,7 +2,7 @@
   "name": "zed-gift-shop-2",
   "version": "1.0.0",
   "private": true,
-  "description": "ZED GIFT SHOP 2 — Premium Kenyan gifting & personalized products ecommerce.",
+  "description": "ZED GIFT SHOP — Premium Kenyan gifting & personalized products ecommerce.",
   "scripts": {
     "dev": "next dev",
     "build": "prisma generate && prisma migrate deploy && if [ -n \"$ZED_ADMIN_EMAIL\" ]; then node --import tsx prisma/seed-admin.ts; else echo \"Skipping admin bootstrap: ZED_ADMIN_EMAIL is not configured.\"; fi && node --import tsx prisma/seed-catalogue.ts && next build",

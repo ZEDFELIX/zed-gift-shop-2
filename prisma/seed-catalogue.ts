@@ -59,7 +59,7 @@ async function main() {
         sortOrder: index,
         active: true,
         image: `/placeholders/category-${parent.slug}.svg`,
-        seoTitle: `${parent.name} gifts in Kenya | ZED Gift Shop 2`,
+        seoTitle: `${parent.name} gifts in Kenya | ZED Gift Shop`,
       },
     });
     knownCategories.add(parent.slug);

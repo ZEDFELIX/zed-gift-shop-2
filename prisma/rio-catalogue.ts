@@ -1,6 +1,6 @@
 /**
  * Catalogue mirroring the storefront of riogiftshop.com: the same category
- * tree, product names, slugs and price points, re-skinned for ZED Gift Shop 2.
+ * tree, product names, slugs and price points, re-skinned for ZED Gift Shop.
  */
 
 export type RioCategory = {

@@ -4,7 +4,7 @@ import { SITE } from "@/lib/constants";
 export default function manifest(): MetadataRoute.Manifest {
  return {
     name: SITE.name,
-    short_name: "ZED 2",
+    short_name: "ZED",
     description: SITE.description,
     start_url: "/",
     display: "standalone",

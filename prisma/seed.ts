@@ -224,7 +224,7 @@ async function main() {
         sortOrder: index,
         active: true,
         image: `/placeholders/category-${parent.slug}.svg`,
-        seoTitle: `${parent.name} in Kenya | ${"ZED Gift Shop 2"}`,
+        seoTitle: `${parent.name} in Kenya | ${"ZED Gift Shop"}`,
         seoDescription: `Shop ${parent.name.toLowerCase()} online in Kenya. Personalized and branded options, same-day delivery in Nairobi and next-day delivery countrywide.`,
       },
     });

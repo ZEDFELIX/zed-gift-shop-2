@@ -1,6 +1,6 @@
-# ZED Gift Shop 2
+# ZED Gift Shop
 
-**Canonical ZED Gift Shop 2 ecommerce repository.**
+**Canonical ZED Gift Shop ecommerce repository.**
 
 Premium Kenyan gifting storefront: WooCommerce-style category trees, personalization, gift discovery, cart and checkout, M-Pesa and card payments, reviews, wishlist, delivery zones and an admin back office.
 
