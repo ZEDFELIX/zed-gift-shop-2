@@ -190,7 +190,7 @@
 --------------------------------------------------------------------------- */
 @media(max-width:767px){
   /* No horizontal scrolling anywhere; images stay proportional. */
-  html,body{overflow-x:clip;max-width:100%}
+  html,body{overflow-x:hidden;overflow-y:auto;max-width:100%}
   img{max-width:100%;height:auto}
   main,#main{min-width:0}
   .container-zed{padding-left:16px;padding-right:16px}
