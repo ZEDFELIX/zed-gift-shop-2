@@ -8,7 +8,7 @@ import { ProductGrid } from "@/components/shop/ProductGrid";
 import { ShopSearch } from "@/components/shop/ShopSearch";
 import { ShopFiltersMenu } from "@/components/shop/ShopFiltersMenu";
 import { Pagination } from "@/components/shop/Pagination";
-import { FlashSaleSection } from "@/components/shop/ShopSections";
+import { ShopSections } from "@/components/shop/ShopSections";
 
 const SORT_LABELS: Record<string, string> = {
   featured: "Featured",
@@ -105,7 +105,7 @@ export async function ListingPage({
       </div>
 
       <div className="mt-4 min-w-0 flex-1 lg:mt-0">
-        {activeFilters.length === 0 && <FlashSaleSection />}
+        {activeFilters.length === 0 && <ShopSections />}
         <ProductGrid products={result.items} />
         {result.pages > 1 ? <Pagination
           page={result.page}
