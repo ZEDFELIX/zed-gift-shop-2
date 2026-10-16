@@ -56,7 +56,7 @@ function Section({ title, products, href, flash = false, swipe = false, flashSal
           Swipe <ArrowRight className="size-3.5 animate-pulse" />
         </div>
         <div className={swipe
-          ? "flex snap-x snap-mandatory gap-3 overflow-x-auto pb-2 touch-pan-x overscroll-x-contain scrollbar-none"
+          ? "flex snap-x snap-mandatory gap-3 overflow-x-auto pb-2 touch-auto overscroll-x-contain scrollbar-none"
           : "grid grid-cols-3 gap-2 sm:grid-cols-3 sm:gap-3 lg:grid-cols-4"}>
           {products.map((product) => (
             <div key={product.id} className={swipe ? "min-w-[30vw] snap-start sm:min-w-[240px] lg:min-w-[260px]" : ""}>
@@ -82,7 +82,7 @@ function Section({ title, products, href, flash = false, swipe = false, flashSal
         </div>
       )}
       <div className={swipe
-        ? "flex snap-x snap-mandatory gap-3 overflow-x-auto pb-2 touch-pan-x overscroll-x-contain scrollbar-none"
+        ? "flex snap-x snap-mandatory gap-3 overflow-x-auto pb-2 touch-auto overscroll-x-contain scrollbar-none"
         : "grid grid-cols-3 gap-2 sm:grid-cols-3 sm:gap-3 lg:grid-cols-4"}>
   {products.map((product) => (
   <div key={product.id} className={swipe ? "min-w-[30vw] snap-start sm:min-w-[240px] lg:min-w-[260px]" : ""}>
