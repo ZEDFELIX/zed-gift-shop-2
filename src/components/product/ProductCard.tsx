@@ -59,7 +59,7 @@ export function ProductCard({
                 alt={product.images[0]?.alt ?? product.name}
                 fill
                 sizes="(min-width:1280px) 23vw, (min-width:768px) 31vw, 46vw"
-                className="object-cover transition-opacity duration-200 group-hover:opacity-95"
+                className="scale-[1.08] object-cover transition-opacity duration-200 group-hover:opacity-95"
               />
             ) : (
               <div className="absolute inset-0 flex items-center justify-center bg-rose-50 text-rose-400 font-display text-lg">
