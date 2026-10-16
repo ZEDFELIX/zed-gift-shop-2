@@ -85,7 +85,7 @@ export async function ListingPage({
             ),
           }}
         />
-      )}
+      }
       <header className="mb-4 max-w-xl sm:mb-5">
         
         <h1 className="font-display text-2xl font-bold text-[var(--color-ink)] sm:text-3xl">
@@ -105,49 +105,19 @@ export async function ListingPage({
         {(href !== "/shop" || activeFilters.length > 0) && <ShopSearch initialValue={filters.q ?? ""} />}
       </div>
 
-      {activeFilters.length > 0 && (
-        <div className="mb-4 flex gap-1.5 overflow-x-auto pb-1 no-scrollbar sm:mb-5 sm:flex-wrap">
-          <span className="mr-1 shrink-0 self-center text-[10px] font-semibold uppercase tracking-[0.12em] text-[rgba(48,37,34,0.62)]">
-            Filtered by
-          </span>
-          {activeFilters.map((filter) => (
-            <span
-              key={filter}
-              className="shrink-0 rounded-full glass-panel border border-white/60 px-2.5 py-1 text-[11px] font-medium text-[var(--color-ink)]"
-            >
-              {filter}
-            </span>
-          ))}
-        </div>
-      )}
-
-      {/* Mobile controls sit above the product grid. Desktop controls become the sidebar. */}
-      <div className="lg:flex lg:items-start lg:gap-5">
-        <Suspense fallback={null}>
-          <ShopControls
-            categories={categories}
-            occasions={occasions}
-            recipients={recipients}
-            minPrice={result.minPrice}
-            maxPrice={result.maxPrice}
-            sortLabels={SORT_LABELS}
-          />
-        </Suspense>
-
-        <div className="mt-4 min-w-0 flex-1 lg:mt-0">
-          {activeFilters.length === 0 ? (
-            <ShopSections />
-          ) : (
-            <ProductGrid products={result.items} />
-          )}
-          {activeFilters.length > 0 ? <Pagination
-            page={result.page}
-            pages={result.pages}
-            total={result.total}
-            pageSize={result.pageSize}
-            href={href}
-          /> : null}
-        </div>
+      <div className="mt-4 min-w-0 flex-1 lg:mt-0">
+        {activeFilters.length === 0 ? (
+          <ProductGrid products={result.items} />
+        ) : (
+          <ProductGrid products={result.items} />
+        )}
+        {activeFilters.length > 0 ? <Pagination
+          page={result.page}
+          pages={result.pages}
+          total={result.total}
+          pageSize={result.pageSize}
+          href={href}
+        /> : null}
       </div>
     </div>
   );
