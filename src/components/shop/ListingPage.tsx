@@ -85,7 +85,7 @@ export async function ListingPage({
             ),
           }}
         />
-      }
+      )}
       <header className="mb-4 max-w-xl sm:mb-5">
         
         <h1 className="font-display text-2xl font-bold text-[var(--color-ink)] sm:text-3xl">
