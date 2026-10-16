@@ -60,7 +60,7 @@ export function ProductGallery({
   }
 
   return (
-    <div className="relative left-1/2 aspect-square w-screen -translate-x-1/2 overflow-hidden bg-white sm:left-auto sm:w-auto sm:translate-x-0 sm:rounded-zed sm:bg-white/45">
+    <div className="relative left-1/2 aspect-square w-screen -translate-x-1/2 bg-white sm:left-auto sm:w-auto sm:translate-x-0 sm:rounded-zed sm:bg-white/45">
       <div
         ref={trackRef}
         onScroll={onScroll}
