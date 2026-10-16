@@ -132,7 +132,7 @@ export function DownloadAppPopup() {
     try {
       hide =
         window.localStorage.getItem(INSTALLED_KEY) === "true" ||
-        window.localStorage.getItem(DISMISSED_KEY) === "true";
+        window.sessionStorage.getItem(DISMISSED_KEY) === "true";
     } catch {
       hide = false;
     }
@@ -143,7 +143,7 @@ export function DownloadAppPopup() {
   function handleClose() {
     setOpen(false);
     try {
-      window.localStorage.setItem(DISMISSED_KEY, "true");
+      window.sessionStorage.setItem(DISMISSED_KEY, "true");
     } catch {
       // Ignore storage failures.
     }
@@ -171,7 +171,7 @@ export function DownloadAppPopup() {
   if (!open || installed) return null;
 
   return (
-    <div className="fixed bottom-24 left-6 z-50 w-[calc(100vw-3rem)] max-w-sm bg-white/90 backdrop-blur-xl rounded-2xl p-6 shadow-2xl">
+    <div className="fixed inset-x-3 bottom-24 z-[100] mx-auto w-auto max-w-sm rounded-2xl border border-black/10 bg-white/95 p-4 shadow-2xl backdrop-blur-xl sm:inset-x-auto sm:left-6 sm:w-[calc(100vw-3rem)] sm:p-6">
       <button
         type="button"
         onClick={handleClose}
