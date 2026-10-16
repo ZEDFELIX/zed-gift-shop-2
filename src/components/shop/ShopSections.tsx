@@ -76,6 +76,11 @@ function Section({ title, products, href, flash = false, swipe = false, flashSal
           {href && <Link href={href} className="shrink-0 rounded-full border border-rose-200 px-3 py-1 text-xs font-semibold text-rose-600 transition-colors hover:bg-rose-50 hover:text-rose-700">See more</Link>}
         </div>
       </div>
+      {swipe && (
+        <div className="mb-2 flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-[0.14em] text-charcoal/50">
+          Scroll <ArrowRight className="size-3.5 animate-pulse" />
+        </div>
+      )}
       <div className={swipe
         ? "flex snap-x snap-mandatory gap-3 overflow-x-auto pb-2 touch-pan-x overscroll-x-contain scrollbar-none"
         : "grid grid-cols-3 gap-2 sm:grid-cols-3 sm:gap-3 lg:grid-cols-4"}>
