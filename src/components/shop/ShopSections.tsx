@@ -32,14 +32,14 @@ function Section({ title, products, href, flash = false, swipe = false, flashSal
     const boxColor = isHexColor(flashSale.boxColor) ? flashSale.boxColor : FLASH_SALE_DEFAULT_BOX_COLOR;
     const textColor = contrastText(boxColor);
     return (
-      <section className="mb-9 rounded-[1.75rem] border border-black/5 p-4 shadow-glass sm:mb-11 sm:p-6" style={{ backgroundColor: boxColor }}>
-        <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
+      <section className="mb-9 rounded-xl border border-black/5 p-3 shadow-sm sm:mb-11 sm:p-5" style={{ backgroundColor: boxColor }}>
+        <div className="mb-3 flex flex-wrap items-center justify-between gap-3 border-b border-black/10 pb-3">
           <div className="flex min-w-0 items-center gap-2.5">
-            <span className="grid size-10 shrink-0 place-items-center rounded-2xl bg-rose-500 text-white shadow-glass sm:size-11">
-              <Zap className="size-5 fill-current sm:size-6" />
+            <span className="grid size-9 shrink-0 place-items-center rounded-lg bg-rose-500 text-white sm:size-10">
+              <Zap className="size-5 fill-current" />
             </span>
             <div className="min-w-0">
-              <h2 className="font-ui text-2xl font-extrabold uppercase leading-none tracking-tight sm:text-3xl" style={{ color: textColor }}>
+              <h2 className="font-ui text-xl font-extrabold uppercase leading-none tracking-tight sm:text-2xl" style={{ color: textColor }}>
                 {flashSale.title || title}
               </h2>
               {flashSale.subtitle ? (
@@ -49,17 +49,15 @@ function Section({ title, products, href, flash = false, swipe = false, flashSal
           </div>
           <div className="flex min-w-0 items-center gap-2">
             <FlashSaleCountdown startsAt={flashSale.startsAt} endsAt={flashSale.endsAt} active={flashSale.active} />
-            {href && <Link href={href} className="shrink-0 rounded-full border border-rose-200 bg-white/70 px-3 py-1 text-xs font-semibold text-rose-600 transition-colors hover:bg-rose-50 hover:text-rose-700">See more</Link>}
+            {href && <Link href={href} className="shrink-0 rounded-md bg-white px-3 py-1.5 text-xs font-bold text-orange-600 shadow-sm transition-colors hover:bg-orange-50">See all</Link>}
           </div>
         </div>
-        <div className="mb-3 flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-[0.14em] opacity-60" style={{ color: textColor }}>
-          Swipe <ArrowRight className="size-3.5 animate-pulse" />
+        <div className="mb-2 flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider opacity-65" style={{ color: textColor }}>
+          Swipe to explore <ArrowRight className="size-3.5" />
         </div>
-        <div className={swipe
-          ? "flex snap-x snap-mandatory gap-3 overflow-x-auto pb-2 touch-auto overscroll-x-contain scrollbar-none"
-          : "grid grid-cols-3 gap-2 sm:grid-cols-3 sm:gap-3 lg:grid-cols-4"}>
+        <div className="flex snap-x snap-mandatory gap-2 overflow-x-auto overscroll-x-contain rounded-lg pb-2 touch-auto scrollbar-none">
           {products.map((product) => (
-            <div key={product.id} className={swipe ? "min-w-[30vw] snap-start sm:min-w-[240px] lg:min-w-[260px]" : ""}>
+            <div key={product.id} className="w-[44vw] min-w-[44vw] shrink-0 snap-start sm:w-[210px] sm:min-w-[210px] lg:w-[225px] lg:min-w-[225px]">
               <ProductCard product={product} />
             </div>
           ))}
@@ -68,27 +66,27 @@ function Section({ title, products, href, flash = false, swipe = false, flashSal
     );
   }
   return (
-    <section className="mb-9 sm:mb-11">
-      <div className="mb-3 flex items-center justify-between gap-2">
-        <h2 className={`font-display text-xl font-bold sm:text-2xl ${titleColor ?? "text-[var(--color-ink)]"}`}>{title}</h2>
+    <section className={swipe ? "mb-7 overflow-hidden rounded-xl border border-black/5 bg-white p-3 shadow-sm sm:mb-9 sm:p-4" : "mb-9 sm:mb-11"}>
+      <div className={swipe ? "mb-3 flex items-center justify-between gap-2 border-b-2 border-orange-400 pb-2.5" : "mb-3 flex items-center justify-between gap-2"}>
+        <h2 className={`font-display text-lg font-bold sm:text-xl ${titleColor ?? "text-[var(--color-ink)]"}`}>{title}</h2>
         <div className="flex min-w-0 items-center gap-2">
           {flash && flashSale && <FlashSaleCountdown startsAt={flashSale.startsAt} endsAt={flashSale.endsAt} active={flashSale.active} />}
-          {href && <Link href={href} className="shrink-0 rounded-full border border-rose-200 px-3 py-1 text-xs font-semibold text-rose-600 transition-colors hover:bg-rose-50 hover:text-rose-700">See more</Link>}
+          {href && <Link href={href} className="shrink-0 rounded-md bg-orange-50 px-3 py-1.5 text-xs font-bold text-orange-600 transition-colors hover:bg-orange-100">See all <span aria-hidden="true">›</span></Link>}
         </div>
       </div>
       {swipe && (
-        <div className="mb-2 flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-[0.14em] text-charcoal/50">
-          Scroll <ArrowRight className="size-3.5 animate-pulse" />
+        <div className="mb-2 flex items-center gap-1.5 text-[10px] font-semibold text-charcoal/50">
+          Swipe to explore <ArrowRight className="size-3.5" />
         </div>
       )}
       <div className={swipe
-        ? "flex snap-x snap-mandatory gap-3 overflow-x-auto pb-2 touch-auto overscroll-x-contain scrollbar-none"
+        ? "flex snap-x snap-mandatory gap-2 overflow-x-auto overscroll-x-contain pb-2 touch-auto scrollbar-none"
         : "grid grid-cols-3 gap-2 sm:grid-cols-3 sm:gap-3 lg:grid-cols-4"}>
-  {products.map((product) => (
-  <div key={product.id} className={swipe ? "min-w-[30vw] snap-start sm:min-w-[240px] lg:min-w-[260px]" : ""}>
-  <ProductCard product={product} />
-  </div>
-  ))}
+        {products.map((product) => (
+          <div key={product.id} className={swipe ? "w-[44vw] min-w-[44vw] shrink-0 snap-start sm:w-[210px] sm:min-w-[210px] lg:w-[225px] lg:min-w-[225px]" : ""}>
+            <ProductCard product={product} />
+          </div>
+        ))}
       </div>
     </section>
   );
