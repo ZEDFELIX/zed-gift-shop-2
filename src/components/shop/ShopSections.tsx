@@ -94,6 +94,23 @@ function Section({ title, products, href, flash = false, swipe = false, flashSal
   );
 }
 
+export async function FlashSaleSection() {
+  const [flashSale, flashSaleSettings] = await Promise.all([
+    getFlashSaleProducts(6),
+    getFlashSaleSettings(),
+  ]);
+  return (
+    <Section
+      title="Flash Sale"
+      products={flashSale}
+      flash
+      href="/shop?flashSale=1"
+      swipe
+      flashSale={flashSaleSettings}
+    />
+  );
+}
+
 export async function ShopSections() {
   const [flashSale, sale, mostBought, bestSellers, newArrivals, personalized, corporateCategory, flashSaleSettings] = await Promise.all([
     getFlashSaleProducts(6), getDealProducts(6), getMostBoughtProducts(6), getBestSellerProducts(6), getFeaturedProducts(6),

@@ -1,14 +1,12 @@
 import "server-only";
 
-import { Suspense } from "react";
 import { listProducts, type ProductListFilters } from "@/lib/data/products";
 import { jsonLdItemList } from "@/lib/seo";
 import { listCategories } from "@/lib/data/catalog";
 import { ProductGrid } from "@/components/shop/ProductGrid";
-import { ShopControls } from "@/components/shop/ShopControls";
 import { ShopSearch } from "@/components/shop/ShopSearch";
 import { Pagination } from "@/components/shop/Pagination";
-import { ShopSections } from "@/components/shop/ShopSections";
+import { FlashSaleSection } from "@/components/shop/ShopSections";
 
 const SORT_LABELS: Record<string, string> = {
   featured: "Featured",
@@ -96,9 +94,6 @@ export async function ListingPage({
             {description}
           </p>
         ) : null}
-        <p className="mt-1 text-xs text-[rgba(48,37,34,0.62)]">
-          {result.total} gift{result.total === 1 ? "" : "s"} available
-        </p>
       </header>
 
       <div className="mb-4 sm:mb-5">
@@ -106,12 +101,9 @@ export async function ListingPage({
       </div>
 
       <div className="mt-4 min-w-0 flex-1 lg:mt-0">
-        {activeFilters.length === 0 ? (
-          <ProductGrid products={result.items} />
-        ) : (
-          <ProductGrid products={result.items} />
-        )}
-        {activeFilters.length > 0 ? <Pagination
+        {activeFilters.length === 0 && <FlashSaleSection />}
+        <ProductGrid products={result.items} />
+        {result.pages > 1 ? <Pagination
           page={result.page}
           pages={result.pages}
           total={result.total}
