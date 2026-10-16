@@ -42,31 +42,31 @@ export function ProductCard({
       <div className="relative group-hover:opacity-100 transition-opacity">
         <Link
           href={`/product/${product.slug}`}
-          className="zed-product-media block aspect-square overflow-hidden bg-white"
+          className="zed-product-media relative block aspect-square overflow-hidden bg-rose-50/70"
           aria-label={product.name}
         >
-          <div
-            className="relative w-full h-full overflow-hidden bg-white transition-transform duration-500"
-          >
-            {badge && (
-              <span className={`absolute left-2 top-2 z-10 rounded-full px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide shadow ${badge.cls}`}>
-                {badge.label}
-              </span>
-            )}
-            {image ? (
-              <Image
-                src={image}
-                alt={product.images[0]?.alt ?? product.name}
-                fill
-                sizes="(min-width:1280px) 23vw, (min-width:768px) 31vw, 46vw"
-                className="scale-[1.08] object-cover transition-opacity duration-200 group-hover:opacity-95"
-              />
-            ) : (
-              <div className="absolute inset-0 flex items-center justify-center bg-rose-50 text-rose-400 font-display text-lg">
-                ZED
-              </div>
-            )}
-          </div>
+          <span className="absolute inset-0 p-1.5 drop-shadow-[0_8px_16px_rgba(190,30,90,0.18)]">
+            <span className="relative block h-full w-full overflow-hidden [clip-path:polygon(50%_0,100%_100%,0_100%)]">
+              {image ? (
+                <Image
+                  src={image}
+                  alt={product.images[0]?.alt ?? product.name}
+                  fill
+                  sizes="(min-width:1280px) 23vw, (min-width:768px) 31vw, 46vw"
+                  className="scale-[1.08] object-cover transition-opacity duration-200 group-hover:opacity-95"
+                />
+              ) : (
+                <span className="absolute inset-0 flex items-center justify-center bg-rose-100 font-display text-lg">
+                  ZED
+                </span>
+              )}
+            </span>
+          </span>
+          {badge && (
+            <span className={`absolute bottom-2 left-2 z-10 rounded-full px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide shadow ${badge.cls}`}>
+              {badge.label}
+            </span>
+          )}
         </Link>
       </div>
 
