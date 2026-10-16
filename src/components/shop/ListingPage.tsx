@@ -67,7 +67,7 @@ export async function ListingPage({
   ].filter(Boolean);
 
   return (
-    <div className="container-zed py-5 sm:py-7 lg:py-9">
+    <div className="container-zed py-3 sm:py-7 lg:py-9">
       {activeFilters.length > 0 && result.items.length > 0 && (
         <script
           type="application/ld+json"
@@ -84,8 +84,8 @@ export async function ListingPage({
           }}
         />
       )}
-      <header className="mb-4 flex items-center justify-between gap-3 sm:mb-5">
-        <h1 className="min-w-0 font-display text-2xl font-bold text-[var(--color-ink)] sm:text-3xl">
+      <header className="mb-3 flex items-center justify-between gap-2 sm:mb-5 sm:gap-3">
+        <h1 className="min-w-0 font-display text-xl font-bold leading-tight text-[var(--color-ink)] sm:text-3xl">
           {title}
         </h1>
         <Suspense fallback={null}>
@@ -100,11 +100,11 @@ export async function ListingPage({
         </Suspense>
       </header>
 
-      <div className="mb-4 sm:mb-5">
+      <div className="mb-3 sm:mb-5">
         {(href !== "/shop" || activeFilters.length > 0) && <ShopSearch initialValue={filters.q ?? ""} />}
       </div>
 
-      <div className="mt-4 min-w-0 flex-1 lg:mt-0">
+      <div className="mt-3 min-w-0 flex-1 sm:mt-4 lg:mt-0">
         {activeFilters.length === 0 && <ShopSections />}
         <ProductGrid products={result.items} />
         {result.pages > 1 ? <Pagination
