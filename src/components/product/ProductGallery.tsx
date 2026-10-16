@@ -53,14 +53,14 @@ export function ProductGallery({
 
   if (count === 0) {
     return (
-      <div className="relative aspect-square overflow-hidden rounded-zed bg-white/45">
+      <div className="relative left-1/2 aspect-square w-screen -translate-x-1/2 overflow-hidden bg-white sm:left-auto sm:w-auto sm:translate-x-0 sm:rounded-zed sm:bg-white/45">
         <span className="grid aspect-square place-items-center font-display text-4xl text-soft-sage">ZED</span>
       </div>
     );
   }
 
   return (
-    <div className="relative aspect-square overflow-hidden rounded-zed bg-white/45">
+    <div className="relative left-1/2 aspect-square w-screen -translate-x-1/2 overflow-hidden bg-white sm:left-auto sm:w-auto sm:translate-x-0 sm:rounded-zed sm:bg-white/45">
       <div
         ref={trackRef}
         onScroll={onScroll}
