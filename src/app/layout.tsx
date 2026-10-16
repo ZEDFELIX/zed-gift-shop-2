@@ -2,7 +2,7 @@ import "server-only";
 
 import { Metadata, Viewport } from "next";
 import type { CSSProperties } from "react";
-import { jost, libreBaskerville, poppins, quicksand } from "@/app/fonts";
+import { jost, libreBaskerville, poppins, quicksand, displaySans } from "@/app/fonts";
 import { SITE } from "@/lib/constants";
 import { getSettings } from "@/lib/data/settings";
 import { buildMetadata, jsonLdStore } from "@/lib/seo";
@@ -12,10 +12,10 @@ import "@/app/globals.css";
 import "@/app/glassmorphism.css";
 
 export const metadata: Metadata = buildMetadata({
- title: SITE.name,
- path: "/",
- description: SITE.description,
- type: "website",
+  title: SITE.name,
+  path: "/",
+  description: SITE.description,
+  type: "website",
 });
 
 export const viewport: Viewport = {
@@ -61,7 +61,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
       className={`${jost.variable} ${quicksand.variable} ${poppins.variable} ${libreBaskerville.variable}`}
       suppressHydrationWarning
     >
-    <body style={colors} className="zed-page-bg min-h-screen bg-pure-white text-ink font-sans antialiased" suppressHydrationWarning>
+    <body style={colors} className="zed-page-bg min-h-screen bg-pure-white text-ink font-sans antialiased ${displaySans.variable}" suppressHydrationWarning>
     <script
     type="application/ld+json"
     dangerouslySetInnerHTML={{ __html: storeJsonLd }}
