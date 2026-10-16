@@ -153,13 +153,13 @@ export function HeaderContent({
       </div>
 
       {/* Main header row */}
-      <div className="sticky top-0 z-40 px-2 pt-2 sm:px-3 lg:px-5"><div className="zed-glass-nav rounded-2xl">
-        <div className="container-zed flex h-[60px] items-center gap-2.5 px-4 lg:h-[74px] lg:gap-6 lg:px-10">
+      <div className="sticky top-0 z-40 px-2 pt-1.5 sm:px-3 sm:pt-2 lg:px-5"><div className="zed-glass-nav rounded-2xl">
+        <div className="container-zed flex h-[56px] items-center gap-2 px-2.5 sm:h-[60px] sm:gap-2.5 sm:px-4 lg:h-[74px] lg:gap-6 lg:px-10">
           <button
             type="button"
             aria-label="Open menu"
             onClick={() => setMobileOpen(true)}
-            className="grid size-11 shrink-0 place-items-center rounded-md text-[var(--color-ink)] hover:bg-zed-900/5 lg:hidden"
+            className="grid size-10 shrink-0 place-items-center rounded-md text-[var(--color-ink)] hover:bg-zed-900/5 lg:hidden"
           >
             <Menu className="size-5" />
           </button>
@@ -223,7 +223,7 @@ export function HeaderContent({
               type="button"
               onClick={() => setSearchOpen(true)}
               aria-label="Search"
-              className="grid size-11 place-items-center rounded-md text-[var(--color-ink)] hover:bg-zed-900/5 md:hidden"
+              className="grid size-10 place-items-center rounded-md text-[var(--color-ink)] hover:bg-zed-900/5 md:hidden"
             >
               <Search className="size-[22px] shrink-0 text-soft-sage" />
             </button>
@@ -231,7 +231,7 @@ export function HeaderContent({
               type="button"
               onClick={openCart}
               aria-label={`Cart, ${cartCount} items`}
-              className="flex items-center gap-2 rounded-md bg-deep-olive px-3 py-2.5 text-white transition-colors hover:bg-zed-900"
+              className="flex items-center gap-1.5 rounded-md bg-deep-olive px-2.5 py-2 text-white transition-colors hover:bg-zed-900 sm:gap-2 sm:px-3 sm:py-2.5"
             >
               <ShoppingBag className="size-5" />
               <span className="hidden text-[13px] font-semibold sm:inline">
@@ -294,7 +294,7 @@ export function HeaderContent({
 
       {/* Mobile information bar */}
       <div className="lg:hidden border-y border-edge/60 bg-zed-950 text-white">
-        <div className="flex items-center gap-3 overflow-x-auto px-3 py-2 text-[11px] font-medium no-scrollbar">
+        <div className="flex items-center gap-2.5 overflow-x-auto px-3 py-1.5 text-[10px] font-medium no-scrollbar sm:gap-3 sm:py-2 sm:text-[11px]">
           <a href={"tel:" + contactPhone.replace(/\s+/g, "")} className="flex shrink-0 items-center gap-1.5 whitespace-nowrap">
             <Phone className="size-3.5 text-white/80" /> Call {contactPhone}
           </a>
@@ -308,12 +308,12 @@ export function HeaderContent({
       </div>
 
       {/* Category quick strip — horizontal scroller on mobile */}
-      <div className="no-scrollbar flex items-center gap-2.5 overflow-x-auto border-t border-edge/60 bg-white/55 py-2 backdrop-blur-xl lg:hidden">
+      <div className="no-scrollbar flex items-center gap-2 overflow-x-auto border-t border-edge/60 bg-white/55 px-3 py-1.5 backdrop-blur-xl lg:hidden sm:gap-2.5 sm:py-2">
           {CATEGORY_STRIP.map((c) => (
             <Link
               key={c.href}
               href={c.href}
-              className="shrink-0 rounded-2xl border border-white/60 bg-white/70 px-3.5 py-2.5 text-[13px] font-medium text-[var(--color-ink)] shadow-glass transition-colors hover:bg-white"
+              className="shrink-0 rounded-full border border-white/60 bg-white/70 px-3 py-2 text-xs font-medium text-[var(--color-ink)] shadow-glass transition-colors hover:bg-white sm:rounded-2xl sm:px-3.5 sm:py-2.5 sm:text-[13px]"
             >
               {c.label}
             </Link>
