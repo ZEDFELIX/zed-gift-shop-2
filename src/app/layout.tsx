@@ -8,6 +8,7 @@ import { getSettings } from "@/lib/data/settings";
 import { buildMetadata, jsonLdStore } from "@/lib/seo";
 import { ToastHost } from "@/components/ui/ToastHost";
 import { ServiceWorkerReg } from "@/components/layout/ServiceWorkerReg";
+import { DownloadAppPopup } from "@/components/layout/DownloadAppButton";
 import "@/app/globals.css";
 import "@/app/glassmorphism.css";
 
@@ -69,6 +70,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   {children}
    <ToastHost />
    <ServiceWorkerReg />
+  <DownloadAppPopup />
   </body>
  </html>
  );
