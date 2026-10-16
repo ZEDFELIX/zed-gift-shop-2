@@ -10,6 +10,7 @@ import { listApprovedReviews, ratingBreakdown } from "@/lib/data/reviews";
 import { buildMetadata, jsonLdBreadcrumb, jsonLdProduct } from "@/lib/seo";
 import { discountPercent, formatKES } from "@/lib/utils";
 import { ProductCard } from "@/components/product/ProductCard";
+import { ProductGallery } from "@/components/product/ProductGallery";
 import { ProductPurchase } from "@/components/product/ProductPurchase";
 import { ReviewForm } from "@/components/product/ReviewForm";
 import { TrackPageView } from "@/components/analytics/Trackers";
@@ -93,32 +94,9 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
  </nav>
 
  <div className="grid gap-10 lg:grid-cols-2 lg:gap-14">
- {/* Gallery */}
- <div className="space-y-3">
- <div className="relative aspect-square overflow-hidden rounded-zed bg-white/45">
- {product.images[0]?.url ? (
-  <Image
-  src={product.images[0].url}
-  alt={product.images[0].alt ?? product.name}
-  fill
-  sizes="(min-width:1024px) 50vw, 100vw"
-  unoptimized
-  className="object-contain"
-  />
- ) : (
- <span className="grid aspect-square place-items-center font-display text-4xl text-soft-sage">ZED</span>
- )}
- {sale != null && sale > 0 && (
- <span className="absolute left-4 top-4 rounded-full bg-zed-950 px-3 py-1.5 text-xs font-bold text-white">-{sale}%</span>
- )}
- </div>
- <div className="grid grid-cols-3 gap-2 sm:gap-4">
- {product.images.slice(0, 3).map((img) => (
- <div key={img.id} className="glass-panel relative aspect-square overflow-hidden rounded-zed ring-1 ring-white/50">
-  <Image src={img.url} alt={img.alt ?? product.name} fill sizes="120px" unoptimized className="object-contain" />
- </div>
- ))}
- </div>
+  {/* Gallery */}
+  <div className="space-y-3">
+  <ProductGallery images={product.images.map((img) => ({ url: img.url, alt: img.alt }))} name={product.name} sale={sale} />
  {product.videoUrl && (
   <div className="mt-3 overflow-hidden rounded-zed bg-black/5 ring-1 ring-white/50">
    <video src={product.videoUrl} controls playsInline preload="metadata" className="aspect-video w-full object-cover" aria-label={`${product.name} product video`} />
