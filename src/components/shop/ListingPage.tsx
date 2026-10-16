@@ -1,10 +1,12 @@
 import "server-only";
 
+import { Suspense } from "react";
 import { listProducts, type ProductListFilters } from "@/lib/data/products";
 import { jsonLdItemList } from "@/lib/seo";
 import { listCategories } from "@/lib/data/catalog";
 import { ProductGrid } from "@/components/shop/ProductGrid";
 import { ShopSearch } from "@/components/shop/ShopSearch";
+import { ShopFiltersMenu } from "@/components/shop/ShopFiltersMenu";
 import { Pagination } from "@/components/shop/Pagination";
 import { FlashSaleSection } from "@/components/shop/ShopSections";
 
@@ -20,8 +22,6 @@ const SORT_LABELS: Record<string, string> = {
 
 export async function ListingPage({
   title,
-  eyebrow,
-  description,
   filters,
   href,
 }: {
@@ -84,16 +84,20 @@ export async function ListingPage({
           }}
         />
       )}
-      <header className="mb-4 max-w-xl sm:mb-5">
-        
-        <h1 className="font-display text-2xl font-bold text-[var(--color-ink)] sm:text-3xl">
+      <header className="mb-4 flex items-center justify-between gap-3 sm:mb-5">
+        <h1 className="min-w-0 font-display text-2xl font-bold text-[var(--color-ink)] sm:text-3xl">
           {title}
         </h1>
-        {false && description ? (
-          <p className="mt-2.5 max-w-xl text-[15px] leading-6 text-[var(--color-ink)]/80 sm:mt-3 sm:text-base sm:leading-relaxed">
-            {description}
-          </p>
-        ) : null}
+        <Suspense fallback={null}>
+          <ShopFiltersMenu
+            categories={categories}
+            occasions={occasions}
+            recipients={recipients}
+            minPrice={result.minPrice}
+            maxPrice={result.maxPrice}
+            sortLabels={SORT_LABELS}
+          />
+        </Suspense>
       </header>
 
       <div className="mb-4 sm:mb-5">
