@@ -1,6 +1,20 @@
+import Link from "next/link";
 import { Mail, MapPin, Phone } from "lucide-react";
 import { SITE } from "@/lib/constants";
 import { getSettings, DEFAULTS } from "@/lib/data/settings";
+
+const FOOTER_LINKS: { href: string; label: string }[] = [
+  { href: "/faq", label: "FAQs" },
+  { href: "/track", label: "Track order" },
+  { href: "/contact", label: "Contact us" },
+  { href: "/policies/delivery", label: "Delivery & Returns" },
+  { href: "/policies/refunds", label: "Returns & Refunds" },
+  { href: "/policies/cancellation", label: "Cancellations" },
+  { href: "/policies/payment", label: "Payment" },
+  { href: "/policies/privacy", label: "Privacy" },
+  { href: "/policies/cookies", label: "Cookies" },
+  { href: "/policies/terms", label: "Terms of Service" },
+];
 
 export async function Footer() {
   const settings = await getSettings();
@@ -43,6 +57,19 @@ export async function Footer() {
             </p>
           ) : null}
         </div>
+      </div>
+
+      <div className="border-t border-white/10">
+        <nav
+          aria-label="Policies and help"
+          className="container-zed flex flex-wrap items-center gap-x-5 gap-y-2 py-4 text-xs text-white/60"
+        >
+          {FOOTER_LINKS.map((l) => (
+            <Link key={l.href} href={l.href} className="transition-colors hover:text-white">
+              {l.label}
+            </Link>
+          ))}
+        </nav>
       </div>
 
       <div className="border-t border-white/10">

@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { ArrowLeft, Check, HelpCircle, Landmark, Loader2, Lock, PackageCheck, Phone, RefreshCw, ShieldCheck, Sparkles } from "lucide-react";
 import { formatKES } from "@/lib/utils";
@@ -1090,7 +1091,11 @@ function wizardReached(n: number): boolean {
   </span>
  </div>
       <p className="mt-3 text-xs leading-relaxed text-[#334155]">
- Need help? WhatsApp {sitePhone}. By placing this order you agree to our delivery &amp; returns policy.
+ Need help? WhatsApp {sitePhone}. By placing this order you agree to our{" "}
+ <Link href="/policies/terms" className="text-soft-sage underline underline-offset-2">Terms of Service</Link>,{" "}
+ <Link href="/policies/delivery" className="text-soft-sage underline underline-offset-2">Delivery &amp; Returns</Link>,{" "}
+ <Link href="/policies/privacy" className="text-soft-sage underline underline-offset-2">Privacy Policy</Link> and{" "}
+ <Link href="/policies/refunds" className="text-soft-sage underline underline-offset-2">Returns &amp; Refunds</Link> policy.
  </p>
  </div>
  </aside>

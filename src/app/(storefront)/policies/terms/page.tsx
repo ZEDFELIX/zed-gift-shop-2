@@ -16,7 +16,7 @@ export default function TermsPage() {
  <Heading n={1} t="Prices and payment" />
  <ul className="mt-3 list-disc space-y-2 pl-5 text-sm leading-relaxed text-[#07111F]">
  <li>All prices are in Kenyan Shillings (KES) and include VAT where applicable, but not delivery.</li>
- <li>Payment is due at checkout via M-PESA STK Push. Orders are only processed once payment is confirmed.</li>
+  <li>Payment is due at checkout using one of the methods shown there (for example M-PESA STK Push, card or mobile money, bank transfer, or cash on delivery where available). Orders paid by M-PESA, card or bank transfer are only processed once payment is confirmed.</li>
  <li>We may correct pricing errors before processing your order.</li>
  </ul>
 
