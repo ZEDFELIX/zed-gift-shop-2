@@ -3,7 +3,7 @@ import "server-only";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { ArrowLeft, Clock } from "lucide-react";
-import { getBlogPost } from "@/lib/data/blog";
+import { getBlogPost, getBlogPostCta } from "@/lib/data/blog";
 import { buildMetadata } from "@/lib/seo";
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
@@ -53,6 +53,12 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
           <p className="font-display text-lg font-bold">Ready to send something thoughtful?</p>
           <p className="mt-1 text-sm text-white/70">Browse the catalogue or build a gift from scratch.</p>
           <div className="mt-4 flex flex-wrap justify-center gap-3">
+            <Link
+              href={getBlogPostCta(post).href}
+              className="rounded-zed bg-soft-sage px-5 py-2.5 text-sm font-bold text-white transition-colors hover:bg-zed-900"
+            >
+              {getBlogPostCta(post).label}
+            </Link>
             <Link href="/shop" className="rounded-zed bg-white px-5 py-2.5 text-sm font-bold text-[#07111F] transition-colors hover:bg-gold">
               Shop all gifts
             </Link>

@@ -62,7 +62,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
       className={`${jost.variable} ${quicksand.variable} ${poppins.variable} ${libreBaskerville.variable} ${displaySans.variable}`}
       suppressHydrationWarning
     >
-    <body style={colors} className="zed-page-bg min-h-screen bg-pure-white text-ink font-sans antialiased ${displaySans.variable}" suppressHydrationWarning>
+    <body style={colors} className={`zed-page-bg min-h-screen bg-pure-white text-ink font-sans antialiased ${displaySans.variable}`} suppressHydrationWarning>
     <script
     type="application/ld+json"
     dangerouslySetInnerHTML={{ __html: storeJsonLd }}

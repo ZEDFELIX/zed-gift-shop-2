@@ -303,5 +303,23 @@ export function getBlogPosts() {
 }
 
 export function getBlogPost(slug: string) {
-  return BLOG_POSTS.find((p) => p.slug === slug) ?? null;
+ return BLOG_POSTS.find((p) => p.slug === slug) ?? null;
+}
+
+/**
+ * Maps a post's category to a relevant shop link so every article ends with a
+ * path to a real product category instead of a generic "shop" button.
+ */
+const CATEGORY_CTAS: Record<string, { label: string; href: string }> = {
+ Delivery: { label: "Shop same-day gifts", href: "/shop" },
+ "Gifting tips": { label: "Shop couple gifts", href: "/product-category/couple-watches" },
+ Corporate: { label: "Corporate gifting", href: "/wholesale" },
+ Guides: { label: "Shop personalized gifts", href: "/product-category/personalized-gifts" },
+ Personalized: { label: "Shop personalized gifts", href: "/product-category/personalized-gifts" },
+ "Gifts for Him": { label: "Gifts for him", href: "/product-category/men-gifts" },
+ Lifestyle: { label: "Shop sneakers", href: "/product-category/shoes-for-men/shoes/men-sneakers" },
+};
+
+export function getBlogPostCta(post: BlogPost) {
+ return CATEGORY_CTAS[post.category] ?? { label: "Shop all gifts", href: "/shop" };
 }
