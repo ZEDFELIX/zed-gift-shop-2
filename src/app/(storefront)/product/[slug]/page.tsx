@@ -14,6 +14,7 @@ import { ProductCard } from "@/components/product/ProductCard";
 import { ProductGallery } from "@/components/product/ProductGallery";
 import { ProductPurchase } from "@/components/product/ProductPurchase";
 import { ReviewForm } from "@/components/product/ReviewForm";
+import { NotifyWhenBack } from "@/components/product/NotifyWhenBack";
 import { TrackPageView } from "@/components/analytics/Trackers";
 import { prisma } from "@/lib/prisma";
 
@@ -180,6 +181,12 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
  </p>
 
  {product.shortDescription && <p className="mt-5 leading-relaxed text-[var(--color-ink)]">{product.shortDescription}</p>}
+
+ {!inStock && (
+ <div className="mt-6">
+ <NotifyWhenBack productId={product.id} />
+ </div>
+ )}
 
  <div className="mt-7">
  <ProductPurchase

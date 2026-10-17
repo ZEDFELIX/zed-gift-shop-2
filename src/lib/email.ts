@@ -180,3 +180,37 @@ export async function sendOccasionReminder(input: { to: string; personName: stri
  <a href="${input.shopUrl}" style="display:inline-block;background:#0F5C4D;color:#ffffff;padding:12px 20px;border-radius:8px;text-decoration:none;font-weight:bold;">Shop gifts</a>`;
  return sendEmail({ to: input.to, subject, text, html: layout({ subject, text, html }).html });
 }
+
+function escapeHtml(value: string): string {
+ return value
+ .replace(/&/g, "&amp;")
+ .replace(/</g, "&lt;")
+ .replace(/>/g, "&gt;")
+ .replace(/"/g, "&quot;")
+ .replace(/'/g, "&#39;");
+}
+
+/** Sent to a customer who asked to be told when an out-of-stock item returns. */
+export async function sendBackInStock(input: { to: string; productName: string; productUrl: string; image?: string | null }) {
+ const name = escapeHtml(input.productName);
+ const subject = `Back in stock: ${input.productName}`;
+ const text = `Good news - ${input.productName} is back in stock. Shop it here: ${input.productUrl}`;
+ const html = `
+ <h2 style="margin:0 0 12px;">It's back in stock</h2>
+ ${input.image ? `<img src="${input.image}" alt="${name}" style="width:100%;max-width:320px;border-radius:10px;margin:0 0 16px;" />` : ""}
+ <p style="margin:0 0 16px;"><strong>${name}</strong> is available again. Stock on popular gifts moves quickly, so order soon.</p>
+ <a href="${input.productUrl}" style="display:inline-block;background:#0F5C4D;color:#ffffff;padding:12px 20px;border-radius:8px;text-decoration:none;font-weight:bold;">Shop the gift</a>`;
+ return sendEmail({ to: input.to, subject, text, html: layout({ subject, text, html }).html });
+}
+
+/** Post-delivery nudge inviting the customer to review what they received. */
+export async function sendReviewRequest(input: { to: string; orderNumber: string; productName?: string | null; reviewUrl: string }) {
+ const subject = `How did we do on order ${input.orderNumber}?`;
+ const text = `Thanks for shopping with ${SITE.name}. Share a review of ${input.productName ?? "your gift"} here: ${input.reviewUrl}`;
+ const html = `
+ <h2 style="margin:0 0 12px;">How was your gift?</h2>
+ <p style="margin:0 0 16px;">Thanks for shopping with us${input.productName ? ` - we hope you love the <strong>${escapeHtml(input.productName)}</strong>` : ""}. A quick review helps other shoppers choose well.</p>
+ <a href="${input.reviewUrl}" style="display:inline-block;background:#0F5C4D;color:#ffffff;padding:12px 20px;border-radius:8px;text-decoration:none;font-weight:bold;">Write a review</a>
+ <p style="margin:16px 0 0;font-size:12px;color:#888;">Order ${input.orderNumber}</p>`;
+ return sendEmail({ to: input.to, subject, text, html: layout({ subject, text, html }).html });
+}

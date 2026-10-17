@@ -352,6 +352,7 @@ model Product {
  cartItems CartItem[]
  wishlistItems WishlistItem[]
  inventoryTransactions InventoryTransaction[]
+ stockAlerts StockAlert[]
 
  @@index([status])
  @@index([featured])
@@ -377,6 +378,7 @@ model ProductVariant {
  cartItems CartItem[]
  wishlistItems WishlistItem[]
  inventoryTransactions InventoryTransaction[]
+ stockAlerts StockAlert[]
 
  @@index([productId])
 }
@@ -826,6 +828,22 @@ model AdminSetting {
  value String // JSON-encoded
  updatedAt DateTime @updatedAt
  updatedBy String?
+}
+
+/// A customer's request to be emailed when an out-of-stock item returns.
+model StockAlert {
+ id String @id @default(cuid())
+ productId String
+ variantId String?
+ email String
+ notifiedAt DateTime?
+ createdAt DateTime @default(now())
+
+ product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+ variant ProductVariant? @relation(fields: [variantId], references: [id], onDelete: Cascade)
+
+ @@index([productId, notifiedAt])
+ @@index([email])
 }
 
 // ---------- Customer segmentation ----------

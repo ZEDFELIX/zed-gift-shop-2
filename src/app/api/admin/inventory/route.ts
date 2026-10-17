@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { adjustStock } from "@/lib/data/inventory";
+import { notifyStockAlerts } from "@/lib/data/stock-alerts";
 import { parsePagination, pageMeta, requirePermission, fail } from "@/lib/api";
 import { listInventoryMovements, lowStockProducts } from "@/lib/data/admin";
 import { writeAuditLog, requestMeta } from "@/lib/audit";
@@ -73,6 +74,10 @@ export async function POST(req: Request) {
    entityId: parsed.data.productId,
    after: { delta: parsed.data.delta, variantId: parsed.data.variantId || null, note: parsed.data.note || null },
  });
+
+ if (parsed.data.delta > 0) {
+ await notifyStockAlerts(parsed.data.productId).catch(() => undefined);
+ }
 
  return NextResponse.json({ data: { ok: true } });
 }

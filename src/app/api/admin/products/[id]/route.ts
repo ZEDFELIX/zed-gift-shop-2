@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { requireAdmin } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
+import { notifyStockAlerts } from "@/lib/data/stock-alerts";
 import { parsePersonalizationFieldsJson, productCreateSchema } from "@/lib/validations";
 
 export const runtime = "nodejs";
@@ -91,6 +92,10 @@ slug: d.slug,
  },
  });
  });
+
+ if ((d.quantity ?? 0) > existing.quantity) {
+ await notifyStockAlerts(id).catch(() => undefined);
+ }
 
  return NextResponse.json({ product });
 }
