@@ -38,7 +38,7 @@ export function buildMetadata(input: SeoInput): Metadata {
  title,
  description,
  siteName: SITE.name,
- ...(image ? { images: [{ url: image, width: 1200, height: 630, alt: title }] } : {}),
+  ...(image ? { images: [{ url: image, secureUrl: image, width: 1200, height: 630, alt: title }] } : {}),
  ...(input.publishedTime ? { publishedTime: input.publishedTime } : {}),
  },
  twitter: {

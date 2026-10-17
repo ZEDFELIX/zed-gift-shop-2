@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Check, Minus, Plus, ShieldCheck, ShoppingBag, Sparkles } from "lucide-react";
 import { formatKES } from "@/lib/utils";
@@ -48,6 +48,30 @@ export function ProductPurchase({
  const [useGiftMessage, setUseGiftMessage] = useState(false);
  const [busy, setBusy] = useState(false);
  const [error, setError] = useState<string | null>(null);
+ const shareFileRef = useRef<File | null>(null);
+
+ useEffect(() => {
+  if (!productImage) return;
+  const nav = typeof navigator !== "undefined" ? navigator : undefined;
+  if (!nav?.share || !nav.canShare) return;
+  let cancelled = false;
+  (async () => {
+   try {
+    const res = await fetch(productImage, { mode: "cors", credentials: "omit" });
+    if (!res.ok) return;
+    const blob = await res.blob();
+    if (!blob.type.startsWith("image/")) return;
+    const ext = (blob.type.split("/")[1] || "jpg").split("+")[0].replace("jpeg", "jpg");
+    const file = new File([blob], `zed-gift-${slug}.${ext}`, { type: blob.type });
+    if (!cancelled && nav.canShare({ files: [file] })) shareFileRef.current = file;
+   } catch {
+    /* cross-origin or unsupported — fall back to the WhatsApp link */
+   }
+  })();
+  return () => {
+   cancelled = true;
+  };
+ }, [productImage, slug]);
 
  const variantGroups: { name: string; values: Variant[] }[] = [];
  for (const v of variants) {
@@ -118,10 +142,36 @@ export function ProductPurchase({
   }
   window.dispatchEvent(new CustomEvent("zed:open-cart"));
  router.refresh();
- } finally {
- setBusy(false);
- }
- }
+  } finally {
+  setBusy(false);
+  }
+  }
+
+  const orderLine = `Hello ZED Gift Shop, I'd like to order: ${productName ?? "this gift"} - ${formatKES(
+  price,
+  )} x ${quantity}`;
+  const shareCaption = productUrl ? `${orderLine}\n\n${productUrl}` : orderLine;
+  const waMessage = `${orderLine}${productUrl ? `\n\nProduct: ${productUrl}` : ""}${
+  productImage ? `\nPhoto: ${productImage}` : ""
+  }`;
+
+  async function orderOnWhatsApp() {
+  const nav = typeof navigator !== "undefined" ? navigator : undefined;
+  const file = shareFileRef.current;
+  if (file && nav?.share && nav.canShare?.({ files: [file] })) {
+  try {
+  await nav.share({ files: [file], text: shareCaption, title: productName ?? "ZED Gift Shop" });
+  return;
+  } catch (err) {
+  if (err instanceof DOMException && err.name === "AbortError") return;
+  }
+  }
+  window.open(
+  `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(waMessage)}`,
+  "_blank",
+  "noopener,noreferrer",
+  );
+  }
 
  return (
  <div className="space-y-6">
@@ -315,20 +365,15 @@ export function ProductPurchase({
  )}
   {error && <p className="mt-2 text-sm text-red-600">{error}</p>}
   {whatsappNumber && productName ? (
-    <a
-      href={`https://wa.me/${whatsappNumber}?text=${encodeURIComponent(
-        `Hello ZED Gift Shop, I'd like to order: ${productName} - ${formatKES(price)} x ${quantity}${
-          productUrl ? `\n\nProduct: ${productUrl}` : ""
-        }${productImage ? `\nPhoto: ${productImage}` : ""}`,
-      )}`}
-      target="_blank"
-      rel="noopener noreferrer"
+    <button
+      type="button"
+      onClick={orderOnWhatsApp}
       data-track="whatsapp_click"
       data-track-value={productName}
       className="mt-2 flex w-full items-center justify-center gap-2 rounded-zed bg-[#25D366] px-5 py-3 text-[13px] font-bold text-white transition-transform hover:scale-[1.01]"
     >
       Order on WhatsApp
-    </a>
+    </button>
   ) : null}
   <p className="mt-3 flex items-center justify-center gap-2 text-center text-xs text-[#334155]">
   <ShieldCheck className="size-4 text-soft-sage" /> Secure M-PESA checkout · Free gift box included
