@@ -5,8 +5,8 @@
   "framework": "nextjs",
   "crons": [
     {
-      "path": "/api/orders/lookup",
-      "schedule": "0 3 * * *"
+      "path": "/api/cron/daily",
+      "schedule": "0 6 * * *"
     }
   ]
 }

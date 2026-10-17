@@ -1,6 +1,19 @@
 import "server-only";
 
 import { prisma } from "@/lib/prisma";
+import type { OrderStatus } from "@prisma/client";
+
+/** Order states that count as a completed purchase for a verified review badge. */
+const PURCHASED_STATUSES: OrderStatus[] = [
+ "PAID",
+ "PROCESSING",
+ "CUSTOMIZATION",
+ "PACKED",
+ "READY_FOR_DISPATCH",
+ "DISPATCHED",
+ "OUT_FOR_DELIVERY",
+ "DELIVERED",
+];
 
 export async function listApprovedReviews(productId: string) {
  return prisma.review.findMany({
@@ -44,17 +57,33 @@ export async function createReview(input: {
  });
  if (existing) return { ok: false, error: "You have already reviewed this product." };
 
+ // Auto-link to the customer's own order for this product so the review earns
+ // the honest "verified purchase" badge without the shopper doing anything.
+ let orderId = input.orderId ?? null;
+ if (!orderId) {
+ const order = await prisma.order.findFirst({
+ where: {
+ userId: input.userId,
+ orderStatus: { in: PURCHASED_STATUSES },
+ items: { some: { productId: input.productId } },
+ },
+ select: { id: true },
+ orderBy: { createdAt: "desc" },
+ });
+ orderId = order?.id ?? null;
+ }
+
  const review = await prisma.review.create({
  data: {
  productId: input.productId,
  userId: input.userId,
- orderId: input.orderId,
+ orderId,
  rating,
  title: input.title ?? null,
  comment: input.comment ?? null,
  images: input.images ?? [],
  status: "PENDING",
- verifiedPurchase: Boolean(input.orderId),
+ verifiedPurchase: Boolean(orderId),
  },
  });
  return { ok: true, id: review.id };
@@ -89,7 +118,7 @@ export function hasPurchased(userId: string, productId: string): Promise<boolean
  .count({
  where: {
  userId,
- orderStatus: { in: ["PAID", "PROCESSING", "CUSTOMIZATION", "READY_FOR_DISPATCH", "OUT_FOR_DELIVERY", "DELIVERED"] },
+ orderStatus: { in: PURCHASED_STATUSES },
  items: { some: { productId } },
  },
  })

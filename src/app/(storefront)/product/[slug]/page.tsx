@@ -298,6 +298,21 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
  </div>
  {r.title && <p className="mt-3 font-semibold text-[var(--color-ink)]">{r.title}</p>}
  {r.comment && <p className="mt-1 text-sm leading-relaxed text-[var(--color-ink)]">{r.comment}</p>}
+ {r.images.length > 0 && (
+ <div className="mt-3 flex flex-wrap gap-2">
+ {r.images.map((src, i) => (
+ <a key={src} href={src} target="_blank" rel="noopener noreferrer" className="block">
+ {/* eslint-disable-next-line @next/next/no-img-element */}
+ <img
+ src={src}
+ alt={`${product.name} review photo ${i + 1}`}
+ loading="lazy"
+ className="size-20 rounded-lg object-cover ring-1 ring-black/10 transition-transform hover:scale-105"
+ />
+ </a>
+ ))}
+ </div>
+ )}
  {r.verifiedPurchase && (
  <p className="mt-2 inline-flex items-center gap-1 rounded-full bg-warm-white px-2.5 py-0.5 text-[11px] font-semibold text-zed-700">
  <Star className="size-3 fill-current" /> Verified purchase
