@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { ChevronDown } from "lucide-react";
 import { SITE } from "@/lib/constants";
+import { jsonLdFaq } from "@/lib/seo";
 
 export const metadata = { title: "FAQs | ZED Gift Shop", description: "Answers about ordering, payment, personalization, delivery and returns from ZED Gift Shop." };
 
@@ -46,6 +47,7 @@ const faqs = [
 export default function FaqPage() {
  return (
  <div className="container-zed max-w-3xl py-12">
+ <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdFaq(faqs)) }} />
  <p className="eyebrow text-soft-sage">Good to know</p>
  <h1 className="mt-2 font-display text-4xl font-black text-[#07111F]">Frequently asked questions</h1>
  <p className="mt-4 text-[#07111F]">

@@ -71,9 +71,21 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
  name: product.name,
  description: product.description,
  image: product.images[0]?.url,
+ images: product.images.map((img) => img.url),
  price: product.price,
  sku: product.sku,
+ url: `/product/${product.slug}`,
+ brand: SITE.name,
+ category: categories[0]?.name ?? null,
  availability: inStock ? "in" : "out",
+ ratingValue: breakdown.average,
+ reviewCount: breakdown.count,
+ reviews: reviews.map((r) => ({
+ author: r.user?.name ?? null,
+ rating: r.rating,
+ body: r.comment ?? r.title ?? null,
+ date: r.createdAt,
+ })),
  });
 
   return (

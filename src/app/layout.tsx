@@ -5,7 +5,7 @@ import type { CSSProperties } from "react";
 import { jost, libreBaskerville, poppins, quicksand, displaySans } from "@/app/fonts";
 import { SITE } from "@/lib/constants";
 import { getSettings } from "@/lib/data/settings";
-import { buildMetadata, jsonLdStore } from "@/lib/seo";
+import { buildMetadata, jsonLdOrganization, jsonLdWebsite } from "@/lib/seo";
 import { ToastHost } from "@/components/ui/ToastHost";
 import { ServiceWorkerReg } from "@/components/layout/ServiceWorkerReg";
 import "@/app/globals.css";
@@ -25,7 +25,8 @@ export const viewport: Viewport = {
 };
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
- const storeJsonLd = JSON.stringify(jsonLdStore());
+ const storeJsonLd = JSON.stringify(jsonLdOrganization());
+ const websiteJsonLd = JSON.stringify(jsonLdWebsite());
  const settings = await getSettings();
  const primary = String(settings.primaryColor ?? "#E5397F");
  const secondary = String(settings.secondaryColor ?? "#6B2D5C");
@@ -65,6 +66,10 @@ export default async function RootLayout({ children }: { children: React.ReactNo
     <script
     type="application/ld+json"
     dangerouslySetInnerHTML={{ __html: storeJsonLd }}
+    />
+    <script
+    type="application/ld+json"
+    dangerouslySetInnerHTML={{ __html: websiteJsonLd }}
     />
    {children}
     <ToastHost />

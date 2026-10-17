@@ -54,26 +54,132 @@ export function jsonLdProduct(input: {
  name: string;
  description?: string | null;
  image?: string | null;
+ images?: (string | null | undefined)[];
  price: number;
  currency?: string;
  availability?: string;
  sku?: string | null;
+ url?: string;
+ brand?: string;
+ category?: string | null;
+ ratingValue?: number;
+ reviewCount?: number;
+ reviews?: { author?: string | null; rating: number; body?: string | null; date?: string | Date | null }[];
 }) {
+ const images = (input.images ?? [input.image])
+ .filter((v): v is string => Boolean(v))
+ .map((v) => absolute(v));
+ const reviewCount = input.reviewCount ?? 0;
+ const ratingValue = input.ratingValue ?? 0;
  return {
  "@context": "https://schema.org",
  "@type": "Product",
  name: input.name,
  description: input.description ?? undefined,
- image: input.image ? absolute(input.image) : undefined,
+ image: images.length ? images : undefined,
  sku: input.sku ?? undefined,
+ ...(input.category ? { category: input.category } : {}),
+ brand: { "@type": "Brand", name: (input.brand ?? SITE.name).trim() || SITE.name },
  offers: {
  "@type": "Offer",
  priceCurrency: input.currency ?? SITE.currency,
  price: input.price,
  availability: input.availability === "out" ? "https://schema.org/OutOfStock" : "https://schema.org/InStock",
- url: absolute("/"),
+ itemCondition: "https://schema.org/NewCondition",
+ url: absolute(input.url ?? "/"),
  seller: { "@type": "Organization", name: SITE.name, telephone: SITE.phone, email: SITE.email },
  },
+ ...(reviewCount > 0 && ratingValue > 0
+ ? {
+ aggregateRating: {
+ "@type": "AggregateRating",
+ ratingValue: Math.round(ratingValue * 10) / 10,
+ reviewCount,
+ bestRating: 5,
+ worstRating: 1,
+ },
+ }
+ : {}),
+ ...(input.reviews && input.reviews.length
+ ? {
+ review: input.reviews.slice(0, 10).map((r) => ({
+ "@type": "Review",
+ author: { "@type": "Person", name: r.author?.trim() || "ZED Gift Shop customer" },
+ reviewRating: { "@type": "Rating", ratingValue: r.rating, bestRating: 5, worstRating: 1 },
+ ...(r.body && r.body.trim() ? { reviewBody: r.body.trim() } : {}),
+ ...(r.date ? { datePublished: new Date(r.date).toISOString().slice(0, 10) } : {}),
+ })),
+ }
+ : {}),
+ };
+}
+
+export function jsonLdOrganization() {
+ const base = SITE.url.replace(/\/$/, "");
+ const profiles = [SITE.social.x, SITE.social.facebook, SITE.social.instagram, SITE.social.tiktok].filter((u) => {
+ try {
+ return new URL(u).pathname.replace(/\/+$/, "").length > 0;
+ } catch {
+ return false;
+ }
+ });
+ return {
+ "@context": "https://schema.org",
+ "@type": "Organization",
+ name: SITE.name,
+ url: SITE.url,
+ logo: `${base}/icon.png`,
+ image: `${base}/icon.png`,
+ description: SITE.description,
+ telephone: SITE.phone,
+ email: SITE.email,
+ address: {
+ "@type": "PostalAddress",
+ streetAddress: SITE.address,
+ addressLocality: "Nairobi",
+ addressCountry: "KE",
+ },
+ ...(profiles.length ? { sameAs: profiles } : {}),
+ contactPoint: [
+ {
+ "@type": "ContactPoint",
+ telephone: SITE.phone,
+ contactType: "customer service",
+ email: SITE.email,
+ areaServed: "KE",
+ availableLanguage: ["en"],
+ },
+ ],
+ };
+}
+
+export function jsonLdWebsite() {
+ const base = SITE.url.replace(/\/$/, "");
+ return {
+ "@context": "https://schema.org",
+ "@type": "WebSite",
+ name: SITE.name,
+ url: SITE.url,
+ potentialAction: {
+ "@type": "SearchAction",
+ target: {
+ "@type": "EntryPoint",
+ urlTemplate: `${base}/search?q={search_term_string}`,
+ },
+ "query-input": "required name=search_term_string",
+ },
+ };
+}
+
+export function jsonLdFaq(items: { q: string; a: string }[]) {
+ return {
+ "@context": "https://schema.org",
+ "@type": "FAQPage",
+ mainEntity: items.map((item) => ({
+ "@type": "Question",
+ name: item.q,
+ acceptedAnswer: { "@type": "Answer", text: item.a },
+ })),
  };
 }
 
