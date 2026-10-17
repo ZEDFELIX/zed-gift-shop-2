@@ -16,7 +16,7 @@ export const DEFAULTS: Record<string, SettingValue> = {
   storeTagline: "Premium gifts, personalized for every occasion.",
   footerDescription: "Premium gifts, personalized keepsakes and corporate gifting, delivered across Kenya.",
   address: "Nairobi, Kenya",
-  hours: "Mon-Sat: 8:00 AM - 6:00 PM",
+  hours: "Mon – Sun, 08:00 – 19:00",
   mapsHref: "https://maps.google.com/",
   mapsEmbed: "",
   whatsappNumber: "254711436169",
