@@ -22,7 +22,7 @@ function isStandalone(): boolean {
   return (window.navigator as unknown as { standalone?: boolean }).standalone === true;
 }
 
-function useInstallPrompt() {
+export function useInstallPrompt() {
   const [deferred, setDeferred] = useState<BIPEvent | null>(null);
   const [installed, setInstalled] = useState(false);
 
@@ -120,13 +120,20 @@ export function DownloadAppButton({ className = "" }: { className?: string }) {
 
 export function DownloadAppPopup() {
   const { deferred, installed, install, ios } = useInstallPrompt();
-  // Shown immediately on every visit until the app is installed. Closing it
-  // only hides it for this page load - installed devices never see it again.
   const [open, setOpen] = useState(false);
   const [busy, setBusy] = useState(false);
 
-  // Shown immediately on first visit only. Closing it - or installing -
-  // dismisses it forever on that device.
+  const handleClose = useCallback(() => {
+    setOpen(false);
+    try {
+      window.sessionStorage.setItem(DISMISSED_KEY, "true");
+    } catch {
+      // Ignore storage failures.
+    }
+  }, []);
+
+  // Shown on the first visit of each session until installed. Closing it hides
+  // it for this session only - the bottom-nav "Install" entry re-opens it.
   useEffect(() => {
     let hide = false;
     try {
@@ -139,30 +146,35 @@ export function DownloadAppPopup() {
     setOpen(!hide);
   }, [installed]);
 
-  // Closing (or installing) dismisses it forever on that device.
-  function handleClose() {
-    setOpen(false);
-    try {
-      window.sessionStorage.setItem(DISMISSED_KEY, "true");
-    } catch {
-      // Ignore storage failures.
-    }
-  }
-
   useEffect(() => {
     const onHelp = () => setOpen(true);
     window.addEventListener("zed:show-install-help", onHelp);
     return () => window.removeEventListener("zed:show-install-help", onHelp);
   }, []);
 
+  // Escape to close, and lock background scroll while the sheet is open.
+  useEffect(() => {
+    if (!open) return;
+    function onKey(e: KeyboardEvent) {
+      if (e.key === "Escape") handleClose();
+    }
+    window.addEventListener("keydown", onKey);
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      window.removeEventListener("keydown", onKey);
+      document.body.style.overflow = previousOverflow;
+    };
+  }, [open, handleClose]);
+
   async function handleInstall() {
     if (busy) return;
     setBusy(true);
     try {
-      await install();
-      // Accepted installs hide forever via the installed flag; anything else
-      // just closes this reminder until the next visit.
-      setOpen(false);
+      const outcome = await install();
+      // Accepted installs hide forever via the installed flag; a plain dismissal
+      // just closes this reminder until the next session.
+      if (outcome !== "dismissed") setOpen(false);
     } finally {
       setBusy(false);
     }
@@ -171,12 +183,17 @@ export function DownloadAppPopup() {
   if (!open || installed) return null;
 
   return (
-    <div className="fixed inset-x-3 bottom-24 z-[100] mx-auto w-auto max-w-sm rounded-2xl border border-black/10 bg-white/95 p-4 shadow-2xl backdrop-blur-xl sm:inset-x-auto sm:left-6 sm:w-[calc(100vw-3rem)] sm:p-6">
+    <div
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="install-app-title"
+      className="fixed inset-x-3 bottom-[calc(4.5rem+env(safe-area-inset-bottom,0px))] z-[100] mx-auto w-auto max-w-sm rounded-2xl border border-black/10 bg-white/95 p-4 shadow-2xl backdrop-blur-xl sm:inset-x-auto sm:bottom-6 sm:left-6 sm:w-[22rem] sm:p-6"
+    >
       <button
         type="button"
         onClick={handleClose}
         aria-label="Close"
-        className="absolute right-3 top-3 grid size-8 place-items-center rounded-full text-charcoal/50 transition-colors hover:bg-black/5 hover:text-charcoal"
+        className="absolute right-2.5 top-2.5 grid size-9 place-items-center rounded-full text-charcoal/50 transition-colors hover:bg-black/5 hover:text-charcoal"
       >
         ×
       </button>
@@ -185,7 +202,7 @@ export function DownloadAppPopup() {
           <Download className="size-4" />
         </div>
         <div className="min-w-0 flex-1">
-          <h3 className="text-xl font-bold text-zed-950 mb-1">Install ZED Gift Shop</h3>
+          <h2 id="install-app-title" className="text-xl font-bold text-zed-950 mb-1">Install ZED Gift Shop</h2>
           <p className="text-charcoal/70 text-sm mb-3">
             Install the app to your home screen for quick access and push notifications.
           </p>

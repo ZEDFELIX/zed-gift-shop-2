@@ -7,6 +7,7 @@ import { usePathname, useRouter } from "next/navigation";
 import {
   ChevronDown,
   Clock,
+  Download,
   Heart,
   LogIn,
   Menu,
@@ -29,7 +30,7 @@ import {
 import { formatKES } from "@/lib/utils";
 import type { NavFeaturedMap, MenuFeatured } from "@/lib/data/storefront";
 import { SearchPanel } from "@/components/search/SearchPanel";
-import { DownloadAppButton } from "@/components/layout/DownloadAppButton";
+import { DownloadAppButton, useInstallPrompt } from "@/components/layout/DownloadAppButton";
 
 function openCart() {
   window.dispatchEvent(new CustomEvent("zed:open-cart"));
@@ -79,6 +80,14 @@ export function HeaderContent({
   const [searchQuery, setSearchQuery] = useState("");
   const navRef = useRef<HTMLDivElement>(null);
   const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const { installed: appInstalled, install: installApp } = useInstallPrompt();
+
+  async function handleInstallClick() {
+    const outcome = await installApp();
+    if (outcome === "unavailable") {
+      window.dispatchEvent(new CustomEvent("zed:show-install-help"));
+    }
+  }
 
   useEffect(() => {
     setMobileOpen(false);
@@ -423,11 +432,14 @@ export function HeaderContent({
 
       <SearchPanel open={searchOpen} onClose={() => setSearchOpen(false)} />
 
-      <nav aria-label="Mobile quick navigation" className="fixed inset-x-3 bottom-3 z-[60] grid grid-cols-4 rounded-2xl border border-edge bg-white p-1.5 shadow-glass-lg lg:hidden">
-        <Link href="/shop" className="flex flex-col items-center gap-0.5 px-2 py-2 text-[10px] font-semibold text-ink hover:text-rose-600"><ShoppingBag className="size-4" /><span>Shop</span></Link>
-        <button type="button" onClick={() => setSearchOpen(true)} className="flex flex-col items-center gap-0.5 px-2 py-2 text-[10px] font-semibold text-ink hover:text-rose-600"><Search className="size-4" /><span>Search</span></button>
-        <Link href="/wishlist" className="flex flex-col items-center gap-0.5 px-2 py-2 text-[10px] font-semibold text-ink hover:text-rose-600"><Heart className="size-4" /><span>Wishlist</span></Link>
-        <button type="button" onClick={openCart} className="relative flex flex-col items-center gap-0.5 px-2 py-2 text-[10px] font-semibold text-ink hover:text-rose-600"><ShoppingBag className="size-4" /><span>Cart</span>{cartCount > 0 && <span className="absolute right-3 top-1 grid min-w-4 place-items-center rounded-full bg-rose-500 px-1 text-[8px] text-white">{cartCount}</span>}</button>
+      <nav aria-label="Mobile quick navigation" className={`fixed inset-x-3 bottom-3 z-[60] grid ${appInstalled ? "grid-cols-4" : "grid-cols-5"} rounded-2xl border border-edge bg-white p-1.5 shadow-glass-lg lg:hidden`}>
+        <Link href="/shop" className="flex flex-col items-center gap-0.5 px-1 py-2 text-[10px] font-semibold text-ink hover:text-rose-600"><ShoppingBag className="size-4" /><span>Shop</span></Link>
+        <button type="button" onClick={() => setSearchOpen(true)} className="flex flex-col items-center gap-0.5 px-1 py-2 text-[10px] font-semibold text-ink hover:text-rose-600"><Search className="size-4" /><span>Search</span></button>
+        <Link href="/wishlist" className="flex flex-col items-center gap-0.5 px-1 py-2 text-[10px] font-semibold text-ink hover:text-rose-600"><Heart className="size-4" /><span>Wishlist</span></Link>
+        <button type="button" onClick={openCart} className="relative flex flex-col items-center gap-0.5 px-1 py-2 text-[10px] font-semibold text-ink hover:text-rose-600"><ShoppingBag className="size-4" /><span>Cart</span>{cartCount > 0 && <span className="absolute right-2 top-1 grid min-w-4 place-items-center rounded-full bg-rose-500 px-1 text-[8px] text-white">{cartCount}</span>}</button>
+        {!appInstalled && (
+          <button type="button" onClick={handleInstallClick} className="flex flex-col items-center gap-0.5 px-1 py-2 text-[10px] font-semibold text-ink hover:text-rose-600"><Download className="size-4" /><span>Install</span></button>
+        )}
       </nav>
     </>
   );
