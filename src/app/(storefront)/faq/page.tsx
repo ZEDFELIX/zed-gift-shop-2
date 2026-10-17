@@ -15,7 +15,7 @@ const faqs = [
  },
  {
  q: "How is delivery charged?",
- a: "Delivery is calculated at checkout based on your county and town, and shown before you pay. Same-day Nairobi delivery is a flat cost (free over the current threshold). You'll see the exact fee right in the checkout summary.",
+ a: "Delivery charges depend on your county and town and are confirmed by our team - call or WhatsApp us and we'll quote you before we dispatch. Same-day Nairobi delivery is available and the exact charge is confirmed with you before dispatch.",
  },
  {
  q: "Can I send a gift to someone else?",

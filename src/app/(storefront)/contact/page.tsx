@@ -1,11 +1,14 @@
 import Link from "next/link";
 import { Mail, MessageCircle, Phone, Clock, MessageSquareText } from "lucide-react";
 import { SITE } from "@/lib/constants";
+import { getSettings } from "@/lib/data/settings";
 import { ContactForm } from "@/components/contact/ContactForm";
 
 export const metadata = { title: "Contact Us | ZED Gift Shop", description: "Questions about an order, a custom gift, or bulk corporate orders? Get in touch with ZED Gift Shop by phone, WhatsApp or email." };
 
-export default function ContactPage() {
+export default async function ContactPage() {
+ const settings = await getSettings();
+ const hours = String(settings.hours ?? SITE.hours);
  return (
  <div className="container-zed py-12">
  <p className="eyebrow text-soft-sage">We&apos;re here to help</p>
@@ -41,12 +44,8 @@ export default function ContactPage() {
  <p className="flex items-center gap-2 font-display text-base font-bold text-[#07111F]">
  <Clock className="size-5 text-soft-sage" /> Opening hours
  </p>
- <ul className="mt-3 space-y-1.5 text-sm text-[#07111F]">
- <li className="flex justify-between"><span>Mon - Fri</span><span className="font-semibold">8:00am - 8:00pm</span></li>
- <li className="flex justify-between"><span>Saturday</span><span className="font-semibold">9:00am - 8:00pm</span></li>
- <li className="flex justify-between"><span>Sundays & holidays</span><span className="font-semibold">10:00am - 6:00pm</span></li>
- </ul>
- </div>
+  <p className="mt-3 text-sm font-semibold text-[#07111F]">{hours}</p>
+  </div>
 
  <div className="glass-panel rounded-zed p-6 text-sm text-[#07111F]">
  <p className="flex items-center gap-2 font-display text-base font-bold text-[#07111F]">

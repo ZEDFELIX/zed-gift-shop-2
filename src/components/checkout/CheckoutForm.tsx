@@ -69,12 +69,14 @@ export function CheckoutForm({
   user,
   sitePhone,
   bankTransferAvailable = false,
+  cardAvailable = false,
 }: {
   initialCart: CartView;
   counties: string[];
   user: UserPrefill;
   sitePhone: string;
   bankTransferAvailable?: boolean;
+  cardAvailable?: boolean;
 }) {
  const router = useRouter();
  const [cart, setCart] = useState<CartView>(initialCart);
@@ -608,7 +610,7 @@ function wizardReached(n: number): boolean {
   {wiz === 3 && (
   <>
   <h2 className="font-display text-lg font-bold text-[#07111F]">Delivery method</h2>
-  <p className="mt-1 text-xs text-[#334155]">Fees and promise dates come from our delivery zones for {[form.area, form.town, form.county].filter(Boolean).join(", ") || form.county}.</p>
+  <p className="mt-1 text-xs text-[#334155]">Choose how your gift is delivered for {[form.area, form.town, form.county].filter(Boolean).join(", ") || form.county}. We confirm the delivery charge with you before dispatch.</p>
   {form.county && (
   <div className="mt-5">
   {deliveryOptions.length === 0 ? (
@@ -633,7 +635,6 @@ function wizardReached(n: number): boolean {
   <p className="text-xs text-[#334155]">{opt.description}</p>
   </div>
   </div>
-  <p className="shrink-0 text-sm font-bold text-[#07111F]">{formatKES(opt.fee)}</p>
   </button>
   ))}
   </div>
@@ -672,6 +673,7 @@ function wizardReached(n: number): boolean {
  <p className="text-xs text-[#334155]">Pay instantly with your phone via M-PESA</p>
  </div>
  </button>
+ {cardAvailable && (
  <button
  type="button"
  onClick={() => setPaymentMethod("FLUTTERWAVE")}
@@ -684,7 +686,8 @@ function wizardReached(n: number): boolean {
  <p className="text-sm font-semibold text-[#07111F]">Card / Mobile Money</p>
  <p className="text-xs text-[#334155]">Pay with card or M-PESA via Flutterwave</p>
  </div>
-</button>
+ </button>
+ )}
   {bankTransferAvailable && (
   <button
   type="button"

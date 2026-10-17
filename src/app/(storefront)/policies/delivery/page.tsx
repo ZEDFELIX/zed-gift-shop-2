@@ -18,7 +18,7 @@ export default async function DeliveryPolicyPage() {
  <div className="mt-4 space-y-6 text-sm leading-relaxed text-[#07111F]">
  <div>
  <h3 className="font-semibold text-[#07111F]">Same-day Nairobi delivery</h3>
-  <p className="mt-1">Orders placed before 5:00pm are delivered the same day across Nairobi. Same-day is dispatched with our own riders, with live WhatsApp updates, at a flat rate of KES 600.</p>
+ <p className="mt-1">Orders placed before 5:00pm are delivered the same day across Nairobi. Same-day is dispatched with our own riders, with live WhatsApp updates. We confirm the delivery charge with you before we dispatch.</p>
  </div>
  <div>
  <h3 className="font-semibold text-[#07111F]">Countrywide delivery</h3>
@@ -29,7 +29,7 @@ export default async function DeliveryPolicyPage() {
  <p className="mt-1">Gifting to someone else? Enter their name and phone number at checkout and we&apos;ll deliver straight to them. The recipient will receive a call from the rider - no mention of the price, promise.</p>
  </div>
  <p className="flex items-center gap-2 rounded-zed glass-panel px-4 py-3 text-deep-olive">
- <MapPin className="size-5 flex-none" /> Delivery rates for your exact county and town are calculated at checkout before you pay.
+ <MapPin className="size-5 flex-none" /> Delivery charges for your county and town are confirmed by our team - call or WhatsApp us and we&apos;ll quote you before we dispatch your order.
  </p>
  </div>
  </section>
