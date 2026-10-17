@@ -9,6 +9,7 @@ import { getSetting } from "@/lib/data/settings";
 import { listApprovedReviews, ratingBreakdown } from "@/lib/data/reviews";
 import { buildMetadata, jsonLdBreadcrumb, jsonLdProduct } from "@/lib/seo";
 import { discountPercent, formatKES } from "@/lib/utils";
+import { SITE } from "@/lib/constants";
 import { ProductCard } from "@/components/product/ProductCard";
 import { ProductGallery } from "@/components/product/ProductGallery";
 import { ProductPurchase } from "@/components/product/ProductPurchase";
@@ -48,9 +49,16 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
  const sale = discountPercent(product.price, product.compareAtPrice);
  const inStock = !product.trackInventory || product.quantity > product.reservedQuantity;
  const totalStock = product.quantity - product.reservedQuantity;
- const personalizationFields = product.personalizationFieldsJson
- ? (JSON.parse(product.personalizationFieldsJson) as { key: string; label: string; type: string; required?: boolean; maxLength?: number }[])
- : [];
+  const personalizationFields = product.personalizationFieldsJson
+  ? (JSON.parse(product.personalizationFieldsJson) as { key: string; label: string; type: string; required?: boolean; maxLength?: number }[])
+  : [];
+
+  const primaryImage = product.images[0]?.url?.trim();
+  const whatsappImage = primaryImage
+  ? primaryImage.startsWith("http")
+  ? primaryImage
+  : `${SITE.url.replace(/\/$/, "")}${primaryImage.startsWith("/") ? "" : "/"}${primaryImage}`
+  : undefined;
 
  const breadcrumb = jsonLdBreadcrumb([
  { name: "Shop", path: "/shop" },
@@ -180,6 +188,7 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
   inStock={inStock}
   productName={product.name}
   whatsappNumber={typeof whatsappNumber === "string" && whatsappNumber.trim() ? whatsappNumber.trim() : "254711436169"}
+  productImage={whatsappImage}
   />
  </div>
 
