@@ -52,7 +52,7 @@ export default async function ProductCategoryPage({ params }: { params: Promise<
    </header>
 
    <section className="mt-8">
-    <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:gap-5">
+    <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4 lg:gap-5">
      {items.map((product) => (
       <Link
        key={product.id}
