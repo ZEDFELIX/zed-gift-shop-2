@@ -62,7 +62,7 @@ export default async function CardsPage() {
               Shop all gifts <ArrowRight className="size-4" />
             </Link>
           </div>
-          <div className="mt-6 grid grid-cols-2 gap-4 md:grid-cols-3">
+          <div className="mt-6 grid grid-cols-2 gap-4 lg:gap-5">
             {cards.map((p) => (
               <ProductCard key={p.id} product={p} />
             ))}
