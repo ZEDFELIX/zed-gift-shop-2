@@ -3,7 +3,8 @@ import Image from "next/image";
 import { adminListProducts } from "@/lib/data/products";
 import { formatKES } from "@/lib/utils";
 import { getCurrentUser } from "@/lib/auth";
-import { Plus, Search } from "lucide-react";
+import { CsvImportButton } from "@/components/admin/CsvImportButton";
+import { Download, Plus, Search } from "lucide-react";
 
 export const dynamic = "force-dynamic";
 export const metadata = { title: "Products | Admin" };
@@ -34,9 +35,18 @@ export default async function AdminProductsPage({ searchParams }: { searchParams
  <Search className="size-4" />
  </button>
  </form>
+ <div className="flex flex-wrap items-center gap-2">
+ <CsvImportButton />
+ <Link
+ href="/api/admin/products/export"
+ className="flex items-center gap-1.5 rounded-zed border border-edge bg-white px-4 py-2.5 text-sm font-semibold text-[#07111F] hover:border-soft-sage"
+ >
+ <Download className="size-4" /> Export CSV
+ </Link>
  <Link href="/admin/products/new" className="flex items-center gap-1.5 rounded-zed bg-zed-950 px-4 py-2.5 text-sm font-bold text-white">
  <Plus className="size-4" /> New product
  </Link>
+ </div>
  </div>
 
  <p className="text-sm text-[#334155]">{total} product{total === 1 ? "" : "s"}</p>
