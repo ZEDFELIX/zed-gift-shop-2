@@ -181,6 +181,22 @@ export async function sendOccasionReminder(input: { to: string; personName: stri
  return sendEmail({ to: input.to, subject, text, html: layout({ subject, text, html }).html });
 }
 
+/** Gentle nudge for an order that was placed but never paid. */
+export async function sendPaymentReminder(input: { to: string; orderNumber: string; statusUrl: string; items: { name: string; qty: number; lineTotal: string }[] }) {
+ const rows = input.items
+ .map((i) => `<tr><td style="padding:6px 0;">${escapeHtml(i.name)} x ${i.qty}</td><td style="padding:6px 0;text-align:right;">${escapeHtml(i.lineTotal)}</td></tr>`)
+ .join("");
+ const subject = `Complete your order ${input.orderNumber}`;
+ const text = `Your order ${input.orderNumber} is waiting. Finish payment here: ${input.statusUrl}`;
+ const html = `
+ <h2 style="margin:0 0 12px;">Your gift is waiting</h2>
+ <p style="margin:0 0 16px;">We have held order <strong>${input.orderNumber}</strong> but payment has not come through yet. Complete it to get your gift on its way.</p>
+ <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border-top:1px solid #eee;">${rows}</table>
+ <a href="${input.statusUrl}" style="display:inline-block;margin-top:16px;background:#0F5C4D;color:#ffffff;padding:12px 20px;border-radius:8px;text-decoration:none;font-weight:bold;">Complete your order</a>
+ <p style="margin:16px 0 0;font-size:12px;color:#888;">If you have already paid, ignore this - your order is being prepared.</p>`;
+ return sendEmail({ to: input.to, subject, text, html: layout({ subject, text, html }).html });
+}
+
 function escapeHtml(value: string): string {
  return value
  .replace(/&/g, "&amp;")

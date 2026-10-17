@@ -1,7 +1,7 @@
 import "server-only";
 
 import { prisma } from "@/lib/prisma";
-import { sendReviewRequest } from "@/lib/email";
+import { sendPaymentReminder, sendReviewRequest } from "@/lib/email";
 import { notifyAdmins } from "@/lib/notifications";
 import { SITE } from "@/lib/constants";
 import { logger } from "@/lib/logger";
@@ -76,6 +76,55 @@ export async function sendDueReviewRequests(): Promise<number> {
  sent += 1;
  } catch (error) {
  logger.error("cron.review_request_failed", {
+ orderId: order.id,
+ error: error instanceof Error ? error.message : String(error),
+ });
+ }
+ }
+ return sent;
+}
+
+/** Remind customers whose order was created but never paid, once each. */
+export async function sendAbandonedCheckoutReminders(): Promise<number> {
+ const now = Date.now();
+ const notBefore = new Date(now - 48 * DAY_MS);
+ const notAfter = new Date(now - 3 * DAY_MS);
+
+ const orders = await prisma.order.findMany({
+ where: {
+ orderStatus: "PENDING_PAYMENT",
+ paymentReminderAt: null,
+ email: { not: "" },
+ createdAt: { gte: notBefore, lte: notAfter },
+ },
+ select: {
+ id: true,
+ orderNumber: true,
+ email: true,
+ items: { select: { name: true, quantity: true, price: true } },
+ },
+ orderBy: { createdAt: "asc" },
+ take: 200,
+ });
+
+ let sent = 0;
+ for (const order of orders) {
+ try {
+ const statusUrl = `${SITE.url.replace(/\/$/, "")}/track?order=${order.orderNumber}`;
+ await sendPaymentReminder({
+ to: order.email,
+ orderNumber: order.orderNumber,
+ statusUrl,
+ items: order.items.map((i) => ({
+ name: i.name,
+ qty: i.quantity,
+ lineTotal: `${i.price * i.quantity}`,
+ })),
+ });
+ await prisma.order.update({ where: { id: order.id }, data: { paymentReminderAt: new Date() } });
+ sent += 1;
+ } catch (error) {
+ logger.error("cron.payment_reminder_failed", {
  orderId: order.id,
  error: error instanceof Error ? error.message : String(error),
  });

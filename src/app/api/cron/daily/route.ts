@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { sendDueReviewRequests, sendLowStockDigest } from "@/lib/cron";
+import { sendAbandonedCheckoutReminders, sendDueReviewRequests, sendLowStockDigest } from "@/lib/cron";
 import { logger } from "@/lib/logger";
 
 export const runtime = "nodejs";
@@ -23,9 +23,13 @@ export async function GET(req: Request) {
  return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
  }
 
- const [reviewRequests, lowStock] = await Promise.all([
+ const [reviewRequests, paymentReminders, lowStock] = await Promise.all([
  sendDueReviewRequests().catch((error) => {
  logger.error("cron.review_requests_error", { error: error instanceof Error ? error.message : String(error) });
+ return 0;
+ }),
+ sendAbandonedCheckoutReminders().catch((error) => {
+ logger.error("cron.payment_reminders_error", { error: error instanceof Error ? error.message : String(error) });
  return 0;
  }),
  sendLowStockDigest().catch((error) => {
@@ -34,5 +38,5 @@ export async function GET(req: Request) {
  }),
  ]);
 
- return NextResponse.json({ ok: true, reviewRequests, lowStock });
+ return NextResponse.json({ ok: true, reviewRequests, paymentReminders, lowStock });
 }

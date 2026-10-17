@@ -517,6 +517,8 @@ model Order {
   // Set once a post-delivery review-request email has been sent, so a customer
   // is only ever asked once per order.
   reviewRequestedAt DateTime?
+  // Set once an abandoned-checkout reminder has been sent.
+  paymentReminderAt DateTime?
   // Audit
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
