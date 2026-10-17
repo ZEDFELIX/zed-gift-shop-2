@@ -59,6 +59,7 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
   ? primaryImage
   : `${SITE.url.replace(/\/$/, "")}${primaryImage.startsWith("/") ? "" : "/"}${primaryImage}`
   : undefined;
+  const whatsappProductUrl = `${SITE.url.replace(/\/$/, "")}/product/${product.slug}`;
 
  const breadcrumb = jsonLdBreadcrumb([
  { name: "Shop", path: "/shop" },
@@ -189,6 +190,7 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
   productName={product.name}
   whatsappNumber={typeof whatsappNumber === "string" && whatsappNumber.trim() ? whatsappNumber.trim() : "254711436169"}
   productImage={whatsappImage}
+  productUrl={whatsappProductUrl}
   />
  </div>
 

@@ -1,10 +1,22 @@
+function resolveSiteUrl(): string {
+  const explicit = (process.env.NEXT_PUBLIC_SITE_URL ?? "").trim().replace(/\/$/, "");
+  const isLocal =
+    !explicit || /^(https?:\/\/)?(localhost|127\.0\.0\.1|0\.0\.0\.0)(:\d+)?$/i.test(explicit);
+  if (explicit && !isLocal) return explicit;
+  const production = (process.env.VERCEL_PROJECT_PRODUCTION_URL ?? "").trim();
+  if (production) return `https://${production.replace(/^https?:\/\//, "").replace(/\/$/, "")}`;
+  const preview = (process.env.VERCEL_URL ?? "").trim();
+  if (preview) return `https://${preview.replace(/^https?:\/\//, "").replace(/\/$/, "")}`;
+  return "https://zed-gift-shop-2.vercel.app";
+}
+
 export const SITE = {
   name: "ZED GIFT SHOP",
   shortName: "ZED GIFT SHOP",
   tagline: "Gifts For Every Occasion",
   description:
   "ZED Gift Shop is a trusted online gift shop in Nairobi offering premium, personalized and same-day gift delivery services across Kenya.",
-  url: (process.env.NEXT_PUBLIC_SITE_URL ?? "").trim() || (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "https://zed-gift-shop-2.vercel.app"),
+  url: resolveSiteUrl(),
   phone: "+254 711 436169",
   phoneDisplay: "0711 436 169",
   phoneHref: "tel:+254711436169",

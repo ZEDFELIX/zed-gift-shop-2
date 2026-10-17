@@ -22,6 +22,7 @@ export function ProductPurchase({
   productName,
   whatsappNumber,
   productImage,
+  productUrl,
 }: {
   productId: string;
   slug: string;
@@ -36,6 +37,7 @@ export function ProductPurchase({
   productName?: string;
   whatsappNumber?: string;
   productImage?: string;
+  productUrl?: string;
 }) {
  const router = useRouter();
  const [selections, setSelections] = useState<Record<string, string>>({});
@@ -316,8 +318,8 @@ export function ProductPurchase({
     <a
       href={`https://wa.me/${whatsappNumber}?text=${encodeURIComponent(
         `Hello ZED Gift Shop, I'd like to order: ${productName} - ${formatKES(price)} x ${quantity}${
-          productImage ? `\nPhoto: ${productImage}` : ""
-        }`,
+          productUrl ? `\n\nProduct: ${productUrl}` : ""
+        }${productImage ? `\nPhoto: ${productImage}` : ""}`,
       )}`}
       target="_blank"
       rel="noopener noreferrer"
