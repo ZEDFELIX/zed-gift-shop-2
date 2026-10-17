@@ -39,7 +39,7 @@ export function InventoryManager({ products }: { products: ProductRow[] }) {
  return (
  <div className="space-y-4">
  <input className="field w-full max-w-sm" placeholder="Search products..." value={q} onChange={(e) => setQ(e.target.value)} />
- <div className="overflow-hidden rounded-zed border border-edge bg-white">
+ <div className="overflow-x-auto rounded-zed border border-edge bg-white">
  <table className="w-full text-sm">
  <thead>
  <tr className="border-b border-edge bg-panel text-left text-xs uppercase tracking-wider text-[#334155]">
