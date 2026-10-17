@@ -7,6 +7,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { Gift, Minus, Plus, Trash2, X } from "lucide-react";
 import { formatKES } from "@/lib/utils";
 import { showToast } from "@/lib/toast";
+import { CompleteTheGiftUpsell } from "@/components/cart/CompleteTheGiftUpsell";
 
 type CartItemView = {
   id: string;
@@ -254,6 +255,7 @@ export function CartDrawer() {
                       </div>
                     </div>
                   ))}
+                  <CompleteTheGiftUpsell />
                 </div>
                 {/* Coupon */}
                 <div className="shrink-0 border-t border-white/60 bg-white/45 px-3 py-3 backdrop-blur-2xl sm:px-5">
