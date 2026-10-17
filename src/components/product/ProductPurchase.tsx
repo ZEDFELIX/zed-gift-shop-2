@@ -255,12 +255,31 @@ export function ProductPurchase({
  />
  )}
  </div>
- ))}
- </div>
- </div>
- )}
+      ))}
+    </div>
 
- {/* Gift wrap */}
+    {Object.values(personalization).some((v) => String(v).trim()) && (
+      <div className="mt-4 rounded-zed border border-soft-sage/40 bg-white p-3">
+        <p className="text-[11px] font-bold uppercase tracking-wider text-soft-sage">Live preview</p>
+        <div className="mt-2 flex items-center gap-3">
+          {productImage ? (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img src={productImage} alt="" className="size-20 shrink-0 rounded-lg object-cover" />
+          ) : null}
+          <div style={{ fontFamily: "Georgia, 'Times New Roman', serif" }} className="text-sm italic text-[#07111F]">
+            {personalizationFields.map((f) =>
+              personalization[f.key]?.trim() ? (
+                <p key={f.key} className="leading-snug">{personalization[f.key]}</p>
+              ) : null,
+            )}
+          </div>
+        </div>
+      </div>
+    )}
+  </div>
+  )}
+
+  {/* Gift wrap */}
  {giftWrapAvailable && (
  <div>
  <p className="label">Gift wrap (optional)</p>
