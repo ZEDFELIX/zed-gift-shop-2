@@ -31,7 +31,7 @@ export default async function DesignApprovalsPage() {
  );
 
  return (
- <div className="container-zed py-10 lg:py-14">
+ <div>
  <div className="flex flex-wrap items-end justify-between gap-4">
  <div>
  <p className="eyebrow">Design workflow</p>

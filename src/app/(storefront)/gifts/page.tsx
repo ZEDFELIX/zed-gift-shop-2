@@ -57,7 +57,7 @@ export default async function GiftsPage() {
       <Link
        key={c.title}
        href={c.href}
-       className="glass-card aspect-[4/5] overflow-hidden rounded-xl transition-transform hover:scale-105 group"
+       className="glass-card relative aspect-[4/5] overflow-hidden rounded-xl transition-transform hover:scale-105 group"
        style={{ backgroundImage: `url(${c.image})` }}
       >
        <span className="absolute inset-0 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-charcoal/70"></span>

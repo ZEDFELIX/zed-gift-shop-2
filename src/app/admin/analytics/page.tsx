@@ -107,15 +107,15 @@ export default async function AdminAnalyticsPage({
           ) : isAdmin ? (
             <ul className="mt-4 space-y-2.5">
               {series.map((s) => (
-                <li key={s.bucket} className="flex items-center gap-3 text-sm">
-                  <span className="w-24 shrink-0 text-xs text-[#334155]">
+                <li key={s.bucket} className="flex items-center gap-2 text-sm sm:gap-3">
+                  <span className="w-16 shrink-0 text-xs text-[#334155] sm:w-24">
                     {new Date(s.bucket).toLocaleDateString("en-KE", { day: "numeric", month: "short", year: "2-digit" })}
                   </span>
                   <span className="h-2.5 flex-1 overflow-hidden rounded-full bg-panel">
                     <span className="block h-full rounded-full bg-deep-olive" style={{ width: `${Math.round((s.revenue / maxRevenue) * 100)}%` }} />
                   </span>
-                  <span className="w-24 shrink-0 text-right font-semibold text-[#07111F]">{formatKES(s.revenue)}</span>
-                  <span className="w-10 shrink-0 text-right text-xs text-[#334155]">{s.orders}</span>
+                  <span className="w-16 shrink-0 text-right font-semibold text-[#07111F] sm:w-24">{formatKES(s.revenue)}</span>
+                  <span className="w-8 shrink-0 text-right text-xs text-[#334155] sm:w-10">{s.orders}</span>
                 </li>
               ))}
             </ul>

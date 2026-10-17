@@ -148,8 +148,8 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
  )}
  </div>
 
- <div className="mt-5 flex items-baseline gap-3">
- <p className="font-display text-4xl font-black text-[var(--color-ink)]">{formatKES(product.price)}</p>
+ <div className="mt-5 flex flex-wrap items-baseline gap-3">
+ <p className="font-display text-3xl font-black text-[var(--color-ink)] sm:text-4xl">{formatKES(product.price)}</p>
  {product.compareAtPrice != null && product.compareAtPrice > product.price && (
  <>
  <p className="text-xl text-[rgba(48,37,34,0.62)] line-through">{formatKES(product.compareAtPrice)}</p>

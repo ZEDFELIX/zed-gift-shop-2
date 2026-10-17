@@ -38,7 +38,7 @@ export function ReviewsManager({ reviews }: { reviews: ReviewRow[] }) {
 
  return (
  <div className="space-y-3">
- <div className="flex gap-2">
+ <div className="flex flex-wrap gap-2">
  {(["PENDING", "APPROVED", "REJECTED", "ALL"] as const).map((f) => (
  <button key={f} type="button" onClick={() => setFilter(f)}
  className={`rounded-zed px-4 py-2 text-sm font-semibold ${filter === f ? "bg-zed-950 text-white" : "border border-edge bg-white text-[#07111F] hover:border-soft-sage"}`}>

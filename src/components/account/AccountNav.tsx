@@ -25,7 +25,7 @@ export function AccountNav({ isAdmin = false }: { isAdmin?: boolean }) {
   <Link
   key={href}
   href={href}
-  className={`flex shrink-0 items-center gap-2 rounded-zed px-4 py-2.5 text-xs sm:text-sm font-semibold transition-colors ${active ? "bg-zed-950 text-white" : "text-[#07111F] hover:bg-white/50 hover:text-[#07111F]"}`}
+  className={`flex min-h-11 shrink-0 items-center gap-2 rounded-zed px-4 py-2.5 text-xs sm:text-sm font-semibold transition-colors ${active ? "bg-zed-950 text-white" : "text-[#07111F] hover:bg-white/50 hover:text-[#07111F]"}`}
   >
   <Icon className="size-4" /> {label}
   </Link>

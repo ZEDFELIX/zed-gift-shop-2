@@ -48,7 +48,7 @@ export function FlashSaleCountdown({
 
   if (status === "ended") {
     return (
-      <div className="flex shrink-0 items-center gap-1.5 rounded-full border border-white/80 bg-white/55 px-2.5 py-1.5 text-[10px] font-bold uppercase tracking-wider text-charcoal/70 shadow-sm backdrop-blur-xl sm:gap-2 sm:px-3 sm:text-[11px]">
+      <div className="flex shrink-0 items-center gap-1.5 rounded-full border border-white/80 bg-white/55 px-2.5 py-1.5 text-[11px] font-bold uppercase tracking-wider text-charcoal/70 shadow-sm backdrop-blur-xl sm:gap-2 sm:px-3 sm:text-[11px]">
         <span className="text-charcoal/60">Sale ended</span>
       </div>
     );
@@ -64,7 +64,7 @@ export function FlashSaleCountdown({
   const seconds = totalSeconds % 60;
 
   return (
-    <div className="flex shrink-0 items-center gap-1.5 rounded-full border border-white/80 bg-white/55 px-2.5 py-1.5 text-[10px] font-bold uppercase tracking-wider text-charcoal/70 shadow-sm backdrop-blur-xl sm:gap-2 sm:px-3 sm:text-[11px]">
+    <div className="flex shrink-0 items-center gap-1.5 rounded-full border border-white/80 bg-white/55 px-2.5 py-1.5 text-[11px] font-bold uppercase tracking-wider text-charcoal/70 shadow-sm backdrop-blur-xl sm:gap-2 sm:px-3 sm:text-[11px]">
       <span className="text-rose-600">{status === "upcoming" ? "Starts in" : "Ends in"}</span>
       <span className="rounded-md bg-rose-500 px-1.5 py-1 text-white tabular-nums">{pad(hours)}</span>
       <span>:</span>

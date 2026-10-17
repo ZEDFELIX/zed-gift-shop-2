@@ -58,7 +58,7 @@ export function ReviewForm({ productId }: { productId: string }) {
  onMouseEnter={() => setHover(star)}
  onClick={() => setRating(star)}
  aria-label={`${star} star${star === 1 ? "" : "s"}`}
- className="p-0.5"
+ className="p-2 sm:p-1"
  >
  <Star className={`size-7 ${star <= (hover || rating) ? "fill-zed-950 text-white" : "text-[#334155]"}`} />
  </button>

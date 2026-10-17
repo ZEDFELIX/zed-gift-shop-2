@@ -84,7 +84,7 @@ function TrackContent() {
     <div className="container-zed max-w-2xl py-14 lg:py-20">
       <header className="text-center">
         <p className="eyebrow text-rose-500">Where&apos;s my gift?</p>
-        <h1 className="mt-2 font-display text-3xl lg:text-5xl font-bold text-charcoal lg:text-6xl">
+        <h1 className="mt-2 font-display text-3xl sm:text-4xl lg:text-6xl font-bold text-charcoal">
           Track your order
         </h1>
         <p className="mt-2 text-sm text-charcoal/500">
@@ -92,7 +92,7 @@ function TrackContent() {
         </p>
       </header>
 
-      <form onSubmit={lookup} className="glass-card mt-8 rounded-xl p-6">
+      <form onSubmit={lookup} className="glass-card mt-8 space-y-4 rounded-xl p-6">
         <div>
           <label className="label text-sm uppercase tracking-wider text-charcoal/40 mb-2">
             Order number
@@ -183,7 +183,7 @@ function TrackContent() {
                   key={s}
                   className={`relative rounded-xl border ${i <= currentIndex ? "border-rose-200 bg-rose-50" : "border-white/30 bg-white/30 text-charcoal"}`}
                 >
-                  <span className="text-[10px] font-bold uppercase tracking-widest text-charcoal/40">
+                  <span className="text-xs font-bold uppercase tracking-widest text-charcoal/40">
                     {ORDER_STATUS_STEPS[i].label}
                   </span>
                   {i <= currentIndex && <span className="mt-1 block size-2 rounded-full bg-rose-100" />}

@@ -63,7 +63,7 @@ export default async function AdminCustomerPage({ params }: { params: Promise<{ 
       <section className="rounded-zed border border-edge bg-white">
         <h2 className="border-b border-edge p-4 font-display text-base font-bold text-[#07111F]">Recent orders</h2>
         <div className="overflow-x-auto">
-          <table className="w-full text-sm">
+          <table className="w-full min-w-[640px] text-sm">
             <thead>
               <tr className="border-b border-edge bg-panel text-left text-xs uppercase tracking-wider text-[#334155]">
                 <th className="p-3">Order</th>

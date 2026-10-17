@@ -111,7 +111,7 @@ export function CategoriesManager({ kind, initial }: { kind: string; initial: Se
       </form>
 
       <div className="overflow-x-auto rounded-zed border border-edge bg-white">
-        <table className="w-full text-sm">
+        <table className="w-full min-w-[640px] text-sm">
           <thead>
             <tr className="border-b border-edge bg-panel text-left text-xs uppercase tracking-wider text-[#334155]">
               <th className="p-3">Name</th>

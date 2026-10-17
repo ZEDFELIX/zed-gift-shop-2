@@ -255,7 +255,7 @@ placeholder={String(minPrice).length > 0 ? String(minPrice) : "Min"}
         type="button"
         onClick={() => setFiltersOpen(false)}
         aria-label="Close filters"
-        className="grid size-9 place-items-center rounded-xl hover:bg-charcoal/5">
+        className="grid size-9 place-items-center rounded-xl hover:bg-charcoal/5 sm:size-11">
         <X className="size-4.5" />
        </button>
       </div>

@@ -43,7 +43,7 @@ export default function TermsPage() {
  <p className="mt-3 text-sm leading-relaxed text-[#07111F]">To the maximum extent permitted by law, {SITE.name}&apos;s liability is limited to the amount you paid for the affected order. Nothing here limits liability that cannot be excluded under Kenyan law.</p>
 
  <Heading n={7} t="Governing law" />
- <p className="mt-3 text-sm leading-relaxed text-[#07111F]">These terms are governed by the laws of the Republic of Kenya, and any disputes will be handled in the courts of Kenya. Questions? <a className="text-soft-sage underline" href={`mailto:${SITE.email}`}>{SITE.email}</a></p>
+ <p className="mt-3 text-sm leading-relaxed text-[#07111F]">These terms are governed by the laws of the Republic of Kenya, and any disputes will be handled in the courts of Kenya. Questions? <a className="break-all text-soft-sage underline" href={`mailto:${SITE.email}`}>{SITE.email}</a></p>
  </div>
  );
 }

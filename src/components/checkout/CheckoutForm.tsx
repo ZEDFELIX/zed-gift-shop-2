@@ -838,7 +838,7 @@ function wizardReached(n: number): boolean {
   >
   Back to edit details
   </button>
-  <p className="mt-3 text-center text-[11px] leading-relaxed text-[#334155]">
+      <p className="mt-3 text-center text-xs leading-relaxed text-[#334155]">
   By placing this order you agree to our delivery &amp; returns policy.
   </p>
   </div>
@@ -1089,7 +1089,7 @@ function wizardReached(n: number): boolean {
   {paymentMethod === "FLUTTERWAVE" ? "Pay securely with card or mobile money." : paymentMethod === "COD" ? "Pay the rider in cash on delivery." : paymentMethod === "BANK_TRANSFER" ? "Pay by bank transfer, then we dispatch." : "You approve with your M-PESA PIN - no card details on the site. Refunds are processed via M-PESA."}
   </span>
  </div>
- <p className="mt-3 text-[11px] leading-relaxed text-[#334155]">
+      <p className="mt-3 text-xs leading-relaxed text-[#334155]">
  Need help? WhatsApp {sitePhone}. By placing this order you agree to our delivery &amp; returns policy.
  </p>
  </div>

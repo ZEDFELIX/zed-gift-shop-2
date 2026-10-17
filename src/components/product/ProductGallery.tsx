@@ -100,7 +100,7 @@ export function ProductGallery({
         type="button"
         onClick={() => setZoomed((z) => !z)}
         aria-label={zoomed ? "Zoom out" : "Zoom in"}
-        className="absolute bottom-4 right-4 grid size-9 place-items-center rounded-full bg-white/85 text-[#07111F] shadow transition-colors hover:bg-white"
+        className="absolute bottom-4 right-4 grid size-9 place-items-center rounded-full bg-white/85 text-[#07111F] shadow transition-colors hover:bg-white sm:size-11"
       >
         <Expand className="size-4" />
       </button>
@@ -111,7 +111,7 @@ export function ProductGallery({
             type="button"
             onClick={() => go(-1)}
             aria-label="Previous photo"
-            className="absolute left-3 top-1/2 grid size-9 -translate-y-1/2 place-items-center rounded-full bg-white/85 text-[#07111F] shadow transition-colors hover:bg-white"
+            className="absolute left-3 top-1/2 grid size-9 -translate-y-1/2 place-items-center rounded-full bg-white/85 text-[#07111F] shadow transition-colors hover:bg-white sm:size-11"
           >
             <ChevronLeft className="size-5" />
           </button>
@@ -119,11 +119,11 @@ export function ProductGallery({
             type="button"
             onClick={() => go(1)}
             aria-label="Next photo"
-            className="absolute right-3 top-1/2 grid size-9 -translate-y-1/2 place-items-center rounded-full bg-white/85 text-[#07111F] shadow transition-colors hover:bg-white"
+            className="absolute right-3 top-1/2 grid size-9 -translate-y-1/2 place-items-center rounded-full bg-white/85 text-[#07111F] shadow transition-colors hover:bg-white sm:size-11"
           >
             <ChevronRight className="size-5" />
           </button>
-          <div className="absolute bottom-4 left-1/2 flex -translate-x-1/2 gap-1.5">
+          <div className="absolute bottom-4 left-1/2 flex -translate-x-1/2 items-center gap-2">
             {uniq.map((img, i) => (
               <button
                 key={`${img.url}-dot-${i}`}
@@ -133,8 +133,10 @@ export function ProductGallery({
                   if (el) el.scrollTo({ left: i * el.clientWidth, behavior: "smooth" });
                 }}
                 aria-label={`Go to photo ${i + 1}`}
-                className={`h-1.5 rounded-full transition-all ${i === index ? "w-6 bg-zed-950" : "w-1.5 bg-charcoal/30 hover:bg-charcoal/50"}`}
-              />
+                className="grid h-3 min-h-0! min-w-0! place-items-center"
+              >
+                <span className={`block h-1.5 rounded-full transition-all ${i === index ? "w-6 bg-zed-950" : "w-1.5 bg-charcoal/30"}`} />
+              </button>
             ))}
           </div>
         </>

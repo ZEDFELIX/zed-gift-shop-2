@@ -46,7 +46,7 @@ export function DeleteAccountForm({ email }: { email: string }) {
       <form onSubmit={onDelete} className="mt-5 space-y-3">
         <div>
           <label className="label" htmlFor="delete-confirm">
-            Type your email (<span className="font-semibold">{email}</span>) to confirm
+            Type your email (<span className="break-all font-semibold">{email}</span>) to confirm
           </label>
           <input
             id="delete-confirm"

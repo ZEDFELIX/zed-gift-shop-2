@@ -49,7 +49,7 @@ export default async function DeliveryPolicyPage() {
  <h3 className="font-semibold text-[#07111F]">How refunds work</h3>
  <p className="mt-1">Approved refunds are sent back to the M-PESA account used for payment. Refunds are processed within 5 working days after the returned item is received by us.</p>
  </div>
-  <p className="text-[#334155]">Questions? Call or WhatsApp <a className="font-semibold text-soft-sage underline" href={policyPhoneHref}>{policyPhone}</a>.</p>
+  <p className="break-words text-[#334155]">Questions? Call or WhatsApp <a className="break-all font-semibold text-soft-sage underline" href={policyPhoneHref}>{policyPhone}</a>.</p>
  </div>
  </section>
 

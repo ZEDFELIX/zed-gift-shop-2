@@ -85,7 +85,7 @@ export async function ListingPage({
         />
       )}
       <header className="mb-3 flex items-center justify-between gap-2 sm:mb-5 sm:gap-3">
-        <h1 className="min-w-0 font-display text-xl font-bold leading-tight text-[var(--color-ink)] sm:text-3xl">
+        <h1 className="min-w-0 break-words font-display text-xl font-bold leading-tight text-[var(--color-ink)] sm:text-3xl">
           {title}
         </h1>
         <Suspense fallback={null}>

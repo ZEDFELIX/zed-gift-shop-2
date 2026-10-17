@@ -11,7 +11,7 @@ export default function PrivacyPage() {
  <div className="container-zed max-w-3xl py-12">
  <p className="eyebrow text-soft-sage">Policies | Last updated {new Date().toDateString()}</p>
  <h1 className="mt-2 font-display text-4xl font-black text-[#07111F]">Privacy Policy</h1>
- <p className="mt-4 text-[#07111F]">This policy explains what we collect, why, and the choices you have. It applies to {SITE.name} ({SITE.url}).</p>
+ <p className="mt-4 break-words text-[#07111F]">This policy explains what we collect, why, and the choices you have. It applies to {SITE.name} ({SITE.url}).</p>
 
  <Heading n={1} t="What we collect" />
  <ul className="mt-3 list-disc space-y-2 pl-5 text-sm leading-relaxed text-[#07111F]">
@@ -41,7 +41,7 @@ export default function PrivacyPage() {
  </ul>
 
  <Heading n={5} t="Security" />
- <p className="mt-3 text-sm leading-relaxed text-[#07111F]">Your information travels over encrypted connections, passwords are hashed, and access is limited to what each role needs. Questions about privacy? Write to <a className="text-soft-sage underline" href={`mailto:${SITE.email}`}>{SITE.email}</a>.</p>
+ <p className="mt-3 text-sm leading-relaxed text-[#07111F]">Your information travels over encrypted connections, passwords are hashed, and access is limited to what each role needs. Questions about privacy? Write to <a className="break-all text-soft-sage underline" href={`mailto:${SITE.email}`}>{SITE.email}</a>.</p>
  </div>
  );
 }

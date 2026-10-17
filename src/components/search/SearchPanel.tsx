@@ -119,9 +119,9 @@ export function SearchPanel({ open, onClose }: { open: boolean; onClose: () => v
  }}
  placeholder="Search gifts, occasions, recipients..."
  aria-label="Search products"
- className="w-full border-none bg-transparent text-lg text-[#07111F] placeholder:text-[#334155] focus:outline-none"
+ className="min-w-0 flex-1 border-none bg-transparent text-lg text-[#07111F] placeholder:text-[#334155] focus:outline-none"
  />
- <button type="button" onClick={onClose} aria-label="Close search" className="grid size-9 shrink-0 place-items-center rounded-zed hover:bg-zed-900/5">
+ <button type="button" onClick={onClose} aria-label="Close search" className="grid size-9 shrink-0 place-items-center rounded-zed hover:bg-zed-900/5 sm:size-11">
  <X className="size-5" />
  </button>
  </form>

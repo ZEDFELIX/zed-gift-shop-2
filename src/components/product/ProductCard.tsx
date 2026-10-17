@@ -47,7 +47,7 @@ export function ProductCard({
         >
           <div className="relative w-full h-full overflow-hidden bg-white transition-transform duration-500">
             {badge && (
-              <span className={`absolute left-2 top-2 z-10 rounded-full px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide shadow ${badge.cls}`}>
+              <span className={`absolute left-2 top-2 z-10 rounded-full px-2 py-0.5 text-[11px] font-bold uppercase tracking-wide shadow ${badge.cls}`}>
                 {badge.label}
               </span>
             )}
@@ -71,7 +71,7 @@ export function ProductCard({
       <div className="flex flex-col flex-1 p-2.5 sm:p-3">
         <div className="mb-1 flex items-center justify-between gap-2">
           <p className="hidden">{product.categories[0]?.category.name ?? "Gift"}</p>
-          <span className="text-[0.65rem] text-charcoal/60">
+          <span className="text-[11px] text-charcoal/60">
             <Star className="size-2 fill-rose-400" />
             {product.ratingAverage.toFixed(1)}
             <span className="text-charcoal/40 hidden sm:inline">({product.ratingCount})</span>
@@ -85,15 +85,15 @@ export function ProductCard({
         </h3>
 
         {product.shortDescription ? (
-          <p className="mt-1 text-[0.65rem] leading-relaxed text-charcoal/60 line-clamp-2">
+          <p className="mt-1 text-[11px] leading-relaxed text-charcoal/60 line-clamp-2">
             {product.shortDescription}
           </p>
         ) : null}
 
-        <div className="mt-1.5 flex items-baseline gap-1.5">
+        <div className="mt-1.5 flex flex-wrap items-baseline gap-x-1.5">
           <p className="text-[14px] font-bold text-charcoal-950">{formatKES(product.price)}</p>
           {product.compareAtPrice != null && product.compareAtPrice > product.price ? (
-            <p className="text-xs text-charcoal/40 line-through">
+            <p className="min-w-0 text-xs text-charcoal/40 line-through">
               {formatKES(product.compareAtPrice)}
             </p>
           ) : null}
@@ -105,7 +105,7 @@ export function ProductCard({
           ) : (
             <Link
               href={`/product/${product.slug}`}
-              className="mt-1 flex items-center justify-center gap-1 border border-edge px-2 py-1.5 text-center text-[11px] font-semibold text-charcoal transition-colors hover:border-rose-300 hover:text-rose-600"
+              className="mt-1 flex min-h-11 items-center justify-center gap-1 border border-edge px-2 py-1.5 text-center text-[11px] font-semibold text-charcoal transition-colors hover:border-rose-300 hover:text-rose-600"
             >
               {personalizable ? (
                 <>
@@ -117,7 +117,7 @@ export function ProductCard({
             </Link>
           )}
           {lowStock && (
-            <p className="mt-1 text-[0.55rem] font-medium text-rose-500">
+            <p className="mt-1 text-[11px] font-medium text-rose-500">
               Only {product.quantity - product.reservedQuantity} left
             </p>
           )}

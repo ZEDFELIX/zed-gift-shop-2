@@ -138,7 +138,7 @@ export function CartDrawer() {
             aria-hidden
           />
           <div
-            className="zed-glass-cart fixed inset-y-0 left-0 flex h-dvh w-[min(94vw,430px)] max-w-md flex-col overflow-hidden border-r border-white/70 bg-white/55 shadow-[24px_0_70px_-35px_rgba(42,31,45,.38)] backdrop-blur-3xl transform transition-transform duration-300 ease-in-out sm:static sm:shadow-2xl"
+            className="zed-glass-cart fixed inset-y-0 left-0 flex h-dvh w-[min(94vw,430px)] max-w-md flex-col overflow-hidden border-r border-white/70 bg-white/55 shadow-[24px_0_70px_-35px_rgba(42,31,45,.38)] backdrop-blur-3xl transform transition-transform duration-300 ease-in-out"
           >
             <header className="flex shrink-0 items-center justify-between border-b border-white/70 bg-white/45 px-4 py-4 backdrop-blur-2xl sm:px-5">
               <h2 className="font-display text-lg font-bold text-charcoal">
@@ -146,7 +146,8 @@ export function CartDrawer() {
               </h2>
               <button
                 onClick={() => setOpen(false)}
-                className="p-2 rounded-lg hover:bg-charcoal/5"
+                aria-label="Close cart"
+                className="grid size-11 place-items-center rounded-lg hover:bg-charcoal/5"
               >
                 <X className="size-5" />
               </button>
@@ -241,7 +242,7 @@ export function CartDrawer() {
                           </div>
                           <div className="text-right">
                             {item.compareAt != null && item.compareAt > item.price && (
-                              <p className="text-[10px] text-charcoal/40 line-through">
+                              <p className="text-[11px] text-charcoal/40 line-through">
                                 {formatKES(item.compareAt)}
                               </p>
                             )}
@@ -310,7 +311,7 @@ export function CartDrawer() {
                       <dt>Total</dt>
                       <dd>{formatKES(cart.total)}</dd>
                     </div>
-                    <p className="mt-1 text-[10px] text-charcoal/400">Delivery calculated at checkout.</p>
+                    <p className="mt-1 text-[11px] text-charcoal/400">Delivery calculated at checkout.</p>
                     <Link
                       href="/checkout"
                       onClick={() => setOpen(false)}

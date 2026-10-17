@@ -82,7 +82,7 @@ export function AddressBook() {
 
  return (
  <div className="space-y-4">
- <div className="flex items-center justify-between">
+ <div className="flex flex-wrap items-center justify-between gap-2">
  <p className="text-sm text-[#334155]">{addresses.length} saved address{addresses.length === 1 ? "" : "es"}</p>
  <button type="button" onClick={() => setShowForm((s) => !s)} className="flex items-center gap-1.5 rounded-zed bg-zed-950 px-4 py-2.5 text-sm font-bold text-white">
  <Plus className="size-4" /> {showForm ? "Cancel" : "Add address"}
@@ -147,7 +147,7 @@ export function AddressBook() {
  <div>
  <p className="flex items-center gap-2 font-semibold text-[#07111F]">
  {a.label ?? a.fullName}
- {a.isDefault && <span className="flex items-center gap-1 rounded-full bg-warm-white px-2 py-0.5 text-[11px] font-bold text-deep-olive"><Star className="size-3" /> Default</span>}
+ {a.isDefault && <span className="flex items-center gap-1 rounded-full bg-warm-white px-2 py-0.5 text-xs font-bold text-deep-olive"><Star className="size-3" /> Default</span>}
  </p>
  <p className="mt-1 text-sm text-[#334155]">{a.address}{a.building ? `, ${a.building}` : ""}{a.apartment ? `, ${a.apartment}` : ""}</p>
  <p className="text-sm text-[#334155]">{a.town}, {a.county}</p>

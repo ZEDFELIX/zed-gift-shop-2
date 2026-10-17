@@ -25,7 +25,7 @@ export default async function AdminProductsPage({ searchParams }: { searchParams
  <option value="DRAFT">Draft</option>
  <option value="ARCHIVED">Archived</option>
  </select>
- <button type="submit" className="rounded-zed border border-edge bg-white px-4 text-sm font-semibold text-[#07111F] hover:border-soft-sage">
+ <button type="submit" aria-label="Search products" className="grid place-items-center rounded-zed border border-edge bg-white px-4 py-2.5 text-sm font-semibold text-[#07111F] hover:border-soft-sage">
  <Search className="size-4" />
  </button>
  </form>
@@ -37,7 +37,7 @@ export default async function AdminProductsPage({ searchParams }: { searchParams
  <p className="text-sm text-[#334155]">{total} product{total === 1 ? "" : "s"}</p>
 
  <div className="overflow-x-auto rounded-zed border border-edge bg-white">
- <table className="w-full text-sm">
+ <table className="w-full min-w-[640px] text-sm">
  <thead>
  <tr className="border-b border-edge bg-panel text-left text-xs uppercase tracking-wider text-[#334155]">
  <th className="p-3">Product</th>
@@ -83,7 +83,7 @@ export default async function AdminProductsPage({ searchParams }: { searchParams
  </div>
 
  {pages > 1 && (
- <div className="flex items-center justify-center gap-2 text-sm">
+ <div className="flex flex-wrap items-center justify-center gap-2 text-sm">
  {Array.from({ length: pages }, (_, i) => i + 1).map((n) => (
  <Link key={n} href={`?page=${n}${q ? `&q=${encodeURIComponent(q)}` : ""}${status ? `&status=${status}` : ""}`}
  className={`rounded-zed px-3 py-1.5 font-semibold ${n === current ? "bg-zed-950 text-white" : "bg-panel text-[#334155] hover:bg-panel/70"}`}>

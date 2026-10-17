@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { FileText, ReceiptText } from "lucide-react";
 
 const linkClass =
-  "inline-flex items-center gap-1.5 rounded-zed border border-edge bg-white/60 px-3.5 py-2 text-xs font-bold text-[#07111F] transition-colors hover:border-soft-sage";
+  "inline-flex min-h-11 items-center gap-1.5 rounded-zed border border-edge bg-white/60 px-3.5 py-2 text-xs font-bold text-[#07111F] transition-colors hover:border-soft-sage";
 
 /**
  * Invoice / receipt PDF download links for an order.

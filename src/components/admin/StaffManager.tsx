@@ -83,17 +83,17 @@ export function StaffManager({ staff, canAdd }: { staff: StaffRow[]; canAdd: boo
   <ul className="space-y-3">
   {error && !showForm && <p className="rounded-zed bg-red-50 px-4 py-3 text-sm text-red-700">{error}</p>}
   {staff.map((s) => (
-  <li key={s.id} className="flex items-center justify-between rounded-zed border border-edge bg-white p-5">
-  <div className="flex items-center gap-3">
+  <li key={s.id} className="flex items-center justify-between gap-3 rounded-zed border border-edge bg-white p-5">
+  <div className="flex min-w-0 items-center gap-3">
   <span className="grid size-10 place-items-center rounded-full bg-warm-white text-deep-olive">
   <ShieldCheck className="size-5" />
   </span>
-  <div>
+  <div className="min-w-0">
   <p className="font-semibold text-[#07111F]">
   {s.name}
-  <span className={`ml-2 rounded-full px-2 py-0.5 text-[10px] font-bold ${s.role === "ADMIN" ? "bg-zed-950 text-white" : "bg-warm-white text-deep-olive"}`}>{s.role}</span>
+  <span className={`ml-2 rounded-full px-2 py-0.5 text-xs font-bold ${s.role === "ADMIN" ? "bg-zed-950 text-white" : "bg-warm-white text-deep-olive"}`}>{s.role}</span>
   </p>
-  <p className="text-sm text-[#334155]">{s.email} | joined {new Date(s.createdAt).toLocaleDateString("en-KE")}</p>
+  <p className="truncate text-sm text-[#334155]">{s.email} | joined {new Date(s.createdAt).toLocaleDateString("en-KE")}</p>
   </div>
   </div>
   {canAdd && (

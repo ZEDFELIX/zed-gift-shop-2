@@ -155,7 +155,7 @@ export default function GiftBuilder() {
  setOccasion(o.value);
  setStep(1);
  }}
- className="glass-card group rounded-zed p-6 text-left transition-all hover:-translate-y-1 hover:shadow-glass-lg"
+ className="glass-card group rounded-zed p-4 text-left transition-all hover:-translate-y-1 hover:shadow-glass-lg sm:p-6"
  >
  <span className="text-3xl">{o.emoji}</span>
  <p className="mt-3 font-display font-bold text-[#07111F]">{o.label}</p>
@@ -287,7 +287,7 @@ export default function GiftBuilder() {
 
  {/* Selection tray */}
  {selectedItems.length > 0 && (
- <div className="sticky bottom-4 mt-8 rounded-zed bg-zed-950 p-4 text-white shadow-raised">
+ <div className="sticky bottom-[calc(4.75rem+env(safe-area-inset-bottom,0px))] z-[65] mt-8 rounded-zed bg-zed-950 p-4 text-white shadow-raised">
  <div className="flex flex-wrap items-center justify-between gap-4">
  <div className="min-w-0">
  <p className="flex items-center gap-2 text-sm font-bold">
@@ -295,11 +295,11 @@ export default function GiftBuilder() {
  </p>
  <p className="mt-0.5 text-xs text-white/70">Estimated total {formatKES(total)}</p>
  </div>
- <div className="flex gap-2">
+ <div className="flex w-full gap-2 sm:w-auto">
  <button
  type="button"
  onClick={() => setSelected(new Set())}
- className="rounded-zed border border-white/25 px-4 py-2.5 text-sm font-semibold text-white hover:border-zed-900 hover:text-white"
+ className="flex-1 rounded-zed border border-white/25 px-4 py-2.5 text-sm font-semibold text-white hover:border-zed-900 hover:text-white sm:flex-none"
  >
  Clear
  </button>
@@ -307,7 +307,7 @@ export default function GiftBuilder() {
  type="button"
  onClick={addSelected}
  disabled={adding || selectedItems.length > 5}
- className="rounded-zed bg-zed-950 px-5 py-2.5 text-sm font-bold text-white transition-colors hover:bg-white disabled:opacity-50"
+ className="flex-1 rounded-zed bg-zed-950 px-5 py-2.5 text-sm font-bold text-white transition-colors hover:bg-white disabled:opacity-50 sm:flex-none"
  >
  {adding ? "Adding..." : `Add to cart | ${formatKES(total)}`}
  </button>

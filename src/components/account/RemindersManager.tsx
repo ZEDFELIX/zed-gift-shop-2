@@ -90,7 +90,7 @@ export function RemindersManager() {
 
  return (
  <div className="space-y-4">
- <div className="flex items-center justify-between">
+ <div className="flex flex-wrap items-center justify-between gap-2">
  <p className="text-sm text-[#334155]">Never miss a day - sit back, we&apos;ll remind you.</p>
  <button type="button" onClick={() => setShowForm((s) => !s)} className="flex items-center gap-1.5 rounded-zed bg-zed-950 px-4 py-2.5 text-sm font-bold text-white">
  <Plus className="size-4" /> {showForm ? "Cancel" : "Add reminder"}
@@ -148,10 +148,10 @@ export function RemindersManager() {
  <span className="grid size-10 shrink-0 place-items-center rounded-full bg-warm-white text-deep-olive">
  <Calendar className="size-5" />
  </span>
- <div>
+ <div className="min-w-0 break-words">
  <p className="font-semibold text-[#07111F]">
  {r.personName}
- <span className="ml-2 rounded-full bg-panel px-2 py-0.5 text-[11px] font-bold text-deep-olive">{OCCASION_LABELS[r.occasion] ?? r.occasion}</span>
+ <span className="ml-2 rounded-full bg-panel px-2 py-0.5 text-xs font-bold text-deep-olive">{OCCASION_LABELS[r.occasion] ?? r.occasion}</span>
  </p>
  <p className="mt-0.5 text-sm text-[#334155]">
  <span className="font-semibold text-soft-sage">{upcomingLabel(r.date)}</span> | every year{r.relationship ? ` | ${r.relationship}` : ""}

@@ -52,12 +52,12 @@ function Section({ title, products, href, flash = false, swipe = false, flashSal
             {href && <Link href={href} className="shrink-0 rounded-md bg-white px-3 py-1.5 text-xs font-bold text-orange-600 shadow-sm transition-colors hover:bg-orange-50">See all</Link>}
           </div>
         </div>
-        <div className="mb-2 flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider opacity-65" style={{ color: textColor }}>
+        <div className="mb-2 flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wider opacity-65" style={{ color: textColor }}>
           Swipe to explore <ArrowRight className="size-3.5" />
         </div>
         <div className="flex snap-x snap-mandatory gap-2 overflow-x-auto overscroll-x-contain rounded-lg pb-2 touch-auto scrollbar-none">
           {products.map((product) => (
-            <div key={product.id} className="w-[30vw] min-w-[30vw] shrink-0 snap-start sm:w-[240px] sm:min-w-[240px] lg:w-[260px] lg:min-w-[260px]">
+            <div key={product.id} className="w-[45vw] min-w-[45vw] shrink-0 snap-start sm:w-[240px] sm:min-w-[240px] lg:w-[260px] lg:min-w-[260px]">
               <ProductCard product={product} />
             </div>
           ))}
@@ -75,7 +75,7 @@ function Section({ title, products, href, flash = false, swipe = false, flashSal
         </div>
       </div>
       {swipe && (
-        <div className="mb-2 flex items-center gap-1.5 text-[10px] font-semibold text-charcoal/50">
+        <div className="mb-2 flex items-center gap-1.5 text-[11px] font-semibold text-charcoal/50">
           Swipe to explore <ArrowRight className="size-3.5" />
         </div>
       )}
@@ -83,7 +83,7 @@ function Section({ title, products, href, flash = false, swipe = false, flashSal
         ? "flex snap-x snap-mandatory gap-2 overflow-x-auto overscroll-x-contain pb-2 touch-auto scrollbar-none"
         : "grid grid-cols-2 gap-2.5 sm:grid-cols-3 sm:gap-3 lg:grid-cols-4"}>
         {products.map((product) => (
-          <div key={product.id} className={swipe ? "w-[30vw] min-w-[30vw] shrink-0 snap-start sm:w-[240px] sm:min-w-[240px] lg:w-[260px] lg:min-w-[260px]" : ""}>
+          <div key={product.id} className={swipe ? "w-[45vw] min-w-[45vw] shrink-0 snap-start sm:w-[240px] sm:min-w-[240px] lg:w-[260px] lg:min-w-[260px]" : ""}>
             <ProductCard product={product} />
           </div>
         ))}

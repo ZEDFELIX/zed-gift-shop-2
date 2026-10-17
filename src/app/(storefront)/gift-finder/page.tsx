@@ -32,7 +32,7 @@ export default async function GiftFinderPage({
  <div className="container-zed py-10 lg:py-14">
  <header className="mb-8">
  <p className="eyebrow">Smart Gift Finder</p>
- <h1 className="mt-2 font-display text-3xl font-bold text-[#07111F] lg:text-4xl">
+ <h1 className="mt-2 break-words font-display text-3xl font-bold text-[#07111F] lg:text-4xl">
  {sp.q ? `Results for "${sp.q}"` : "Find the perfect gift"}
  </h1>
  <p className="mt-2 text-sm text-[#334155]">

@@ -338,7 +338,7 @@ export function ProductForm({ product, categories, collections }: { product?: Pr
   ) : (
   <ul className="mt-3 space-y-3">
   {p13n.map((f, i) => (
-  <li key={i} className="grid gap-3 rounded-zed glass-panel p-3 sm:grid-cols-[1fr_130px_110px_90px_auto]">
+  <li key={i} className="grid gap-3 rounded-zed glass-panel p-3 sm:grid-cols-2 lg:grid-cols-[1fr_130px_110px_90px_auto]">
   <input className="field" placeholder="Label (e.g. Name to engrave)" value={f.label} onChange={(e) => setP13n((all) => all.map((x, idx) => (idx === i ? { ...x, label: e.target.value } : x)))} required />
   <select className="field" value={f.type} onChange={(e) => setP13n((all) => all.map((x, idx) => (idx === i ? { ...x, type: e.target.value as "text" | "textarea" } : x)))} aria-label="Field type">
   <option value="text">Short text</option>
@@ -400,7 +400,7 @@ export function ProductForm({ product, categories, collections }: { product?: Pr
  ) : (
  <ul className="mt-3 space-y-3">
  {form.variants.map((v, i) => (
- <li key={i} className="grid gap-3 rounded-zed glass-panel p-3 sm:grid-cols-6">
+ <li key={i} className="grid gap-3 rounded-zed glass-panel p-3 grid-cols-2 sm:grid-cols-3 lg:grid-cols-6">
  <input className="field" placeholder="Name (e.g. Size)" value={v.name} onChange={(e) => updateVariant(i, { name: e.target.value })} required />
  <input className="field" placeholder="Value" value={v.value} onChange={(e) => updateVariant(i, { value: e.target.value })} required />
  <input className="field" placeholder="SKU" value={v.sku} onChange={(e) => updateVariant(i, { sku: e.target.value })} required />

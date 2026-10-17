@@ -12,12 +12,12 @@ export function Pagination({ page, pages, total, pageSize, href }: { page: numbe
 
  return (
  <div className="mt-10 flex flex-col items-center gap-3">
- <div className="flex items-center gap-1.5">
+ <div className="flex flex-wrap items-center justify-center gap-1.5">
  <Link
  href={pageHref(page - 1)}
  aria-disabled={page <= 1}
  aria-label="Previous page"
- className={`glass-panel grid size-10 place-items-center rounded-zed ${page <= 1 ? "pointer-events-none opacity-40" : "hover:border-soft-sage"}`}
+ className={`glass-panel grid size-11 place-items-center rounded-zed ${page <= 1 ? "pointer-events-none opacity-40" : "hover:border-soft-sage"}`}
  >
  <ChevronLeft className="size-4" />
  </Link>
@@ -38,7 +38,7 @@ export function Pagination({ page, pages, total, pageSize, href }: { page: numbe
  key={p}
  href={pageHref(p)}
  aria-current={p === page ? "page" : undefined}
- className={`grid size-10 place-items-center rounded-zed text-sm font-semibold ${
+ className={`grid size-11 place-items-center rounded-zed text-sm font-semibold ${
  p === page ? "bg-zed-950 text-white" : "glass-panel text-[#07111F] hover:border-soft-sage"
  }`}
  >
@@ -50,7 +50,7 @@ export function Pagination({ page, pages, total, pageSize, href }: { page: numbe
  href={pageHref(page + 1)}
  aria-disabled={page >= pages}
  aria-label="Next page"
- className={`glass-panel grid size-10 place-items-center rounded-zed ${page >= pages ? "pointer-events-none opacity-40" : "hover:border-soft-sage"}`}
+ className={`glass-panel grid size-11 place-items-center rounded-zed ${page >= pages ? "pointer-events-none opacity-40" : "hover:border-soft-sage"}`}
  >
  <ChevronRight className="size-4" />
  </Link>

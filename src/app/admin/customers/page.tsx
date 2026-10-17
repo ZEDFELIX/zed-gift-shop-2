@@ -40,7 +40,7 @@ export default async function AdminCustomersPage({
       <p className="text-sm text-[#334155]">{total} customer{total === 1 ? "" : "s"}</p>
 
       <div className="overflow-x-auto rounded-zed border border-edge bg-white">
-        <table className="w-full text-sm">
+        <table className="w-full min-w-[640px] text-sm">
           <thead>
             <tr className="border-b border-edge bg-panel text-left text-xs uppercase tracking-wider text-[#334155]">
               <th className="p-3">Customer</th>
@@ -81,7 +81,7 @@ export default async function AdminCustomersPage({
       </div>
 
       {pages > 1 && (
-        <div className="flex items-center justify-center gap-2 text-sm">
+        <div className="flex flex-wrap items-center justify-center gap-2 text-sm">
           {Array.from({ length: pages }, (_, i) => i + 1).map((n) => (
             <Link
               key={n}

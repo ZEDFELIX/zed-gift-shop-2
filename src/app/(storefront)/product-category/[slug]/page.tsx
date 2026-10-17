@@ -43,7 +43,7 @@ export default async function ProductCategoryPage({ params }: { params: Promise<
  return (
   <div className="container-zed py-14 lg:py-20">
    <header className="max-w-3xl mx-auto mb-6">
-    <h1 className="font-display text-4xl lg:text-5xl font-bold text-charcoal">
+    <h1 className="break-words font-display text-3xl sm:text-4xl lg:text-5xl font-bold text-charcoal">
      {slug}
     </h1>
     <p className="mt-2 text-lg text-charcoal/70">
@@ -57,7 +57,7 @@ export default async function ProductCategoryPage({ params }: { params: Promise<
       <Link
        key={product.id}
        href={`/product/${product.slug}`}
-       className="glass-card aspect-[4/5] overflow-hidden rounded-xl transition-transform hover:scale-105 group"
+       className="glass-card relative aspect-[4/5] overflow-hidden rounded-xl transition-transform hover:scale-105 group"
        style={{ backgroundImage: product.images[0] ? `url(${product.images[0].url})` : "url(/placeholders/product-01.jpg)" }}
       >
        <span className="absolute inset-0 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-charcoal/70"></span>
