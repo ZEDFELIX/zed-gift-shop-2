@@ -64,7 +64,8 @@ export default async function AdminAnalyticsPage({
     { label: "Low stock", value: String(metrics.lowStock) },
     { label: "Out of stock", value: String(metrics.outOfStock) },
   ];
-  const kpis = isAdmin ? allKpis : allKpis.filter((k) => !k.revenue);
+  const STOCK_KPIS = new Set(["Stock value", "Units available"]);
+  const kpis = isAdmin ? allKpis : allKpis.filter((k) => !k.revenue && !STOCK_KPIS.has(k.label));
 
   return (
     <div className="space-y-6">
@@ -160,7 +161,7 @@ export default async function AdminAnalyticsPage({
                 <Link href={`/admin/products/${p.id}`} className="truncate pr-2 text-[#07111F] hover:text-soft-sage">
                   {p.name}
                 </Link>
-                <span className="font-bold text-red-600">{p.quantity} left</span>
+                {isAdmin && <span className="font-bold text-red-600">{p.quantity} left</span>}
               </li>
             ))}
             {lowStock.length === 0 && <li className="py-2 text-[#334155]">Nothing running low.</li>}

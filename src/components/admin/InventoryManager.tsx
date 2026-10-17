@@ -16,7 +16,7 @@ type ProductRow = {
  variants: Variant[];
 };
 
-export function InventoryManager({ products }: { products: ProductRow[] }) {
+export function InventoryManager({ products, showStock = true }: { products: ProductRow[]; showStock?: boolean }) {
  const [q, setQ] = useState("");
  const [busyId, setBusyId] = useState<string | null>(null);
  const filtered = useMemo(() => (q ? products.filter((p) => p.name.toLowerCase().includes(q.toLowerCase())) : products), [q, products]);
@@ -67,9 +67,9 @@ export function InventoryManager({ products }: { products: ProductRow[] }) {
  </div>
  </div>
  </td>
- <td className="p-3 font-bold text-[#07111F]">{p.quantity}</td>
- <td className="p-3 text-[#334155]">{p.reservedQuantity}</td>
- <td className="p-3 font-semibold text-[#07111F]">{Math.max(0, p.quantity - p.reservedQuantity)}</td>
+ <td className="p-3 font-bold text-[#07111F]">{showStock ? p.quantity : "—"}</td>
+ <td className="p-3 text-[#334155]">{showStock ? p.reservedQuantity : "—"}</td>
+ <td className="p-3 font-semibold text-[#07111F]">{showStock ? Math.max(0, p.quantity - p.reservedQuantity) : "—"}</td>
  <td className="p-3">
  <div className="flex items-center gap-1.5">
  <button type="button" disabled={busyId === `${p.id}::-1`} onClick={() => adjust(p.id, null, -1)} className="rounded-zed border border-edge p-1.5 hover:border-soft-sage disabled:opacity-40" aria-label="Decrease">
@@ -84,9 +84,9 @@ export function InventoryManager({ products }: { products: ProductRow[] }) {
  {p.variants.map((v) => (
  <tr key={v.id} className="bg-panel/30 text-xs hover:bg-panel/60">
  <td className="p-2 pl-9 text-[#334155]">{p.name} | {v.value} <span className="text-[#334155]">({v.sku})</span></td>
- <td className="p-2 font-semibold text-[#07111F]">{v.quantity}</td>
- <td className="p-2 text-[#334155]">{v.reservedQuantity}</td>
- <td className="p-2 text-[#334155]">{Math.max(0, v.quantity - v.reservedQuantity)}</td>
+ <td className="p-2 font-semibold text-[#07111F]">{showStock ? v.quantity : "—"}</td>
+ <td className="p-2 text-[#334155]">{showStock ? v.reservedQuantity : "—"}</td>
+ <td className="p-2 text-[#334155]">{showStock ? Math.max(0, v.quantity - v.reservedQuantity) : "—"}</td>
  <td className="p-2">
  <div className="flex items-center gap-1.5">
  <button type="button" disabled={busyId === `${v.id}::-1`} onClick={() => adjust(p.id, v.id, -1)} className="rounded-zed border border-edge bg-white p-1.5 hover:border-soft-sage disabled:opacity-40" aria-label="Decrease variant">

@@ -68,7 +68,7 @@ const emptyProduct: ProductInitial = {
   images: [], videoUrl: "", categoryIds: [], collectionIds: [], variants: [], tags: [],
 };
 
-export function ProductForm({ product, categories, collections }: { product?: ProductInitial; categories: CategoryOption[]; collections: CollectionOption[] }) {
+export function ProductForm({ product, categories, collections, showStock = true }: { product?: ProductInitial; categories: CategoryOption[]; collections: CollectionOption[]; showStock?: boolean }) {
  const router = useRouter();
   const [form, setForm] = useState<ProductInitial>(product ?? emptyProduct);
   const [busy, setBusy] = useState(false);
@@ -246,14 +246,16 @@ export function ProductForm({ product, categories, collections }: { product?: Pr
  <option value="ARCHIVED">Archived</option>
  </select>
  </div>
- <div>
- <label className="label" htmlFor="pf-qty">Quantity</label>
- <input id="pf-qty" type="number" min={0} className="field" value={form.quantity} onChange={(e) => set("quantity", Number(e.target.value))} />
- </div>
- <div>
- <label className="label" htmlFor="pf-threshold">Low stock threshold</label>
- <input id="pf-threshold" type="number" min={0} className="field" value={form.lowStockThreshold} onChange={(e) => set("lowStockThreshold", Number(e.target.value))} />
- </div>
+  {showStock && (
+  <div>
+  <label className="label" htmlFor="pf-qty">Quantity</label>
+  <input id="pf-qty" type="number" min={0} className="field" value={form.quantity} onChange={(e) => set("quantity", Number(e.target.value))} />
+  </div>
+  )}
+  <div>
+  <label className="label" htmlFor="pf-threshold">Low stock threshold</label>
+  <input id="pf-threshold" type="number" min={0} className="field" value={form.lowStockThreshold} onChange={(e) => set("lowStockThreshold", Number(e.target.value))} />
+  </div>
  <div className="lg:col-span-2 rounded-zed border border-edge bg-white/60 p-4">
  <div className="flex items-center justify-between gap-3">
  <div>
@@ -404,8 +406,10 @@ export function ProductForm({ product, categories, collections }: { product?: Pr
  <input className="field" placeholder="Name (e.g. Size)" value={v.name} onChange={(e) => updateVariant(i, { name: e.target.value })} required />
  <input className="field" placeholder="Value" value={v.value} onChange={(e) => updateVariant(i, { value: e.target.value })} required />
  <input className="field" placeholder="SKU" value={v.sku} onChange={(e) => updateVariant(i, { sku: e.target.value })} required />
- <input type="number" className="field" placeholder="Price +" value={v.priceOffset} onChange={(e) => updateVariant(i, { priceOffset: Number(e.target.value) })} />
- <input type="number" className="field" placeholder="Qty" value={v.quantity} onChange={(e) => updateVariant(i, { quantity: Number(e.target.value) })} />
+  <input type="number" className="field" placeholder="Price +" value={v.priceOffset} onChange={(e) => updateVariant(i, { priceOffset: Number(e.target.value) })} />
+  {showStock && (
+  <input type="number" className="field" placeholder="Qty" value={v.quantity} onChange={(e) => updateVariant(i, { quantity: Number(e.target.value) })} />
+  )}
  <button type="button" onClick={() => set("variants", form.variants.filter((_, idx) => idx !== i))} className="justify-self-center rounded-zed border border-red-100 p-2 text-red-500 hover:bg-red-50" aria-label="Remove variant">
  <Trash2 className="size-4" />
  </button>

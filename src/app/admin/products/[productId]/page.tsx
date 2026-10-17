@@ -2,18 +2,21 @@ import { notFound } from "next/navigation";
 import { ProductForm } from "@/components/admin/ProductForm";
 import { getProductByIdForAdmin } from "@/lib/data/products";
 import { listCategories, listCollections } from "@/lib/data/catalog";
+import { getCurrentUser } from "@/lib/auth";
 
 export const dynamic = "force-dynamic";
 export const metadata = { title: "Edit product | Admin" };
 
 export default async function AdminProductEditPage({ params }: { params: Promise<{ productId: string }> }) {
  const { productId } = await params;
- const [product, categories, collections] = await Promise.all([
+ const [product, categories, collections, me] = await Promise.all([
  getProductByIdForAdmin(productId),
  listCategories(),
  listCollections(),
+ getCurrentUser().catch(() => null),
  ]);
  if (!product) notFound();
+ const showStock = me?.role === "ADMIN";
 
  return (
  <ProductForm
@@ -48,6 +51,7 @@ export default async function AdminProductEditPage({ params }: { params: Promise
  }}
  categories={categories.map((c) => ({ id: c.id, name: c.name, kind: c.kind }))}
  collections={collections.map((c) => ({ id: c.id, name: c.name }))}
+ showStock={showStock}
  />
  );
 }

@@ -2,12 +2,13 @@ import { prisma } from "@/lib/prisma";
 import { listTransactions } from "@/lib/data/inventory";
 import { InventoryManager } from "@/components/admin/InventoryManager";
 import { formatDate } from "@/lib/utils";
+import { getCurrentUser } from "@/lib/auth";
 
 export const dynamic = "force-dynamic";
 export const metadata = { title: "Inventory | Admin" };
 
 export default async function AdminInventoryPage() {
- const [products, txns] = await Promise.all([
+ const [products, txns, me] = await Promise.all([
  prisma.product.findMany({
  where: { status: "ACTIVE" },
  include: { variants: { where: { active: true } }, images: { take: 1 } },
@@ -15,7 +16,9 @@ export default async function AdminInventoryPage() {
  take: 200,
  }),
  listTransactions({ take: 15 }),
+ getCurrentUser().catch(() => null),
  ]);
+ const showStock = me?.role === "ADMIN";
 
  return (
  <div className="space-y-6">
@@ -28,7 +31,7 @@ export default async function AdminInventoryPage() {
  lowStockThreshold: p.lowStockThreshold,
  variantCount: p.variants.length,
  variants: p.variants.map((v) => ({ id: v.id, value: v.value, sku: v.sku, quantity: v.quantity, reservedQuantity: v.reservedQuantity })),
- }))} />
+ }))} showStock={showStock} />
 
  <section className="rounded-zed border border-edge bg-white p-5">
  <h2 className="font-display text-base font-bold text-[#07111F]">Recent movements</h2>

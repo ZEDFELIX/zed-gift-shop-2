@@ -117,7 +117,7 @@ export default async function AdminDashboardPage() {
  {lowStock.map((p) => (
  <li key={p.id} className="flex items-center justify-between py-2">
  <span className="truncate pr-2 text-[#07111F]">{p.name}</span>
- <span className="font-bold text-red-600">{p.quantity} left</span>
+ <span className="font-bold text-red-600">{isAdmin ? `${p.quantity} left` : "Restock"}</span>
  </li>
  ))}
  </ul>

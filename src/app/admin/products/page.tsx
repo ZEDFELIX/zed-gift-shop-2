@@ -2,6 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { adminListProducts } from "@/lib/data/products";
 import { formatKES } from "@/lib/utils";
+import { getCurrentUser } from "@/lib/auth";
 import { Plus, Search } from "lucide-react";
 
 export const dynamic = "force-dynamic";
@@ -12,7 +13,11 @@ export default async function AdminProductsPage({ searchParams }: { searchParams
  const q = sp.q?.trim() ?? "";
  const status = sp.status ?? "";
  const page = Number(sp.page ?? 1) || 1;
- const { items, total, pages, page: current } = await adminListProducts({ q, status, page });
+ const [{ items, total, pages, page: current }, me] = await Promise.all([
+ adminListProducts({ q, status, page }),
+ getCurrentUser().catch(() => null),
+ ]);
+ const showStock = me?.role === "ADMIN";
 
  return (
  <div className="space-y-4">
@@ -43,7 +48,7 @@ export default async function AdminProductsPage({ searchParams }: { searchParams
  <th className="p-3">Product</th>
  <th className="p-3">SKU</th>
  <th className="p-3">Price</th>
- <th className="p-3">Stock</th>
+ {showStock && <th className="p-3">Stock</th>}
  <th className="p-3">Status</th>
  <th className="p-3" />
  </tr>
@@ -64,7 +69,7 @@ export default async function AdminProductsPage({ searchParams }: { searchParams
  </td>
  <td className="p-3 text-[#334155]">{p.sku ?? "-"}</td>
  <td className="p-3 font-semibold text-[#07111F]">{formatKES(p.price)}</td>
- <td className={`p-3 font-semibold ${p.quantity <= p.lowStockThreshold ? "text-red-600" : "text-[#07111F]"}`}>{p.quantity}</td>
+ {showStock && <td className={`p-3 font-semibold ${p.quantity <= p.lowStockThreshold ? "text-red-600" : "text-[#07111F]"}`}>{p.quantity}</td>}
  <td className="p-3">
  <span className={`rounded-full px-2 py-0.5 text-[11px] font-bold ${p.status === "ACTIVE" ? "bg-emerald-50 text-emerald-700" : p.status === "DRAFT" ? "bg-amber-50 text-amber-700" : "bg-panel text-[#334155]"}`}>
  {p.status}
@@ -76,7 +81,7 @@ export default async function AdminProductsPage({ searchParams }: { searchParams
  </tr>
  ))}
  {items.length === 0 && (
- <tr><td colSpan={6} className="p-8 text-center text-[#334155]">No products match that search.</td></tr>
+ <tr><td colSpan={showStock ? 6 : 5} className="p-8 text-center text-[#334155]">No products match that search.</td></tr>
  )}
  </tbody>
  </table>
