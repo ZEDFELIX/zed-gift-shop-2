@@ -188,10 +188,11 @@ model User {
  orders Order[]
  reviews Review[]
  reminders OccasionReminder[]
- notifications Notification[]
- inventoryTransactions InventoryTransaction[]
- passwordResets PasswordReset[]
- groupMemberships CustomerGroupMember[]
+  notifications Notification[]
+  inventoryTransactions InventoryTransaction[]
+  returnRequests ReturnRequest[]
+  passwordResets PasswordReset[]
+  groupMemberships CustomerGroupMember[]
 
  @@index([role])
  @@index([status])
@@ -527,6 +528,7 @@ model Order {
   items OrderItem[]
   payments Payment[]
   refunds Refund[]
+  returnRequests ReturnRequest[]
   coupon Coupon? @relation(fields: [couponId], references: [id], onDelete: SetNull)
   reviews Review[]
 
@@ -667,6 +669,13 @@ enum RefundStatus {
   REJECTED
 }
 
+enum ReturnStatus {
+  REQUESTED
+  APPROVED
+  REJECTED
+  COMPLETED
+}
+
 model Refund {
   id String @id @default(cuid())
   orderId String
@@ -691,6 +700,25 @@ model Refund {
 
   @@index([orderId])
   @@index([paymentId])
+  @@index([status])
+}
+
+/// Customer-initiated return/exchange request, handled by staff in admin.
+model ReturnRequest {
+  id String @id @default(cuid())
+  orderId String
+  userId String
+  reason String
+  details String?
+  status ReturnStatus @default(REQUESTED)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  order Order @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([orderId])
+  @@index([userId])
   @@index([status])
 }
 

@@ -7,6 +7,7 @@ import { formatKES } from "@/lib/utils";
 import { ORDER_STATUS_STEPS, PAYMENT_STATUS_LABELS } from "@/lib/constants";
 import { ArrowLeft, MapPin } from "lucide-react";
 import { OrderDocButtons } from "@/components/orders/OrderDocButtons";
+import { RequestReturnForm } from "@/components/orders/RequestReturnForm";
 
 export const metadata = { title: "Order details", robots: { index: false } };
 
@@ -90,12 +91,15 @@ export default async function OrderDetailPage({ params }: { params: Promise<{ or
  <p className="text-sm text-[#334155]">{order.town}, {order.county}</p>
  <p className="mt-1 text-sm text-[#334155]">{order.phone}</p>
  </div>
- {order.isGift && (
- <div className="rounded-zed border border-soft-sage/30 bg-warm-white p-4 text-sm text-[#07111F]">
- Marked as a gift - prices hidden from the delivery slip and wrapped on request.
- </div>
- )}
- </section>
+      {order.isGift && (
+        <div className="rounded-zed border border-soft-sage/30 bg-warm-white p-4 text-sm text-[#07111F]">
+          Marked as a gift - prices hidden from the delivery slip and wrapped on request.
+        </div>
+      )}
+      {order.orderStatus === "DELIVERED" && (
+        <RequestReturnForm orderId={order.id} />
+      )}
+    </section>
  </div>
  </div>
  );
