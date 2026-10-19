@@ -1,6 +1,8 @@
 import { ListingPage } from "@/components/shop/ListingPage";
 import { ProductCategoriesCard } from "@/components/shop/ProductCategoriesCard";
 import { FeaturedCategoriesCard } from "@/components/shop/FeaturedCategoriesCard";
+import { CatalogMenu } from "@/components/shop/CatalogMenu";
+import { getDealProducts } from "@/lib/data/products";
 import { buildMetadata } from "@/lib/seo";
 
 export const dynamic = "force-dynamic";
@@ -38,17 +40,21 @@ export default async function ShopPage({ searchParams }: { searchParams: Promise
   page: get("page") ? Number(get("page")) : 1,
  } as const;
 
+ const deals = await getDealProducts(4);
+ const cards = () => (
+  <>
+    <ProductCategoriesCard />
+    <FeaturedCategoriesCard products={deals} />
+  </>
+ );
+
  return (
   <ListingPage
     title="Shop All Gifts"
     filters={{ ...filters }}
     href="/shop"
-    sidebar={
-      <>
-        <ProductCategoriesCard />
-        <FeaturedCategoriesCard />
-      </>
-    }
+    sidebar={cards()}
+    mobileCatalog={<CatalogMenu>{cards()}</CatalogMenu>}
   />
  );
 }

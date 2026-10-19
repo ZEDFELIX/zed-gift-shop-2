@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { getDealProducts, type ProductWithRelations } from "@/lib/data/products";
+import { type ProductWithRelations } from "@/lib/data/products";
 import { formatKES } from "@/lib/utils";
 
 function Price({ product }: { product: ProductWithRelations }) {
@@ -16,8 +16,8 @@ function Price({ product }: { product: ProductWithRelations }) {
 }
 
 /** Sidebar "Featured Categories" card — a vertical list of on-sale gift picks. */
-export async function FeaturedCategoriesCard() {
- const deals = await getDealProducts(4);
+export function FeaturedCategoriesCard({ products }: { products: ProductWithRelations[] }) {
+ const deals = products.slice(0, 4);
 
  if (deals.length === 0) return null;
 

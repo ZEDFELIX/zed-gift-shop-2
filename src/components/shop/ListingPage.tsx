@@ -26,6 +26,7 @@ export async function ListingPage({
  filters,
  href,
  sidebar,
+ mobileCatalog,
 }: {
  title: string;
  eyebrow?: string;
@@ -33,6 +34,7 @@ export async function ListingPage({
  filters: ProductListFilters;
  href: string;
  sidebar?: ReactNode;
+ mobileCatalog?: ReactNode;
 }) {
   const [result, allCategories] = await Promise.all([
     listProducts(filters),
@@ -88,22 +90,25 @@ export async function ListingPage({
         />
       )}
       <div className={sidebar ? "lg:flex lg:items-start lg:gap-8" : undefined}>
-        {sidebar ? <div className="mb-8 shrink-0 lg:mb-0 lg:w-60 xl:w-64">{sidebar}</div> : null}
+        {sidebar ? <div className="hidden shrink-0 lg:block lg:w-60 xl:w-64">{sidebar}</div> : null}
         <div className="min-w-0 flex-1">
           <header className="mb-3 flex items-center justify-between gap-2 sm:mb-5 sm:gap-3">
             <h1 className="min-w-0 break-words font-display text-xl font-bold leading-tight text-[var(--color-ink)] sm:text-3xl">
               {title}
             </h1>
-            <Suspense fallback={null}>
-              <ShopFiltersMenu
-                categories={categories}
-                occasions={occasions}
-                recipients={recipients}
-                minPrice={result.minPrice}
-                maxPrice={result.maxPrice}
-                sortLabels={SORT_LABELS}
-              />
-            </Suspense>
+            <div className="flex shrink-0 items-center gap-2">
+              {mobileCatalog}
+              <Suspense fallback={null}>
+                <ShopFiltersMenu
+                  categories={categories}
+                  occasions={occasions}
+                  recipients={recipients}
+                  minPrice={result.minPrice}
+                  maxPrice={result.maxPrice}
+                  sortLabels={SORT_LABELS}
+                />
+              </Suspense>
+            </div>
           </header>
 
           <div className="mb-3 sm:mb-5">
