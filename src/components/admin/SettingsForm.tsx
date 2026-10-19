@@ -20,10 +20,6 @@ type SettingsShape = {
   mapsHref: string;
   mapsEmbed: string;
   whatsappNumber: string;
-  primaryColor: string;
-  secondaryColor: string;
-  accentColor: string;
-  backgroundColor: string;
   returnPolicy: string;
   newsletterEmail: string;
   copyrightText: string;
@@ -87,24 +83,6 @@ export function SettingsForm({ initial }: { initial: SettingsShape }) {
       <div><label className="label">WhatsApp number</label><input className="field" value={form.whatsappNumber} onChange={(e)=>set("whatsappNumber",e.target.value)} placeholder="254..." /></div>
      </div>
     </section>
-
-   <section className="rounded-zed border border-edge bg-white p-6">
-    <h2 className="font-display text-xl font-bold text-[#07111F]">Storefront colours</h2>
-    <p className="mt-1 text-sm text-[#334155]">Choose the main colours used throughout the storefront.</p>
-    <div className="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-     {([
-      ["primaryColor","Primary color"],["secondaryColor","Secondary color"],["accentColor","Accent color"],["backgroundColor","Background color"],
-     ] as const).map(([key,label]) => (
-      <div key={key}>
-       <label className="label">{label}</label>
-       <div className="flex gap-2">
-        <input type="color" value={form[key]} onChange={(e)=>set(key,e.target.value)} className="h-11 w-14 shrink-0 rounded-md border border-edge bg-white p-1" aria-label={label} />
-        <input className="field" value={form[key]} onChange={(e)=>set(key,e.target.value)} pattern="^#[0-9A-Fa-f]{6}$" />
-       </div>
-      </div>
-     ))}
-    </div>
-   </section>
 
    <section className="rounded-zed border border-edge bg-white p-6">
     <h2 className="font-display text-xl font-bold text-[#07111F]">Store content</h2>

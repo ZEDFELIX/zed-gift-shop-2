@@ -3,7 +3,6 @@ import { getCurrentUser } from "@/lib/auth";
 import { getSettings } from "@/lib/data/settings";
 import { SettingsForm } from "@/components/admin/SettingsForm";
 import { PasswordForm } from "@/components/account/PasswordForm";
-import { TwoFactorSecurity } from "@/components/admin/TwoFactorSecurity";
 
 export const dynamic = "force-dynamic";
 export const metadata = { title: "Settings | Admin" };
@@ -30,7 +29,6 @@ export default async function AdminSettingsPage() {
  return (
  <div className="space-y-6">
  <PasswordForm />
- <TwoFactorSecurity />
  <SettingsForm
 initial={{
   announcementText: String(s.announcementText ?? ""),
@@ -48,10 +46,6 @@ initial={{
   mapsHref: String(s.mapsHref ?? ""),
   mapsEmbed: String(s.mapsEmbed ?? ""),
   whatsappNumber: String(s.whatsappNumber ?? ""),
-  primaryColor: String(s.primaryColor ?? "#E5397F"),
-  secondaryColor: String(s.secondaryColor ?? "#6B2D5C"),
-  accentColor: String(s.accentColor ?? "#7C3AED"),
-  backgroundColor: String(s.backgroundColor ?? "#FFFFFF"),
   returnPolicy: String(s.returnPolicy ?? ""),
   newsletterEmail: String(s.newsletterEmail ?? "info@zedgiftshop2.com"),
   copyrightText: String(s.copyrightText ?? "Copyright &copy; {year} {storeName}, All rights reserved."),

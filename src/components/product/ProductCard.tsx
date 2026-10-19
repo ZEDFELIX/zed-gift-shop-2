@@ -38,11 +38,11 @@ export function ProductCard({
   }
 
   return (
-    <article className="zed-product-card group overflow-hidden rounded-lg">
+    <article className="zed-product-card group flex h-full flex-col overflow-hidden rounded-lg">
       <div className="relative group-hover:opacity-100 transition-opacity">
         <Link
           href={`/product/${product.slug}`}
-          className="zed-product-media block aspect-square overflow-hidden bg-white"
+          className="zed-product-media block overflow-hidden bg-white"
           aria-label={product.name}
         >
           <div className="relative w-full h-full overflow-hidden bg-white transition-transform duration-500">
@@ -68,14 +68,14 @@ export function ProductCard({
         </Link>
       </div>
 
-      <div className="flex flex-col flex-1 p-2.5 text-center sm:p-3 lg:p-3.5">
-        <h3 className="min-h-[2.4rem] text-[13px] font-semibold leading-snug sm:text-[15px] lg:min-h-[2.8rem] lg:text-base">
+      <div className="flex flex-1 flex-col p-2.5 text-center sm:p-3">
+        <h3 className="line-clamp-2 h-[2.4rem] text-[13px] font-semibold leading-snug sm:h-[2.5rem] sm:text-[15px] lg:h-[2.75rem] lg:text-base">
           <Link href={`/product/${product.slug}`} className="hover:text-rose-600">
             {product.name}
           </Link>
         </h3>
 
-        <div className="mt-1.5 flex flex-wrap items-baseline justify-center gap-x-1.5">
+        <div className="mt-1.5 flex min-h-[1.4rem] flex-wrap items-baseline justify-center gap-x-1.5">
           <p className="text-[15px] font-bold text-charcoal-950 sm:text-base lg:text-lg">{formatKES(product.price)}</p>
           {product.compareAtPrice != null && product.compareAtPrice > product.price ? (
             <p className="min-w-0 text-xs text-charcoal/40 line-through">
@@ -85,27 +85,27 @@ export function ProductCard({
         </div>
 
         <div className="mt-auto pt-2">
-          {canQuickAdd ? (
-            <AddToCartButton productId={product.id} label="Add to cart" variant="outline" />
-          ) : (
-            <Link
-              href={`/product/${product.slug}`}
-              className="mt-1 flex min-h-11 items-center justify-center gap-1 border border-edge px-2 py-1.5 text-center text-[11px] font-semibold text-charcoal transition-colors hover:border-rose-300 hover:text-rose-600"
-            >
-              {personalizable ? (
-                <>
-                  <Star className="size-2.5" /> Personalize
-                </>
-              ) : (
-                "View details"
-              )}
-            </Link>
-          )}
-          {lowStock && (
-            <p className="mt-1 text-[11px] font-medium text-rose-500">
-              Only {product.quantity - product.reservedQuantity} left
-            </p>
-          )}
+          <div className="flex min-h-11 items-center">
+            {canQuickAdd ? (
+              <AddToCartButton productId={product.id} label="Add to cart" variant="outline" />
+            ) : (
+              <Link
+                href={`/product/${product.slug}`}
+                className="flex min-h-11 w-full items-center justify-center gap-1 border border-edge px-2 py-1.5 text-center text-[11px] font-semibold text-charcoal transition-colors hover:border-rose-300 hover:text-rose-600"
+              >
+                {personalizable ? (
+                  <>
+                    <Star className="size-2.5" /> Personalize
+                  </>
+                ) : (
+                  "View details"
+                )}
+              </Link>
+            )}
+          </div>
+          <p className="mt-1 h-4 text-[11px] font-medium leading-4 text-rose-500">
+            {lowStock ? `Only ${product.quantity - product.reservedQuantity} left` : ""}
+          </p>
         </div>
       </div>
     </article>

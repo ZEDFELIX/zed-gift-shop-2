@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { loginSchema } from "@/lib/validations";
-import { verifyPassword, setSessionCookie, verifyTwoFactorLogin } from "@/lib/auth";
+import { verifyPassword, setSessionCookie } from "@/lib/auth";
 import { rateLimit, RATE_LIMITS } from "@/lib/rate-limit";
 
 export const runtime = "nodejs";
@@ -41,19 +41,6 @@ export async function POST(req: Request) {
   // subsequent logins must match the stored password hash.
   if (!user || user.status !== "ACTIVE" || !passwordValid) {
     return NextResponse.json({ error: "Incorrect email or password." }, { status: 401 });
-  }
-
-  if (user.twoFactorEnabled) {
-    if (!parsed.data.code) {
-      return NextResponse.json({ error: "Enter the 6-digit code from your authenticator app." }, { status: 401 });
-    }
-    const codeOk = await verifyTwoFactorLogin(
-      { id: user.id, twoFactorSecret: user.twoFactorSecret, twoFactorBackupCodes: user.twoFactorBackupCodes },
-      parsed.data.code,
-    );
-    if (!codeOk) {
-      return NextResponse.json({ error: "Incorrect code. Check your authenticator app or use a backup code." }, { status: 401 });
-    }
   }
 
   await setSessionCookie({

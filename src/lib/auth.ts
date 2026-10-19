@@ -5,7 +5,6 @@ import { SignJWT, jwtVerify } from "jose";
 import bcrypt from "bcryptjs";
 import { prisma } from "@/lib/prisma";
 import { COOKIE_KEYS } from "@/lib/constants";
-import { generateBackupCodes, generateTotpSecret, hashBackupCode, verifyTotp } from "@/lib/totp";
 
 const SESSION_COOKIE = COOKIE_KEYS.session;
 
@@ -115,79 +114,6 @@ export async function requireAdmin() {
     throw new Error("ADMIN_REQUIRED");
   }
   return user;
-}
-
-// ---------- Two-factor authentication (TOTP) ----------
-
-/**
- * Starts setup: generates a secret and a set of one-time backup codes, stores
- * them pending confirmation, and returns the plaintext values so they can be
- * shown to the user exactly once.
- */
-export async function beginTwoFactorSetup(userId: string): Promise<{ secret: string; backupCodes: string[] }> {
-  const secret = generateTotpSecret();
-  const backupCodes = generateBackupCodes(8);
-  await prisma.user.update({
-    where: { id: userId },
-    data: {
-      twoFactorPendingSecret: secret,
-      twoFactorBackupCodes: backupCodes.map(hashBackupCode),
-    },
-  });
-  return { secret, backupCodes };
-}
-
-/** Confirms setup once the user proves they can read a code from their app. */
-export async function confirmTwoFactorSetup(userId: string, code: string): Promise<boolean> {
-  const user = await prisma.user.findUnique({
-    where: { id: userId },
-    select: { twoFactorPendingSecret: true },
-  });
-  if (!user?.twoFactorPendingSecret) return false;
-  if (!verifyTotp(user.twoFactorPendingSecret, code)) return false;
-  await prisma.user.update({
-    where: { id: userId },
-    data: {
-      twoFactorSecret: user.twoFactorPendingSecret,
-      twoFactorPendingSecret: null,
-      twoFactorEnabled: true,
-    },
-  });
-  return true;
-}
-
-export async function disableTwoFactor(userId: string): Promise<void> {
-  await prisma.user.update({
-    where: { id: userId },
-    data: {
-      twoFactorSecret: null,
-      twoFactorPendingSecret: null,
-      twoFactorEnabled: false,
-      twoFactorBackupCodes: [],
-    },
-  });
-}
-
-/**
- * Verifies a login code against the user's TOTP secret, falling back to a
- * one-time backup code (which is consumed when used).
- */
-export async function verifyTwoFactorLogin(
-  user: { id: string; twoFactorSecret: string | null; twoFactorBackupCodes: string[] },
-  code: string,
-): Promise<boolean> {
-  if (!code) return false;
-  if (user.twoFactorSecret && verifyTotp(user.twoFactorSecret, code)) return true;
-
-  const hash = hashBackupCode(code);
-  if (user.twoFactorBackupCodes.includes(hash)) {
-    await prisma.user.update({
-      where: { id: user.id },
-      data: { twoFactorBackupCodes: { set: user.twoFactorBackupCodes.filter((c) => c !== hash) } },
-    });
-    return true;
-  }
-  return false;
 }
 
 export async function hashPassword(password: string): Promise<string> {

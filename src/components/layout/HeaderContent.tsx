@@ -147,6 +147,21 @@ export function HeaderContent({
 
   return (
     <>
+      {/* Mobile information bar */}
+      <div className="lg:hidden border-b border-edge/60 bg-zed-950 text-white">
+        <div className="flex items-center gap-2.5 overflow-x-auto px-3 py-1.5 text-[10px] font-medium no-scrollbar sm:gap-3 sm:py-2 sm:text-[11px]">
+          <a href={"tel:" + contactPhone.replace(/\s+/g, "")} className="flex shrink-0 items-center gap-1.5 whitespace-nowrap">
+            <Phone className="size-3.5 text-white/80" /> Call {contactPhone}
+          </a>
+          <span className="h-3.5 w-px shrink-0 bg-white/20" />
+          <span className="flex shrink-0 items-center gap-1.5 whitespace-nowrap text-white/80">
+            <Clock className="size-3.5" /> {announcement}
+          </span>
+          <span className="h-3.5 w-px shrink-0 bg-white/20" />
+          <DownloadAppButton className="flex shrink-0 items-center gap-1.5 whitespace-nowrap rounded-full bg-white px-3 py-1.5 font-bold text-zed-950" />
+        </div>
+      </div>
+
       {/* Utility bar — call us + same day delivery */}
       <div className="relative z-30 hidden border-b border-zed-900/15 bg-zed-950 text-white md:block">
         <div className="container-zed flex h-9 items-center justify-between gap-4 text-[12px]">
@@ -298,21 +313,6 @@ export function HeaderContent({
               </Link>
             ))}
           </nav>
-        </div>
-      </div>
-
-      {/* Mobile information bar */}
-      <div className="lg:hidden border-y border-edge/60 bg-zed-950 text-white">
-        <div className="flex items-center gap-2.5 overflow-x-auto px-3 py-1.5 text-[10px] font-medium no-scrollbar sm:gap-3 sm:py-2 sm:text-[11px]">
-          <a href={"tel:" + contactPhone.replace(/\s+/g, "")} className="flex shrink-0 items-center gap-1.5 whitespace-nowrap">
-            <Phone className="size-3.5 text-white/80" /> Call {contactPhone}
-          </a>
-          <span className="h-3.5 w-px shrink-0 bg-white/20" />
-          <span className="flex shrink-0 items-center gap-1.5 whitespace-nowrap text-white/80">
-            <Clock className="size-3.5" /> {announcement}
-          </span>
-          <span className="h-3.5 w-px shrink-0 bg-white/20" />
-          <DownloadAppButton className="flex shrink-0 items-center gap-1.5 whitespace-nowrap rounded-full bg-white px-3 py-1.5 font-bold text-zed-950" />
         </div>
       </div>
 

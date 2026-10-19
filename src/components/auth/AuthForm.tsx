@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
-import { Loader2, Lock, LogIn, Mail, User, Eye, EyeOff, KeyRound } from "lucide-react";
+import { Loader2, Lock, LogIn, Mail, User, Eye, EyeOff } from "lucide-react";
 
 export function AuthForm({ mode }: { mode: "login" | "register" }) {
   const router = useRouter();
@@ -11,7 +11,7 @@ export function AuthForm({ mode }: { mode: "login" | "register" }) {
   const next = searchParams.get("next") ?? "/account";
   const isLogin = mode === "login";
 
-  const [form, setForm] = useState({ name: "", email: "", password: "", code: "" });
+  const [form, setForm] = useState({ name: "", email: "", password: "" });
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
@@ -107,25 +107,6 @@ export function AuthForm({ mode }: { mode: "login" | "register" }) {
             )}
           </div>
           {!isLogin && <p className="mt-1 text-xs text-[#334155]">At least 8 characters.</p>}
-          {isLogin && (
-            <div>
-              <label className="label" htmlFor="a-code">
-                Authenticator code <span className="font-normal text-[#334155]">(only if you set up 2FA)</span>
-              </label>
-              <div className="relative">
-                <KeyRound className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-[#334155]" />
-                <input
-                  id="a-code"
-                  inputMode="numeric"
-                  autoComplete="one-time-code"
-                  className="field auth-field pl-9 relative z-10 pointer-events-auto select-text"
-                  placeholder="123456"
-                  value={form.code}
-                  onChange={(e) => setForm({ ...form, code: e.target.value.replace(/\D/g, "").slice(0, 6) })}
-                />
-              </div>
-            </div>
-          )}
         </div>
 
         {error && <p className="rounded-zed bg-red-50/70 px-4 py-3 text-sm text-red-700 backdrop-blur-sm">{error}</p>}
