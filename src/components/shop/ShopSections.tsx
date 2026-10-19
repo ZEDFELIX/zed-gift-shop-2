@@ -17,6 +17,14 @@ import { prisma } from "@/lib/prisma";
 
 type SectionProps = { title: string; products: ProductWithRelations[]; href?: string; flash?: boolean; swipe?: boolean; flashSale?: FlashSaleSettings; titleColor?: string };
 
+/** Turns an admin hex color into a translucent glass tint. */
+function hexToRgba(hex: string, alpha: number): string {
+  const m = /^#([0-9a-f]{6})$/i.exec(hex.trim());
+  if (!m) return `rgba(255,255,255,${alpha})`;
+  const n = parseInt(m[1], 16);
+  return `rgba(${(n >> 16) & 255}, ${(n >> 8) & 255}, ${n & 255}, ${alpha})`;
+}
+
 /** Picks readable title text (ink or white) for any admin-chosen box color. */
 function contrastText(hex: string): string {
   const m = /^#([0-9a-f]{6})$/i.exec(hex.trim());
@@ -32,8 +40,11 @@ function Section({ title, products, href, flash = false, swipe = false, flashSal
     const boxColor = isHexColor(flashSale.boxColor) ? flashSale.boxColor : FLASH_SALE_DEFAULT_BOX_COLOR;
     const textColor = contrastText(boxColor);
     return (
-      <section className="mb-9 rounded-xl border border-black/5 p-3 shadow-sm sm:mb-11 sm:p-5" style={{ backgroundColor: boxColor }}>
-        <div className="mb-3 flex flex-wrap items-center justify-between gap-3 border-b border-black/10 pb-3">
+      <section
+        className="relative mb-9 overflow-hidden rounded-2xl border border-white/70 p-3 shadow-glass backdrop-blur-2xl sm:mb-11 sm:p-5"
+        style={{ backgroundColor: hexToRgba(boxColor, 0.55) }}
+      >
+        <div className="mb-3 flex flex-wrap items-center justify-between gap-3 border-b border-white/50 pb-3">
           <div className="flex min-w-0 items-center gap-2.5">
             <span className="grid size-9 shrink-0 place-items-center rounded-lg bg-rose-500 text-white sm:size-10">
               <Zap className="size-5 fill-current" />
@@ -66,7 +77,7 @@ function Section({ title, products, href, flash = false, swipe = false, flashSal
     );
   }
   return (
-    <section className={swipe ? "mb-7 overflow-hidden rounded-xl border border-black/5 bg-white p-3 shadow-sm sm:mb-9 sm:p-4" : "mb-9 sm:mb-11"}>
+    <section className={swipe ? "glass-panel mb-7 overflow-hidden rounded-2xl p-3 sm:mb-9 sm:p-4" : "glass-panel mb-9 rounded-2xl p-3 sm:mb-11 sm:p-4"}>
       <div className={swipe ? "mb-3 flex items-center justify-between gap-2 border-b-2 border-orange-400 pb-2.5" : "mb-3 flex items-center justify-between gap-2"}>
         <h2 className={`font-display text-lg font-bold sm:text-xl ${titleColor ?? "text-[var(--color-ink)]"}`}>{title}</h2>
         <div className="flex min-w-0 items-center gap-2">

@@ -112,7 +112,9 @@ export async function ListingPage({
 
           <div className="mt-3 sm:mt-4">
             {activeFilters.length === 0 && result.page <= 1 && <ShopSections />}
-            <ProductGrid products={result.items} />
+            <div className="glass-panel rounded-2xl p-2 sm:p-3">
+              <ProductGrid products={result.items} />
+            </div>
             {result.pages > 1 ? <Pagination
               page={result.page}
               pages={result.pages}

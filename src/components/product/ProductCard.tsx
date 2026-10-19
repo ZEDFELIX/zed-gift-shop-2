@@ -68,29 +68,14 @@ export function ProductCard({
         </Link>
       </div>
 
-      <div className="flex flex-col flex-1 p-2.5 sm:p-3 lg:p-3.5">
-        <div className="mb-1 flex items-center justify-between gap-2">
-          <p className="hidden">{product.categories[0]?.category.name ?? "Gift"}</p>
-          <span className="text-[11px] text-charcoal/60">
-            <Star className="size-2 fill-rose-400" />
-            {product.ratingAverage.toFixed(1)}
-            <span className="text-charcoal/40 hidden sm:inline">({product.ratingCount})</span>
-          </span>
-        </div>
-
-        <h3 className="mt-1 min-h-[2.4rem] text-[13px] font-semibold leading-snug sm:text-[15px] lg:min-h-[2.8rem] lg:text-base">
+      <div className="flex flex-col flex-1 p-2.5 text-center sm:p-3 lg:p-3.5">
+        <h3 className="min-h-[2.4rem] text-[13px] font-semibold leading-snug sm:text-[15px] lg:min-h-[2.8rem] lg:text-base">
           <Link href={`/product/${product.slug}`} className="hover:text-rose-600">
             {product.name}
           </Link>
         </h3>
 
-        {product.shortDescription ? (
-          <p className="mt-1 text-[11px] leading-relaxed text-charcoal/60 line-clamp-2 sm:text-xs lg:text-sm">
-            {product.shortDescription}
-          </p>
-        ) : null}
-
-        <div className="mt-1.5 flex flex-wrap items-baseline gap-x-1.5">
+        <div className="mt-1.5 flex flex-wrap items-baseline justify-center gap-x-1.5">
           <p className="text-[15px] font-bold text-charcoal-950 sm:text-base lg:text-lg">{formatKES(product.price)}</p>
           {product.compareAtPrice != null && product.compareAtPrice > product.price ? (
             <p className="min-w-0 text-xs text-charcoal/40 line-through">
@@ -99,7 +84,7 @@ export function ProductCard({
           ) : null}
         </div>
 
-        <div className="mt-auto pt-1.5">
+        <div className="mt-auto pt-2">
           {canQuickAdd ? (
             <AddToCartButton productId={product.id} label="Add to cart" variant="outline" />
           ) : (
