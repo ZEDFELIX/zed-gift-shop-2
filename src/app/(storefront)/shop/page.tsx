@@ -1,5 +1,6 @@
 import { ListingPage } from "@/components/shop/ListingPage";
 import { ProductCategoriesCard } from "@/components/shop/ProductCategoriesCard";
+import { FeaturedCategoriesCard } from "@/components/shop/FeaturedCategoriesCard";
 import { buildMetadata } from "@/lib/seo";
 
 export const dynamic = "force-dynamic";
@@ -42,7 +43,12 @@ export default async function ShopPage({ searchParams }: { searchParams: Promise
     title="Shop All Gifts"
     filters={{ ...filters }}
     href="/shop"
-    sidebar={<ProductCategoriesCard />}
+    sidebar={
+      <>
+        <ProductCategoriesCard />
+        <FeaturedCategoriesCard />
+      </>
+    }
   />
  );
 }
