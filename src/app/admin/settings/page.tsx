@@ -3,6 +3,7 @@ import { getCurrentUser } from "@/lib/auth";
 import { getSettings } from "@/lib/data/settings";
 import { SettingsForm } from "@/components/admin/SettingsForm";
 import { PasswordForm } from "@/components/account/PasswordForm";
+import { TwoFactorSecurity } from "@/components/admin/TwoFactorSecurity";
 
 export const dynamic = "force-dynamic";
 export const metadata = { title: "Settings | Admin" };
@@ -26,10 +27,11 @@ export default async function AdminSettingsPage() {
       </div>
     );
   }
-  return (
-  <div className="space-y-6">
-  <PasswordForm />
-  <SettingsForm
+ return (
+ <div className="space-y-6">
+ <PasswordForm />
+ <TwoFactorSecurity />
+ <SettingsForm
 initial={{
   announcementText: String(s.announcementText ?? ""),
   contactPhone: String(s.contactPhone ?? ""),

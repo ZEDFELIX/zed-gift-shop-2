@@ -175,11 +175,17 @@ model User {
  role Role @default(CUSTOMER)
  status UserStatus @default(ACTIVE)
  favoritesJson String?
- // Authentication hardening: lockout after repeated failures + activity trail.
- failedLoginAttempts Int @default(0)
- lockedUntil DateTime?
- lastLoginAt DateTime?
- lastLoginIp String?
+  // Authentication hardening: lockout after repeated failures + activity trail.
+  failedLoginAttempts Int @default(0)
+  lockedUntil DateTime?
+  lastLoginAt DateTime?
+  lastLoginIp String?
+  // Admin two-factor authentication (TOTP). The pending secret exists only while
+  // setup is unconfirmed; backup codes are stored hashed and consumed on use.
+  twoFactorSecret String?
+  twoFactorPendingSecret String?
+  twoFactorEnabled Boolean @default(false)
+  twoFactorBackupCodes String[] @default([])
  createdAt DateTime @default(now())
  updatedAt DateTime @updatedAt
 

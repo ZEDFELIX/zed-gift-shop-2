@@ -76,8 +76,9 @@ export const registerSchema = z.object({
 });
 
 export const loginSchema = z.object({
- email: emailSchema,
- password: z.string().min(1, "Enter your password"),
+  email: emailSchema,
+  password: z.string().min(1, "Enter your password"),
+  code: z.string().min(1).max(12).optional(),
 });
 
 export const guestInfoSchema = z.object({
