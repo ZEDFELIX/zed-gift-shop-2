@@ -9,7 +9,7 @@ function parseTime(value: string): number | null {
 }
 
 function pad(n: number) {
-  return String(n).padStart(2, "0");
+  return String(Math.max(0, n)).padStart(2, "0");
 }
 
 export function FlashSaleCountdown({
@@ -48,9 +48,9 @@ export function FlashSaleCountdown({
 
   if (status === "ended") {
     return (
-      <div className="flex shrink-0 items-center gap-1.5 rounded-full border border-white/80 bg-white/55 px-2.5 py-1.5 text-[11px] font-bold uppercase tracking-wider text-charcoal/70 shadow-sm backdrop-blur-xl sm:gap-2 sm:px-3 sm:text-[11px]">
-        <span className="text-charcoal/60">Sale ended</span>
-      </div>
+      <span className="inline-flex items-center rounded-full bg-black/10 px-3 py-1 text-[11px] font-bold uppercase tracking-wider">
+        Sale ended
+      </span>
     );
   }
 
@@ -59,18 +59,30 @@ export function FlashSaleCountdown({
 
   const remaining = Math.max(0, target - now);
   const totalSeconds = Math.floor(remaining / 1000);
-  const hours = Math.floor(totalSeconds / 3600);
-  const minutes = Math.floor((totalSeconds % 3600) / 60);
-  const seconds = totalSeconds % 60;
+  const units = [
+    { label: "Days", value: Math.floor(totalSeconds / 86400) },
+    { label: "Hours", value: Math.floor((totalSeconds % 86400) / 3600) },
+    { label: "Mins", value: Math.floor((totalSeconds % 3600) / 60) },
+    { label: "Secs", value: totalSeconds % 60 },
+  ];
 
   return (
-    <div className="flex shrink-0 items-center gap-1.5 rounded-full border border-white/80 bg-white/55 px-2.5 py-1.5 text-[11px] font-bold uppercase tracking-wider text-charcoal/70 shadow-sm backdrop-blur-xl sm:gap-2 sm:px-3 sm:text-[11px]">
-      <span className="text-rose-600">{status === "upcoming" ? "Starts in" : "Ends in"}</span>
-      <span className="rounded-md bg-rose-500 px-1.5 py-1 text-white tabular-nums">{pad(hours)}</span>
-      <span>:</span>
-      <span className="rounded-md bg-rose-500 px-1.5 py-1 text-white tabular-nums">{pad(minutes)}</span>
-      <span>:</span>
-      <span className="rounded-md bg-rose-500 px-1.5 py-1 text-white tabular-nums">{pad(seconds)}</span>
+    <div className="flex flex-col items-start gap-1.5 sm:items-end">
+      <span className="text-[11px] font-bold uppercase tracking-wider opacity-70">
+        {status === "upcoming" ? "Starts in" : "Ends in"}
+      </span>
+      <div className="flex items-center gap-1.5 sm:gap-2">
+        {units.map((u) => (
+          <div key={u.label} className="flex flex-col items-center">
+            <span className="grid min-w-[2.25rem] place-items-center rounded-lg bg-white px-1.5 py-1 text-base font-extrabold tabular-nums text-rose-600 shadow-sm sm:min-w-[2.75rem] sm:text-xl">
+              {u.value > 99 ? u.value : pad(u.value)}
+            </span>
+            <span className="mt-1 text-[9px] font-bold uppercase tracking-wider opacity-80 sm:text-[10px]">
+              {u.label}
+            </span>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }

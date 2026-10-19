@@ -8,7 +8,7 @@ import { ProductGrid } from "@/components/shop/ProductGrid";
 import { ShopSearch } from "@/components/shop/ShopSearch";
 import { ShopFiltersMenu } from "@/components/shop/ShopFiltersMenu";
 import { Pagination } from "@/components/shop/Pagination";
-import { ShopSections } from "@/components/shop/ShopSections";
+import { ShopSections, getShopSectionData, type ShopSection } from "@/components/shop/ShopSections";
 import type { ReactNode } from "react";
 
 const SORT_LABELS: Record<string, string> = {
@@ -71,6 +71,13 @@ export async function ListingPage({
     filters.max != null ? `up to KES ${filters.max}` : undefined,
   ].filter(Boolean);
 
+  const showSections = activeFilters.length === 0 && result.page <= 1;
+  const sectionData: { sections: ShopSection[]; shownIds: string[] } = showSections
+    ? await getShopSectionData()
+    : { sections: [], shownIds: [] };
+  const shownIds = new Set(sectionData.shownIds);
+  const gridItems = result.items.filter((p) => !shownIds.has(p.id));
+
   return (
     <div className="container-zed py-3 sm:py-7 lg:py-9">
       {activeFilters.length > 0 && result.items.length > 0 && (
@@ -116,10 +123,14 @@ export async function ListingPage({
           </div>
 
           <div className="mt-3 sm:mt-4">
-            {activeFilters.length === 0 && result.page <= 1 && <ShopSections />}
-            <div className="glass-panel rounded-2xl p-2 sm:p-3">
-              <ProductGrid products={result.items} />
-            </div>
+            {showSections && <ShopSections sections={sectionData.sections} />}
+            {gridItems.length > 0 ? (
+              <div className="glass-panel rounded-2xl p-2 sm:p-3">
+                <ProductGrid products={gridItems} />
+              </div>
+            ) : showSections ? null : (
+              <ProductGrid products={[]} />
+            )}
             {result.pages > 1 ? <Pagination
               page={result.page}
               pages={result.pages}
