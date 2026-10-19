@@ -9,7 +9,7 @@ import { ShopSearch } from "@/components/shop/ShopSearch";
 import { ShopFiltersMenu } from "@/components/shop/ShopFiltersMenu";
 import { Pagination } from "@/components/shop/Pagination";
 import { ShopSections } from "@/components/shop/ShopSections";
-import { FeaturedCategories } from "@/components/shop/FeaturedCategories";
+import type { ReactNode } from "react";
 
 const SORT_LABELS: Record<string, string> = {
   featured: "Featured",
@@ -22,15 +22,17 @@ const SORT_LABELS: Record<string, string> = {
 };
 
 export async function ListingPage({
-  title,
-  filters,
-  href,
+ title,
+ filters,
+ href,
+ sidebar,
 }: {
-  title: string;
-  eyebrow?: string;
-  description?: string;
-  filters: ProductListFilters;
-  href: string;
+ title: string;
+ eyebrow?: string;
+ description?: string;
+ filters: ProductListFilters;
+ href: string;
+ sidebar?: ReactNode;
 }) {
   const [result, allCategories] = await Promise.all([
     listProducts(filters),
@@ -85,41 +87,41 @@ export async function ListingPage({
           }}
         />
       )}
-      <header className="mb-3 flex items-center justify-between gap-2 sm:mb-5 sm:gap-3">
-        <h1 className="min-w-0 break-words font-display text-xl font-bold leading-tight text-[var(--color-ink)] sm:text-3xl">
-          {title}
-        </h1>
-        <Suspense fallback={null}>
-          <ShopFiltersMenu
-            categories={categories}
-            occasions={occasions}
-            recipients={recipients}
-            minPrice={result.minPrice}
-            maxPrice={result.maxPrice}
-            sortLabels={SORT_LABELS}
-          />
-        </Suspense>
-      </header>
+      <div className={sidebar ? "lg:flex lg:items-start lg:gap-8" : undefined}>
+        {sidebar ? <div className="mb-8 shrink-0 lg:mb-0 lg:w-60 xl:w-64">{sidebar}</div> : null}
+        <div className="min-w-0 flex-1">
+          <header className="mb-3 flex items-center justify-between gap-2 sm:mb-5 sm:gap-3">
+            <h1 className="min-w-0 break-words font-display text-xl font-bold leading-tight text-[var(--color-ink)] sm:text-3xl">
+              {title}
+            </h1>
+            <Suspense fallback={null}>
+              <ShopFiltersMenu
+                categories={categories}
+                occasions={occasions}
+                recipients={recipients}
+                minPrice={result.minPrice}
+                maxPrice={result.maxPrice}
+                sortLabels={SORT_LABELS}
+              />
+            </Suspense>
+          </header>
 
-      <div className="mb-3 sm:mb-5">
-        {(href !== "/shop" || activeFilters.length > 0) && <ShopSearch initialValue={filters.q ?? ""} />}
-      </div>
+          <div className="mb-3 sm:mb-5">
+            {(href !== "/shop" || activeFilters.length > 0) && <ShopSearch initialValue={filters.q ?? ""} />}
+          </div>
 
-      <div className="mt-3 min-w-0 flex-1 sm:mt-4 lg:mt-0">
-        {activeFilters.length === 0 && result.page <= 1 && (
- <>
- <FeaturedCategories />
- <ShopSections />
- </>
- )}
-        <ProductGrid products={result.items} />
-        {result.pages > 1 ? <Pagination
-          page={result.page}
-          pages={result.pages}
-          total={result.total}
-          pageSize={result.pageSize}
-          href={href}
-        /> : null}
+          <div className="mt-3 sm:mt-4">
+            {activeFilters.length === 0 && result.page <= 1 && <ShopSections />}
+            <ProductGrid products={result.items} />
+            {result.pages > 1 ? <Pagination
+              page={result.page}
+              pages={result.pages}
+              total={result.total}
+              pageSize={result.pageSize}
+              href={href}
+            /> : null}
+          </div>
+        </div>
       </div>
     </div>
   );
