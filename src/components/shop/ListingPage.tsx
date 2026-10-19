@@ -9,6 +9,7 @@ import { ShopSearch } from "@/components/shop/ShopSearch";
 import { ShopFiltersMenu } from "@/components/shop/ShopFiltersMenu";
 import { Pagination } from "@/components/shop/Pagination";
 import { ShopSections } from "@/components/shop/ShopSections";
+import { FeaturedCategories } from "@/components/shop/FeaturedCategories";
 
 const SORT_LABELS: Record<string, string> = {
   featured: "Featured",
@@ -105,7 +106,12 @@ export async function ListingPage({
       </div>
 
       <div className="mt-3 min-w-0 flex-1 sm:mt-4 lg:mt-0">
-        {activeFilters.length === 0 && result.page <= 1 && <ShopSections />}
+        {activeFilters.length === 0 && result.page <= 1 && (
+ <>
+ <FeaturedCategories />
+ <ShopSections />
+ </>
+ )}
         <ProductGrid products={result.items} />
         {result.pages > 1 ? <Pagination
           page={result.page}

@@ -440,6 +440,49 @@ export const CATEGORY_STRIP: NavChild[] = [
   { label: "Watches Gifts", href: "/product-category/men-watches-on-sale" },
 ];
 
+export const FEATURED_CATEGORIES: { title: string; href: string; image: string }[] = [
+  {
+    title: "Gifts for Him",
+    href: "/product-category/men-gifts",
+    image: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=900&q=75",
+  },
+  {
+    title: "Gifts for Her",
+    href: "/product-category/ladies-gifts",
+    image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=900&q=75",
+  },
+  {
+    title: "Couple Gifts",
+    href: "/product-category/couple-watches",
+    image: "https://images.unsplash.com/photo-1511895426328-dc8714191300?auto=format&fit=crop&w=900&q=75",
+  },
+  {
+    title: "Trophies & Awards",
+    href: "/product-category/award-trophies-in-nairobi",
+    image: "https://images.unsplash.com/photo-1567427017947-545c5f8d16ad?auto=format&fit=crop&w=900&q=75",
+  },
+  {
+    title: "Corporate Gifts",
+    href: "/product-category/corporate-gifts-kenya",
+    image: "https://images.unsplash.com/photo-1521737711867-e3b97375f902?auto=format&fit=crop&w=900&q=75",
+  },
+  {
+    title: "Personalized Gifts",
+    href: "/product-category/personalized-gifts",
+    image: "https://images.unsplash.com/photo-1513201099705-a9746e1e201f?auto=format&fit=crop&w=900&q=75",
+  },
+  {
+    title: "Promotional Gifts",
+    href: "/product-category/promotional-gifts",
+    image: "https://images.unsplash.com/photo-1556761175-b413da4baf72?auto=format&fit=crop&w=900&q=75",
+  },
+  {
+    title: "Gift Cards",
+    href: "/cards",
+    image: "https://images.unsplash.com/photo-1549465220-1a8b9238cd48?auto=format&fit=crop&w=900&q=75",
+  },
+];
+
 export const TRUST_POINTS = [
   {
     title: "100% Satisfaction Guarantee",
