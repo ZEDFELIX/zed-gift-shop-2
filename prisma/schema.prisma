@@ -977,3 +977,35 @@ model ProductView {
   @@index([productId, createdAt])
   @@index([createdAt])
 }
+
+// ---------- Wholesale quotations ----------
+
+enum WholesaleQuoteStatus {
+  NEW
+  IN_PROGRESS
+  QUOTED
+  WON
+  CLOSED
+}
+
+/// Customer-submitted bulk/wholesale quotation request, reviewed in admin.
+model WholesaleQuote {
+  id String @id @default(cuid())
+  name String
+  phone String
+  email String?
+  organisation String?
+  location String
+  budget Int?
+  details String?
+  itemsJson String
+  status WholesaleQuoteStatus @default(NEW)
+  adminNote String?
+  handledById String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([status])
+  @@index([createdAt])
+  @@index([phone])
+}
