@@ -109,8 +109,8 @@ export function HeaderContent({
             <a href={telHref} className="whitespace-nowrap hover:underline">Call us on: {contactPhone}</a>
             <a href={waHref} target="_blank" rel="noreferrer noopener" className="whitespace-nowrap hover:underline">WhatsApp: {whatsappNumber}</a>
           </div>
-          <div className="zed-announcement-track text-[11px] font-semibold sm:text-[12px]" aria-hidden="true">
-            <span>{announcement}</span>
+          <div className="flex h-11 min-w-0 flex-1 items-center justify-center overflow-hidden px-3 text-center">
+            <span className="truncate text-[11px] font-semibold sm:text-[12px]">{announcement}</span>
           </div>
         </div>
         <p className="sr-only">{announcement ? `${announcement} · ` : ""}Call us on: {contactPhone} · WhatsApp: {whatsappNumber}</p>
@@ -123,8 +123,8 @@ export function HeaderContent({
             <a href={telHref} className="whitespace-nowrap hover:underline">Call us on: {contactPhone}</a>
             <a href={waHref} target="_blank" rel="noreferrer noopener" className="whitespace-nowrap hover:underline">WhatsApp: {whatsappNumber}</a>
           </div>
-          <div className="zed-announcement-track text-[12px] font-semibold" aria-hidden="true">
-            <span>{announcement}</span>
+          <div className="flex h-11 min-w-0 flex-1 items-center justify-center overflow-hidden text-center">
+            <span className="truncate text-[12px] font-semibold">{announcement}</span>
           </div>
         </div>
         <p className="sr-only">{announcement ? `${announcement} · ` : ""}Call us on: {contactPhone} · WhatsApp: {whatsappNumber}</p>

@@ -416,20 +416,5 @@ body{background:radial-gradient(circle at 10% 0%,rgba(233,213,241,.28),transpare
 }
 
 
-/* Announcement bar: blank bar whose message starts in the middle and exits right. */
-@keyframes zed-announcement-sweep {
-  from { transform: translateX(50vw); }
-  to { transform: translateX(calc(100vw + 100%)); }
-}
+/* Announcement bar: contacts top-left, message centred and squeezes to fit. */
 .zed-announcement-wrap { display: flex; overflow: hidden; }
-.zed-announcement-track {
-  display: inline-flex;
-  align-items: center;
-  gap: 3rem;
-  white-space: nowrap;
-  will-change: transform;
-  animation: zed-announcement-sweep 14s linear infinite;
-}
-@media (prefers-reduced-motion: reduce) {
-  .zed-announcement-track { animation: none; transform: none; }
-}
