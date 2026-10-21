@@ -1,7 +1,6 @@
 import { ListingPage } from "@/components/shop/ListingPage";
 import { ProductCategoriesCard } from "@/components/shop/ProductCategoriesCard";
 import { FeaturedCategoriesCard } from "@/components/shop/FeaturedCategoriesCard";
-import { CatalogMenu } from "@/components/shop/CatalogMenu";
 import { getDealProducts } from "@/lib/data/products";
 import { buildMetadata } from "@/lib/seo";
 
@@ -54,7 +53,6 @@ export default async function ShopPage({ searchParams }: { searchParams: Promise
     filters={{ ...filters }}
     href="/shop"
     sidebar={cards()}
-    mobileCatalog={<CatalogMenu>{cards()}</CatalogMenu>}
   />
  );
 }

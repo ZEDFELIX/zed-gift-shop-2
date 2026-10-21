@@ -269,8 +269,8 @@ body{background:radial-gradient(circle at 10% 0%,rgba(233,213,241,.28),transpare
 .glass,.glass-card,.glass-panel,.glass-nav,.glass-strong,.zed-card{background:var(--zed-glass);border-color:var(--zed-glass-border);box-shadow:inset 0 1px 0 rgba(255,255,255,.95),var(--zed-glass-shadow);backdrop-filter:blur(24px) saturate(165%);-webkit-backdrop-filter:blur(24px) saturate(165%)}
 .zed-product-card,article[class*="glass"],.shop-product-card{background:var(--zed-glass);border:1px solid var(--zed-glass-border);border-radius:22px;box-shadow:inset 0 1px 0 rgba(255,255,255,.9),0 16px 38px -28px rgba(42,31,45,.42);backdrop-filter:blur(22px) saturate(160%);-webkit-backdrop-filter:blur(22px) saturate(160%);overflow:hidden;transition:transform .25s cubic-bezier(.16,1,.3,1),box-shadow .25s ease,border-color .25s ease}
 .zed-product-card:hover,article[class*="glass"]:hover,.shop-product-card:hover{transform:translateY(-3px);box-shadow:inset 0 1px 0 rgba(255,255,255,1),0 22px 48px -28px rgba(107,45,92,.3)}
-.zed-product-card .zed-product-media{border-radius:18px;margin:8px;overflow:hidden;background:rgba(255,255,255,.45);box-shadow:inset 0 1px 0 rgba(255,255,255,.9)}
-@media(max-width:767px){.glass,.glass-card,.glass-panel,.glass-nav,.glass-strong,.zed-card,.zed-product-card,article[class*="glass"],.shop-product-card{border-radius:20px}.zed-product-card .zed-product-media{margin:7px;border-radius:16px}.zed-product-card{box-shadow:inset 0 1px 0 rgba(255,255,255,.95),0 12px 30px -24px rgba(42,31,45,.38)}}
+.zed-product-card .zed-product-media{border-radius:20px;margin:8px;overflow:hidden;background:rgba(255,255,255,.45);box-shadow:inset 0 1px 0 rgba(255,255,255,.9)}
+@media(max-width:767px){.glass,.glass-card,.glass-panel,.glass-nav,.glass-strong,.zed-card,.zed-product-card,article[class*="glass"],.shop-product-card{border-radius:20px}.zed-product-card .zed-product-media{margin:7px;border-radius:18px}.zed-product-card{box-shadow:inset 0 1px 0 rgba(255,255,255,.95),0 12px 30px -24px rgba(42,31,45,.38)}}
 
 
 /* Auth form input fix: keep login/register fields interactive above glass layers. */
@@ -380,6 +380,7 @@ body{background:radial-gradient(circle at 10% 0%,rgba(233,213,241,.28),transpare
   justify-content: center;
   overflow: hidden;
   box-sizing: border-box;
+  border-radius: 16px;
 }
 .zed-product-media img,
 .zed-product-card .zed-product-media img,
@@ -396,6 +397,7 @@ body{background:radial-gradient(circle at 10% 0%,rgba(233,213,241,.28),transpare
   object-fit: contain;
   object-position: center;
   flex: 0 0 auto;
+  border-radius: inherit;
 }
 @media (max-width: 767px) {
   .zed-product-media {

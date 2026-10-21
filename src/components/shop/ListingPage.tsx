@@ -24,17 +24,15 @@ const SORT_LABELS: Record<string, string> = {
 export async function ListingPage({
  title,
  filters,
- href,
- sidebar,
- mobileCatalog,
+  href,
+  sidebar,
 }: {
- title: string;
- eyebrow?: string;
- description?: string;
- filters: ProductListFilters;
- href: string;
- sidebar?: ReactNode;
- mobileCatalog?: ReactNode;
+  title: string;
+  eyebrow?: string;
+  description?: string;
+  filters: ProductListFilters;
+  href: string;
+  sidebar?: ReactNode;
 }) {
   const [result, allCategories] = await Promise.all([
     listProducts(filters),
@@ -104,7 +102,6 @@ export async function ListingPage({
               {title}
             </h1>
             <div className="flex shrink-0 items-center gap-2">
-              {mobileCatalog}
               <Suspense fallback={null}>
                 <ShopFiltersMenu
                   categories={categories}

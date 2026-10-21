@@ -19,7 +19,6 @@ import {
   X,
 } from "lucide-react";
 import {
-  CATEGORY_STRIP,
   NAV_GROUPS,
   PLAIN_NAV,
   SITE,
@@ -315,37 +314,6 @@ export function HeaderContent({
           </nav>
         </div>
       </div>
-
-      {/* Category quick strip — horizontal scroller on mobile */}
-      <div className="no-scrollbar flex items-center gap-2 overflow-x-auto border-t border-edge/60 bg-white/55 px-3 py-1.5 backdrop-blur-xl lg:hidden sm:gap-2.5 sm:py-2">
-          {CATEGORY_STRIP.map((c) => (
-            <Link
-              key={c.href}
-              href={c.href}
-              className="shrink-0 rounded-full border border-white/60 bg-white/70 px-3 py-2 text-xs font-medium text-[var(--color-ink)] shadow-glass transition-colors hover:bg-white sm:rounded-2xl sm:px-3.5 sm:py-2.5 sm:text-[13px]"
-            >
-              {c.label}
-            </Link>
-          ))}
-        </div>
-
-      {/* Category quick strip — desktop */}
-      <div className="hidden border-b border-edge bg-white/55 backdrop-blur-xl lg:block">
-          <div className="container-zed flex items-center gap-1 py-2">
-            <span className="mr-2 shrink-0 text-[12px] font-bold uppercase tracking-[0.14em] text-soft-sage">
-              Product Categories
-            </span>
-            {CATEGORY_STRIP.map((c) => (
-              <Link
-                key={c.href}
-                href={c.href}
-                className="rounded-md px-2.5 py-1.5 text-[13px] font-medium text-[var(--color-ink)] transition-colors hover:bg-white hover:text-soft-sage"
-              >
-                {c.label}
-              </Link>
-            ))}
-          </div>
-        </div>
 
       {/* Mobile drawer */}
       {mobileOpen && (

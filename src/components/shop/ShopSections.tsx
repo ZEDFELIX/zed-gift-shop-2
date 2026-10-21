@@ -5,15 +5,10 @@ import { FlashSaleCountdown } from "@/components/shop/FlashSaleCountdown";
 import type { FlashSaleSettings } from "@/lib/data/products";
 import { FLASH_SALE_DEFAULT_BOX_COLOR, isHexColor } from "@/lib/data/products";
 import {
-  getBestSellerProducts,
-  getDealProducts,
-  getFeaturedProducts,
   getFlashSaleProducts,
   getFlashSaleSettings,
-  getMostBoughtProducts,
   type ProductWithRelations,
 } from "@/lib/data/products";
-import { prisma } from "@/lib/prisma";
 
 export type ShopSection = {
   title: string;
@@ -106,30 +101,18 @@ export function ShopSections({ sections }: { sections: ShopSection[] }) {
 }
 
 /**
- * Builds the homepage highlight sections, de-duplicating so a product appears
- * in the earliest section only. `shownIds` lets the caller hide them in the grid.
+ * Builds the shop-page highlight section(s). Only the flash sale carousel is
+ * shown; `shownIds` lets the caller hide its products in the grid.
  */
 export async function getShopSectionData(): Promise<{ sections: ShopSection[]; shownIds: string[] }> {
-  const [flashSale, sale, mostBought, bestSellers, newArrivals, personalized, corporateCategory, flashSaleSettings] = await Promise.all([
-    getFlashSaleProducts(6), getDealProducts(6), getMostBoughtProducts(6), getBestSellerProducts(6), getFeaturedProducts(6),
-    prisma.product.findMany({ where: { status: "ACTIVE", personalizationEnabled: true }, include: { images: { orderBy: { sortOrder: "asc" } }, categories: { include: { category: true } }, collections: { include: { collection: true } }, variants: { where: { active: true }, orderBy: { name: "asc" } } }, orderBy: [{ featured: "desc" }, { publishedAt: "desc" }], take: 6 }),
-    prisma.product.findMany({ where: { status: "ACTIVE", categories: { some: { category: { OR: [{ slug: "corporate-gifts-kenya" }, { slug: "corporate", kind: "OCCASION" }] } } } }, include: { images: { orderBy: { sortOrder: "asc" } }, categories: { include: { category: true } }, collections: { include: { collection: true } }, variants: { where: { active: true }, orderBy: { name: "asc" } } }, orderBy: [{ featured: "desc" }, { publishedAt: "desc" }], take: 6 }),
+  const [flashSale, flashSaleSettings] = await Promise.all([
+    getFlashSaleProducts(6),
     getFlashSaleSettings(),
   ]);
 
-  const seen = new Set<string>();
-  const take = (list: ProductWithRelations[]) =>
-    list.filter((p) => (seen.has(p.id) ? false : (seen.add(p.id), true)));
+  const sections: ShopSection[] = flashSale.length
+    ? [{ title: "Flash Sale", products: flashSale, flash: true, href: "/shop?flashSale=1", flashSale: flashSaleSettings }]
+    : [];
 
-  const sections: ShopSection[] = [
-    { title: "Flash Sale", products: take(flashSale), flash: true, href: "/shop?flashSale=1", flashSale: flashSaleSettings },
-    { title: "On Sale", products: take(sale), href: "/shop?deals=1" },
-    { title: "Most Bought", products: take(mostBought), href: "/shop?sort=popular" },
-    { title: "Best Sellers", products: take(bestSellers), href: "/shop?bestSeller=1" },
-    { title: "New Arrivals", products: take(newArrivals), href: "/shop?sort=new", titleColor: "text-rose-600" },
-    { title: "Personalized Gifts", products: take(personalized), href: "/shop?personalized=true" },
-    { title: "Corporate Gifts", products: take(corporateCategory), href: "/shop?category=corporate-gifts-kenya" },
-  ].filter((s) => s.products.length > 0);
-
-  return { sections, shownIds: [...seen] };
+  return { sections, shownIds: flashSale.map((p) => p.id) };
 }
