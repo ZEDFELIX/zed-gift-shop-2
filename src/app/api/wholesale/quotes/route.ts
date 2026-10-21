@@ -54,8 +54,9 @@ export async function POST(req: Request) {
   }
   const d = parsed.data;
 
-  // Duplicate guard: one submission per phone per 10 minutes.
-  const phone = d.phone;
+  // Normalize the phone (strip spaces, dashes, parentheses) so duplicates
+  // match regardless of formatting and admin records stay uniform.
+  const phone = d.phone.replace(/[\s()-]/g, "");
   try {
     const recent = await prisma.wholesaleQuote.count({
       where: { phone, createdAt: { gt: new Date(Date.now() - 10 * 60_000) } },
