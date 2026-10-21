@@ -145,7 +145,8 @@ export default async function WholesalePage() {
         <div className="mt-4 grid gap-3 md:grid-cols-2">
           {[
             ["How do I place a wholesale order?", "Browse the catalogue above, note your products and quantities, then submit a quotation request. We confirm availability, pricing and delivery with you by phone or WhatsApp."],
-            ["Is there a minimum order quantity?", "Minimum quantities depend on the product and whether it is personalised. They are confirmed with your quotation request - the shop will confirm exactly what applies."],
+            ["Is there a minimum order quantity?", "No fixed minimum across the store - order more than 10 pieces per product to qualify for the wholesale discount, and the shop will confirm any product-specific minimums."],
+            ["How do I get a discount?", "Orders of more than 10 pieces qualify for our wholesale discount. The exact discount is confirmed with your quotation request - the shop will confirm exactly what applies."],
             ["How is wholesale pricing determined?", "Wholesale pricing is confirmed with the shop. Quantities, the product mix and customisation all affect it. Retail prices shown in the catalogue are per-unit retail and are not wholesale prices."],
             ["Can I request customised or branded gifts?", "Yes. Corporate gifts, personalised gifts and packaging, event giveaways and retail-shop stock can all be quoted. Options and pricing are confirmed during quoting."],
             ["Which payment methods are available?", "Payment is agreed when you confirm your order - M-Pesa and bank transfer are available for bulk orders, with receipts provided."],

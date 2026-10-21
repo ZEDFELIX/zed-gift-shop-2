@@ -225,12 +225,12 @@ export function HeaderContent({
         </div>
       </div></div>
 
-      {/* Desktop utility bar — key links */}
-      <div className="relative z-30 hidden border-b border-edge bg-white lg:block">
-        <div className="container-zed flex items-center justify-end py-2">
-          <nav className="flex items-center justify-end gap-5" aria-label="Utility">
+      {/* Utility bar — key links, shown below the announcement bar on every screen */}
+      <div className="relative z-30 border-b border-edge bg-white">
+        <div className="container-zed flex items-center justify-end overflow-x-auto py-1.5 sm:py-2">
+          <nav className="flex items-center gap-3.5 sm:gap-5" aria-label="Utility">
             {UTILITY_NAV.map((item) => (
-              <Link key={item.href} href={item.href} className="text-[13px] font-semibold text-[var(--color-ink)] transition-colors hover:text-soft-sage">
+              <Link key={item.href} href={item.href} className="whitespace-nowrap text-[12px] font-semibold text-[var(--color-ink)] transition-colors hover:text-soft-sage sm:text-[13px]">
                 {item.label}
               </Link>
             ))}

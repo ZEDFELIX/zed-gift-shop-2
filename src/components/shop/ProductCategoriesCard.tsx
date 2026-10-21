@@ -41,7 +41,7 @@ export function ProductCategoriesCard() {
   const [openHref, setOpenHref] = useState<string | null>(null);
 
   return (
-    <aside className="w-full rounded-2xl bg-[#C24B80] p-5 text-white shadow-sm" aria-label="Product categories">
+    <aside className="w-full rounded-2xl bg-[var(--color-rose-500)] p-5 text-white shadow-sm" aria-label="Product categories">
       <h2 className="font-display text-xl font-bold leading-none">Product Categories</h2>
       <ul className="mt-2">
         {CATEGORY_STRIP.map((c) => {
@@ -65,7 +65,7 @@ export function ProductCategoriesCard() {
                     aria-expanded={open}
                     aria-controls={menuId}
                     aria-label={open ? `Hide ${c.label} options` : `Show ${c.label} options`}
-                    className="grid size-8 shrink-0 place-items-center rounded-full text-white/90 transition-colors hover:bg-white/15"
+                    className="grid size-8 shrink-0 place-items-center rounded-full border border-white/40 bg-white/25 text-white shadow-sm backdrop-blur-md transition hover:bg-white/45"
                   >
                     <ChevronDown className={`size-4 transition-transform duration-200 ${open ? "rotate-180" : ""}`} />
                   </button>
