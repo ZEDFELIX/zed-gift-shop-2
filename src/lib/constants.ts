@@ -426,6 +426,14 @@ export const PLAIN_NAV: NavChild[] = [
   { label: "Wholesale", href: "/wholesale" },
 ];
 
+export const UTILITY_NAV: NavChild[] = [
+  { label: "Wholesale", href: "/wholesale" },
+  { label: "About us", href: "/about" },
+  { label: "Blog", href: "/blog" },
+  { label: "Track order", href: "/track" },
+  { label: "Contact", href: "/contact" },
+];
+
 export const CATEGORY_STRIP: NavChild[] = [
   { label: "Men", href: "/product-category/men-gifts" },
   { label: "Women", href: "/product-category/ladies-gifts" },

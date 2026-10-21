@@ -9,6 +9,7 @@ import {
   Heart,
   LogIn,
   Menu,
+  MessageCircle,
   Phone,
   Search,
   ShieldCheck,
@@ -20,6 +21,7 @@ import {
   NAV_GROUPS,
   PLAIN_NAV,
   SITE,
+  UTILITY_NAV,
   type NavGroup,
 } from "@/lib/constants";
 import { SearchPanel } from "@/components/search/SearchPanel";
@@ -50,6 +52,7 @@ export function HeaderContent({
   wishlistCount,
   announcement,
   contactPhone,
+  whatsappNumber,
   storeName,
   isAuthed,
   userRole,
@@ -59,6 +62,7 @@ export function HeaderContent({
   wishlistCount: number;
   announcement: string;
   contactPhone: string;
+  whatsappNumber: string;
   storeName: string;
   isAuthed: boolean;
   userRole: "CUSTOMER" | "STAFF" | "ADMIN" | null;
@@ -98,8 +102,8 @@ export function HeaderContent({
     <>
       {/* Mobile announcement bar — tall, empty, message sweeps in from the left */}
       <div className="relative z-30 border-b border-edge/60 bg-[var(--color-announcement,#6B2D5C)] text-[var(--color-announcement-fg,#fff)] lg:hidden">
-        <div className="zed-announcement-wrap h-14">
-          <div className="zed-announcement-track text-[12px] font-semibold sm:text-[13px]" aria-hidden="true">
+        <div className="zed-announcement-wrap h-11">
+          <div className="zed-announcement-track text-[11px] font-semibold sm:text-[12px]" aria-hidden="true">
             <span>{announcement}</span>
           </div>
         </div>
@@ -108,8 +112,8 @@ export function HeaderContent({
 
       {/* Desktop announcement bar — tall, empty, message sweeps in from the left */}
       <div className="relative z-30 hidden border-b border-zed-900/15 bg-[var(--color-announcement,#6B2D5C)] text-[var(--color-announcement-fg,#fff)] md:block">
-        <div className="container-zed zed-announcement-wrap h-14">
-          <div className="zed-announcement-track text-[13px] font-semibold" aria-hidden="true">
+        <div className="container-zed zed-announcement-wrap h-11">
+          <div className="zed-announcement-track text-[12px] font-semibold" aria-hidden="true">
             <span>{announcement}</span>
           </div>
         </div>
@@ -210,6 +214,35 @@ export function HeaderContent({
           </div>
         </div>
       </div></div>
+
+      {/* Desktop utility bar — call + WhatsApp details and key links */}
+      <div className="relative z-30 hidden border-b border-edge bg-white lg:block">
+        <div className="container-zed flex items-center justify-between py-2">
+          <div className="flex items-center gap-5">
+            <a
+              href={`tel:${contactPhone.replace(/\s+/g, "")}`}
+              className="flex items-center gap-1.5 text-[13px] font-semibold text-[var(--color-ink)] transition-colors hover:text-soft-sage"
+            >
+              <Phone className="size-3.5 text-soft-sage" /> {contactPhone}
+            </a>
+            <a
+              href={`https://wa.me/${whatsappNumber}`}
+              target="_blank"
+              rel="noreferrer noopener"
+              className="flex items-center gap-1.5 text-[13px] font-semibold text-[var(--color-ink)] transition-colors hover:text-soft-sage"
+            >
+              <MessageCircle className="size-3.5 text-soft-sage" /> WhatsApp {whatsappNumber}
+            </a>
+          </div>
+          <nav className="flex items-center gap-5" aria-label="Utility">
+            {UTILITY_NAV.map((item) => (
+              <Link key={item.href} href={item.href} className="text-[13px] font-semibold text-[var(--color-ink)] transition-colors hover:text-soft-sage">
+                {item.label}
+              </Link>
+            ))}
+          </nav>
+        </div>
+      </div>
 
       {/* Mobile drawer */}
       {mobileOpen && (
