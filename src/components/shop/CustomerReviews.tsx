@@ -1,7 +1,7 @@
 import "server-only";
 
-import { Quote, Star } from "lucide-react";
 import { getSetting } from "@/lib/data/settings";
+import { ReviewsCarousel } from "@/components/shop/ReviewsCarousel";
 
 export type CustomerReview = {
   name: string;
@@ -25,43 +25,26 @@ function parseReviews(raw: unknown): CustomerReview[] {
 }
 
 export async function CustomerReviews() {
-  const raw = await getSetting("customerReviews");
+  const [raw, whatsappRaw, contactRaw] = await Promise.all([
+    getSetting("customerReviews"),
+    getSetting("whatsappNumber"),
+    getSetting("contactPhone"),
+  ]);
   const reviews = parseReviews(raw);
   if (!reviews.length) return null;
+
+  const number =
+    typeof whatsappRaw === "string" && whatsappRaw.trim() ? whatsappRaw.trim() : "254711436169";
+  const phone = typeof contactRaw === "string" && contactRaw.trim() ? contactRaw.trim() : "";
+  const linkText = phone
+    ? `Hi ZED GIFT SHOP, I'd like to add my customer review. (Call: ${phone})`
+    : "Hi ZED GIFT SHOP, I'd like to add my customer review.";
+  const addHref = `https://wa.me/${number}?text=${encodeURIComponent(linkText)}`;
 
   return (
     <section className="container-zed mb-10 sm:mb-12" aria-label="Customer reviews">
       <div className="glass-panel rounded-2xl p-3 sm:p-5">
-        <div className="mb-3 flex items-center justify-between gap-2 border-b-2 border-orange-400 pb-2.5">
-          <h2 className="font-display text-lg font-bold sm:text-xl">Customer reviews</h2>
-          <p className="text-[11px] font-semibold text-charcoal/50">Verified buyers</p>
-        </div>
-        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-          {reviews.map((review, i) => (
-            <figure
-              key={`${review.name}-${i}`}
-              className="flex h-full flex-col rounded-xl border border-white/60 bg-white/80 p-4 shadow-sm"
-            >
-              <Quote className="size-4 text-rose-400 fill-current" aria-hidden="true" />
-              <div className="mt-1.5 flex gap-0.5" aria-label={`${review.rating} out of 5 stars`}>
-                {Array.from({ length: 5 }).map((_, s) => (
-                  <Star
-                    key={s}
-                    className={`size-3.5 ${s < review.rating ? "fill-current text-amber-400" : "text-charcoal/25"}`}
-                    aria-hidden="true"
-                  />
-                ))}
-              </div>
-              <blockquote className="mt-2 flex-1 text-[13px] leading-relaxed text-charcoal/80">
-                {review.text}
-              </blockquote>
-              <figcaption className="mt-3 border-t border-edge pt-2 text-[12px] font-bold text-charcoal-950">
-                {review.name}
-                {review.location ? <span className="block text-[11px] font-medium text-charcoal/50">{review.location}</span> : null}
-              </figcaption>
-            </figure>
-          ))}
-        </div>
+        <ReviewsCarousel reviews={reviews} addHref={addHref} />
       </div>
     </section>
   );
