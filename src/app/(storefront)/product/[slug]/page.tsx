@@ -7,6 +7,7 @@ import { ChevronRight, Quote, ShieldCheck, Star, Truck } from "lucide-react";
 import { getProductBySlug, getRelatedProducts, productSeoTitle } from "@/lib/data/products";
 import { getSetting } from "@/lib/data/settings";
 import { listApprovedReviews, ratingBreakdown } from "@/lib/data/reviews";
+import { getSession } from "@/lib/auth";
 import { buildMetadata, jsonLdBreadcrumb, jsonLdProduct } from "@/lib/seo";
 import { discountPercent, formatKES } from "@/lib/utils";
 import { SITE } from "@/lib/constants";
@@ -14,6 +15,7 @@ import { ProductCard } from "@/components/product/ProductCard";
 import { ProductGallery } from "@/components/product/ProductGallery";
 import { ProductPurchase } from "@/components/product/ProductPurchase";
 import { ReviewForm } from "@/components/product/ReviewForm";
+import { ReviewActions } from "@/components/reviews/ReviewActions";
 import { NotifyWhenBack } from "@/components/product/NotifyWhenBack";
 import { TrackPageView } from "@/components/analytics/Trackers";
 import { prisma } from "@/lib/prisma";
@@ -46,7 +48,9 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
   getSetting("whatsappNumber"),
   ]);
 
- const breakdown = ratingBreakdown(reviews);
+  const breakdown = ratingBreakdown(reviews);
+  const session = await getSession();
+  const signedIn = Boolean(session?.sub);
  const sale = discountPercent(product.price, product.compareAtPrice);
  const inStock = !product.trackInventory || product.quantity > product.reservedQuantity;
  const totalStock = product.quantity - product.reservedQuantity;
@@ -81,12 +85,12 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
  availability: inStock ? "in" : "out",
  ratingValue: breakdown.average,
  reviewCount: breakdown.count,
- reviews: reviews.map((r) => ({
- author: r.user?.name ?? null,
- rating: r.rating,
- body: r.comment ?? r.title ?? null,
- date: r.createdAt,
- })),
+  reviews: reviews.map((r) => ({
+  author: r.authorName ?? null,
+  rating: r.rating,
+  body: r.comment ?? r.title ?? null,
+  date: r.createdAt,
+  })),
  });
 
   return (
@@ -245,7 +249,14 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
 
  {/* Reviews */}
  <section id="reviews" className="mx-auto mt-14 max-w-4xl">
- <h2 className="font-display text-2xl font-bold text-[var(--color-ink)]">Customer reviews</h2>
+  <h2 className="font-display text-2xl font-bold text-[var(--color-ink)]">Customer reviews</h2>
+  {reviews.length > 0 && (
+  <div className="mt-1">
+  <Link href={`/reviews?product=${product.slug}`} className="text-sm font-semibold text-[var(--color-ink)] underline decoration-rose-300 underline-offset-4 hover:text-rose-600">
+  See all {breakdown.count} review{breakdown.count === 1 ? "" : "s"}
+  </Link>
+  </div>
+  )}
  {breakdown.count > 0 && (
  <div className="mt-4 grid gap-6 sm:grid-cols-[180px_1fr]">
  <div>
@@ -283,10 +294,10 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
  <div className="flex items-center justify-between gap-3">
  <div className="flex items-center gap-2">
  <span className="grid size-9 place-items-center rounded-full bg-warm-white font-bold text-zed-700">
- {(r.user?.name ?? "ZED").charAt(0).toUpperCase()}
+  {(r.authorName ?? "ZED").charAt(0).toUpperCase()}
  </span>
- <div>
- <p className="text-sm font-semibold text-[var(--color-ink)]">{r.user?.name ?? "Verified customer"}</p>
+  <div>
+  <p className="text-sm font-semibold text-[var(--color-ink)]">{r.authorName ?? "Verified customer"}</p>
  <div className="flex gap-0.5">
  {[1, 2, 3, 4, 5].map((s) => (
  <Star key={s} className={`size-3.5 ${s <= r.rating ? "fill-zed-950 text-zed-950" : "text-[rgba(48,37,34,0.62)]"}`} />
@@ -313,13 +324,14 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
  ))}
  </div>
  )}
- {r.verifiedPurchase && (
- <p className="mt-2 inline-flex items-center gap-1 rounded-full bg-warm-white px-2.5 py-0.5 text-[11px] font-semibold text-zed-700">
- <Star className="size-3 fill-current" /> Verified purchase
- </p>
- )}
- </article>
- ))}
+  {r.verifiedPurchase && (
+  <p className="mt-2 inline-flex items-center gap-1 rounded-full bg-warm-white px-2.5 py-0.5 text-[11px] font-semibold text-zed-700">
+  <Star className="size-3 fill-current" /> Verified purchase
+  </p>
+  )}
+  <ReviewActions reviewId={r.id} initialHelpful={r.helpfulCount} signedIn={signedIn} />
+  </article>
+  ))}
  </div>
 
  <div>

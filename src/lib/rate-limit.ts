@@ -44,4 +44,7 @@ export const RATE_LIMITS = {
   mpesaPush: { limit: 6, windowSeconds: 600 },
   contact: { limit: 5, windowSeconds: 3600 },
   checkout: { limit: 12, windowSeconds: 600 },
+  reviewSubmit: { limit: 5, windowSeconds: 3600 },
+  reviewHelpful: { limit: 30, windowSeconds: 600 },
+  reviewReport: { limit: 10, windowSeconds: 3600 },
 } as const;

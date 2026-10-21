@@ -55,18 +55,23 @@ export function ReviewForm({ productId }: { productId: string }) {
  setError("Pick a star rating.");
  return;
  }
- setState("busy");
- setError("");
- try {
- let images: string[] = [];
- if (photos.length > 0) {
- images = await uploadPhotos();
- }
- const res = await fetch("/api/reviews", {
- method: "POST",
- headers: { "Content-Type": "application/json" },
- body: JSON.stringify({ productId, rating, title, comment, images: images.length ? images : undefined }),
- });
+  setState("busy");
+  setError("");
+  try {
+  let images: string[] = [];
+  if (photos.length > 0) {
+  images = await uploadPhotos();
+  }
+  // Honeypot value comes straight from the invisible input so bots that
+  // auto-fill it are dropped server-side without any feedback.
+  const form = e.currentTarget as HTMLFormElement;
+  const websiteInput = form.elements.namedItem("website");
+  const website = websiteInput instanceof HTMLInputElement ? websiteInput.value : "";
+  const res = await fetch("/api/reviews", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({ productId, rating, title, comment, images: images.length ? images : undefined, website }),
+  });
  const data = (await res.json()) as { ok?: boolean; error?: string };
  if (!res.ok || !data.ok) {
  setState("error");
@@ -89,7 +94,16 @@ export function ReviewForm({ productId }: { productId: string }) {
  }
 
  return (
- <form onSubmit={submit} className="space-y-4">
+  <form onSubmit={submit} className="space-y-4">
+  {/* Honeypot: hidden from shoppers; stopped by the API server-side when filled. */}
+  <input
+  type="text"
+  name="website"
+  aria-hidden="true"
+  tabIndex={-1}
+  autoComplete="off"
+  className="hidden"
+  />
  <div>
  <p className="label">Your rating</p>
  <div className="flex gap-1" onMouseLeave={() => setHover(0)}>

@@ -183,11 +183,13 @@ model User {
   createdAt DateTime @default(now())
  updatedAt DateTime @updatedAt
 
- wishlist Wishlist?
- addresses Address[]
- orders Order[]
- reviews Review[]
- reminders OccasionReminder[]
+  wishlist Wishlist?
+  addresses Address[]
+  orders Order[]
+  reviews Review[]
+  reviewVotes ReviewVote[]
+  reviewReports ReviewReport[]
+  reminders OccasionReminder[]
   notifications Notification[]
   inventoryTransactions InventoryTransaction[]
   returnRequests ReturnRequest[]
@@ -811,12 +813,43 @@ model Review {
  helpfulCount Int @default(0)
  createdAt DateTime @default(now())
 
- product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
- user User? @relation(fields: [userId], references: [id], onDelete: SetNull)
- order Order? @relation(fields: [orderId], references: [id], onDelete: SetNull)
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  user User? @relation(fields: [userId], references: [id], onDelete: SetNull)
+  order Order? @relation(fields: [orderId], references: [id], onDelete: SetNull)
+  votes ReviewVote[]
+  reports ReviewReport[]
 
- @@index([productId, status])
- @@index([userId])
+  @@index([productId, status])
+  @@index([userId])
+}
+
+/// One "helpful" vote per signed-in user per review.
+model ReviewVote {
+  id String @id @default(cuid())
+  reviewId String
+  userId String
+  createdAt DateTime @default(now())
+
+  review Review @relation(fields: [reviewId], references: [id], onDelete: Cascade)
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([reviewId, userId])
+}
+
+/// "Report this review" flag for administrators to inspect.
+model ReviewReport {
+  id String @id @default(cuid())
+  reviewId String
+  userId String?
+  reason String
+  resolved Boolean @default(false)
+  createdAt DateTime @default(now())
+
+  review Review @relation(fields: [reviewId], references: [id], onDelete: Cascade)
+  user User? @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@index([reviewId])
+  @@index([resolved])
 }
 
 model OccasionReminder {
