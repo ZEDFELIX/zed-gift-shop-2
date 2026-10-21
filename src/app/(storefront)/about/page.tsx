@@ -1,4 +1,4 @@
-import { Gift, MapPin, Package, Heart, Users, Truck } from "lucide-react";
+import { Gift, Package, Heart, Users, Truck } from "lucide-react";
 import Link from "next/link";
 
 export const metadata = { title: "About Us | ZED Gift Shop", description: "ZED Gift Shop is a Nairobi-based gifting studio making personalized, thoughtfully chosen gifts delivered across Kenya." };
@@ -95,11 +95,7 @@ export default function AboutPage() {
         </section>
 
         {/* Contact strip */}
-        <div className="mt-12 flex flex-col items-center gap-3 rounded-zed bg-zed-950 p-8 text-center text-white sm:flex-row sm:justify-between sm:text-left">
-          <div className="flex items-center gap-3">
-            <MapPin className="size-6 shrink-0 text-white" />
-            <p className="text-sm">Visit-by-appointment showroom in Nairobi - WhatsApp us to book.</p>
-          </div>
+        <div className="mt-12 flex flex-col items-center gap-3 rounded-zed bg-zed-950 p-8 text-center text-white sm:flex-row sm:justify-center sm:text-left">
           <div className="flex items-center gap-3">
             <Gift className="size-6 shrink-0 text-white" />
             <p className="text-sm">Need a custom gift? We love a challenge.</p>

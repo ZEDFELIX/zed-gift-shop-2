@@ -1,8 +1,9 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { Check, Loader2, Minus, Plus, Send, ShoppingBag, Trash2, X } from "lucide-react";
+import { Check, Loader2, Minus, Plus, Send, ShoppingCart, ShoppingBag, Trash2, X } from "lucide-react";
 import { formatKES } from "@/lib/utils";
 
 export type WholesaleProduct = {
@@ -42,9 +43,30 @@ export function WholesaleWorkspace({
   });
   const [honeypot, setHoneypot] = useState("");
   const [busy, setBusy] = useState(false);
+  const [cartBusy, setCartBusy] = useState<string | null>(null);
   const [fieldError, setFieldError] = useState<string | null>(null);
   const [serverError, setServerError] = useState<string | null>(null);
   const [reference, setReference] = useState<string | null>(null);
+  const router = useRouter();
+
+  /** Adds the selected quantity straight to the shopping cart, like store cards do. */
+  async function quickAddToCart(product: WholesaleProduct) {
+    if (cartBusy) return;
+    setCartBusy(product.id);
+    try {
+      const res = await fetch("/api/cart/items", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ productId: product.id, quantity: Math.max(1, Math.round(Number(quantities[product.id]) || 1)) }),
+      });
+      if (res.ok) {
+        window.dispatchEvent(new CustomEvent("zed:open-cart"));
+        router.refresh();
+      }
+    } finally {
+      setCartBusy(null);
+    }
+  }
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
@@ -222,13 +244,22 @@ export function WholesaleWorkspace({
                   </div>
                   <button
                     type="button"
+                    onClick={() => quickAddToCart(product)}
+                    disabled={cartBusy !== null}
+                    className="inline-flex min-h-9 items-center gap-1.5 rounded-md bg-deep-olive px-3 py-1.5 text-[12px] font-bold text-white shadow-sm transition-colors hover:bg-zed-900 disabled:opacity-60"
+                  >
+                    {cartBusy === product.id ? <Loader2 className="size-3.5 animate-spin" /> : <ShoppingCart className="size-3.5" />}
+                    Add to cart
+                  </button>
+                  <button
+                    type="button"
                     onClick={() => addItem(product)}
-                    className={`inline-flex min-h-9 items-center gap-1.5 rounded-md px-3 py-1.5 text-[12px] font-bold shadow-sm transition-colors ${
-                      added ? "bg-emerald-50 text-emerald-700" : "bg-deep-olive text-white hover:bg-zed-900"
+                    className={`inline-flex min-h-9 items-center gap-1.5 rounded-md px-2.5 py-1.5 text-[12px] font-bold shadow-sm transition-colors ${
+                      added ? "bg-emerald-50 text-emerald-700" : "bg-white text-[#334155] border border-edge hover:border-charcoal/25"
                     }`}
                   >
                     {added ? <Check className="size-3.5" /> : <ShoppingBag className="size-3.5" />}
-                    {added ? "Added" : "Add"}
+                    {added ? "In quote" : "Quote"}
                   </button>
                 </div>
                 <p className={`mt-1.5 text-[11px] font-medium ${product.inStock ? "text-emerald-600" : "text-amber-600"}`}>
