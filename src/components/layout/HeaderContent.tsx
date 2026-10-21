@@ -97,28 +97,37 @@ export function HeaderContent({
     router.push(`/shop?q=${encodeURIComponent(q)}`);
   }
 
-  const barText = `${announcement ? `${announcement}  ·  ` : ""}Call us on: ${contactPhone}  ·  WhatsApp: ${whatsappNumber}`;
+  const telHref = `tel:${contactPhone.replace(/\s+/g, "")}`;
+  const waHref = `https://wa.me/${whatsappNumber}`;
 
   return (
     <>
-      {/* Mobile announcement bar — one message with call + WhatsApp details */}
+      {/* Mobile announcement bar — contacts stacked on the left, message sweeps from the middle */}
       <div className="relative z-30 border-b border-edge/60 bg-[var(--color-announcement,#6B2D5C)] text-[var(--color-announcement-fg,#fff)] lg:hidden">
         <div className="zed-announcement-wrap h-11">
+          <div className="flex h-11 shrink-0 flex-col items-start justify-center px-3 text-[10px] font-bold leading-tight sm:text-[11px]">
+            <a href={telHref} className="whitespace-nowrap hover:underline">Call us on: {contactPhone}</a>
+            <a href={waHref} target="_blank" rel="noreferrer noopener" className="whitespace-nowrap hover:underline">WhatsApp: {whatsappNumber}</a>
+          </div>
           <div className="zed-announcement-track text-[11px] font-semibold sm:text-[12px]" aria-hidden="true">
-            <span>{barText}</span>
+            <span>{announcement}</span>
           </div>
         </div>
-        <p className="sr-only">{barText}</p>
+        <p className="sr-only">{announcement ? `${announcement} · ` : ""}Call us on: {contactPhone} · WhatsApp: {whatsappNumber}</p>
       </div>
 
-      {/* Desktop announcement bar — one message with call + WhatsApp details */}
+      {/* Desktop announcement bar — contacts stacked on the left, message sweeps from the middle */}
       <div className="relative z-30 hidden border-b border-zed-900/15 bg-[var(--color-announcement,#6B2D5C)] text-[var(--color-announcement-fg,#fff)] md:block">
         <div className="container-zed zed-announcement-wrap h-11">
+          <div className="flex h-11 shrink-0 flex-col items-start justify-center border-r border-white/25 pr-4 text-[10px] font-bold leading-tight sm:text-[11px]">
+            <a href={telHref} className="whitespace-nowrap hover:underline">Call us on: {contactPhone}</a>
+            <a href={waHref} target="_blank" rel="noreferrer noopener" className="whitespace-nowrap hover:underline">WhatsApp: {whatsappNumber}</a>
+          </div>
           <div className="zed-announcement-track text-[12px] font-semibold" aria-hidden="true">
-            <span>{barText}</span>
+            <span>{announcement}</span>
           </div>
         </div>
-        <p className="sr-only">{barText}</p>
+        <p className="sr-only">{announcement ? `${announcement} · ` : ""}Call us on: {contactPhone} · WhatsApp: {whatsappNumber}</p>
       </div>
 
       {/* Main header row */}
