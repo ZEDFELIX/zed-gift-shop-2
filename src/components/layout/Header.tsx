@@ -5,17 +5,15 @@ import { cartSummaryForHeader } from "@/lib/cart";
 import { getWishlistIds } from "@/lib/wishlist";
 import { getCurrentUser } from "@/lib/auth";
 import { getSetting } from "@/lib/data/settings";
-import { getNavFeatured } from "@/lib/data/storefront";
 import { HeaderContent } from "@/components/layout/HeaderContent";
 
 export async function Header() {
-  const [cart, user, announcementRaw, contactPhoneRaw, storeNameRaw, featured] = await Promise.all([
+  const [cart, user, announcementRaw, contactPhoneRaw, storeNameRaw] = await Promise.all([
     cartSummaryForHeader().catch(() => ({ count: 0, subtotal: 0 })),
     getCurrentUser().catch(() => null),
     getSetting("announcementBar").catch(() => null),
     getSetting("contactPhone").catch(() => null),
     getSetting("storeName").catch(() => null),
-    getNavFeatured().catch(() => ({})),
   ]);
   const cartCount = cart.count;
   const wishlistCount = user ? (await getWishlistIds(user.id).catch(() => []))?.length : 0;
@@ -33,7 +31,6 @@ export async function Header() {
       storeName={storeName}
       isAuthed={Boolean(user)}
       userRole={user?.role ?? null}
-      featured={featured}
     />
   );
 }

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState, type FormEvent } from "react";
+import { useEffect, useState, type FormEvent } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
@@ -20,12 +20,8 @@ import {
   NAV_GROUPS,
   PLAIN_NAV,
   SITE,
-  type NavChild,
-  type NavColumn,
   type NavGroup,
 } from "@/lib/constants";
-import { formatKES } from "@/lib/utils";
-import type { NavFeaturedMap, MenuFeatured } from "@/lib/data/storefront";
 import { SearchPanel } from "@/components/search/SearchPanel";
 import { DownloadAppButton } from "@/components/layout/DownloadAppButton";
 
@@ -57,7 +53,6 @@ export function HeaderContent({
   storeName,
   isAuthed,
   userRole,
-  featured,
 }: {
   cartCount: number;
   cartSubtotal: number;
@@ -67,20 +62,15 @@ export function HeaderContent({
   storeName: string;
   isAuthed: boolean;
   userRole: "CUSTOMER" | "STAFF" | "ADMIN" | null;
-  featured: NavFeaturedMap;
 }) {
   const pathname = usePathname();
   const router = useRouter();
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [openGroup, setOpenGroup] = useState<string | null>(null);
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
-  const navRef = useRef<HTMLDivElement>(null);
-  const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
     setMobileOpen(false);
-    setOpenGroup(null);
     setSearchOpen(false);
   }, [pathname]);
 
@@ -88,26 +78,10 @@ export function HeaderContent({
     function onKey(e: KeyboardEvent) {
       if (e.key === "Escape") {
         setMobileOpen(false);
-        setOpenGroup(null);
       }
     }
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, []);
-
-  useEffect(() => {
-    if (!openGroup) return;
-    function onClick(e: MouseEvent) {
-      if (navRef.current && !navRef.current.contains(e.target as Node)) setOpenGroup(null);
-    }
-    document.addEventListener("mousedown", onClick);
-    return () => document.removeEventListener("mousedown", onClick);
-  }, [openGroup]);
-
-  useEffect(() => {
-    return () => {
-      if (closeTimer.current) clearTimeout(closeTimer.current);
-    };
   }, []);
 
   const accountHref = isAuthed ? "/account" : "/login";
@@ -119,20 +93,6 @@ export function HeaderContent({
     setSearchQuery("");
     router.push(`/shop?q=${encodeURIComponent(q)}`);
   }
-
-  function hoverOpen(label: string) {
-    if (closeTimer.current) clearTimeout(closeTimer.current);
-    setOpenGroup(label);
-  }
-  function hoverClose() {
-    if (closeTimer.current) clearTimeout(closeTimer.current);
-    closeTimer.current = setTimeout(() => setOpenGroup(null), 140);
-  }
-
-  const isActive = (href: string) => {
-    const base = href.split("?")[0];
-    return pathname === base || (base !== "/" && pathname.startsWith(base));
-  };
 
   return (
     <>
@@ -251,51 +211,6 @@ export function HeaderContent({
         </div>
       </div></div>
 
-      {/* Primary nav with mega menus */}
-      <div className="relative z-30 hidden border-b border-edge bg-white lg:block" ref={navRef}>
-        <div className="container-zed">
-          <nav className="flex items-center" aria-label="Primary">
-            {NAV_GROUPS.map((group) => (
-              <div
-                key={group.label}
-                className="relative"
-                onMouseEnter={() => hoverOpen(group.label)}
-                onMouseLeave={hoverClose}
-              >
-                <Link
-                  href={group.href}
-                  onFocus={() => hoverOpen(group.label)}
-                  className={`flex items-center gap-1 border-b-2 px-3.5 py-3.5 text-[14px] font-semibold transition-colors ${
-                    isActive(group.href)
-                      ? "border-deep-olive text-deep-olive"
-                      : "border-transparent text-[var(--color-ink)] hover:text-soft-sage"
-                  }`}
-                >
-                  {group.label}
-                  <ChevronDown className="size-3.5 opacity-60" aria-hidden />
-                </Link>
-                {openGroup === group.label && (
-                  <MegaPanel group={group} featured={featured[group.label] ?? null} />
-                )}
-              </div>
-            ))}
-            {PLAIN_NAV.map((item) => (
-              <Link
-                key={item.href}
-                href={item.href}
-                className={`border-b-2 px-3.5 py-3.5 text-[14px] font-semibold transition-colors ${
-                  isActive(item.href)
-                    ? "border-deep-olive text-deep-olive"
-                    : "border-transparent text-[var(--color-ink)] hover:text-soft-sage"
-                }`}
-              >
-                {item.label}
-              </Link>
-            ))}
-          </nav>
-        </div>
-      </div>
-
       {/* Mobile drawer */}
       {mobileOpen && (
         <div className="fixed inset-0 z-[75] lg:hidden">
@@ -391,101 +306,6 @@ export function HeaderContent({
   );
 }
 
-function MegaPanel({ group, featured }: { group: NavGroup; featured: MenuFeatured | null }) {
-  return (
-    <div
-      className="absolute left-1/2 top-full z-50 w-[min(1180px,96vw)] -translate-x-1/2 pt-2.5 animate-fade-in"
-      onMouseEnter={() => {}}
-    >
-      <div className="glass-strong overflow-hidden rounded-[1.5rem] shadow-glass-lg">
-        <div className="grid gap-6 p-6 lg:grid-cols-5">
-          <div className="grid gap-6 sm:grid-cols-2 lg:col-span-4 xl:grid-cols-4">
-            {group.columns.map((col) => (
-              <MenuColumn key={col.title} column={col} />
-            ))}
-          </div>
-          <div className="lg:col-span-1">
-            {featured ? (
-              <Link
-                href={`/product/${featured.slug}`}
-                className="group flex h-full flex-col overflow-hidden rounded-xl border border-edge bg-panel/40 transition-colors hover:border-champagne"
-              >
-                <div className="relative aspect-[4/3] overflow-hidden bg-panel">
-                  {featured.image && (
-                    <Image
-                      src={featured.image}
-                      alt={featured.alt}
-                      fill
-                      unoptimized
-                      sizes="240px"
-                      className="object-cover transition-transform duration-500 group-hover:scale-105"
-                    />
-                  )}
-                  {featured.sale != null && featured.sale > 0 && (
-                    <span className="absolute left-2 top-2 rounded-full bg-deep-olive px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-white">
-                      Sale! -{featured.sale}%
-                    </span>
-                  )}
-                </div>
-                <div className="flex flex-1 flex-col gap-2 p-3">
-                  <p className="text-sm font-semibold leading-snug text-[var(--color-ink)]">{featured.name}</p>
-                  <p className="text-sm font-bold text-soft-sage">
-                    {formatKES(featured.price)}
-                    {featured.compareAt != null && featured.compareAt > featured.price && (
-                      <span className="ml-1.5 text-xs font-medium text-charcoal/50 line-through">
-                        {formatKES(featured.compareAt)}
-                      </span>
-                    )}
-                  </p>
-                </div>
-              </Link>
-            ) : (
-              <div className="flex h-full flex-col justify-center rounded-xl border border-dashed border-edge bg-panel/30 p-4 text-center">
-                <p className="text-xs font-semibold uppercase tracking-[0.16em] text-soft-sage">Featured</p>
-                <Link
-                  href={group.href}
-                  className="mt-2 text-sm font-semibold text-deep-olive hover:underline"
-                >
-                  Browse {group.label}
-                </Link>
-              </div>
-            )}
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function MenuColumn({ column }: { column: NavColumn }) {
-  return (
-    <div>
-      {column.href ? (
-        <Link
-          href={column.href}
-          className="text-[12px] font-bold uppercase tracking-[0.14em] text-soft-sage hover:text-deep-olive"
-        >
-          {column.title}
-        </Link>
-      ) : (
-        <p className="text-[12px] font-bold uppercase tracking-[0.14em] text-soft-sage">{column.title}</p>
-      )}
-      <ul className="mt-3 space-y-1">
-        {column.children.map((child) => (
-          <li key={child.href + child.label}>
-            <Link
-              href={child.href}
-              className="block text-[13px] leading-relaxed text-[var(--color-ink)] transition-colors hover:text-soft-sage"
-            >
-              {child.label}
-            </Link>
-          </li>
-        ))}
-      </ul>
-    </div>
-  );
-}
-
 function MobileGroup({ group, onClose }: { group: NavGroup; onClose: () => void }) {
   const [open, setOpen] = useState(false);
   return (
@@ -531,5 +351,3 @@ function MobileGroup({ group, onClose }: { group: NavGroup; onClose: () => void 
     </div>
   );
 }
-
-export type { NavChild };
