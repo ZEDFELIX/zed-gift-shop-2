@@ -6,8 +6,6 @@ import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 import {
   ChevronDown,
-  Clock,
-  Download,
   Heart,
   LogIn,
   Menu,
@@ -29,7 +27,7 @@ import {
 import { formatKES } from "@/lib/utils";
 import type { NavFeaturedMap, MenuFeatured } from "@/lib/data/storefront";
 import { SearchPanel } from "@/components/search/SearchPanel";
-import { DownloadAppButton, useInstallPrompt } from "@/components/layout/DownloadAppButton";
+import { DownloadAppButton } from "@/components/layout/DownloadAppButton";
 
 function openCart() {
   window.dispatchEvent(new CustomEvent("zed:open-cart"));
@@ -79,14 +77,6 @@ export function HeaderContent({
   const [searchQuery, setSearchQuery] = useState("");
   const navRef = useRef<HTMLDivElement>(null);
   const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const { installed: appInstalled, install: installApp } = useInstallPrompt();
-
-  async function handleInstallClick() {
-    const outcome = await installApp();
-    if (outcome === "unavailable") {
-      window.dispatchEvent(new CustomEvent("zed:show-install-help"));
-    }
-  }
 
   useEffect(() => {
     setMobileOpen(false);
@@ -146,33 +136,28 @@ export function HeaderContent({
 
   return (
     <>
-      {/* Mobile information bar */}
-      <div className="lg:hidden border-b border-edge/60 bg-zed-950 text-white">
-        <div className="flex items-center gap-2.5 overflow-x-auto px-3 py-1.5 text-[10px] font-medium no-scrollbar sm:gap-3 sm:py-2 sm:text-[11px]">
-          <a href={"tel:" + contactPhone.replace(/\s+/g, "")} className="flex shrink-0 items-center gap-1.5 whitespace-nowrap">
-            <Phone className="size-3.5 text-white/80" /> Call {contactPhone}
-          </a>
-          <span className="h-3.5 w-px shrink-0 bg-white/20" />
-          <span className="flex shrink-0 items-center gap-1.5 whitespace-nowrap text-white/80">
-            <Clock className="size-3.5" /> {announcement}
-          </span>
-          <span className="h-3.5 w-px shrink-0 bg-white/20" />
-          <DownloadAppButton className="flex shrink-0 items-center gap-1.5 whitespace-nowrap rounded-full bg-white px-3 py-1.5 font-bold text-zed-950" />
+      {/* Mobile announcement bar — tall, empty, message sweeps in from the left */}
+      <div className="relative z-30 border-b border-edge/60 bg-[var(--color-announcement,#6B2D5C)] text-[var(--color-announcement-fg,#fff)] lg:hidden">
+        <div className="zed-announcement-wrap h-14">
+          <div className="zed-announcement-track text-[12px] font-semibold sm:text-[13px]" aria-hidden="true">
+            <span>{announcement}</span>
+            <span>{announcement}</span>
+            <span>{announcement}</span>
+          </div>
         </div>
+        <p className="sr-only">{announcement}</p>
       </div>
 
-      {/* Utility bar — call us + same day delivery */}
-      <div className="relative z-30 hidden border-b border-zed-900/15 bg-zed-950 text-white md:block">
-        <div className="container-zed flex h-9 items-center justify-between gap-4 text-[12px]">
-          <a href={`tel:${contactPhone.replace(/\s+/g, "")}`} data-track="phone_click" className="flex items-center gap-1.5 font-medium text-white/90 hover:text-white">
-            <Phone className="size-3.5" />
-            Call us on: {contactPhone} to place your order.
-          </a>
-          <p className="flex items-center gap-1.5 truncate font-medium text-white/70">
-            <Clock className="size-3.5" />
-            {announcement}
-          </p>
+      {/* Desktop announcement bar — tall, empty, message sweeps in from the left */}
+      <div className="relative z-30 hidden border-b border-zed-900/15 bg-[var(--color-announcement,#6B2D5C)] text-[var(--color-announcement-fg,#fff)] md:block">
+        <div className="container-zed zed-announcement-wrap h-14">
+          <div className="zed-announcement-track text-[13px] font-semibold" aria-hidden="true">
+            <span>{announcement}</span>
+            <span>{announcement}</span>
+            <span>{announcement}</span>
+          </div>
         </div>
+        <p className="sr-only">{announcement}</p>
       </div>
 
       {/* Main header row */}
@@ -400,14 +385,11 @@ export function HeaderContent({
 
       <SearchPanel open={searchOpen} onClose={() => setSearchOpen(false)} />
 
-      <nav aria-label="Mobile quick navigation" className={`fixed inset-x-3 bottom-3 z-[60] grid ${appInstalled ? "grid-cols-4" : "grid-cols-5"} rounded-2xl border border-edge bg-white p-1.5 shadow-glass-lg lg:hidden`}>
+      <nav aria-label="Mobile quick navigation" className="fixed inset-x-3 bottom-3 z-[60] grid grid-cols-4 rounded-2xl border border-edge bg-white p-1.5 shadow-glass-lg lg:hidden">
         <Link href="/shop" className="flex flex-col items-center gap-0.5 px-1 py-2 text-[10px] font-semibold text-ink hover:text-rose-600"><ShoppingBag className="size-4" /><span>Shop</span></Link>
         <button type="button" onClick={() => setSearchOpen(true)} className="flex flex-col items-center gap-0.5 px-1 py-2 text-[10px] font-semibold text-ink hover:text-rose-600"><Search className="size-4" /><span>Search</span></button>
         <Link href="/wishlist" className="flex flex-col items-center gap-0.5 px-1 py-2 text-[10px] font-semibold text-ink hover:text-rose-600"><Heart className="size-4" /><span>Wishlist</span></Link>
         <button type="button" onClick={openCart} className="relative flex flex-col items-center gap-0.5 px-1 py-2 text-[10px] font-semibold text-ink hover:text-rose-600"><ShoppingBag className="size-4" /><span>Cart</span>{cartCount > 0 && <span className="absolute right-2 top-1 grid min-w-4 place-items-center rounded-full bg-rose-500 px-1 text-[8px] text-white">{cartCount}</span>}</button>
-        {!appInstalled && (
-          <button type="button" onClick={handleInstallClick} className="flex flex-col items-center gap-0.5 px-1 py-2 text-[10px] font-semibold text-ink hover:text-rose-600"><Download className="size-4" /><span>Install</span></button>
-        )}
       </nav>
     </>
   );

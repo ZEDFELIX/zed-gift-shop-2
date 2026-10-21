@@ -31,7 +31,7 @@ export default async function AdminSettingsPage() {
  <PasswordForm />
  <SettingsForm
 initial={{
-  announcementText: String(s.announcementText ?? ""),
+  announcementBar: String(s.announcementBar ?? ""),
   contactPhone: String(s.contactPhone ?? ""),
   contactEmail: String(s.contactEmail ?? ""),
   heroTitle: String(s.heroTitle ?? ""),

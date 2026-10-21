@@ -1,18 +1,35 @@
-import { Roboto } from "next/font/google";
+import { Jost, Poppins, Quicksand, Libre_Baskerville } from "next/font/google";
 
-/**
- * Jumia-style grotesque for headings. Loaded from Google Fonts at build time
- * and self-hosted by Next.js, so no runtime CDN dependency.
- */
-export const displaySans = Roboto({
-  weight: ["400", "500", "700", "900"],
+/** Rio Gift Shop heading/menu face. */
+export const jost = Jost({
   subsets: ["latin"],
-  variable: "--font-display-sans",
+  variable: "--font-jost",
   display: "swap",
 });
 
-// Legacy aliases kept for layout classNames; headings now use displaySans.
-export const jost = { variable: "font-jost" };
-export const quicksand = { variable: "font-quicksand" };
-export const poppins = { variable: "font-poppins" };
-export const libreBaskerville = { variable: "font-libre-baskerville" };
+/** Rio body copy face. */
+export const poppins = Poppins({
+  weight: ["400", "500", "600", "700"],
+  subsets: ["latin"],
+  variable: "--font-poppins",
+  display: "swap",
+});
+
+/** Rio kit typography face (buttons, small labels). */
+export const quicksand = Quicksand({
+  subsets: ["latin"],
+  variable: "--font-quicksand",
+  display: "swap",
+});
+
+/** Rio serif accent face. */
+export const libreBaskerville = Libre_Baskerville({
+  weight: ["400", "700"],
+  style: ["normal", "italic"],
+  subsets: ["latin"],
+  variable: "--font-libre-baskerville",
+  display: "swap",
+});
+
+/** Kept for layout classNames; Jost doubles as the sans display face. */
+export const displaySans = jost;

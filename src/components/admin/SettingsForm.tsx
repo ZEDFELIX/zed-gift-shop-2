@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { Loader2, Save } from "lucide-react";
 
 type SettingsShape = {
-  announcementText: string;
+  announcementBar: string;
   contactPhone: string;
   contactEmail: string;
   heroTitle: string;
@@ -88,7 +88,7 @@ export function SettingsForm({ initial }: { initial: SettingsShape }) {
     <h2 className="font-display text-xl font-bold text-[#07111F]">Store content</h2>
     <p className="mt-1 text-sm text-[#334155]">Edit the customer-facing text and contact details.</p>
     <div className="mt-5 grid gap-4 sm:grid-cols-2">
-     <div className="sm:col-span-2"><label className="label">Announcement bar</label><input className="field" value={form.announcementText} onChange={(e)=>set("announcementText",e.target.value)} /></div>
+     <div className="sm:col-span-2"><label className="label">Announcement bar text</label><input className="field" value={form.announcementBar} onChange={(e)=>set("announcementBar",e.target.value)} placeholder="Leave blank for an empty bar" /></div>
      <div><label className="label">Hero title</label><input className="field" value={form.heroTitle} onChange={(e)=>set("heroTitle",e.target.value)} /></div>
      <div><label className="label">Hero subtitle</label><input className="field" value={form.heroSubtitle} onChange={(e)=>set("heroSubtitle",e.target.value)} /></div>
      <div><label className="label">Contact email</label><input className="field" type="email" value={form.contactEmail} onChange={(e)=>set("contactEmail",e.target.value)} /></div>

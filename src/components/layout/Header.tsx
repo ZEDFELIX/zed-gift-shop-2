@@ -12,14 +12,14 @@ export async function Header() {
   const [cart, user, announcementRaw, contactPhoneRaw, storeNameRaw, featured] = await Promise.all([
     cartSummaryForHeader().catch(() => ({ count: 0, subtotal: 0 })),
     getCurrentUser().catch(() => null),
-    getSetting("announcementText").catch(() => null),
+    getSetting("announcementBar").catch(() => null),
     getSetting("contactPhone").catch(() => null),
     getSetting("storeName").catch(() => null),
     getNavFeatured().catch(() => ({})),
   ]);
   const cartCount = cart.count;
   const wishlistCount = user ? (await getWishlistIds(user.id).catch(() => []))?.length : 0;
-  const announcement = typeof announcementRaw === "string" && announcementRaw.trim() ? announcementRaw : SITE.announcementRight;
+  const announcement = typeof announcementRaw === "string" ? announcementRaw : "";
   const contactPhone = typeof contactPhoneRaw === "string" && contactPhoneRaw.trim() ? contactPhoneRaw : SITE.phone;
   const storeName = typeof storeNameRaw === "string" && storeNameRaw.trim() ? storeNameRaw : SITE.name;
 

@@ -24,6 +24,15 @@ export const viewport: Viewport = {
   themeColor: "#6B2D5C",
 };
 
+/** Picks readable label text (dark or white) for any announcement bar colour. */
+function readableTextColor(hex: string): string {
+  const m = /^#([0-9a-fA-F]{6})$/.exec(hex.trim());
+  if (!m) return "#FFFFFF";
+  const n = parseInt(m[1], 16);
+  const lum = (0.299 * ((n >> 16) & 255) + 0.587 * ((n >> 8) & 255) + 0.114 * (n & 255)) / 255;
+  return lum > 0.6 ? "#07111F" : "#FFFFFF";
+}
+
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
  const storeJsonLd = JSON.stringify(jsonLdOrganization());
  const websiteJsonLd = JSON.stringify(jsonLdWebsite());
@@ -31,8 +40,9 @@ export default async function RootLayout({ children }: { children: React.ReactNo
  const primary = String(settings.primaryColor ?? "#E5397F");
  const secondary = String(settings.secondaryColor ?? "#6B2D5C");
  const accent = String(settings.accentColor ?? "#7C3AED");
- const background = String(settings.backgroundColor ?? "#FFFFFF");
- const colors = {
+  const background = String(settings.backgroundColor ?? "#FFFFFF");
+  const announcementColor = String(settings.announcementColor ?? "#6B2D5C");
+  const colors = {
   "--color-rose-500": primary,
   "--color-rose-600": primary,
   "--color-rose-400": primary,
@@ -55,6 +65,8 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   "--color-pure-white": background,
   "--color-warm-white": background,
   "--color-warm-ivory": background,
+  "--color-announcement": announcementColor,
+  "--color-announcement-fg": readableTextColor(announcementColor),
  } as CSSProperties;
  return (
     <html

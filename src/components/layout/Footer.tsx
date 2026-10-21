@@ -4,6 +4,8 @@ import { SITE } from "@/lib/constants";
 import { getSettings, DEFAULTS } from "@/lib/data/settings";
 
 const FOOTER_LINKS: { href: string; label: string }[] = [
+  { href: "/about", label: "About us" },
+  { href: "/blog", label: "Blog" },
   { href: "/faq", label: "FAQs" },
   { href: "/track", label: "Track order" },
   { href: "/contact", label: "Contact us" },

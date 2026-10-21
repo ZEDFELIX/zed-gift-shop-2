@@ -6,6 +6,33 @@ export type SettingValue = string | number | boolean | null | Record<string, unk
 
 export const DEFAULTS: Record<string, SettingValue> = {
   announcementText: "SAME-DAY NAIROBI DELIVERY - COUNTRYWIDE DELIVERY - SECURE M-PESA CHECKOUT",
+  announcementBar: "",
+  customerReviews: [
+    {
+      name: "Wanjiku M.",
+      location: "Nairobi",
+      rating: 5,
+      text: "The personalized hamper was perfect. Same-day delivery arrived before noon and the packaging looked premium.",
+    },
+    {
+      name: "Brian O.",
+      location: "Kisumu",
+      rating: 5,
+      text: "Ordered a trophy set for our team. Quality was better than the photos and it came well protected.",
+    },
+    {
+      name: "Achieng O.",
+      location: "Mombasa",
+      rating: 4,
+      text: "Beautiful packaging and we got updates on WhatsApp at every step until delivery.",
+    },
+    {
+      name: "Peter K.",
+      location: "Nakuru",
+      rating: 5,
+      text: "Corporate gifting for 30 staff done in two days. Smooth process, will definitely order again.",
+    },
+  ],
   contactPhone: "+254711436169",
   contactEmail: "felixsimon877@gmail.com",
   heroTitle: "GIFTS THAT SAY MORE.",

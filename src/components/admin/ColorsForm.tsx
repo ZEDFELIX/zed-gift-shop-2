@@ -7,6 +7,14 @@ import { BRAND_COLORS, isHexColor, type BrandColorKey } from "@/lib/theme-colors
 
 type Props = { initial: Record<BrandColorKey, string> };
 
+/** Picks readable label text (dark or white) for any background colour. */
+function readable(hex: string): string {
+  if (!isHexColor(hex)) return "#FFFFFF";
+  const n = parseInt(hex.trim().slice(1), 16);
+  const lum = (0.299 * ((n >> 16) & 255) + 0.587 * ((n >> 8) & 255) + 0.114 * (n & 255)) / 255;
+  return lum > 0.6 ? "#07111F" : "#FFFFFF";
+}
+
 export function ColorsForm({ initial }: Props) {
   const router = useRouter();
   const [colors, setColors] = useState<Record<BrandColorKey, string>>(initial);
@@ -59,8 +67,9 @@ export function ColorsForm({ initial }: Props) {
           <h2 className="font-display text-xl font-bold text-[#07111F]">Colours</h2>
         </div>
         <p className="mt-1 text-sm text-[#334155]">
-          These four colours theme the entire storefront, plus receipts and invoices. Change a colour and every
-          matching element updates automatically. Full access to every colour on the store.
+          These colours theme the entire storefront, plus receipts and invoices. Change a colour and every
+          matching element updates automatically. The announcement bar has its own colour, so you can change it
+          without touching anything else. Full access to every colour on the store.
         </p>
       </section>
 
@@ -132,8 +141,14 @@ export function ColorsForm({ initial }: Props) {
           style={{ backgroundColor: colors.backgroundColor }}
         >
           <div
-            className="flex items-center justify-between px-4 py-3 text-white"
-            style={{ backgroundColor: colors.secondaryColor }}
+            className="px-4 py-2.5 text-[11px] font-bold uppercase tracking-wider"
+            style={{ backgroundColor: colors.announcementColor, color: readable(colors.announcementColor) }}
+          >
+            Same day delivery in Nairobi →
+          </div>
+          <div
+            className="flex items-center justify-between px-4 py-3"
+            style={{ backgroundColor: colors.secondaryColor, color: readable(colors.secondaryColor) }}
           >
             <span className="text-sm font-bold">ZED GIFT SHOP</span>
             <span className="rounded-full bg-white/25 px-2.5 py-0.5 text-[11px] font-semibold">Cart (2)</span>

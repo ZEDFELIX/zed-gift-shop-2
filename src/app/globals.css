@@ -1,17 +1,18 @@
 @import "tailwindcss";
 
  :root {
-  --font-jost: "Trebuchet MS", Arial, sans-serif;
-  --font-quicksand: "Trebuchet MS", Arial, sans-serif;
-  --font-poppins: Arial, Helvetica, sans-serif;
-  --font-libre-baskerville: Georgia, "Times New Roman", serif;
+  --font-jost: "Jost", "Trebuchet MS", Arial, sans-serif;
+  --font-quicksand: "Quicksand", "Trebuchet MS", Arial, sans-serif;
+  --font-poppins: "Poppins", Arial, Helvetica, sans-serif;
+  --font-libre-baskerville: "Libre Baskerville", Georgia, "Times New Roman", serif;
 }
 
 @theme {
-  --font-sans: var(--font-jost), ui-sans-serif, system-ui, sans-serif;
-  --font-display: var(--font-libre-baskerville), Georgia, "Times New Roman", serif;
-  --font-serif: var(--font-libre-baskerville), Georgia, serif;
-  --font-ui: var(--font-poppins), var(--font-jost), ui-sans-serif, system-ui, sans-serif;
+  /* Rio Gift Shop stack: Poppins body, Jost headings, Quicksand UI, Libre Baskerville serif. */
+  --font-sans: var(--font-poppins), var(--font-jost), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-jost), ui-sans-serif, system-ui, sans-serif;
+  --font-serif: var(--font-libre-baskerville), Georgia, "Times New Roman", serif;
+  --font-ui: var(--font-quicksand), var(--font-poppins), ui-sans-serif, system-ui, sans-serif;
 
   /* Brand: plum, rose and lilac on white. */
   --color-plum-950:#07111F;
@@ -412,4 +413,23 @@ body{background:radial-gradient(circle at 10% 0%,rgba(233,213,241,.28),transpare
     height: 100%;
     object-fit: contain;
   }
+}
+
+
+/* Announcement bar: blank bar whose message starts in the middle and exits right. */
+@keyframes zed-announcement-sweep {
+  from { transform: translateX(50vw); }
+  to { transform: translateX(calc(100vw + 100%)); }
+}
+.zed-announcement-wrap { display: flex; overflow: hidden; }
+.zed-announcement-track {
+  display: inline-flex;
+  align-items: center;
+  gap: 3rem;
+  white-space: nowrap;
+  will-change: transform;
+  animation: zed-announcement-sweep 14s linear infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .zed-announcement-track { animation: none; transform: none; }
 }

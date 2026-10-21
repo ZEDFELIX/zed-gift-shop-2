@@ -2,11 +2,12 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { Star } from "lucide-react";
 import type { ProductWithRelations } from "@/lib/data/products";
 import { discountPercent, formatKES } from "@/lib/utils";
 import { WishlistButton } from "@/components/product/WishlistButton";
-import { AddToCartButton } from "@/components/product/AddToCartButton";
 
 export function ProductCard({
   product,
@@ -15,6 +16,8 @@ export function ProductCard({
   product: ProductWithRelations;
   inWishlist?: boolean;
 }) {
+  const router = useRouter();
+  const [adding, setAdding] = useState(false);
   const image = product.images[0]?.url;
   const sale = discountPercent(product.price, product.compareAtPrice);
   const inStock = !product.trackInventory || product.quantity > product.reservedQuantity;
@@ -37,35 +40,76 @@ export function ProductCard({
     badge = { label: "New", cls: "bg-plum-800 text-white" };
   }
 
+  async function quickAdd() {
+    if (adding) return;
+    setAdding(true);
+    try {
+      const res = await fetch("/api/cart/items", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ productId: product.id, quantity: 1 }),
+      });
+      if (res.ok) {
+        window.dispatchEvent(new CustomEvent("zed:open-cart"));
+        router.refresh();
+      }
+    } catch {
+      // Swallow network errors; cart drawer stays closed.
+    } finally {
+      setAdding(false);
+    }
+  }
+
+  const media = (
+    <div className="relative w-full h-full overflow-hidden bg-white transition-transform duration-500">
+      {badge && (
+        <span className={`absolute left-2 top-2 z-10 rounded-full px-2 py-0.5 text-[11px] font-bold uppercase tracking-wide shadow ${badge.cls}`}>
+          {badge.label}
+        </span>
+      )}
+      {adding && (
+        <span className="absolute inset-0 z-10 flex items-center justify-center bg-white/70 text-[12px] font-bold uppercase tracking-wide text-rose-600">
+          Adding...
+        </span>
+      )}
+      {image ? (
+        <Image
+          src={image}
+          alt={product.images[0]?.alt ?? product.name}
+          fill
+          sizes="(min-width:1360px) 340px, (min-width:1024px) 25vw, 48vw"
+          className="scale-[1.25] object-cover transition-transform duration-700 ease-out group-hover:scale-[1.32]"
+        />
+      ) : (
+        <div className="absolute inset-0 flex items-center justify-center bg-rose-50 text-rose-400 font-display text-lg">
+          ZED
+        </div>
+      )}
+    </div>
+  );
+
   return (
     <article className="zed-product-card group flex h-full flex-col overflow-hidden rounded-lg">
       <div className="relative group-hover:opacity-100 transition-opacity">
-        <Link
-          href={`/product/${product.slug}`}
-          className="zed-product-media block overflow-hidden bg-white"
-          aria-label={product.name}
-        >
-          <div className="relative w-full h-full overflow-hidden bg-white transition-transform duration-500">
-            {badge && (
-              <span className={`absolute left-2 top-2 z-10 rounded-full px-2 py-0.5 text-[11px] font-bold uppercase tracking-wide shadow ${badge.cls}`}>
-                {badge.label}
-              </span>
-            )}
-            {image ? (
-              <Image
-                src={image}
-                alt={product.images[0]?.alt ?? product.name}
-                fill
-                sizes="(min-width:1360px) 340px, (min-width:1024px) 25vw, 48vw"
-                className="scale-[1.25] object-cover transition-transform duration-700 ease-out group-hover:scale-[1.32]"
-              />
-            ) : (
-              <div className="absolute inset-0 flex items-center justify-center bg-rose-50 text-rose-400 font-display text-lg">
-                ZED
-              </div>
-            )}
-          </div>
-        </Link>
+        {canQuickAdd ? (
+          <button
+            type="button"
+            onClick={quickAdd}
+            disabled={adding}
+            className="zed-product-media block w-full cursor-pointer overflow-hidden bg-white text-left"
+            aria-label={`Add ${product.name} to cart`}
+          >
+            {media}
+          </button>
+        ) : (
+          <Link
+            href={`/product/${product.slug}`}
+            className="zed-product-media block overflow-hidden bg-white"
+            aria-label={product.name}
+          >
+            {media}
+          </Link>
+        )}
       </div>
 
       <div className="flex flex-1 flex-col p-2.5 text-center sm:p-3">
@@ -84,28 +128,24 @@ export function ProductCard({
           ) : null}
         </div>
 
-        <div className="mt-auto pt-2">
-          <div className="flex min-h-11 items-center">
-            {canQuickAdd ? (
-              <AddToCartButton productId={product.id} label="Add to cart" variant="outline" />
+        <div className="mt-auto pt-2 flex flex-col items-center gap-1">
+          <Link
+            href={`/product/${product.slug}`}
+            className="inline-flex items-center gap-1 text-[11px] font-semibold text-charcoal/70 transition-colors hover:text-rose-600"
+          >
+            {personalizable ? (
+              <>
+                <Star className="size-2.5" /> Personalize
+              </>
             ) : (
-              <Link
-                href={`/product/${product.slug}`}
-                className="flex min-h-11 w-full items-center justify-center gap-1 border border-edge px-2 py-1.5 text-center text-[11px] font-semibold text-charcoal transition-colors hover:border-rose-300 hover:text-rose-600"
-              >
-                {personalizable ? (
-                  <>
-                    <Star className="size-2.5" /> Personalize
-                  </>
-                ) : (
-                  "View details"
-                )}
-              </Link>
+              "View details"
             )}
-          </div>
-          <p className="mt-1 h-4 text-[11px] font-medium leading-4 text-rose-500">
-            {lowStock ? `Only ${product.quantity - product.reservedQuantity} left` : ""}
-          </p>
+          </Link>
+          {lowStock && (
+            <p className="text-[11px] font-medium leading-4 text-rose-500">
+              Only {product.quantity - product.reservedQuantity} left
+            </p>
+          )}
         </div>
       </div>
     </article>

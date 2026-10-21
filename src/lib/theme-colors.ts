@@ -2,7 +2,8 @@ export type BrandColorKey =
   | "primaryColor"
   | "secondaryColor"
   | "accentColor"
-  | "backgroundColor";
+  | "backgroundColor"
+  | "announcementColor";
 
 export type BrandColor = {
   key: BrandColorKey;
@@ -41,7 +42,6 @@ export const BRAND_COLORS: BrandColor[] = [
     description:
       "The deep brand colour. It anchors the header, footer and primary buttons for a premium, grounded look.",
     usedFor: [
-      "Top information bars",
       "Footer background",
       "Primary buttons (for example Add to cart)",
       "Admin header and buttons",
@@ -74,6 +74,15 @@ export const BRAND_COLORS: BrandColor[] = [
       "Panels and form backgrounds",
     ],
     drives: ["--color-pure-white", "--color-warm-white", "--color-warm-ivory"],
+  },
+  {
+    key: "announcementColor",
+    label: "Announcement bar colour",
+    default: "#6B2D5C",
+    description:
+      "The background of the scrolling announcement bar at the top of every page. It changes only this bar - nothing else on the store is affected.",
+    usedFor: ["Top announcement bar", "Mobile information bar"],
+    drives: ["--color-announcement"],
   },
 ];
 
