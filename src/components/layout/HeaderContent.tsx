@@ -141,8 +141,6 @@ export function HeaderContent({
         <div className="zed-announcement-wrap h-14">
           <div className="zed-announcement-track text-[12px] font-semibold sm:text-[13px]" aria-hidden="true">
             <span>{announcement}</span>
-            <span>{announcement}</span>
-            <span>{announcement}</span>
           </div>
         </div>
         <p className="sr-only">{announcement}</p>
@@ -152,8 +150,6 @@ export function HeaderContent({
       <div className="relative z-30 hidden border-b border-zed-900/15 bg-[var(--color-announcement,#6B2D5C)] text-[var(--color-announcement-fg,#fff)] md:block">
         <div className="container-zed zed-announcement-wrap h-14">
           <div className="zed-announcement-track text-[13px] font-semibold" aria-hidden="true">
-            <span>{announcement}</span>
-            <span>{announcement}</span>
             <span>{announcement}</span>
           </div>
         </div>
