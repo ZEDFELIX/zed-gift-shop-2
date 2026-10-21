@@ -2,7 +2,7 @@
 
 import { usePathname } from "next/navigation";
 import Link from "next/link";
-import { BarChart3, Boxes, Building2, CreditCard, Gift, LayoutDashboard, MapPin, Package, Palette, Quote, Ribbon, RotateCcw, ScrollText, Settings, Star, Truck, Users, Tags, Zap } from "lucide-react";
+import { BarChart3, Boxes, Building2, CreditCard, Gift, LayoutDashboard, MapPin, Newspaper, Package, Palette, Quote, Ribbon, RotateCcw, ScrollText, Settings, Star, Truck, Users, Tags, Zap } from "lucide-react";
 
 const TABS = [
   { href: "/admin", label: "Dashboard", icon: LayoutDashboard, adminOnly: false },
@@ -16,6 +16,7 @@ const TABS = [
   { href: "/admin/reviews", label: "Reviews", icon: Star, adminOnly: false },
   { href: "/admin/testimonials", label: "Testimonials", icon: Quote, adminOnly: true },
   { href: "/admin/wholesale", label: "Wholesale quotes", icon: Building2, adminOnly: true },
+  { href: "/admin/blog", label: "Blog", icon: Newspaper, adminOnly: true },
   { href: "/admin/returns", label: "Returns", icon: RotateCcw, adminOnly: false },
   { href: "/admin/gift-wrap", label: "Gift wrap", icon: Ribbon, adminOnly: false },
   { href: "/admin/analytics", label: "Analytics", icon: BarChart3, adminOnly: false },

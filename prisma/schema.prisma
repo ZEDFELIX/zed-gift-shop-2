@@ -1009,3 +1009,30 @@ model WholesaleQuote {
   @@index([createdAt])
   @@index([phone])
 }
+
+enum BlogPostStatus {
+  DRAFT
+  PUBLISHED
+}
+
+/// Journal article managed in the admin dashboard.
+model BlogPost {
+  id String @id @default(cuid())
+  slug String @unique
+  title String
+  excerpt String
+  /// Markdown-lite body: blank-line paragraphs, "## " headings, "- " bullets, [text](url) links.
+  body String
+  coverImage String?
+  coverAlt String?
+  category String
+  authorName String?
+  seoTitle String?
+  seoDescription String?
+  status BlogPostStatus @default(DRAFT)
+  publishedAt DateTime?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([status, publishedAt])
+}

@@ -1,6 +1,5 @@
 import type { MetadataRoute } from "next";
 import { SITE, GIFT_ROUTES } from "@/lib/constants";
-import { BLOG_POSTS } from "@/lib/data/blog";
 import { prisma } from "@/lib/prisma";
 
 export const dynamic = "force-dynamic";
@@ -20,21 +19,15 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: p === "" ? 1 : 0.8,
   }));
 
-  const blogRoutes = BLOG_POSTS.map((p) => ({
-    url: `${url}/blog/${p.slug}`,
-    lastModified: new Date(p.date),
-    changeFrequency: "monthly" as const,
-    priority: 0.6,
-  }));
-
   // Sitemap generation must not take the whole site down when the optional
   // production database is unavailable during a deployment or temporarily offline.
   let productRoutes: MetadataRoute.Sitemap = [];
   let collectionRoutes: MetadataRoute.Sitemap = [];
   let categoryRoutes: MetadataRoute.Sitemap = [];
+  let blogRoutes: MetadataRoute.Sitemap = [];
 
   try {
-    const [products, collections, categories] = await Promise.all([
+    const [products, collections, categories, blogPosts] = await Promise.all([
       prisma.product.findMany({
         where: { status: "ACTIVE" },
         select: { slug: true, updatedAt: true },
@@ -44,7 +37,18 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         where: { active: true, kind: "CATEGORY" },
         select: { slug: true, updatedAt: true, parent: { select: { slug: true } } },
       }),
+      prisma.blogPost.findMany({
+        where: { status: "PUBLISHED", publishedAt: { not: null } },
+        select: { slug: true, publishedAt: true, updatedAt: true },
+      }),
     ]);
+
+    blogRoutes = blogPosts.map((p) => ({
+      url: `${url}/blog/${p.slug}`,
+      lastModified: p.updatedAt,
+      changeFrequency: "monthly" as const,
+      priority: 0.6,
+    }));
 
     productRoutes = products.map((p) => ({
       url: `${url}/product/${p.slug}`,
