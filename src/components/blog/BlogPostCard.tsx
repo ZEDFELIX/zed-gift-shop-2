@@ -22,7 +22,12 @@ export function BlogPostCard({ post, sizes }: { post: BlogPostSummary; sizes?: s
       href={`/blog/${post.slug}`}
       className="glass-card group flex flex-col overflow-hidden rounded-zed p-3 transition-all hover:-translate-y-1 hover:shadow-glass-lg"
     >
-      <BlogCover post={post} sizes={sizes} />
+      <figure className="m-0 p-0">
+        <BlogCover post={post} sizes={sizes} />
+        <figcaption className="mt-1 text-[11px] font-semibold text-charcoal/50">
+          {post.category}{date ? ` · ${date}` : ""}
+        </figcaption>
+      </figure>
       <div className="flex flex-1 flex-col px-2 pb-1 pt-3">
         <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-soft-sage">
           {post.category} {date ? `- ${date}` : ""}

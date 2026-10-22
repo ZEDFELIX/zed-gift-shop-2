@@ -133,8 +133,11 @@ export default async function BlogPostPage({ params }: Props) {
 
         <div className="mt-6">
           {post.coverImage ? (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img src={post.coverImage} alt={post.coverAlt || post.title} loading="eager" decoding="async" fetchPriority="high" className="aspect-[16/9] w-full rounded-zed border border-edge object-cover shadow-glass" />
+            <figure className="m-0 p-0">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={post.coverImage} alt={post.coverAlt || post.title} loading="eager" decoding="async" fetchPriority="high" className="aspect-[16/9] w-full rounded-zed border border-edge object-cover shadow-glass" />
+              <figcaption className="mt-2 text-sm italic text-[#334155]">{post.title}</figcaption>
+            </figure>
           ) : (
             <div className="grid aspect-[16/9] w-full place-items-center rounded-zed border border-edge bg-gradient-to-br from-rose-50 to-zed-950/5">
               <span className="font-display text-5xl font-black tracking-widest text-[var(--color-rose-500)]/20">ZED</span>

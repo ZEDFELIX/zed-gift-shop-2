@@ -144,7 +144,12 @@ export default async function BlogIndexPage({ searchParams }: { searchParams: Pr
               <p className="eyebrow mb-3">Featured</p>
               <Link href={`/blog/${featuredPost.slug}`} className="glass-card group grid gap-4 overflow-hidden rounded-zed p-4 transition-all hover:shadow-glass-lg sm:grid-cols-[minmax(0,3fr)_minmax(0,2fr)] sm:p-5">
                 <div>
-                  <BlogCover post={featuredPost} sizes="(min-width: 640px) 560px, 100vw" />
+                  <figure className="m-0 p-0">
+                    <BlogCover post={featuredPost} sizes="(min-width: 640px) 560px, 100vw" />
+                    <figcaption className="mt-2 text-sm font-semibold text-charcoal/50">
+                      {featuredPost.category} · {formatBlogDate(featuredPost.publishedAt) ?? ""}
+                    </figcaption>
+                  </figure>
                 </div>
                 <div className="flex flex-col justify-center py-1 pr-1">
                   <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-soft-sage">
