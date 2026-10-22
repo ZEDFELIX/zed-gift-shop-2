@@ -9,6 +9,9 @@ const nextConfig = {
       { protocol: "https", hostname: "**.supabase.co" },
       // Demo catalogue photography.
       { protocol: "https", hostname: "images.unsplash.com" },
+      // Rio Gift Shop product photography.
+      { protocol: "https", hostname: "riogiftshop.com" },
+      { protocol: "https", hostname: "www.riogiftshop.com" },
     ],
   },
   async headers() {
