@@ -49,11 +49,11 @@ export function WishlistButton({ productId, initialInWishlist = false }: { produ
    aria-describedby="wishlist-tooltip"
    title={inWishlist ? "Remove from wishlist" : "Add to wishlist"}
   >
-   <Heart
-    className={`size-4 fill-rose-500 ${
-     inWishlist ? "fill-current animate-[heart-beat_1s_infinite]" : ""
-    }`}
-   />
+    <Heart
+     className={`size-3 md:size-4 fill-rose-500 ${
+      inWishlist ? "fill-current animate-[heart-beat_1s_infinite]" : ""
+     }`}
+    />
   </button>
  );
 }

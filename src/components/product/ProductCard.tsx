@@ -67,7 +67,7 @@ export function ProductCard({
           {badge.label}
         </span>
       )}
-      <span className="absolute right-2 top-2 z-10 grid place-items-center">
+      <span className="absolute right-1 top-1 md:right-2 md:top-2 z-10 grid place-items-center">
         <WishlistButton productId={product.id} initialInWishlist={inWishlist} />
       </span>
       {adding && (
