@@ -60,13 +60,13 @@ function Section({ title, products, href, flash = false, flashSale, titleColor }
         <div className="mb-1.5 flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wider opacity-65" style={{ color: textColor }}>
           Swipe to explore <ArrowRight className="size-3.5" />
         </div>
-        <div className="flex snap-x snap-mandatory gap-2 overflow-x-auto overscroll-x-contain rounded-lg pb-1.5 touch-auto scrollbar-none">
-          {products.map((product) => (
-            <div key={product.id} className="w-[38vw] min-w-[38vw] shrink-0 snap-start sm:w-[190px] sm:min-w-[190px] lg:w-[210px] lg:min-w-[210px]">
-              <ProductCard product={product} />
-            </div>
-          ))}
-        </div>
+          <div className="flex snap-x snap-mandatory gap-2 overflow-x-auto overscroll-x-contain rounded-lg pb-1.5 touch-auto scrollbar-none">
+            {products.map((product) => (
+              <div key={product.id} className="w-[150px] min-w-[150px] shrink-0 snap-start sm:w-[170px] sm:min-w-[170px] lg:w-[190px] lg:min-w-[190px]">
+                <ProductCard product={product} />
+              </div>
+            ))}
+          </div>
       </section>
     );
   }
