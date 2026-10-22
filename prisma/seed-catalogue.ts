@@ -168,7 +168,7 @@ async function main() {
         giftMessageAvailable: true,
         images: {
           create: [{
-            url: productPhotoUrl(item.slug) ?? `/placeholders/product-${String((index % 16) + 1).padStart(2, "0")}.svg`,
+            url: item.imageUrl ?? productPhotoUrl(item.slug) ?? `/placeholders/product-${String((index % 16) + 1).padStart(2, "0")}.svg`,
             alt: item.name,
             sortOrder: 0,
             isPrimary: true,

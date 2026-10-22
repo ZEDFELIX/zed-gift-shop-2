@@ -202,6 +202,8 @@ export type RioProduct = {
   quantity?: number;
   shortDescription: string;
   description: string;
+  /** Direct image URL override (e.g. a riogiftshop.com photo). Falls back to the Unsplash map when absent. */
+  imageUrl?: string;
 };
 
 const BLANKET_COPY =
@@ -561,4 +563,56 @@ export const RIO_PRODUCTS: RioProduct[] = [
     "Our second spinner pendant design, with a cut-out centre.",
     "A second spinner pendant design with a cut-out centre stone that catches the light as it turns. Free engraving, chain included, boxed ready to give.",
     { tags: ["necklace", "spinner", "valentines"] }),
+
+  // ---------- New arrivals from Rio Gift Shop ----------
+  p("personalized-ladies-silver-chain-bracelet", "Personalized Ladies Silver Chain Bracelet", 1499, 2000,
+    ["pendant-necklaces", "kenya-bracelets", "bracelets-for-women", "personalized-gifts", "for-her"],
+    "A silver chain bracelet engraved free with your choice of name or message.",
+    "A polished silver-plated chain bracelet with a nameplate engraved with a name, date or short message. Comes in a presentation box ready to give — ideal for birthdays, anniversaries and Mother's Day.",
+    { featured: false, tags: ["bracelet", "silver", "personalized", "jewelry"], personalizationEnabled: true, imageUrl: "https://riogiftshop.com/wp-content/uploads/2026/10/Personalized-Ladies-Silver-Chain-Bracelet-2-450x450.jpeg" }),
+  p("premium-gift-set-for-her", "Premium Gift Set for Her", 6499, 7000,
+    ["corporate-gifts-kenya", "corporate-gift-sets", "ladies-giftsets", "for-her"],
+    "A premium hamper built for her — skincare, accessories and a keepsake, boxed together.",
+    "A curated gift hamper pairing a silk scarf, a scented candle, a bath set and a jewelry dish, all wrapped in a rigid gift box with a handwritten card. A thoughtful present for a wife, sister or mother.",
+    { featured: false, tags: ["hamper", "her", "corporate", "luxury"], imageUrl: "https://riogiftshop.com/wp-content/uploads/2026/09/Personalized-Gift-Hampers-For-Her-450x450.jpeg" }),
+  p("premium-personalized-blue-executive-gift-set", "Premium Personalized Blue Executive Gift Set", 3499, 4000,
+    ["corporate-gifts-kenya", "corporate-gift-sets", "tumbler", "keychain", "customized-notebooks"],
+    "Four coordinated pieces in a deep blue gift box — tumbler, notebook, pen and keychain.",
+    "A 500ml tumbler, A5 notebook, executive pen and keychain in a matching deep blue, each printed with your logo or a name and boxed together with a card. A strong corporate welcome gift.",
+    { featured: false, tags: ["corporate", "set", "blue", "personalized"], personalizationEnabled: true, imageUrl: "https://riogiftshop.com/wp-content/uploads/2026/09/Premium-Personalized-Blue-Executive-Gift-Set-450x450.jpeg" }),
+  p("custom-umbrella-fleece-blanket-jute-tote-gift-set", "Custom Umbrella, Fleece Blanket & Jute Tote Bag Gift Set", 5499, 6000,
+    ["maasai-blankets-in-nairobi", "jute-tote-bags", "corporate-gifts-kenya", "kenya-inspired-blankets"],
+    "A Kenya souvenir set — umbrella, fleece blanket and jute tote, boxed together.",
+    "A branded umbrella, a Maasai-inspired fleece blanket and a reusable jute tote bag presented in one gift box with a card. Perfect for clients visiting Nairobi or as a corporate farewell gift.",
+    { featured: false, tags: ["set", "maasai", "jute", "umbrella", "kenya"], imageUrl: "https://riogiftshop.com/wp-content/uploads/2026/09/Custom-Umbrella-Fleece-Blanket-and-Jute-Tote-Bag-Gift-Set-450x450.jpeg" }),
+  p("premium-5-piece-branded-corporate-gift-set", "Premium 5-Piece Branded Corporate Gift Set", 6499, 7000,
+    ["corporate-gifts-kenya", "corporate-gift-sets", "executive-corporate-gifts"],
+    "Five executive pieces, branded and boxed — our most photographed corporate set.",
+    "A rigid presentation box holding an engraved key tag, an executive diary, a metal pen, a leather card holder and a travel tumbler, all printed with your logo. The gift people photograph and keep.",
+    { featured: false, tags: ["corporate", "premium", "hamper", "set"], imageUrl: "https://riogiftshop.com/wp-content/uploads/2026/10/Premium-5-Piece-Branded-Corporate-Gift-Set-450x450.jpeg" }),
+  p("personalized-purple-ankara-fleece-blanket", "Personalized Purple Ankara Fleece Blanket", 3499, 4000,
+    ["maasai-blankets-in-nairobi", "kenya-inspired-blankets", "corporate-gifts-kenya", "ankara-fleece-blankets"],
+    "A purple Ankara print fleece blanket with a branded panel.",
+    "A warm fleece blanket in a rich purple Ankara weave with a reinforced hem and a printable panel for your logo or a message. A colorful, genuinely useful gift for the home or office.",
+    { featured: false, tags: ["blanket", "ankara", "purple", "personalized"], personalizationEnabled: true, imageUrl: "https://riogiftshop.com/wp-content/uploads/2026/10/Personalized-Purple-Ankara-Fleece-Blanket-450x450.jpeg" }),
+  p("personalized-40oz-stanley-inspired-tumbler", "Personalized 40oz Stanley-Inspired Tumbler", 2499, 3000,
+    ["personalized-gifts", "stanley-inspired-cups", "tumbler", "corporate-gifts-kenya", "for-her"],
+    "A 40oz insulated tumbler in the classic handled style, printed with a name.",
+    "A large-capacity double-walled tumbler with a carry handle and straw lid, printed with a name, initial or short message. Keeps drinks cold all day — a gift that gets carried everywhere.",
+    { featured: false, tags: ["tumbler", "stanley", "personalized", "drinkware"], personalizationEnabled: true, imageUrl: "https://riogiftshop.com/wp-content/uploads/2026/10/Personalized-40oz-Stanley-Inspired-Tumbler-450x450.jpeg" }),
+  p("black-executive-wallet-african-print-card-slots", "Black Executive Wallet with African Print Card Slots", 1999, 2500,
+    ["promotional-gifts", "leather-wallets", "men-gifts", "mens-leather-wallets", "personalized-gifts"],
+    "A black leather bifold with African print card slots and free monogramming.",
+    "A full-grain black leather wallet with six RFID-blocking card slots, an ID window and distinctive African print accents on the card panels. Monogrammed with initials at no extra charge and supplied in a gift box.",
+    { featured: false, tags: ["wallet", "leather", "men", "african-print", "personalized"], personalizationEnabled: true, imageUrl: "https://riogiftshop.com/wp-content/uploads/2026/10/African-Inspired-Men-Leather-Wallet-450x450.jpeg" }),
+  p("personalized-executive-desk-set", "Personalized Pen Holder, Name Plate & Globe Executive Desk Set", 4999, 5500,
+    ["desk-organizers-in-nairobi", "corporate-gifts-kenya", "promotional-gifts", "wooden-products"],
+    "A wooden executive desk set — pen holder, name plate and globe, laser-etched.",
+    "A compartmented wooden desk organizer with a pen holder, a personalized name plate and a decorative globe base. Laser-etched with a name or logo — a gift that earns its place on the desk for years.",
+    { featured: false, tags: ["desk", "wooden", "executive", "personalized"], personalizationEnabled: true, imageUrl: "https://riogiftshop.com/wp-content/uploads/2026/10/Personalized-Pen-Holder-Name-Plate-Globe-Executive-Desk-Set-450x450.jpeg" }),
+  p("custom-branded-enamel-mug", "Custom Branded Enamel Mug", 1199, 1500,
+    ["promotional-gifts", "mug-printing", "corporate-gifts-kenya", "personalized-gifts"],
+    "A classic enamel camping mug printed with your logo or a name.",
+    "A durable white enamel mug with a rimmed edge, printed full-color with your logo, a team name or a short message. Affordable enough for bulk event giveaways and tough enough for daily use.",
+    { featured: false, tags: ["mug", "enamel", "corporate", "branded"], personalizationEnabled: true, imageUrl: "https://riogiftshop.com/wp-content/uploads/2026/09/Custom-Branded-Enamel-Mugs-450x450.jpeg" }),
 ];
