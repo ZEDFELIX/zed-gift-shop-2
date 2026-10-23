@@ -39,7 +39,7 @@ function Brand({ storeName }: { storeName: string }) {
         width={522}
         height={186}
         priority
-        className="navbar-logo block object-contain object-center"
+        className="navbar-logo block object-contain object-center h-8 sm:h-10 lg:h-12 w-auto"
       />
     </Link>
   );
@@ -137,9 +137,9 @@ export function HeaderContent({
             type="button"
             aria-label="Open menu"
             onClick={() => setMobileOpen(true)}
-            className="grid size-10 shrink-0 place-items-center rounded-md text-[var(--color-ink)] hover:bg-zed-900/5 lg:hidden"
+            className="grid size-9 shrink-0 place-items-center rounded-md text-[var(--color-ink)] hover:bg-zed-900/5 lg:hidden"
           >
-            <Menu className="size-5" />
+            <Menu className="size-4" />
           </button>
 
           <Brand storeName={storeName} />
@@ -147,52 +147,52 @@ export function HeaderContent({
           <form
             role="search"
             onSubmit={onHeaderSearch}
-            className="hidden min-w-0 flex-1 items-center gap-2 rounded-md border border-edge bg-panel/60 px-3.5 transition-colors focus-within:border-deep-olive focus-within:bg-white md:flex lg:max-w-xl"
+            className="hidden min-w-0 flex-1 items-center gap-2 rounded-md border border-edge bg-panel/60 px-3 transition-colors focus-within:border-deep-olive focus-within:bg-white md:flex lg:max-w-xl"
           >
-            <Search className="size-4 shrink-0 text-soft-sage" />
+            <Search className="size-3.5 shrink-0 text-soft-sage" />
             <input
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               type="search"
               placeholder="Search for products..."
               aria-label="Products search"
-              className="w-full min-w-0 bg-transparent py-2.5 text-sm text-[var(--color-ink)] outline-none placeholder:text-charcoal/40"
+              className="w-full min-w-0 bg-transparent py-2 text-sm text-[var(--color-ink)] outline-none placeholder:text-charcoal/40"
             />
           </form>
 
           <div className="ml-auto flex items-center gap-1 lg:gap-2">
             <a
               href={`tel:${contactPhone.replace(/\s+/g, "")}`}
-              className="hidden items-center gap-2 rounded-md px-2.5 py-2 text-[13px] font-semibold text-[var(--color-ink)] hover:bg-zed-900/5 xl:flex"
+              className="hidden items-center gap-1.5 rounded-md px-2 py-1.5 text-[12px] font-semibold text-[var(--color-ink)] hover:bg-zed-900/5 xl:flex"
             >
-              <Phone className="size-4 text-soft-sage" />
+              <Phone className="size-3.5 text-soft-sage" />
               {contactPhone}
             </a>
             <Link
               href={accountHref}
-              className="flex items-center gap-2 rounded-md px-2.5 py-2 text-[13px] font-semibold text-[var(--color-ink)] hover:bg-zed-900/5"
+              className="flex items-center gap-1.5 rounded-md px-2 py-1.5 text-[12px] font-semibold text-[var(--color-ink)] hover:bg-zed-900/5"
             >
-              {isAuthed ? <User className="size-4 text-soft-sage" /> : <LogIn className="size-4 text-soft-sage" />}
+              {isAuthed ? <User className="size-3.5 text-soft-sage" /> : <LogIn className="size-3.5 text-soft-sage" />}
               <span className="hidden sm:inline">{isAuthed ? "My Account" : "My Account"}</span>
             </Link>
             {userRole === "ADMIN" && (
               <Link
                 href="/admin"
-                className="hidden items-center gap-2 rounded-md bg-zed-950 px-3 py-2 text-[13px] font-bold text-white transition-colors hover:bg-zed-900 sm:flex"
+                className="hidden items-center gap-1.5 rounded-md bg-zed-950 px-3 py-2 text-[12px] font-bold text-white transition-colors hover:bg-zed-900 sm:flex"
               >
-                <ShieldCheck className="size-4" />
+                <ShieldCheck className="size-3.5" />
                 <span>Admin</span>
               </Link>
             )}
-            <DownloadAppButton className="hidden items-center gap-2 rounded-md border border-edge px-3 py-2 text-[13px] font-semibold text-[var(--color-ink)] hover:bg-zed-900/5 lg:flex" />
+            <DownloadAppButton className="hidden items-center gap-1.5 rounded-md border border-edge px-3 py-2 text-[12px] font-semibold text-[var(--color-ink)] hover:bg-zed-900/5 lg:flex" />
             <Link
               href="/wishlist"
               aria-label={`Wishlist (${wishlistCount})`}
-              className="relative hidden size-10 place-items-center rounded-md text-[var(--color-ink)] hover:bg-zed-900/5 sm:grid"
+              className="relative hidden size-9 place-items-center rounded-md text-[var(--color-ink)] hover:bg-zed-900/5 sm:grid"
             >
-              <Heart className="size-5" />
+              <Heart className="size-4" />
               {wishlistCount > 0 && (
-                <span className="absolute right-1 top-1 grid min-w-4 place-items-center rounded-full bg-deep-olive px-1 text-[10px] font-bold text-white">
+                <span className="absolute right-1 top-1 grid min-w-4 place-items-center rounded-full bg-deep-olive px-1 text-[9px] font-bold text-white">
                   {wishlistCount}
                 </span>
               )}
@@ -201,23 +201,23 @@ export function HeaderContent({
               type="button"
               onClick={() => setSearchOpen(true)}
               aria-label="Search"
-              className="grid size-10 place-items-center rounded-md text-[var(--color-ink)] hover:bg-zed-900/5 md:hidden"
+              className="grid size-9 place-items-center rounded-md text-[var(--color-ink)] hover:bg-zed-900/5 md:hidden"
             >
-              <Search className="size-[22px] shrink-0 text-soft-sage" />
+              <Search className="size-[20px] shrink-0 text-soft-sage" />
             </button>
             <button
               type="button"
               onClick={openCart}
               aria-label={`Cart, ${cartCount} items`}
-              className="flex items-center gap-1.5 rounded-md bg-deep-olive px-2.5 py-2 text-white transition-colors hover:bg-zed-900 sm:gap-2 sm:px-3 sm:py-2.5"
+              className="flex items-center gap-1 rounded-md bg-deep-olive px-2.5 py-2 text-white transition-colors hover:bg-zed-900 sm:gap-2 sm:px-3 sm:py-2.5"
             >
-              <ShoppingBag className="size-5" />
-              <span className="hidden text-[13px] font-semibold sm:inline">
+              <ShoppingBag className="size-4" />
+              <span className="hidden text-[12px] font-semibold sm:inline">
                 {cartSubtotal > 0
                   ? `${SITE.currencyPrefix}${cartSubtotal.toLocaleString("en-KE")}`
                   : `${SITE.currencyPrefix}0`}
               </span>
-              <span className="grid min-w-5 place-items-center rounded-full bg-white/20 px-1 text-[11px] font-bold">
+              <span className="grid min-w-4 place-items-center rounded-full bg-white/20 px-1 text-[10px] font-bold">
                 {cartCount}
               </span>
             </button>
@@ -252,9 +252,9 @@ export function HeaderContent({
                 type="button"
                 aria-label="Close menu"
                 onClick={() => setMobileOpen(false)}
-                className="grid size-9 place-items-center rounded-md hover:bg-zed-900/5"
+                className="grid size-8 place-items-center rounded-md hover:bg-zed-900/5"
               >
-                <X className="size-5" />
+                <X className="size-4" />
               </button>
             </div>
             <form
@@ -263,29 +263,29 @@ export function HeaderContent({
                 onHeaderSearch(e);
                 setMobileOpen(false);
               }}
-              className="mx-3 mt-3 flex items-center gap-2 rounded-md border border-edge bg-panel/60 px-3"
+              className="mx-3 mt-3 flex items-center gap-2 rounded-md border border-edge bg-panel/60 px-2.5"
             >
-              <Search className="size-4 shrink-0 text-soft-sage" />
+              <Search className="size-3.5 shrink-0 text-soft-sage" />
               <input
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 type="search"
                 placeholder="Search for products..."
                 aria-label="Products search"
-                className="w-full min-w-0 bg-transparent py-2.5 text-sm outline-none"
+                className="w-full min-w-0 bg-transparent py-2 text-sm outline-none"
               />
             </form>
             <nav className="flex-1 overflow-y-auto p-3" aria-label="Mobile">
               {NAV_GROUPS.map((group) => (
                 <MobileGroup key={group.label} group={group} onClose={() => setMobileOpen(false)} />
               ))}
-              <div className="mt-3 border-t border-edge pt-2">
+              <div className="mt-2 border-t border-edge pt-2">
                 {PLAIN_NAV.map((item) => (
                   <Link
                     key={item.href}
                     href={item.href}
                     onClick={() => setMobileOpen(false)}
-                    className="block rounded-md px-3 py-2.5 text-sm font-medium text-[var(--color-ink)] hover:bg-panel"
+                    className="block rounded-md px-3 py-2 text-sm font-medium text-[var(--color-ink)] hover:bg-panel"
                   >
                     {item.label}
                   </Link>
@@ -349,28 +349,28 @@ function MobileGroup({ group, onClose }: { group: NavGroup; onClose: () => void 
           type="button"
           aria-label={`Toggle ${group.label} subcategories`}
           onClick={() => setOpen((v) => !v)}
-          className="grid size-10 place-items-center text-soft-sage"
+          className="grid size-9 place-items-center text-soft-sage"
         >
-          <ChevronDown className={`size-4 transition-transform ${open ? "rotate-180" : ""}`} />
+          <ChevronDown className={`size-3.5 transition-transform ${open ? "rotate-180" : ""}`} />
         </button>
       </div>
       {open && (
-        <div className="space-y-3 px-3 pb-3">
+        <div className="space-y-2 px-2.5 pb-2">
           {group.columns.map((col) => (
             <div key={col.title}>
-              <p className="text-[11px] font-bold uppercase tracking-[0.14em] text-soft-sage">{col.title}</p>
-              <div className="mt-1.5 grid grid-cols-2 gap-x-2">
-                {col.children.map((child) => (
-                  <Link
-                    key={child.href + child.label}
-                    href={child.href}
-                    onClick={onClose}
-                    className="py-1 text-[13px] text-[var(--color-ink)]"
-                  >
-                    {child.label}
-                  </Link>
-                ))}
-              </div>
+                <p className="text-[10px] font-bold uppercase tracking-[0.14em] text-soft-sage">{col.title}</p>
+                <div className="mt-1 grid grid-cols-2 gap-x-1.5">
+                  {col.children.map((child) => (
+                    <Link
+                      key={child.href + child.label}
+                      href={child.href}
+                      onClick={onClose}
+                      className="py-1 text-[12px] text-[var(--color-ink)]"
+                    >
+                      {child.label}
+                    </Link>
+                  ))}
+                </div>
             </div>
           ))}
         </div>

@@ -115,15 +115,15 @@ export function ProductCard({
         )}
       </div>
 
-      <div className="flex flex-1 flex-col p-2.5 text-center sm:p-3">
-        <h3 className="line-clamp-2 h-[2.4rem] text-[13px] font-semibold leading-snug sm:h-[2.5rem] sm:text-[15px] lg:h-[2.75rem] lg:text-base">
+      <div className="flex flex-1 flex-col p-2 text-center sm:p-2.5">
+        <h3 className="line-clamp-2 h-[2.2rem] text-[12px] font-semibold leading-snug sm:h-[2.4rem] sm:text-[13px] lg:h-[2.75rem] lg:text-base">
           <Link href={`/product/${product.slug}`} className="hover:text-rose-600">
             {product.name}
           </Link>
         </h3>
 
-        <div className="mt-1.5 flex min-h-[1.4rem] flex-wrap items-baseline justify-center gap-x-1.5">
-          <p className="text-[15px] font-bold text-charcoal-950 sm:text-base lg:text-lg">{formatKES(product.price)}</p>
+        <div className="mt-1 flex min-h-[1.2rem] flex-wrap items-baseline justify-center gap-x-1">
+          <p className="text-[13px] font-bold text-charcoal-950 sm:text-[15px] lg:text-lg">{formatKES(product.price)}</p>
           {product.compareAtPrice != null && product.compareAtPrice > product.price ? (
             <p className="min-w-0 text-xs text-charcoal/40 line-through">
               {formatKES(product.compareAtPrice)}
@@ -131,10 +131,10 @@ export function ProductCard({
           ) : null}
         </div>
 
-        <div className="mt-auto pt-2 flex flex-col items-center gap-1">
+        <div className="mt-auto pt-1.5 flex flex-col items-center gap-0.5">
           <Link
             href={`/product/${product.slug}`}
-            className="inline-flex items-center gap-1 text-[11px] font-semibold text-charcoal/70 transition-colors hover:text-rose-600"
+            className="inline-flex items-center gap-1 text-[10px] font-semibold text-charcoal/70 transition-colors hover:text-rose-600 sm:text-[11px]"
           >
             {personalizable ? (
               <>
@@ -145,7 +145,7 @@ export function ProductCard({
             )}
           </Link>
           {lowStock && (
-            <p className="text-[11px] font-medium leading-4 text-rose-500">
+            <p className="text-[10px] font-medium leading-4 text-rose-500 sm:text-[11px]">
               Only {product.quantity - product.reservedQuantity} left
             </p>
           )}

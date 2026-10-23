@@ -35,34 +35,34 @@ function Section({ title, products, href, flash = false, flashSale, titleColor }
     const textColor = contrastText(boxColor);
     return (
       <section
-        className="relative mb-7 overflow-hidden rounded-2xl border border-black/5 p-2.5 shadow-lg sm:mb-9 sm:p-3.5"
+        className="relative mb-5 overflow-hidden rounded-xl border border-black/5 p-2 sm:mb-6 sm:p-2"
         style={{ backgroundColor: boxColor }}
       >
-        <div className="mb-2.5 flex flex-wrap items-center justify-between gap-3 border-b border-black/10 pb-2.5">
-          <div className="flex min-w-0 items-center gap-2">
-            <span className="grid size-7 shrink-0 place-items-center rounded-lg bg-rose-500 text-white sm:size-8">
-              <Zap className="size-4 fill-current" />
+        <div className="mb-2 flex flex-wrap items-center justify-between gap-2 border-b border-black/10 pb-1.5">
+          <div className="flex min-w-0 items-center gap-1.5">
+            <span className="grid size-6 shrink-0 place-items-center rounded-lg bg-rose-500 text-white sm:size-7">
+              <Zap className="size-3.5 fill-current" />
             </span>
             <div className="min-w-0">
-              <h2 className="font-ui text-lg font-extrabold uppercase leading-none tracking-tight sm:text-xl" style={{ color: textColor }}>
+              <h2 className="font-ui text-sm font-extrabold uppercase leading-none tracking-tight sm:text-lg" style={{ color: textColor }}>
                 {flashSale.title || title}
               </h2>
               {flashSale.subtitle ? (
-                <p className="mt-0.5 text-xs opacity-70" style={{ color: textColor }}>{flashSale.subtitle}</p>
+                <p className="mt-0.5 text-[10px] opacity-70" style={{ color: textColor }}>{flashSale.subtitle}</p>
               ) : null}
             </div>
           </div>
-          <div className="flex min-w-0 flex-wrap items-center gap-3" style={{ color: textColor }}>
+          <div className="flex min-w-0 flex-wrap items-center gap-2" style={{ color: textColor }}>
             <FlashSaleCountdown startsAt={flashSale.startsAt} endsAt={flashSale.endsAt} active={flashSale.active} />
-            {href && <Link href={href} className="shrink-0 rounded-md bg-white px-3 py-1.5 text-xs font-bold text-orange-600 shadow-sm transition-colors hover:bg-orange-50">See all</Link>}
+            {href && <Link href={href} className="shrink-0 rounded-md bg-white px-2.5 py-1 text-[10px] font-bold text-orange-600 shadow-sm transition-colors hover:bg-orange-50 sm:px-3 sm:py-1.5">See all</Link>}
           </div>
         </div>
-        <div className="mb-1.5 flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wider opacity-65" style={{ color: textColor }}>
-          Swipe to explore <ArrowRight className="size-3.5" />
+        <div className="mb-1 flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider opacity-65" style={{ color: textColor }}>
+          Swipe to explore <ArrowRight className="size-3" />
         </div>
-          <div className="flex snap-x snap-mandatory gap-2 overflow-x-auto overscroll-x-contain rounded-lg pb-1.5 touch-auto scrollbar-none">
+          <div className="flex snap-x snap-mandatory gap-1.5 overflow-x-auto overscroll-x-contain rounded-lg pb-1 touch-auto scrollbar-none">
             {products.map((product) => (
-              <div key={product.id} className="w-[150px] min-w-[150px] shrink-0 snap-start sm:w-[170px] sm:min-w-[170px] lg:w-[190px] lg:min-w-[190px]">
+              <div key={product.id} className="w-[140px] min-w-[140px] shrink-0 snap-start sm:w-[160px] sm:min-w-[160px] lg:w-[180px] lg:min-w-[180px]">
                 <ProductCard product={product} />
               </div>
             ))}
@@ -71,17 +71,17 @@ function Section({ title, products, href, flash = false, flashSale, titleColor }
     );
   }
   return (
-    <section className="glass-panel mb-7 overflow-hidden rounded-2xl p-3 sm:mb-9 sm:p-4">
-      <div className="mb-3 flex items-center justify-between gap-2 border-b-2 border-orange-400 pb-2.5">
-        <h2 className={`font-display text-lg font-bold sm:text-xl ${titleColor ?? "text-[var(--color-ink)]"}`}>{title}</h2>
-        {href && <Link href={href} className="shrink-0 rounded-md bg-orange-50 px-3 py-1.5 text-xs font-bold text-orange-600 transition-colors hover:bg-orange-100">See all <span aria-hidden="true">›</span></Link>}
+    <section className="glass-panel mb-5 overflow-hidden rounded-xl p-2 sm:mb-6 sm:p-3">
+      <div className="mb-2 flex items-center justify-between gap-2 border-b-2 border-orange-400 pb-1.5">
+        <h2 className={`font-display text-sm font-bold sm:text-xl ${titleColor ?? "text-[var(--color-ink)]"}`}>{title}</h2>
+        {href && <Link href={href} className="shrink-0 rounded-md bg-orange-50 px-2.5 py-1 text-[10px] font-bold text-orange-600 transition-colors hover:bg-orange-50 sm:px-3 sm:py-1.5">See all <span aria-hidden="true">›</span></Link>}
       </div>
-      <div className="mb-2 flex items-center gap-1.5 text-[11px] font-semibold text-charcoal/50">
-        Swipe to explore <ArrowRight className="size-3.5" />
+      <div className="mb-1 flex items-center gap-1 text-[10px] font-semibold text-charcoal/50 sm:text-[11px]">
+        Swipe to explore <ArrowRight className="size-3 sm:size-3.5" />
       </div>
-      <div className="flex snap-x snap-mandatory gap-2 overflow-x-auto overscroll-x-contain pb-2 touch-auto scrollbar-none">
+      <div className="flex snap-x snap-mandatory gap-1.5 overflow-x-auto overscroll-x-contain pb-1 touch-auto scrollbar-none">
         {products.map((product) => (
-          <div key={product.id} className="w-[45vw] min-w-[45vw] shrink-0 snap-start sm:w-[240px] sm:min-w-[240px] lg:w-[260px] lg:min-w-[260px]">
+          <div key={product.id} className="w-[45vw] min-w-[45vw] shrink-0 snap-start sm:w-[220px] sm:min-w-[220px] lg:w-[240px] lg:min-w-[240px]">
             <ProductCard product={product} />
           </div>
         ))}
