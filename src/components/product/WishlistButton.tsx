@@ -41,10 +41,10 @@ export function WishlistButton({ productId, initialInWishlist = false }: { produ
     onClick={toggle}
     aria-label={inWishlist ? "Remove from wishlist" : "Add to wishlist"}
     aria-pressed={inWishlist}
-    className={`grid size-7 place-items-center rounded-full border border-charcoal/20 bg-white/80 backdrop-blur-sm transition-colors ${
+    className={`grid size-7 place-items-center transition-colors ${
      inWishlist
-      ? "border-charcoal/30 bg-rose-100 text-rose-700 shadow-glass"
-      : "border-rose-200 text-rose-400 hover:border-rose-300 hover:text-rose-600"
+      ? "text-rose-700"
+      : "text-rose-400 hover:text-rose-600"
     } ${busy ? "opacity-60" : ""}`}
     aria-describedby="wishlist-tooltip"
     title={inWishlist ? "Remove from wishlist" : "Add to wishlist"}
