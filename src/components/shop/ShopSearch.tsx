@@ -2,13 +2,18 @@
 
 import { Search, X } from "lucide-react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export function ShopSearch({ initialValue = "" }: { initialValue?: string }) {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const [value, setValue] = useState(initialValue);
+
+  // Reflect URL changes (including browser back/forward) in the search field.
+  useEffect(() => {
+    setValue(searchParams.get("q") ?? initialValue);
+  }, [searchParams, initialValue]);
 
   function submit(e: React.FormEvent) {
     e.preventDefault();
