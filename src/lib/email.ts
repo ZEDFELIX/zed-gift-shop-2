@@ -15,7 +15,7 @@ const fromName = (process.env.EMAIL_FROM_NAME ?? SITE.name).trim();
 const fromAddress = (process.env.EMAIL_FROM ?? `${SITE.name} <${SITE.email}>`).trim();
 
 async function transport() {
- const provider = (process.env.EMAIL_PROVIDER ?? "smtp").toLowerCase();
+ const provider = (process.env.EMAIL_PROVIDER ?? ((process.env.RESEND_API_KEY || process.env.EMAIL_API_KEY) ? "resend" : "smtp")).toLowerCase();
 
  if (provider === "resend") {
  // .env.example documents EMAIL_API_KEY; deployments in the wild use both names.
@@ -79,7 +79,7 @@ export type SendResult = { ok: boolean; messageId?: string; error?: string };
 /** Return whether a supported email provider has the minimum configuration. */
 export function isEmailConfigured(): boolean {
   if ((process.env.EMAIL_ENABLED ?? "true") !== "true") return false;
-  const provider = (process.env.EMAIL_PROVIDER ?? "smtp").toLowerCase();
+  const provider = (process.env.EMAIL_PROVIDER ?? ((process.env.RESEND_API_KEY || process.env.EMAIL_API_KEY) ? "resend" : "smtp")).toLowerCase();
   if (provider === "resend") return Boolean(process.env.RESEND_API_KEY ?? process.env.EMAIL_API_KEY);
   return Boolean(process.env.EMAIL_HOST ?? process.env.SMTP_HOST);
 }
