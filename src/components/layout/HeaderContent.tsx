@@ -6,6 +6,7 @@ import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 import {
   ChevronDown,
+  Info,
   LogIn,
   Menu,
   Phone,
@@ -311,7 +312,7 @@ export function HeaderContent({
        <nav aria-label="Mobile quick navigation" className="fixed inset-x-3 bottom-3 z-[60] grid grid-cols-4 rounded-2xl border border-edge bg-white p-1 shadow-glass-lg lg:hidden">
          <Link href="/shop" className="flex flex-col items-center gap-0.5 px-1 py-2 text-[10px] font-semibold text-ink hover:text-rose-600"><ShoppingBag className="size-4" /><span>Shop</span></Link>
          <button type="button" onClick={() => setSearchOpen(true)} className="flex flex-col items-center gap-0.5 px-1 py-2 text-[10px] font-semibold text-ink hover:text-rose-600"><Search className="size-4" /><span>Search</span></button>
-         <Link href="/about" className="flex flex-col items-center gap-0.5 px-1 py-2 text-[10px] font-semibold text-ink hover:text-rose-600"><Phone className="size-4" /><span>About Us</span></Link>
+         <Link href="/about" className="flex flex-col items-center gap-0.5 px-1 py-2 text-[10px] font-semibold text-ink hover:text-rose-600"><Info className="size-4" /><span>About Us</span></Link>
          <Link href={accountHref} className="flex flex-col items-center gap-0.5 px-1 py-2 text-[10px] font-semibold text-ink hover:text-rose-600"><User className="size-4" /><span>My Account</span></Link>
        </nav>
     </>
