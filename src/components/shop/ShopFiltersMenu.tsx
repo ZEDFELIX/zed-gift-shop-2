@@ -31,6 +31,13 @@ export function ShopFiltersMenu({
   const [max, setMax] = useState(params.get("max") ?? "");
   const ref = useRef<HTMLDivElement>(null);
 
+  // Keep the editable price fields in sync with browser back/forward and
+  // changes made by other filters instead of leaving stale values visible.
+  useEffect(() => {
+    setMin(searchParams.get("min") ?? "");
+    setMax(searchParams.get("max") ?? "");
+  }, [searchParams]);
+
   useEffect(() => {
     function onDoc(e: MouseEvent) {
       if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false);
@@ -64,12 +71,31 @@ export function ShopFiltersMenu({
 
   function applyPrice(e: React.FormEvent) {
     e.preventDefault();
-    const p = new URLSearchParams(params.toString());
     const lo = min.trim();
     const hi = max.trim();
-    if (lo) p.set("min", lo);
+    const minValue = lo === "" ? undefined : Number(lo);
+    const maxValue = hi === "" ? undefined : Number(hi);
+
+    if (
+      (minValue !== undefined && (!Number.isFinite(minValue) || minValue < 0)) ||
+      (maxValue !== undefined && (!Number.isFinite(maxValue) || maxValue < 0))
+    ) {
+      window.dispatchEvent(new CustomEvent("zed:toast", {
+        detail: { message: "Enter valid non-negative prices.", type: "error" },
+      }));
+      return;
+    }
+    if (minValue !== undefined && maxValue !== undefined && minValue > maxValue) {
+      window.dispatchEvent(new CustomEvent("zed:toast", {
+        detail: { message: "Minimum price cannot exceed maximum price.", type: "error" },
+      }));
+      return;
+    }
+
+    const p = new URLSearchParams(params.toString());
+    if (lo) p.set("min", String(Math.floor(minValue!)));
     else p.delete("min");
-    if (hi) p.set("max", hi);
+    if (hi) p.set("max", String(Math.floor(maxValue!)));
     else p.delete("max");
     p.delete("page");
     router.push(`${pathname}?${p.toString()}`);
@@ -131,9 +157,7 @@ export function ShopFiltersMenu({
                 aria-label="Sort products"
               >
                 {Object.entries(sortLabels).map(([key, label]) => (
-                  <option key={key} value={key}>
-                    {label}
-                  </option>
+                  <option key={key} value={key}>{label}</option>
                 ))}
               </select>
               <ChevronDown className="pointer-events-none absolute right-3 top-1/2 size-3 -translate-y-1/2 text-charcoal/40" />
@@ -144,6 +168,9 @@ export function ShopFiltersMenu({
             <p className="mb-2 text-[11px] font-bold uppercase tracking-[0.14em] text-charcoal/50">Price (KES)</p>
             <form onSubmit={applyPrice} className="flex items-center gap-2">
               <input
+                type="number"
+                min="0"
+                step="1"
                 value={min}
                 onChange={(e) => setMin(e.target.value)}
                 inputMode="numeric"
@@ -153,6 +180,9 @@ export function ShopFiltersMenu({
               />
               <span className="text-charcoal/40">-</span>
               <input
+                type="number"
+                min="0"
+                step="1"
                 value={max}
                 onChange={(e) => setMax(e.target.value)}
                 inputMode="numeric"
