@@ -6,7 +6,6 @@ import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 import {
   ChevronDown,
-  Heart,
   LogIn,
   Menu,
   Phone,
@@ -48,7 +47,6 @@ function Brand({ storeName }: { storeName: string }) {
 export function HeaderContent({
   cartCount,
   cartSubtotal,
-  wishlistCount,
   announcement,
   contactPhone,
   whatsappNumber,
@@ -58,7 +56,6 @@ export function HeaderContent({
 }: {
   cartCount: number;
   cartSubtotal: number;
-  wishlistCount: number;
   announcement: string;
   contactPhone: string;
   whatsappNumber: string;
@@ -185,18 +182,6 @@ export function HeaderContent({
               </Link>
             )}
             <DownloadAppButton className="hidden items-center gap-1.5 rounded-md border border-edge px-3 py-2 text-[12px] font-semibold text-[var(--color-ink)] hover:bg-zed-900/5 lg:flex" />
-            <Link
-              href="/wishlist"
-              aria-label={`Wishlist (${wishlistCount})`}
-              className="relative hidden size-9 place-items-center rounded-md text-[var(--color-ink)] hover:bg-zed-900/5 sm:grid"
-            >
-              <Heart className="size-4" />
-              {wishlistCount > 0 && (
-                <span className="absolute right-1 top-1 grid min-w-4 place-items-center rounded-full bg-deep-olive px-1 text-[9px] font-bold text-white">
-                  {wishlistCount}
-                </span>
-              )}
-            </Link>
             <button
               type="button"
               onClick={() => setSearchOpen(true)}
