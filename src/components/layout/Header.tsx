@@ -16,7 +16,11 @@ export async function Header() {
     getSetting("whatsappNumber").catch(() => null),
   ]);
   const cartCount = cart.count;
-  const announcement = typeof announcementRaw === "string" ? announcementRaw : "";
+  const configuredAnnouncement = typeof announcementRaw === "string" ? announcementRaw.trim() : "";
+  // Avoid showing stale placeholder/test copy that was accidentally saved in store settings.
+  const announcement = /did you know that laughing can increase your lifespan/i.test(configuredAnnouncement)
+    ? "SAME-DAY NAIROBI DELIVERY · COUNTRYWIDE DELIVERY · SECURE M-PESA CHECKOUT"
+    : configuredAnnouncement;
   const contactPhone = typeof contactPhoneRaw === "string" && contactPhoneRaw.trim() ? contactPhoneRaw : SITE.phone;
   const storeName = typeof storeNameRaw === "string" && storeNameRaw.trim() ? storeNameRaw : SITE.name;
   const whatsappNumber = typeof whatsappRaw === "string" && whatsappRaw.trim() ? whatsappRaw.trim() : SITE.whatsappNumber;
