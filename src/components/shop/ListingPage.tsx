@@ -68,6 +68,30 @@ export async function ListingPage({
     filters.max != null ? `up to KES ${filters.max}` : undefined,
   ].filter(Boolean);
 
+  // Keep the current search/filter/sort state when changing pages. Previously
+  // pagination linked to /shop?page=N and silently dropped active filters.
+  const paginationParams = new URLSearchParams();
+  const queryValues: Record<string, string | number | boolean | undefined> = {
+    q: filters.q,
+    category: filters.category,
+    occasion: filters.occasion,
+    recipient: filters.recipient,
+    collection: filters.collection,
+    min: filters.min,
+    max: filters.max,
+    personalized: filters.personalized ? "1" : undefined,
+    inStock: filters.inStock ? "1" : undefined,
+    flashSale: filters.flashSale ? "1" : undefined,
+    deals: filters.deals ? "1" : undefined,
+    bestSeller: filters.bestSeller ? "1" : undefined,
+    sort: filters.sort && filters.sort !== "featured" ? filters.sort : undefined,
+  };
+  for (const [key, value] of Object.entries(queryValues)) {
+    if (value !== undefined && value !== "" && value !== false) {
+      paginationParams.set(key, String(value));
+    }
+  }
+
   const showSections = activeFilters.length === 0 && result.page <= 1;
   const sectionData: { sections: ShopSection[]; shownIds: string[] } = showSections
     ? await getShopSectionData()
@@ -129,6 +153,7 @@ export async function ListingPage({
               total={result.total}
               pageSize={result.pageSize}
               href={href}
+              query={paginationParams.toString()}
             /> : null}
           </div>
         </div>

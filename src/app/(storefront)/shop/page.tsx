@@ -18,6 +18,18 @@ function boolParam(value: unknown) {
  return value === "1" || value === "true";
 }
 
+function safePrice(value: string | undefined): number | undefined {
+  if (value == null || value.trim() === "") return undefined;
+  const parsed = Number(value);
+  return Number.isFinite(parsed) && parsed >= 0 ? Math.floor(parsed) : undefined;
+}
+
+function safePage(value: string | undefined): number {
+  if (value == null || value.trim() === "") return 1;
+  const parsed = Number(value);
+  return Number.isFinite(parsed) && parsed >= 1 ? Math.floor(parsed) : 1;
+}
+
 function parseGoogleReviews(raw: unknown) {
   if (!Array.isArray(raw)) return [];
   return raw
@@ -45,15 +57,15 @@ export default async function ShopPage({ searchParams }: { searchParams: Promise
   occasion: get("occasion") ?? "",
   recipient: get("recipient") ?? "",
   collection: get("collection") ?? "",
-  min: get("min") ? Number(get("min")) : undefined,
-  max: get("max") ? Number(get("max")) : undefined,
+  min: safePrice(get("min")),
+  max: safePrice(get("max")),
   personalized: boolParam(get("personalized")),
   flashSale: boolParam(get("flashSale")),
   deals: boolParam(get("deals")),
   bestSeller: boolParam(get("bestSeller")),
   inStock: boolParam(get("inStock")),
   sort: get("sort") ?? "featured",
-  page: get("page") ? Number(get("page")) : 1,
+  page: safePage(get("page")),
  } as const;
 
  const deals = await getDealProducts(4);
