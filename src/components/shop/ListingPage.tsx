@@ -5,7 +5,6 @@ import { listProducts, type ProductListFilters } from "@/lib/data/products";
 import { jsonLdItemList } from "@/lib/seo";
 import { listCategories } from "@/lib/data/catalog";
 import { ProductGrid } from "@/components/shop/ProductGrid";
-import { ShopSearch } from "@/components/shop/ShopSearch";
 import { ShopFiltersMenu } from "@/components/shop/ShopFiltersMenu";
 import { Pagination } from "@/components/shop/Pagination";
 import { ShopSections, getShopSectionData, type ShopSection } from "@/components/shop/ShopSections";
@@ -114,10 +113,6 @@ export async function ListingPage({
               </Suspense>
             </div>
           </header>
-
-          <div className="mb-4 sm:mb-5">
-            <ShopSearch initialValue={filters.q ?? ""} />
-          </div>
 
           <div className="mt-3 sm:mt-4">
             {showSections && <ShopSections sections={sectionData.sections} />}
