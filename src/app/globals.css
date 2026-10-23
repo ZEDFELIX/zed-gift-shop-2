@@ -507,3 +507,51 @@ main,section,article,aside,form,nav,header,footer{min-width:0}
   .navbar-logo-container { max-width: 31vw; }
   .navbar-logo { height: 24px; }
 }
+
+
+/* Shop listing controls: balanced mobile alignment without changing filter behavior. */
+@media (max-width: 767px) {
+  .shop-filter-trigger {
+    min-width: 0;
+    min-height: 36px;
+    padding: 7px 9px;
+    gap: 5px;
+    font-size: 12px;
+    line-height: 1;
+    white-space: nowrap;
+  }
+  .shop-filter-trigger svg { width: 13px; height: 13px; }
+  .shop-filter-trigger > span {
+    width: 16px;
+    height: 16px;
+    font-size: 9px;
+  }
+  .shop-filter-dropdown {
+    width: min(86vw, 320px);
+    padding: 11px;
+    border-radius: 12px;
+  }
+  .shop-filter-dropdown p { font-size: 9px; margin-bottom: 6px; }
+  .shop-filter-dropdown .mt-4,
+  .shop-filter-dropdown .mt-5 { margin-top: 12px; }
+  .shop-filter-dropdown select,
+  .shop-filter-dropdown input:not([type="checkbox"]) {
+    min-height: 36px;
+    padding: 7px 9px;
+    font-size: 12px;
+    border-radius: 8px;
+  }
+  .shop-filter-dropdown label,
+  .shop-filter-dropdown ul { font-size: 11px; }
+  .shop-filter-dropdown li button { min-height: 32px; padding: 6px 8px; }
+  .shop-filter-dropdown button[type="submit"],
+  .shop-filter-dropdown > button { min-height: 34px; }
+  .flash-sale-countdown { gap: 5px; }
+  .flash-sale-countdown > div { gap: 3px; }
+}
+@media (max-width: 390px) {
+  .shop-filter-trigger { padding: 6px 7px; font-size: 11px; }
+  .shop-filter-dropdown { width: min(88vw, 300px); }
+  .flash-sale-countdown { gap: 4px; }
+  .flash-sale-countdown > div { gap: 2px; }
+}
