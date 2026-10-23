@@ -67,17 +67,17 @@ export function FlashSaleCountdown({
   ];
 
   return (
-    <div className="flex items-center gap-2 sm:flex-col sm:items-start sm:gap-1">
-      <span className="text-[10px] font-bold uppercase tracking-wider opacity-80 sm:text-[11px]">
+    <div className="flash-sale-countdown flex w-full items-center justify-end gap-1.5 sm:w-auto sm:flex-col sm:items-start sm:gap-1">
+      <span className="whitespace-nowrap text-[9px] font-bold uppercase tracking-wide opacity-80 sm:text-[11px] sm:tracking-wider">
         {status === "upcoming" ? "Starts in" : "Ends in"}
       </span>
-      <div className="flex items-center gap-1 sm:gap-1.5">
+      <div className="flex items-center gap-0.5 sm:gap-1.5">
         {units.map((u) => (
           <div key={u.label} className="flex flex-col items-center">
-            <span className="grid min-w-[1.75rem] place-items-center rounded-lg bg-white px-1 py-0.5 text-sm font-extrabold tabular-nums text-rose-600 shadow-sm sm:min-w-[2.25rem] sm:text-base">
+            <span className="grid min-w-[1.45rem] place-items-center rounded-md bg-white px-0.5 py-0.5 text-[11px] font-extrabold tabular-nums text-rose-600 shadow-sm sm:min-w-[2.25rem] sm:rounded-lg sm:px-1 sm:text-base">
               {u.value > 99 ? u.value : pad(u.value)}
             </span>
-            <span className="mt-0 text-[8px] font-bold uppercase tracking-wider opacity-80 sm:mt-0.5 sm:text-[9px]">
+            <span className="mt-0 text-[7px] font-bold uppercase tracking-wide opacity-80 sm:mt-0.5 sm:text-[9px] sm:tracking-wider">
               {u.label}
             </span>
           </div>
