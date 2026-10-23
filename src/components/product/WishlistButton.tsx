@@ -41,7 +41,7 @@ export function WishlistButton({ productId, initialInWishlist = false }: { produ
     onClick={toggle}
     aria-label={inWishlist ? "Remove from wishlist" : "Add to wishlist"}
     aria-pressed={inWishlist}
-    className={`grid size-10 place-items-center rounded-full border border-charcoal/20 bg-white/80 backdrop-blur-sm transition-colors ${
+    className={`grid size-7 place-items-center rounded-full border border-charcoal/20 bg-white/80 backdrop-blur-sm transition-colors ${
      inWishlist
       ? "border-charcoal/30 bg-rose-100 text-rose-700 shadow-glass"
       : "border-rose-200 text-rose-400 hover:border-rose-300 hover:text-rose-600"
@@ -50,7 +50,7 @@ export function WishlistButton({ productId, initialInWishlist = false }: { produ
     title={inWishlist ? "Remove from wishlist" : "Add to wishlist"}
    >
      <Heart
-      className={`size-4 fill-rose-500 ${
+      className={`size-3 fill-rose-500 ${
        inWishlist ? "fill-current animate-[heart-beat_1s_infinite]" : ""
       }`}
      />
