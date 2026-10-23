@@ -76,7 +76,12 @@ export async function Footer() {
 
       <div className="border-t border-white/10">
         <div className="container-zed flex flex-col items-center justify-between gap-2 py-5 text-xs text-white/50 sm:flex-row">
-          <p>Copyright &copy; {String(settings.copyrightText ?? DEFAULTS.copyrightText).replace(String(new Date().getFullYear()), String(storeName))}</p>
+          <p>
+            {String(settings.copyrightText ?? DEFAULTS.copyrightText)
+              .replaceAll("{year}", String(new Date().getFullYear()))
+              .replaceAll("{storeName}", storeName)
+              .replace(/&copy;/g, "©")}
+          </p>
           <p>Prices in {SITE.currencyPrefix}</p>
         </div>
       </div>
