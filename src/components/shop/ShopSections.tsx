@@ -54,7 +54,14 @@ function Section({ title, products, href, flash = false, flashSale, titleColor }
           </div>
           <div className="flex min-w-0 flex-wrap items-center gap-2" style={{ color: textColor }}>
             <FlashSaleCountdown startsAt={flashSale.startsAt} endsAt={flashSale.endsAt} active={flashSale.active} />
-            {href && <Link href={href} className="shrink-0 rounded-md bg-white px-2.5 py-1 text-[10px] font-bold text-orange-600 shadow-sm transition-colors hover:bg-orange-50 sm:px-3 sm:py-1.5">See all</Link>}
+            {href && (
+              <Link
+                href={href}
+                className="shrink-0 rounded-md border border-edge bg-white px-3 py-1.5 text-[11px] font-bold text-[#07111F] shadow-sm transition-colors hover:bg-zed-950 hover:text-white"
+              >
+                See all
+              </Link>
+            )}
           </div>
         </div>
         <div className="mb-1 flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider opacity-65" style={{ color: textColor }}>
@@ -74,7 +81,14 @@ function Section({ title, products, href, flash = false, flashSale, titleColor }
     <section className="glass-panel mb-5 overflow-hidden rounded-xl p-2 sm:mb-6 sm:p-3">
       <div className="mb-2 flex items-center justify-between gap-2 border-b-2 border-orange-400 pb-1.5">
         <h2 className={`font-display text-sm font-bold sm:text-xl ${titleColor ?? "text-[var(--color-ink)]"}`}>{title}</h2>
-        {href && <Link href={href} className="shrink-0 rounded-md bg-orange-50 px-2.5 py-1 text-[10px] font-bold text-orange-600 transition-colors hover:bg-orange-50 sm:px-3 sm:py-1.5">See all <span aria-hidden="true">›</span></Link>}
+        {href && (
+          <Link
+            href={href}
+            className="shrink-0 rounded-md border border-edge bg-white px-3 py-1.5 text-[11px] font-bold text-[#07111F] shadow-sm transition-colors hover:bg-zed-950 hover:text-white"
+          >
+            See all
+          </Link>
+        )}
       </div>
       <div className="mb-1 flex items-center gap-1 text-[10px] font-semibold text-charcoal/50 sm:text-[11px]">
         Swipe to explore <ArrowRight className="size-3 sm:size-3.5" />

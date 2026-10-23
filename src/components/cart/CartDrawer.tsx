@@ -166,7 +166,7 @@ export function CartDrawer() {
                 <Link
                   href="/shop"
                   onClick={() => setOpen(false)}
-                  className="rounded-xl bg-rose-500 px-6 py-3 text-sm font-semibold text-white uppercase tracking-wider hover:bg-rose-600"
+                  className="rounded-xl bg-zed-950 px-5 py-3 text-[13px] font-bold uppercase tracking-wider text-white hover:bg-zed-900"
                 >
                   Browse gifts
                 </Link>
@@ -207,14 +207,14 @@ export function CartDrawer() {
                             >
                               {item.name}
                             </Link>
-                            <button
-                              type="button"
-                              aria-label="Remove"
-                              onClick={() => removeItem(item.id)}
-                              className="size-10 rounded-full bg-charcoal/10 text-charcoal/40 hover:bg-charcoal hover:text-charcoal"
-                            >
-                              <Trash2 className="size-4" />
-                            </button>
+                          <button
+                            type="button"
+                            aria-label="Remove"
+                            onClick={() => removeItem(item.id)}
+                            className="grid size-11 place-items-center rounded-sm hover:bg-charcoal/10"
+                          >
+                            <Trash2 className="size-4" />
+                          </button>
                           </div>
                           <div className="mt-1 text-xs text-charcoal/500">
                             {item.personalization && <span className="ml-1 italic">| Personalized</span>}
@@ -227,18 +227,18 @@ export function CartDrawer() {
                               type="button"
                               aria-label="Decrease"
                               onClick={() => changeQty(item, -1)}
-                              className="grid size-10 place-items-center rounded-sm hover:bg-charcoal/10"
+                              className="grid size-11 place-items-center rounded-sm hover:bg-charcoal/10"
                             >
-                              <Minus className="size-3" />
+                              <Minus className="size-4" />
                             </button>
                             <span className="mx-2 w-6 text-center text-sm font-semibold">{item.quantity}</span>
                             <button
                               type="button"
                               aria-label="Increase"
                               onClick={() => changeQty(item, 1)}
-                              className="grid size-10 place-items-center rounded-sm hover:bg-charcoal/10"
+                              className="grid size-11 place-items-center rounded-sm hover:bg-charcoal/10"
                             >
-                              <Plus className="size-3" />
+                              <Plus className="size-4" />
                             </button>
                           </div>
                           <div className="text-right">
@@ -269,7 +269,7 @@ export function CartDrawer() {
                       <button
                         type="button"
                         onClick={clearCoupon}
-                        className="text-xs text-charcoal/40 underline hover:text-charcoal"
+                        className="text-[11px] underline decoration-rose-300 underline-offset-2 text-rose-600 hover:text-rose-700"
                       >
                         remove
                       </button>
@@ -286,7 +286,7 @@ export function CartDrawer() {
                       <button
                         type="submit"
                         disabled={!coupon.trim()}
-                        className="shrink-0 rounded-xl bg-rose-500 px-4 py-2.5 text-xs font-bold text-white uppercase tracking-wider"
+                        className="shrink-0 rounded-xl bg-zed-950 px-4 py-2.5 text-[12px] font-bold text-white uppercase tracking-wider disabled:opacity-60"
                       >
                         Apply
                       </button>
@@ -317,7 +317,7 @@ export function CartDrawer() {
                     <Link
                       href="/checkout"
                       onClick={() => setOpen(false)}
-                      className={`mt-3 block rounded-xl py-3.5 text-center text-sm font-bold transition-colors ${checkoutEnabled ? "bg-rose-500 text-white shadow-glass hover:bg-rose-600 hover:text-white" : "cursor-not-allowed bg-white/20 text-charcoal/40"}`}
+                      className={`mt-3 block rounded-xl px-5 py-3 text-center text-[13px] font-bold uppercase tracking-wider transition-colors disabled:opacity-60 ${checkoutEnabled ? "bg-zed-950 text-white shadow-glass hover:bg-zed-900 hover:text-white" : "cursor-not-allowed bg-white/20 text-charcoal/40"}`}
                       aria-disabled={!checkoutEnabled}
                     >
                       Checkout | M-PESA
@@ -325,7 +325,7 @@ export function CartDrawer() {
                     <button
                       type="button"
                       onClick={() => setOpen(false)}
-                      className="mt-2 w-full text-center text-xs text-charcoal/400 underline-offset-2 hover:underline"
+                      className="mt-2 w-full text-center text-[12px] font-semibold text-charcoal/60 underline-offset-2 hover:text-charcoal"
                     >
                       Continue shopping
                     </button>

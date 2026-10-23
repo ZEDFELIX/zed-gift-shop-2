@@ -136,14 +136,14 @@ export function ReviewForm({ productId }: { productId: string }) {
  <span key={photo.preview} className="relative">
  {/* eslint-disable-next-line @next/next/no-img-element */}
  <img src={photo.preview} alt={`Your photo ${i + 1}`} className="size-16 rounded-lg object-cover ring-1 ring-black/10" />
- <button
- type="button"
- onClick={() => removePhoto(i)}
- aria-label="Remove photo"
- className="absolute -right-1.5 -top-1.5 grid size-6 place-items-center rounded-full bg-zed-950 text-white"
- >
- <X className="size-3.5" />
- </button>
+  <button
+  type="button"
+  onClick={() => removePhoto(i)}
+  aria-label="Remove photo"
+  className="absolute -right-2 -top-2 grid size-10 place-items-center rounded-full bg-zed-950 text-white"
+  >
+  <X className="size-4" />
+  </button>
  </span>
  ))}
  {photos.length < 4 && (
