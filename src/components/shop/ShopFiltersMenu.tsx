@@ -82,7 +82,7 @@ export function ShopFiltersMenu({
   }
 
   const FacetList = ({ items, keyName }: { items: Facet[]; keyName: string }) => (
-    <ul className="space-y-1 text-sm">
+    <ul className="space-y-1 text-[12px] sm:text-sm">
       {items.map((c) => {
         const active = params.get(keyName) === c.slug;
         return (
@@ -107,7 +107,7 @@ export function ShopFiltersMenu({
         type="button"
         onClick={() => setOpen((o) => !o)}
         aria-expanded={open}
-        className="glass-panel inline-flex items-center gap-2 rounded-zed px-3.5 py-2 text-sm font-semibold text-[var(--color-ink)]"
+        className="shop-filter-trigger glass-panel inline-flex items-center gap-1.5 rounded-zed px-3 py-2 text-sm font-semibold text-[var(--color-ink)] sm:gap-2 sm:px-3.5"
       >
         <SlidersHorizontal className="size-4" />
         Filters
@@ -120,7 +120,7 @@ export function ShopFiltersMenu({
       </button>
 
       {open && (
-        <div className="absolute right-0 z-50 mt-2 max-h-[70vh] w-[min(90vw,360px)] overflow-y-auto rounded-zed border border-edge bg-white p-4 shadow-glass-lg">
+        <div className="shop-filter-dropdown absolute right-0 z-50 mt-2 max-h-[70vh] w-[min(88vw,340px)] overflow-y-auto rounded-zed border border-edge bg-white p-3 shadow-glass-lg sm:w-[min(90vw,360px)] sm:p-4">
           <div>
             <p className="mb-2 text-[11px] font-bold uppercase tracking-[0.14em] text-charcoal/50">Sort</p>
             <div className="relative">
@@ -140,7 +140,7 @@ export function ShopFiltersMenu({
             </div>
           </div>
 
-          <div className="mt-5">
+          <div className="mt-4 sm:mt-5">
             <p className="mb-2 text-[11px] font-bold uppercase tracking-[0.14em] text-charcoal/50">Price (KES)</p>
             <form onSubmit={applyPrice} className="flex items-center gap-2">
               <input
@@ -166,7 +166,7 @@ export function ShopFiltersMenu({
             </form>
           </div>
 
-          <div className="mt-5 space-y-2">
+          <div className="mt-4 space-y-2 sm:mt-5">
             <p className="text-[11px] font-bold uppercase tracking-[0.14em] text-charcoal/50">Quick picks</p>
             {[
               { key: "personalized", label: "Personalized only" },
