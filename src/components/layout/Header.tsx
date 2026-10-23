@@ -2,7 +2,6 @@ import "server-only";
 
 import { SITE } from "@/lib/constants";
 import { cartSummaryForHeader } from "@/lib/cart";
-import { getWishlistIds } from "@/lib/wishlist";
 import { getCurrentUser } from "@/lib/auth";
 import { getSetting } from "@/lib/data/settings";
 import { HeaderContent } from "@/components/layout/HeaderContent";
@@ -17,7 +16,6 @@ export async function Header() {
     getSetting("whatsappNumber").catch(() => null),
   ]);
   const cartCount = cart.count;
-  const wishlistCount = user ? (await getWishlistIds(user.id).catch(() => []))?.length : 0;
   const announcement = typeof announcementRaw === "string" ? announcementRaw : "";
   const contactPhone = typeof contactPhoneRaw === "string" && contactPhoneRaw.trim() ? contactPhoneRaw : SITE.phone;
   const storeName = typeof storeNameRaw === "string" && storeNameRaw.trim() ? storeNameRaw : SITE.name;
@@ -27,7 +25,6 @@ export async function Header() {
     <HeaderContent
       cartCount={cartCount}
       cartSubtotal={cart.subtotal}
-      wishlistCount={wishlistCount}
       announcement={announcement}
       contactPhone={contactPhone}
       whatsappNumber={whatsappNumber}
