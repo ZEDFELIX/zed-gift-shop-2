@@ -94,7 +94,7 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
  });
 
   return (
-  <div className="container-zed py-8 lg:py-12">
+  <div className="container-zed py-4 sm:py-8 lg:py-12">
   <TrackPageView
     event="view_item"
     params={{ currency: "KES", value: product.price, items: [{ item_id: product.id, item_name: product.name }] }}
@@ -103,7 +103,7 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
  <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumb) }} />
 
  {/* Breadcrumbs */}
- <nav aria-label="Breadcrumb" className="mb-6 flex items-center gap-1.5 overflow-x-auto text-xs text-[rgba(48,37,34,0.62)]">
+ <nav aria-label="Breadcrumb" className="mb-4 flex items-center gap-1.5 overflow-x-auto text-xs text-[rgba(48,37,34,0.62)]">
  <Link href="/" className="hover:text-zed-700">Home</Link>
  <ChevronRight className="size-3.5 shrink-0" />
  <Link href="/shop" className="hover:text-zed-700">Shop</Link>
@@ -119,7 +119,7 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
  <span className="whitespace-nowrap text-[var(--color-ink)]">{product.name}</span>
  </nav>
 
- <div className="grid gap-10 lg:grid-cols-2 lg:gap-14">
+ <div className="grid min-w-0 gap-6 sm:gap-8 lg:grid-cols-2 lg:gap-14">
   {/* Gallery */}
   <div className="space-y-3">
   <ProductGallery images={product.images.map((img) => ({ url: img.url, alt: img.alt }))} name={product.name} sale={sale} />
@@ -218,7 +218,7 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
  </div>
 
  {/* USPs */}
- <div className="glass-card mt-8 grid gap-3 rounded-zed p-5 sm:grid-cols-2">
+ <div className="glass-card mt-6 grid gap-3 rounded-zed p-3 sm:mt-8 sm:p-5 sm:grid-cols-2">
   <div className="flex items-center gap-2.5 text-sm text-[var(--color-ink)]">
   <Truck className="size-5 shrink-0 text-soft-sage" />
   Same-day Nairobi · 1–3 days countrywide
@@ -241,14 +241,14 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
 
  {/* Description */}
  {product.description && (
- <section className="mx-auto mt-14 max-w-3xl">
+ <section className="mx-auto mt-10 max-w-3xl sm:mt-14">
  <h2 className="font-display text-2xl font-bold text-[var(--color-ink)]">About this gift</h2>
  <p className="mt-4 whitespace-pre-line leading-relaxed text-[var(--color-ink)]">{product.description}</p>
  </section>
  )}
 
  {/* Reviews */}
- <section id="reviews" className="mx-auto mt-14 max-w-4xl">
+ <section id="reviews" className="mx-auto mt-10 max-w-4xl sm:mt-14">
   <h2 className="font-display text-2xl font-bold text-[var(--color-ink)]">Customer reviews</h2>
   {reviews.length > 0 && (
   <div className="mt-1">
@@ -282,7 +282,7 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
  </div>
  )}
 
- <div className="mt-8 grid gap-10 lg:grid-cols-2">
+ <div className="mt-6 grid min-w-0 gap-6 sm:mt-8 sm:gap-10 lg:grid-cols-2">
  <div className="space-y-4">
  {reviews.length === 0 && (
   <p className="glass-panel rounded-zed border border-dashed border-white/50 px-5 py-8 text-sm text-[rgba(48,37,34,0.62)]">
@@ -344,9 +344,9 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
 
  {/* Related */}
  {related.length > 0 && (
- <section className="mt-16">
+ <section className="mt-10 sm:mt-16">
  <h2 className="font-display text-2xl font-bold text-[var(--color-ink)]">You may also love</h2>
- <div className="mt-6 grid grid-cols-2 gap-x-4 gap-y-8 sm:gap-x-6 lg:grid-cols-4">
+ <div className="mt-4 grid grid-cols-2 gap-x-2.5 gap-y-4 sm:mt-6 sm:gap-x-6 sm:gap-y-8 lg:grid-cols-4">
  {related.map((p) => (
  <ProductCard key={p.id} product={p} />
  ))}
