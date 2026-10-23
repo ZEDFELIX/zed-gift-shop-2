@@ -41,7 +41,7 @@ export function WishlistButton({ productId, initialInWishlist = false }: { produ
     onClick={toggle}
     aria-label={inWishlist ? "Remove from wishlist" : "Add to wishlist"}
     aria-pressed={inWishlist}
-    className={`grid size-7 place-items-center transition-colors ${
+    className={`transition-colors ${
      inWishlist
       ? "text-rose-700"
       : "text-rose-400 hover:text-rose-600"
