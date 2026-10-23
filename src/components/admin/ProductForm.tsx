@@ -283,8 +283,8 @@ export function ProductForm({ product, categories, collections, showStock = true
     else next.splice(i, 1);
     set("images", next.slice(0, 3));
   }} />
-  <label className="mt-2 flex cursor-pointer items-center justify-center gap-1.5 rounded-zed border border-edge bg-white/60 px-3 py-2 text-xs font-bold text-[#07111F] hover:border-soft-sage">
-    {uploadingIdx === i ? <Loader2 className="size-3.5 animate-spin" /> : <Upload className="size-3.5" />}
+  <label className="mt-2 flex cursor-pointer items-center justify-center gap-1.5 rounded-zed border border-edge bg-white/60 px-4 py-3 text-sm font-bold text-[#07111F] hover:border-soft-sage">
+    {uploadingIdx === i ? <Loader2 className="size-4 animate-spin" /> : <Upload className="size-4" />}
     {uploadingIdx === i ? "Uploading..." : "Upload from device"}
     <input
       type="file"
@@ -331,9 +331,9 @@ export function ProductForm({ product, categories, collections, showStock = true
   <p className="label">Personalization fields</p>
   <p className="mt-1 text-xs text-[#334155]">These inputs appear on the product page when “Personalizable” is on. Customers type into them before adding to cart.</p>
   </div>
-  <button type="button" onClick={() => setP13n((f) => [...f, { label: "", type: "text", required: false }])} className="flex items-center gap-1.5 rounded-zed border border-edge px-3 py-1.5 text-xs font-semibold text-[#07111F] hover:border-soft-sage">
-  <Plus className="size-3.5" /> Add field
-  </button>
+<button type="button" onClick={() => setP13n((f) => [...f, { label: "", type: "text", required: false }])} className="flex items-center gap-1.5 rounded-zed border border-edge px-4 py-2.5 text-sm font-semibold text-[#07111F] hover:border-soft-sage">
+  <Plus className="size-4" /> Add field
+</button>
   </div>
   {p13n.length === 0 ? (
   <p className="mt-3 text-sm text-[#334155]">No custom inputs - customers just pick options and quantity.</p>
@@ -389,12 +389,12 @@ export function ProductForm({ product, categories, collections, showStock = true
  <div className="flex items-center justify-between">
  <p className="label">Variants (size, scent, colour...)</p>
  <div className="flex flex-wrap gap-2">
- <button type="button" onClick={addCommonSizes} className="flex items-center gap-1.5 rounded-zed border border-edge px-3 py-1.5 text-xs font-semibold text-[#07111F] hover:border-soft-sage">
- Add sizes XS–XXL
- </button>
- <button type="button" onClick={addVariant} className="flex items-center gap-1.5 rounded-zed border border-edge px-3 py-1.5 text-xs font-semibold text-[#07111F] hover:border-soft-sage">
- <Plus className="size-3.5" /> Add variant
- </button>
+  <button type="button" onClick={addCommonSizes} className="flex items-center gap-1.5 rounded-zed border border-edge px-4 py-2.5 text-sm font-semibold text-[#07111F] hover:border-soft-sage">
+    Add sizes XS–XXL
+  </button>
+  <button type="button" onClick={addVariant} className="flex items-center gap-1.5 rounded-zed border border-edge px-4 py-2.5 text-sm font-semibold text-[#07111F] hover:border-soft-sage">
+    <Plus className="size-4" /> Add variant
+  </button>
  </div>
  </div>
  {form.variants.length === 0 ? (
@@ -410,9 +410,9 @@ export function ProductForm({ product, categories, collections, showStock = true
   {showStock && (
   <input type="number" className="field" placeholder="Qty" value={v.quantity} onChange={(e) => updateVariant(i, { quantity: Number(e.target.value) })} />
   )}
- <button type="button" onClick={() => set("variants", form.variants.filter((_, idx) => idx !== i))} className="justify-self-center rounded-zed border border-red-100 p-2 text-red-500 hover:bg-red-50" aria-label="Remove variant">
- <Trash2 className="size-4" />
- </button>
+  <button type="button" onClick={() => set("variants", form.variants.filter((_, idx) => idx !== i))} className="justify-self-center rounded-zed border border-red-100 p-2.5 text-red-500 hover:bg-red-50" aria-label="Remove variant">
+    <Trash2 className="size-4" />
+  </button>
  </li>
  ))}
  </ul>

@@ -36,24 +36,24 @@ export function WishlistButton({ productId, initialInWishlist = false }: { produ
  }
 
  return (
-  <button
-   type="button"
-   onClick={toggle}
-   aria-label={inWishlist ? "Remove from wishlist" : "Add to wishlist"}
-   aria-pressed={inWishlist}
-   className={`rounded-full border border-charcoal/20 bg-white/80 backdrop-blur-sm transition-colors ${
-    inWishlist
-     ? "border-charcoal/30 bg-rose-100 text-rose-700 shadow-glass"
-     : "border-rose-200 text-rose-400 hover:border-rose-300 hover:text-rose-600"
-   } ${busy ? "opacity-60" : ""}`}
-   aria-describedby="wishlist-tooltip"
-   title={inWishlist ? "Remove from wishlist" : "Add to wishlist"}
-  >
-    <Heart
-     className={`size-3 md:size-4 fill-rose-500 ${
-      inWishlist ? "fill-current animate-[heart-beat_1s_infinite]" : ""
-     }`}
-    />
-  </button>
+   <button
+    type="button"
+    onClick={toggle}
+    aria-label={inWishlist ? "Remove from wishlist" : "Add to wishlist"}
+    aria-pressed={inWishlist}
+    className={`grid size-10 place-items-center rounded-full border border-charcoal/20 bg-white/80 backdrop-blur-sm transition-colors ${
+     inWishlist
+      ? "border-charcoal/30 bg-rose-100 text-rose-700 shadow-glass"
+      : "border-rose-200 text-rose-400 hover:border-rose-300 hover:text-rose-600"
+    } ${busy ? "opacity-60" : ""}`}
+    aria-describedby="wishlist-tooltip"
+    title={inWishlist ? "Remove from wishlist" : "Add to wishlist"}
+   >
+     <Heart
+      className={`size-4 fill-rose-500 ${
+       inWishlist ? "fill-current animate-[heart-beat_1s_infinite]" : ""
+      }`}
+     />
+   </button>
  );
 }

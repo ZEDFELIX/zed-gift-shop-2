@@ -193,19 +193,19 @@ export function ProductPurchase({
  {group.values.map((v) => {
  const active = selections[group.name] === v.value;
  return (
- <button
- key={v.id}
- type="button"
- onClick={() =>
- setSelections((prev) => ({ ...prev, [group.name]: active ? "" : v.value }))
- }
- disabled={!v.inStock}
- className={`rounded-zed border px-4 py-2.5 text-sm font-semibold backdrop-blur-sm transition-colors ${
- active
- ? "border-soft-sage bg-zed-950 text-white"
- : "border-white/50 bg-white/30 text-[#07111F] hover:border-soft-sage"
- } ${!v.inStock ? "cursor-not-allowed opacity-40" : ""}`}
- >
+  <button
+  key={v.id}
+  type="button"
+  onClick={() =>
+  setSelections((prev) => ({ ...prev, [group.name]: active ? "" : v.value }))
+  }
+  disabled={!v.inStock}
+  className={`rounded-zed border px-4 py-3 text-sm font-semibold backdrop-blur-sm transition-colors ${
+  active
+  ? "border-soft-sage bg-zed-950 text-white"
+  : "border-white/50 bg-white/30 text-[#07111F] hover:border-soft-sage"
+  } ${!v.inStock ? "cursor-not-allowed opacity-40" : ""}`}
+>
  {v.value}
  {v.priceOffset > 0 && (
  <span className="ml-1 text-xs opacity-70">+{formatKES(v.priceOffset)}</span>
@@ -287,14 +287,14 @@ export function ProductPurchase({
  {giftWrapOptions.map((w) => {
  const active = wrapId === w.id;
  return (
- <button
- key={w.id}
- type="button"
- onClick={() => setWrapId(w.id)}
- className={`rounded-zed border px-3.5 py-2 text-left text-sm backdrop-blur-sm transition-colors ${
- active ? "border-soft-sage bg-zed-950 text-white" : "border-white/50 bg-white/30 text-[#07111F] hover:border-soft-sage"
- }`}
- >
+  <button
+  key={w.id}
+  type="button"
+  onClick={() => setWrapId(w.id)}
+  className={`rounded-zed border px-3.5 py-3 text-left text-sm backdrop-blur-sm transition-colors ${
+  active ? "border-soft-sage bg-zed-950 text-white" : "border-white/50 bg-white/30 text-[#07111F] hover:border-soft-sage"
+  }`}
+>
  <span className="font-semibold">{w.name}</span>
  <span className="ml-1 opacity-70">+{formatKES(w.price)}</span>
  </button>
@@ -367,32 +367,32 @@ export function ProductPurchase({
  </div>
 
  <div className="max-w-sm">
- {inStock ? (
-  <button
-  type="button"
-  onClick={addToCart}
-  disabled={busy}
-  className="inline-flex w-full items-center justify-center gap-2 rounded-zed bg-zed-950 px-5 py-3 text-[13px] font-bold uppercase tracking-wider text-white transition-colors hover:bg-zed-950 hover:text-white disabled:opacity-60"
-  >
- <ShoppingBag className="size-4" />
- {busy ? "Adding..." : "Add to cart"}
- </button>
- ) : (
+  {inStock ? (
+    <button
+      type="button"
+      onClick={addToCart}
+      disabled={busy}
+      className="inline-flex w-full items-center justify-center gap-2 rounded-zed bg-zed-950 px-5 py-3 text-[13px] font-bold uppercase tracking-wider text-white transition-colors hover:bg-zed-950 hover:text-white disabled:opacity-60"
+    >
+      <ShoppingBag className="size-4" />
+      {busy ? "Adding…" : "Add to cart"}
+    </button>
+  ) : (
  <p className="rounded-zed glass-panel px-6 py-4 text-center text-sm font-bold text-[#334155]">
  Currently out of stock
  </p>
  )}
   {error && <p className="mt-2 text-sm text-red-600">{error}</p>}
   {whatsappNumber && productName ? (
-    <button
-      type="button"
-      onClick={orderOnWhatsApp}
-      data-track="whatsapp_click"
-      data-track-value={productName}
-      className="mt-2 flex w-full items-center justify-center gap-2 rounded-zed bg-[#25D366] px-5 py-3 text-[13px] font-bold text-white transition-transform hover:scale-[1.01]"
-    >
-      Order on WhatsApp
-    </button>
+      <button
+        type="button"
+        onClick={orderOnWhatsApp}
+        data-track="whatsapp_click"
+        data-track-value={productName}
+        className="mt-2 flex w-full items-center justify-center gap-2 rounded-zed bg-[#25D366] px-5 py-3 text-[13px] font-bold text-white transition-transform hover:scale-[1.01] disabled:opacity-60"
+      >
+        Order on WhatsApp
+      </button>
   ) : null}
   <p className="mt-3 flex items-center justify-center gap-2 text-center text-xs text-[#334155]">
   <ShieldCheck className="size-4 text-soft-sage" /> Secure M-PESA checkout · Free gift box included

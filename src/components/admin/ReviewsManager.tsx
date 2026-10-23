@@ -126,15 +126,15 @@ export function ReviewsManager({ reviews, reports }: { reviews: AdminReviewRow[]
               </p>
               <div className="mt-2 flex flex-wrap gap-2">
                 <button type="button" disabled={busy === rep.id} onClick={() => resolveReport(rep.id)}
-                  className="rounded-zed bg-[#07111F] px-3 py-1.5 text-xs font-bold text-white disabled:opacity-40">
+                  className="rounded-zed bg-[#07111F] px-3 py-2 text-xs font-bold text-white disabled:opacity-40">
                   Mark resolved
                 </button>
                 <button type="button" disabled={busy === rep.reviewId} onClick={() => setStatus(rep.reviewId, "REJECTED")}
-                  className="rounded-zed border border-red-200 bg-white px-3 py-1.5 text-xs font-bold text-red-600 disabled:opacity-40">
+                  className="rounded-zed border border-red-200 bg-white px-3 py-2 text-xs font-bold text-red-600 disabled:opacity-40">
                   Reject review
                 </button>
                 <button type="button" disabled={busy === rep.reviewId} onClick={() => remove(rep.reviewId)}
-                  className="rounded-zed border border-edge bg-white px-3 py-1.5 text-xs font-bold text-[#B91C1C] disabled:opacity-40">
+                  className="rounded-zed border border-edge bg-white px-3 py-2 text-xs font-bold text-[#B91C1C] disabled:opacity-40">
                   Delete review
                 </button>
               </div>
@@ -179,17 +179,17 @@ export function ReviewsManager({ reviews, reports }: { reviews: AdminReviewRow[]
             <span>{new Date(r.createdAt).toLocaleDateString("en-KE")}</span>
             <span className="ml-auto flex flex-wrap gap-2">
               {r.status !== "APPROVED" && (
-                <button type="button" disabled={busy === r.id} onClick={() => setStatus(r.id, "APPROVED")} className="flex items-center gap-1 rounded-zed bg-emerald-600 px-3 py-1.5 font-bold text-white disabled:opacity-40">
-                  <Check className="size-3.5" /> Approve
+                <button type="button" disabled={busy === r.id} onClick={() => setStatus(r.id, "APPROVED")} className="flex items-center gap-1 rounded-zed bg-emerald-600 px-4 py-2 font-bold text-white disabled:opacity-40">
+                  <Check className="size-4" /> Approve
                 </button>
               )}
               {r.status !== "REJECTED" && (
-                <button type="button" disabled={busy === r.id} onClick={() => setStatus(r.id, "REJECTED")} className="flex items-center gap-1 rounded-zed border border-red-200 px-3 py-1.5 font-bold text-red-600 disabled:opacity-40">
-                  <X className="size-3.5" /> Reject
+                <button type="button" disabled={busy === r.id} onClick={() => setStatus(r.id, "REJECTED")} className="flex items-center gap-1 rounded-zed border border-red-200 px-4 py-2 font-bold text-red-600 disabled:opacity-40">
+                  <X className="size-4" /> Reject
                 </button>
               )}
-              <button type="button" disabled={busy === r.id} onClick={() => remove(r.id)} className="flex items-center gap-1 rounded-zed border border-edge px-3 py-1.5 font-bold text-[#B91C1C] disabled:opacity-40">
-                <Trash2 className="size-3.5" /> Delete
+              <button type="button" disabled={busy === r.id} onClick={() => remove(r.id)} className="flex items-center gap-1 rounded-zed border border-edge px-4 py-2 font-bold text-[#B91C1C] disabled:opacity-40">
+                <Trash2 className="size-4" /> Delete
               </button>
             </span>
           </div>
