@@ -96,11 +96,11 @@ export async function ListingPage({
       <div className={sidebar ? "lg:flex lg:items-start lg:gap-8" : undefined}>
         {sidebar ? <div className="hidden shrink-0 lg:block lg:w-60 xl:w-64">{sidebar}</div> : null}
         <div className="min-w-0 flex-1">
-          <header className="mb-4 flex flex-col items-stretch gap-3 sm:mb-5 sm:flex-row sm:items-center sm:justify-between sm:gap-3">
-            <h1 className="min-w-0 break-words font-display text-2xl font-bold leading-tight text-[var(--color-ink)] sm:text-3xl">
+          <header className="mb-4 flex items-center justify-between gap-2 sm:mb-5 sm:gap-3">
+            <h1 className="min-w-0 flex-1 break-words font-display text-xl font-bold leading-tight text-[var(--color-ink)] sm:text-3xl">
               {title}
             </h1>
-            <div className="flex w-full shrink-0 items-center gap-2 sm:w-auto">
+            <div className="flex shrink-0 items-center justify-end gap-2">
               <Suspense fallback={null}>
                 <ShopFiltersMenu
                   categories={categories}
