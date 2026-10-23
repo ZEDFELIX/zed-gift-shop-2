@@ -10,11 +10,10 @@ export const metadata = { title: "My account" };
 
 export default async function AccountOverviewPage() {
  const user = (await getCurrentUser())!;
- const [orders, addressCount, reminderCount, wishlistCount] = await Promise.all([
+ const [orders, addressCount, reminderCount] = await Promise.all([
  getOrdersForUser(user.id),
  prisma.address.count({ where: { userId: user.id } }),
  prisma.occasionReminder.count({ where: { userId: user.id } }),
- prisma.wishlistItem.count({ where: { wishlist: { userId: user.id } } }),
  ]);
 
   return (
@@ -47,7 +46,7 @@ export default async function AccountOverviewPage() {
  </div>
  </section>
 
- <section className="grid gap-3 sm:grid-cols-3">
+ <section className="grid min-w-0 grid-cols-1 gap-3 sm:grid-cols-2">
  <Link href="/account/orders" className="glass-card rounded-zed p-5 transition-all hover:-translate-y-1 hover:shadow-glass-lg">
  <Package className="size-5 text-soft-sage" />
  <p className="mt-2 font-display text-2xl font-bold text-[#07111F]">{orders.length}</p>
@@ -57,10 +56,6 @@ export default async function AccountOverviewPage() {
  <Sparkles className="size-5 text-soft-sage" />
  <p className="mt-2 font-display text-2xl font-bold text-[#07111F]">{reminderCount}</p>
  <p className="text-sm text-[#334155]">Occasion reminders</p>
- </Link>
- <Link href="/wishlist" className="glass-card rounded-zed p-5 transition-all hover:-translate-y-1 hover:shadow-glass-lg">
- <p className="font-display text-2xl font-bold text-[#07111F]">{wishlistCount}</p>
- <p className="text-sm text-[#334155]">Saved favourites</p>
  </Link>
  </section>
 
