@@ -97,11 +97,11 @@ export async function ListingPage({
       <div className={sidebar ? "lg:flex lg:items-start lg:gap-8" : undefined}>
         {sidebar ? <div className="hidden shrink-0 lg:block lg:w-60 xl:w-64">{sidebar}</div> : null}
         <div className="min-w-0 flex-1">
-          <header className="mb-3 flex items-center justify-between gap-2 sm:mb-5 sm:gap-3">
-            <h1 className="min-w-0 break-words font-display text-xl font-bold leading-tight text-[var(--color-ink)] sm:text-3xl">
+          <header className="mb-4 flex flex-col items-stretch gap-3 sm:mb-5 sm:flex-row sm:items-center sm:justify-between sm:gap-3">
+            <h1 className="min-w-0 break-words font-display text-2xl font-bold leading-tight text-[var(--color-ink)] sm:text-3xl">
               {title}
             </h1>
-            <div className="flex shrink-0 items-center gap-2">
+            <div className="flex w-full shrink-0 items-center gap-2 sm:w-auto">
               <Suspense fallback={null}>
                 <ShopFiltersMenu
                   categories={categories}
@@ -115,14 +115,14 @@ export async function ListingPage({
             </div>
           </header>
 
-          <div className="mb-3 sm:mb-5">
-            {(href !== "/shop" || activeFilters.length > 0) && <ShopSearch initialValue={filters.q ?? ""} />}
+          <div className="mb-4 sm:mb-5">
+            <ShopSearch initialValue={filters.q ?? ""} />
           </div>
 
           <div className="mt-3 sm:mt-4">
             {showSections && <ShopSections sections={sectionData.sections} />}
             {gridItems.length > 0 ? (
-              <div className="glass-panel rounded-2xl p-2 sm:p-3">
+              <div className="glass-panel rounded-2xl p-1.5 sm:p-3">
                 <ProductGrid products={gridItems} />
               </div>
             ) : showSections ? null : (
