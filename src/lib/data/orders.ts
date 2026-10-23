@@ -18,36 +18,42 @@ export type CreateOrderInput = {
 };
 
 export type CreateOrderOptions = {
- tx?: Prisma.TransactionClient;
- deliveryFee?: number;
- estimatedDeliveryDate?: string | Date | null;
- deliveryPartner?: string | null;
+  tx?: Prisma.TransactionClient;
+  deliveryFee?: number;
+  estimatedDeliveryDate?: string | Date | null;
+  deliveryPartner?: string | null;
+  deliveryDate?: string | Date | null;
 };
 
 export async function createOrder(input: CreateOrderInput, options: CreateOrderOptions = {}): Promise<{ orderId: string; orderNumber: string }> {
- const tx = options.tx ?? prisma;
- const netTotal = Math.max(0, input.subtotal - input.discount);
- let deliveryFee = options.deliveryFee ?? 0;
- let estimatedDeliveryDate = options.estimatedDeliveryDate ?? null;
- let deliveryPartner = options.deliveryPartner ?? null;
+  const tx = options.tx ?? prisma;
+  const netTotal = Math.max(0, input.subtotal - input.discount);
+  let deliveryFee = options.deliveryFee ?? 0;
+  let estimatedDeliveryDate = options.estimatedDeliveryDate ?? null;
+  let deliveryPartner = options.deliveryPartner ?? null;
 
- if (options.deliveryFee === undefined) {
-  const resolved = await resolveDeliveryFee({ county: input.county, town: input.town, method: input.deliveryMethod, subtotal: netTotal });
-  deliveryFee = resolved.fee;
-  estimatedDeliveryDate = resolved.estimatedDeliveryDate;
-  deliveryPartner = resolved.zone?.deliveryPartner ?? null;
- }
+  if (options.deliveryFee === undefined) {
+    const resolved = await resolveDeliveryFee({ county: input.county, town: input.town, method: input.deliveryMethod, subtotal: netTotal });
+    deliveryFee = resolved.fee;
+    estimatedDeliveryDate = resolved.estimatedDeliveryDate;
+    deliveryPartner = resolved.zone?.deliveryPartner ?? null;
+  }
 
- const total = netTotal + deliveryFee;
- const order = await tx.order.create({
+  // A customer-requested date overrides the zone's promise date.
+  const deliveryDate = options.deliveryDate ? new Date(options.deliveryDate) : null;
+  if (deliveryDate) estimatedDeliveryDate = options.deliveryDate as string | Date;
+
+  const total = netTotal + deliveryFee;
+  const order = await tx.order.create({
   data: {
-   orderNumber: generateOrderNumber(), userId: input.userId ?? null, name: input.name, email: input.email, phone: input.phone,
-   subtotal: input.subtotal, discount: input.discount, deliveryFee, total, couponCode: input.couponCode, couponId: input.couponId,
-   deliveryMethod: input.deliveryMethod, county: input.county, town: input.town, area: input.area ?? null, street: input.street ?? null,
-   address: input.address, building: input.building ?? null, apartment: input.apartment ?? null, landmark: input.landmark ?? null,
-   deliveryInstructions: input.deliveryInstructions ?? null, deliveryPartner,
-   expectedDeliveryDate: estimatedDeliveryDate ? new Date(estimatedDeliveryDate) : null,
-   orderStatus: "PENDING_PAYMENT", paymentStatus: "PENDING", isGift: input.isGift,
+    orderNumber: generateOrderNumber(), userId: input.userId ?? null, name: input.name, email: input.email, phone: input.phone,
+    subtotal: input.subtotal, discount: input.discount, deliveryFee, total, couponCode: input.couponCode, couponId: input.couponId,
+    deliveryMethod: input.deliveryMethod, county: input.county, town: input.town, area: input.area ?? null, street: input.street ?? null,
+    address: input.address, building: input.building ?? null, apartment: input.apartment ?? null, landmark: input.landmark ?? null,
+    deliveryInstructions: input.deliveryInstructions ?? null, deliveryPartner,
+    expectedDeliveryDate: estimatedDeliveryDate ? new Date(estimatedDeliveryDate) : null,
+    deliveryDate,
+    orderStatus: "PENDING_PAYMENT", paymentStatus: "PENDING", isGift: input.isGift,
    items: { create: input.items.map((item) => ({
     productId: item.productId, variantId: item.variantId, name: item.name, sku: item.sku, image: item.image,
     price: item.price, quantity: item.quantity, giftWrapPrice: item.giftWrapPrice,

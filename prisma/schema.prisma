@@ -511,6 +511,8 @@ model Order {
   deliveryInstructions String?
   deliveryPartner String?
   expectedDeliveryDate DateTime?
+  // Customer-requested delivery date (send-later / scheduled delivery).
+  deliveryDate DateTime?
   // Status
   orderStatus OrderStatus @default(PENDING_PAYMENT)
   paymentStatus PaymentStatus @default(PENDING)
