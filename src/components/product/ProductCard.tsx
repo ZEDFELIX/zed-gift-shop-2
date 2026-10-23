@@ -7,15 +7,8 @@ import { useState } from "react";
 import { Star } from "lucide-react";
 import type { ProductWithRelations } from "@/lib/data/products";
 import { discountPercent, formatKES } from "@/lib/utils";
-import { WishlistButton } from "@/components/product/WishlistButton";
 
-export function ProductCard({
-  product,
-  inWishlist = false,
-}: {
-  product: ProductWithRelations;
-  inWishlist?: boolean;
-}) {
+export function ProductCard({ product }: { product: ProductWithRelations }) {
   const router = useRouter();
   const [adding, setAdding] = useState(false);
   const image = product.images[0]?.url;
@@ -67,9 +60,6 @@ export function ProductCard({
           {badge.label}
         </span>
       )}
-      <span className="absolute right-1 top-1 md:right-2 md:top-2 z-10 grid place-items-center">
-        <WishlistButton productId={product.id} initialInWishlist={inWishlist} />
-      </span>
       {adding && (
         <span className="absolute inset-0 z-10 flex items-center justify-center bg-white/70 text-[12px] font-bold uppercase tracking-wide text-rose-600">
           Adding...
