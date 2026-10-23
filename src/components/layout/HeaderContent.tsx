@@ -308,11 +308,10 @@ export function HeaderContent({
 
       <SearchPanel open={searchOpen} onClose={() => setSearchOpen(false)} />
 
-       <nav aria-label="Mobile quick navigation" className="fixed inset-x-3 bottom-3 z-[60] grid grid-cols-4 rounded-2xl border border-edge bg-white p-1.5 shadow-glass-lg lg:hidden">
+       <nav aria-label="Mobile quick navigation" className="fixed inset-x-3 bottom-3 z-[60] grid grid-cols-4 rounded-2xl border border-edge bg-white p-1 shadow-glass-lg lg:hidden">
          <Link href="/shop" className="flex flex-col items-center gap-0.5 px-1 py-2 text-[10px] font-semibold text-ink hover:text-rose-600"><ShoppingBag className="size-4" /><span>Shop</span></Link>
          <button type="button" onClick={() => setSearchOpen(true)} className="flex flex-col items-center gap-0.5 px-1 py-2 text-[10px] font-semibold text-ink hover:text-rose-600"><Search className="size-4" /><span>Search</span></button>
-         <Link href="/about" className="flex flex-col items-center gap-0.5 px-1 py-2 text-[10px] font-semibold text-ink hover:text-rose-600"><User className="size-4" /><span>About</span></Link>
-         <button type="button" onClick={openCart} className="relative flex flex-col items-center gap-0.5 px-1 py-2 text-[10px] font-semibold text-ink hover:text-rose-600"><ShoppingBag className="size-4" /><span>Cart</span>{cartCount > 0 && <span className="absolute right-2 top-1 grid min-w-4 place-items-center rounded-full bg-rose-500 px-1 text-[8px] text-white">{cartCount}</span>}</button>
+         <Link href={accountHref} className="flex flex-col items-center gap-0.5 px-1 py-2 text-[10px] font-semibold text-ink hover:text-rose-600"><User className="size-4" /><span>My Account</span></Link>
        </nav>
     </>
   );
