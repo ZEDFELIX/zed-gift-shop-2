@@ -54,7 +54,7 @@ export function ProductCard({ product }: { product: ProductWithRelations }) {
   }
 
   const media = (
-    <div className="relative w-full h-full overflow-hidden bg-white transition-transform duration-500">
+    <div className="relative aspect-[6/5] w-full min-w-0 overflow-hidden bg-white transition-transform duration-300 sm:aspect-[5/4] lg:aspect-[1/1]">
       {badge && (
         <span className={`absolute left-2 top-2 z-10 rounded-full px-2 py-0.5 text-[11px] font-bold uppercase tracking-wide shadow ${badge.cls}`}>
           {badge.label}
@@ -71,7 +71,7 @@ export function ProductCard({ product }: { product: ProductWithRelations }) {
           alt={product.images[0]?.alt ?? product.name}
           fill
           sizes="(min-width:1360px) 340px, (min-width:1024px) 25vw, 48vw"
-          className="scale-[1.25] object-cover transition-transform duration-700 ease-out group-hover:scale-[1.32]"
+          className="object-contain object-center transition-transform duration-300 ease-out group-hover:scale-[1.03]"
         />
       ) : (
         <div className="absolute inset-0 flex items-center justify-center bg-rose-50 text-rose-400 font-display text-lg">
@@ -89,7 +89,7 @@ export function ProductCard({ product }: { product: ProductWithRelations }) {
             type="button"
             onClick={quickAdd}
             disabled={adding}
-            className="zed-product-media block w-full cursor-pointer overflow-hidden bg-white text-left"
+            className="zed-product-media block w-full min-w-0 cursor-pointer overflow-hidden bg-white text-left"
             aria-label={`Add ${product.name} to cart`}
           >
             {media}
@@ -97,7 +97,7 @@ export function ProductCard({ product }: { product: ProductWithRelations }) {
         ) : (
           <Link
             href={`/product/${product.slug}`}
-            className="zed-product-media block overflow-hidden bg-white"
+            className="zed-product-media block w-full min-w-0 overflow-hidden bg-white"
             aria-label={product.name}
           >
             {media}
@@ -105,15 +105,15 @@ export function ProductCard({ product }: { product: ProductWithRelations }) {
         )}
       </div>
 
-      <div className="flex flex-1 flex-col p-2 text-center sm:p-2.5">
-        <h3 className="line-clamp-2 h-[2.2rem] text-[12px] font-semibold leading-snug sm:h-[2.4rem] sm:text-[13px] lg:h-[2.75rem] lg:text-base">
+      <div className="flex min-w-0 flex-1 flex-col p-2.5 text-center sm:p-3 lg:p-4">
+        <h3 className="line-clamp-2 min-h-[2.4rem] text-[12px] font-semibold leading-snug [overflow-wrap:anywhere] sm:min-h-[2.7rem] sm:text-sm lg:min-h-[3rem] lg:text-base">
           <Link href={`/product/${product.slug}`} className="hover:text-rose-600">
             {product.name}
           </Link>
         </h3>
 
         <div className="mt-1 flex min-h-[1.2rem] flex-wrap items-baseline justify-center gap-x-1">
-          <p className="text-[13px] font-bold text-charcoal-950 sm:text-[15px] lg:text-lg">{formatKES(product.price)}</p>
+          <p className="break-words text-[13px] font-bold text-charcoal-950 sm:text-[15px] lg:text-lg">{formatKES(product.price)}</p>
           {product.compareAtPrice != null && product.compareAtPrice > product.price ? (
             <p className="min-w-0 text-xs text-charcoal/40 line-through">
               {formatKES(product.compareAtPrice)}
