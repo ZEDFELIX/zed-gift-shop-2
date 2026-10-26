@@ -7,6 +7,7 @@ import { useState } from "react";
 import type { ProductWithRelations } from "@/lib/data/products";
 import { discountPercent, formatKES } from "@/lib/utils";
 import { SaveGiftButton } from "@/components/product/SaveGiftButton";
+import { CompareGiftButton } from "@/components/product/CompareGiftButton";
 
 export function ProductCard({ product, priority = false }: { product: ProductWithRelations; priority?: boolean }) {
   const router = useRouter();
@@ -103,6 +104,16 @@ export function ProductCard({ product, priority = false }: { product: ProductWit
           </Link>
         )}
         <SaveGiftButton productId={product.id} productName={product.name} />
+        <CompareGiftButton gift={{
+          id: product.id,
+          slug: product.slug,
+          name: product.name,
+          price: product.price,
+          compareAtPrice: product.compareAtPrice,
+          inStock,
+          personalizable,
+          image: image ?? null,
+        }} />
       </div>
 
       <div className="flex min-w-0 flex-1 flex-col p-2.5 text-center sm:p-3 lg:p-4">
