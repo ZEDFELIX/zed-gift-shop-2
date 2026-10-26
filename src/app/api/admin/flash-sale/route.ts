@@ -1,11 +1,11 @@
 import { NextResponse } from "next/server";
-import { requireAdmin } from "@/lib/auth";
+import { requirePermission } from "@/lib/api";
 import { prisma } from "@/lib/prisma";
 
 export const runtime = "nodejs";
 
 export async function GET() {
- try { await requireAdmin(); } catch { return NextResponse.json({ error: "Unauthorized" }, { status: 401 }); }
+ try { await requirePermission("settings.manage"); } catch { return NextResponse.json({ error: "Unauthorized" }, { status: 401 }); }
   const [title, subtitle, startsAt, endsAt, active, boxColor] = await Promise.all([
    prisma.adminSetting.findUnique({ where: { key: "flashSaleTitle" } }),
    prisma.adminSetting.findUnique({ where: { key: "flashSaleSubtitle" } }),
@@ -25,7 +25,7 @@ export async function GET() {
 }
 
 export async function PATCH(req: Request) {
- try { await requireAdmin(); } catch { return NextResponse.json({ error: "Unauthorized" }, { status: 401 }); }
+ try { await requirePermission("settings.manage"); } catch { return NextResponse.json({ error: "Unauthorized" }, { status: 401 }); }
  const body = await req.json();
   const productIds = Array.isArray(body.productIds) ? body.productIds.filter((id: unknown): id is string => typeof id === "string") : [];
   const boxColor = typeof body.boxColor === "string" && /^#[0-9a-fA-F]{6}$/.test(body.boxColor.trim()) ? body.boxColor.trim() : "#FBE9EE";
