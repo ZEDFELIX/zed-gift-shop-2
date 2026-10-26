@@ -16,7 +16,26 @@ async function main() {
     throw new Error("ZED_ADMIN_PASSWORD must be at least 8 characters.");
   }
 
-  const existing = await prisma.user.findUnique({ where: { email } });
+  let existing = await prisma.user.findUnique({ where: { email } });
+
+  // Rename the current admin account in place when the configured login email
+  // changes. This preserves its existing password hash and avoids creating a
+  // second administrator during deployment.
+  if (!existing && email === "zedgiftshopke@gmail.com") {
+    const previousAdmin = await prisma.user.findUnique({
+      where: { email: "info@zedgiftshop2.com" },
+    });
+    if (!previousAdmin) {
+      throw new Error(
+        "Cannot safely change the admin email: the previous admin account info@zedgiftshop2.com was not found.",
+      );
+    }
+    existing = await prisma.user.update({
+      where: { id: previousAdmin.id },
+      data: { email },
+    });
+    console.log("Existing admin email updated; password preserved.");
+  }
 
   if (existing) {
     // Normal builds must never silently rotate the administrator's password.
