@@ -47,7 +47,6 @@ export const ROLE_PERMISSIONS: Record<AdminRole, readonly Permission[]> = {
     "notifications.view",
     "orders.manage",
     "payments.view",
-    "products.manage",
     "reviews.manage",
   ],
 };
