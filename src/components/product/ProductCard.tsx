@@ -7,7 +7,7 @@ import { useState } from "react";
 import type { ProductWithRelations } from "@/lib/data/products";
 import { discountPercent, formatKES } from "@/lib/utils";
 
-export function ProductCard({ product }: { product: ProductWithRelations }) {
+export function ProductCard({ product, priority = false }: { product: ProductWithRelations; priority?: boolean }) {
   const router = useRouter();
   const [adding, setAdding] = useState(false);
   const image = product.images[0]?.url;
@@ -65,9 +65,10 @@ export function ProductCard({ product }: { product: ProductWithRelations }) {
           src={image}
           alt={product.images[0]?.alt ?? product.name}
           fill
-          sizes="(min-width:1360px) 340px, (min-width:1024px) 25vw, 48vw"
-          quality={75}
-          loading="lazy"
+          sizes="(min-width:1360px) 340px, (min-width:1024px) 25vw, 45vw"
+          quality={60}
+          loading={priority ? "eager" : "lazy"}
+          fetchPriority={priority ? "high" : "low"}
           className="object-contain object-center transition-transform duration-200 ease-out group-hover:scale-[1.02]"
         />
       ) : (
