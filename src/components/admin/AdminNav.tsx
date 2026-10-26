@@ -11,7 +11,7 @@ const TABS = [
   { href: "/admin/products", label: "Products", icon: Gift, adminOnly: false },
   { href: "/admin/inventory", label: "Inventory", icon: Boxes, adminOnly: false },
   { href: "/admin/reviews", label: "Reviews", icon: Star, adminOnly: false },
-  { href: "/admin/returns", label: "Returns", icon: RotateCcw, adminOnly: false },
+  { href: "/admin/returns", label: "Returns & refunds", icon: RotateCcw, adminOnly: true },
   { href: "/admin/flash-sale", label: "Flash Sale", icon: Zap, adminOnly: true },
   { href: "/admin/categories", label: "Categories", icon: Tags, adminOnly: true },
   { href: "/admin/coupons", label: "Coupons", icon: CreditCard, adminOnly: true },
