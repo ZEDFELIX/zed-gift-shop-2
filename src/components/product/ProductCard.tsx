@@ -81,7 +81,7 @@ export function ProductCard({ product }: { product: ProductWithRelations }) {
 
   return (
     <article className="zed-product-card group flex h-full flex-col overflow-hidden rounded-lg">
-      <div className="relative group-hover:opacity-100 transition-opacity">
+      <div className="relative transition-opacity group-hover:opacity-100">
         {canQuickAdd ? (
           <button
             type="button"
@@ -99,6 +99,16 @@ export function ProductCard({ product }: { product: ProductWithRelations }) {
             aria-label={product.name}
           >
             {media}
+          </Link>
+        )}
+        {personalizable && inStock && (
+          <Link
+            href={`/product/${product.slug}`}
+            className="absolute bottom-2 left-2 z-20 inline-flex min-h-8 items-center gap-1 rounded-full bg-rose-600 px-3 py-1.5 text-[11px] font-semibold text-white shadow-md transition-colors hover:bg-rose-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-500 focus-visible:ring-offset-2"
+            aria-label={`Personalize ${product.name}`}
+          >
+            <Star className="size-3" aria-hidden="true" />
+            Personalize
           </Link>
         )}
       </div>
@@ -127,19 +137,15 @@ export function ProductCard({ product }: { product: ProductWithRelations }) {
           ) : null}
         </div>
 
-        <div className="mt-auto pt-1.5 flex flex-col items-center gap-0.5">
-          <Link
-            href={`/product/${product.slug}`}
-            className="inline-flex items-center gap-1 text-[10px] font-semibold text-charcoal/70 transition-colors hover:text-rose-600 sm:text-[11px]"
-          >
-            {personalizable ? (
-              <>
-                <Star className="size-2.5" /> Personalize
-              </>
-            ) : (
-              "View details"
-            )}
-          </Link>
+        <div className="mt-auto flex flex-col items-center gap-0.5 pt-1.5">
+          {!personalizable && (
+            <Link
+              href={`/product/${product.slug}`}
+              className="inline-flex items-center gap-1 text-[10px] font-semibold text-charcoal/70 transition-colors hover:text-rose-600 sm:text-[11px]"
+            >
+              View details
+            </Link>
+          )}
           {lowStock && (
             <p className="text-[10px] font-medium leading-4 text-rose-500 sm:text-[11px]">
               Only {product.quantity - product.reservedQuantity} left
