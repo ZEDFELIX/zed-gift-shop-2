@@ -236,8 +236,17 @@ function parseMpesaDate(raw: string | number | undefined): Date {
 }
 
 export function webhookSecretMatches(value: string | null | undefined): boolean {
- if (!MPESA_WEBHOOK_SECRET) return true;
- return value === MPESA_WEBHOOK_SECRET;
+ // Never accept unauthenticated callbacks in production. Configure this secret
+ // and ensure the callback gateway forwards it as the Authorization header.
+ if (!MPESA_WEBHOOK_SECRET) return process.env.NODE_ENV !== "production";
+ const supplied = value?.startsWith("Bearer ") ? value.slice(7) : value;
+ if (!supplied || supplied.length !== MPESA_WEBHOOK_SECRET.length) return false;
+ // Constant-time comparison avoids leaking the secret through timing differences.
+ let mismatch = 0;
+ for (let i = 0; i < supplied.length; i++) {
+  mismatch |= supplied.charCodeAt(i) ^ MPESA_WEBHOOK_SECRET.charCodeAt(i);
+ }
+ return mismatch === 0;
 }
 
 export { MpesaError };
