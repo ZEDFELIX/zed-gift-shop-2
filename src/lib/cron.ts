@@ -16,8 +16,7 @@ const DAY_MS = 24 * 60 * 60 * 1000;
 /** Ask recent customers to review what they received, exactly once per order. */
 export async function sendDueReviewRequests(): Promise<number> {
  const now = Date.now();
- // Delivered at least 3 days ago (time to actually use the gift) but not older
- // than 30 days, so we never mass-mail ancient orders when this first runs.
+ // Delivered at least 3 days ago but not older than 30 days.
  const notBefore = new Date(now - 30 * DAY_MS);
  const notAfter = new Date(now - 3 * DAY_MS);
 
@@ -58,21 +57,25 @@ export async function sendDueReviewRequests(): Promise<number> {
  );
  }
 
- // Stamp first so a mail failure never causes a repeat attempt.
+ if (alreadyReviewed) {
  await prisma.order.update({ where: { id: order.id }, data: { reviewRequestedAt: new Date() } });
-
- if (alreadyReviewed) continue;
+ continue;
+ }
 
  const reviewUrl = item?.product?.slug
  ? `${SITE.url.replace(/\/$/, "")}/product/${item.product.slug}#reviews`
  : `${SITE.url.replace(/\/$/, "")}/shop`;
 
- await sendReviewRequest({
+ const result = await sendReviewRequest({
  to: order.email,
  orderNumber: order.orderNumber,
  productName: item?.name ?? null,
  reviewUrl,
  });
+ if (!result.ok) throw new Error(result.error ?? "Review request email was not accepted.");
+
+ // Mark only after successful delivery acceptance so transient email failures retry.
+ await prisma.order.update({ where: { id: order.id }, data: { reviewRequestedAt: new Date() } });
  sent += 1;
  } catch (error) {
  logger.error("cron.review_request_failed", {
@@ -110,8 +113,8 @@ export async function sendAbandonedCheckoutReminders(): Promise<number> {
  let sent = 0;
  for (const order of orders) {
  try {
- const statusUrl = `${SITE.url.replace(/\/$/, "")}/track?order=${order.orderNumber}`;
- await sendPaymentReminder({
+ const statusUrl = `${SITE.url.replace(/\/$/, "")}/track?order=${encodeURIComponent(order.orderNumber)}`;
+ const result = await sendPaymentReminder({
  to: order.email,
  orderNumber: order.orderNumber,
  statusUrl,
@@ -121,6 +124,8 @@ export async function sendAbandonedCheckoutReminders(): Promise<number> {
  lineTotal: `${i.price * i.quantity}`,
  })),
  });
+ if (!result.ok) throw new Error(result.error ?? "Payment reminder email was not accepted.");
+
  await prisma.order.update({ where: { id: order.id }, data: { paymentReminderAt: new Date() } });
  sent += 1;
  } catch (error) {
