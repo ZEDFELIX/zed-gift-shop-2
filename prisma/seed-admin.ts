@@ -25,16 +25,20 @@ async function main() {
     const previousAdmin = await prisma.user.findUnique({
       where: { email: "info@zedgiftshop2.com" },
     });
-    if (!previousAdmin) {
-      throw new Error(
-        "Cannot safely change the admin email: the previous admin account info@zedgiftshop2.com was not found.",
+    if (previousAdmin) {
+      existing = await prisma.user.update({
+        where: { id: previousAdmin.id },
+        data: { email },
+      });
+      console.log("Existing admin email updated; password preserved.");
+    } else if (!password) {
+      // Do not block the storefront build if the old admin row is absent.
+      // Creating a replacement admin still requires an explicitly configured password.
+      console.warn(
+        "Admin email migration skipped: previous admin account was not found and ZED_ADMIN_PASSWORD is not configured. Storefront build will continue without creating an admin account.",
       );
+      return;
     }
-    existing = await prisma.user.update({
-      where: { id: previousAdmin.id },
-      data: { email },
-    });
-    console.log("Existing admin email updated; password preserved.");
   }
 
   if (existing) {
