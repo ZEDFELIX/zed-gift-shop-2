@@ -35,38 +35,41 @@ function Section({ title, products, href, flash = false, flashSale, titleColor }
     const textColor = contrastText(boxColor);
     return (
       <section
-        className="relative mb-3 overflow-hidden rounded-xl border border-black/10 p-2 sm:mb-4 sm:p-2"
+        className="relative mb-4 overflow-hidden rounded-2xl border border-rose-100 p-2.5 shadow-sm sm:mb-5 sm:p-3"
         style={{ backgroundColor: boxColor }}
+        aria-label={flashSale.title || title}
       >
-        <div className="mb-1 flex flex-wrap items-center justify-between gap-1 border-b border-black/10 pb-1">
-          <div className="flex min-w-0 items-center gap-1">
-            <span className="grid size-5 shrink-0 place-items-center rounded-lg bg-rose-500 text-white sm:size-6">
-              <Zap className="size-3 fill-current" />
+        <div className="mb-2 flex min-w-0 items-center justify-between gap-2 border-b border-black/10 pb-2">
+          <div className="flex min-w-0 items-center gap-2">
+            <span className="grid size-8 shrink-0 place-items-center rounded-xl bg-rose-600 text-white shadow-sm">
+              <Zap className="size-4 fill-current" aria-hidden="true" />
             </span>
             <div className="min-w-0">
-              <h2 className="font-ui text-xs font-extrabold uppercase leading-none tracking-tight sm:text-sm" style={{ color: textColor }}>
+              <h2 className="font-ui text-sm font-extrabold leading-tight tracking-tight sm:text-base" style={{ color: textColor }}>
                 {flashSale.title || title}
               </h2>
               {flashSale.subtitle ? (
-                <p className="mt-0 text-[9px] opacity-70" style={{ color: textColor }}>{flashSale.subtitle}</p>
-              ) : null}
+                <p className="mt-0.5 line-clamp-1 text-[10px] opacity-75 sm:text-xs" style={{ color: textColor }}>{flashSale.subtitle}</p>
+              ) : (
+                <p className="mt-0.5 text-[10px] opacity-75 sm:text-xs" style={{ color: textColor }}>Limited-time offers</p>
+              )}
             </div>
           </div>
-          <div className="flex min-w-0 flex-wrap items-center gap-1 sm:gap-1.5" style={{ color: textColor }}>
+          <div className="flex shrink-0 items-center gap-1.5 sm:gap-2" style={{ color: textColor }}>
             <FlashSaleCountdown startsAt={flashSale.startsAt} endsAt={flashSale.endsAt} active={flashSale.active} />
             {href && (
               <Link
                 href={href}
-                className="shrink-0 rounded-md border border-white/30 bg-white/20 px-2 py-1 text-[10px] font-bold text-white shadow-sm transition-colors hover:bg-white/30 sm:px-2.5 sm:py-1"
+                className="inline-flex min-h-8 shrink-0 items-center gap-1 rounded-full border border-black/10 bg-white px-2.5 py-1.5 text-[10px] font-bold text-rose-700 shadow-sm transition-colors hover:bg-rose-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-500 sm:px-3 sm:text-xs"
               >
-                See all
+                See all <ArrowRight className="size-3" aria-hidden="true" />
               </Link>
             )}
           </div>
         </div>
-        <div className="flex snap-x snap-mandatory gap-1 overflow-x-auto overscroll-x-contain rounded-lg pb-0.5 touch-auto scrollbar-none">
+        <div className="flex snap-x snap-mandatory gap-2 overflow-x-auto overscroll-x-contain rounded-xl pb-1 touch-auto scrollbar-none">
           {products.map((product) => (
-            <div key={product.id} className="w-[110px] min-w-[110px] shrink-0 snap-start sm:w-[130px] sm:min-w-[130px] lg:w-[150px] lg:min-w-[150px]">
+            <div key={product.id} className="w-[112px] min-w-[112px] shrink-0 snap-start sm:w-[140px] sm:min-w-[140px] lg:w-[160px] lg:min-w-[160px]">
               <ProductCard product={product} />
             </div>
           ))}
