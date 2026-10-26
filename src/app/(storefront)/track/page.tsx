@@ -18,8 +18,16 @@ type TrackedOrder = {
   town: string;
   deliveryMethod: string;
   isGift: boolean;
-  email: string;
-  items: { name: string; quantity: number; price: number; giftWrapPrice: number; image: string | null }[];
+  items: {
+    name: string;
+    quantity: number;
+    price: number;
+    giftWrapPrice: number;
+    image: string | null;
+    personalization: Record<string, string> | null;
+    giftWrap: { name?: string; price?: number } | null;
+    giftMessage: { message?: string; from?: string; to?: string } | null;
+  }[];
 };
 
 export default function TrackPage() {
@@ -64,7 +72,6 @@ function TrackContent() {
           town: data.town,
           deliveryMethod: data.deliveryMethod,
           isGift: data.isGift,
-          email: data.email,
           items: data.items,
         };
         setResult(tracked);
@@ -196,27 +203,38 @@ function TrackContent() {
             <h2 className="font-display text-base font-bold text-charcoal">Your items</h2>
             <ul className="mt-3 divide-y divide-charcoal/10">
               {result.items.map((item, idx) => (
-                <li key={idx} className="flex items-center gap-3 py-3">
-                  <span className="relative block size-12 shrink-0 overflow-hidden rounded-xl glass-panel">
-                    {item.image && (
-                      <Image
-                        src={item.image}
-                        alt=""
-                        fill
-                        unoptimized
-                        className="object-cover"
-                      />
-                    )}
-                  </span>
-                  <div className="min-w-0 flex-1">
-                    <p className="truncate text-sm font-medium text-charcoal">{item.name}</p>
-                    <p className="text-xs text-charcoal/400">
-                      Qty {item.quantity}{item.giftWrapPrice > 0 ? " | Gift wrap" : ""}
+                <li key={idx} className="py-3">
+                  <div className="flex items-center gap-3">
+                    <span className="relative block size-12 shrink-0 overflow-hidden rounded-xl glass-panel">
+                      {item.image && (
+                        <Image src={item.image} alt="" fill unoptimized className="object-cover" />
+                      )}
+                    </span>
+                    <div className="min-w-0 flex-1">
+                      <p className="truncate text-sm font-medium text-charcoal">{item.name}</p>
+                      <p className="text-xs text-charcoal/400">
+                        Qty {item.quantity}{item.giftWrapPrice > 0 ? ` | ${item.giftWrap?.name ?? "Gift wrap"}` : ""}
+                      </p>
+                    </div>
+                    <p className="text-sm font-bold text-charcoal">
+                      {formatKES((item.price + item.giftWrapPrice) * item.quantity)}
                     </p>
                   </div>
-                  <p className="text-sm font-bold text-charcoal">
-                    {formatKES((item.price + item.giftWrapPrice) * item.quantity)}
-                  </p>
+                  {item.personalization && Object.keys(item.personalization).length > 0 && (
+                    <div className="ml-15 mt-2 rounded-lg bg-white/40 px-3 py-2 text-xs text-charcoal/70">
+                      <p className="font-semibold">Personalization</p>
+                      {Object.entries(item.personalization).map(([label, value]) => (
+                        <p key={label}>{label}: {String(value)}</p>
+                      ))}
+                    </div>
+                  )}
+                  {item.giftMessage?.message && (
+                    <div className="mt-2 rounded-lg bg-white/40 px-3 py-2 text-xs text-charcoal/70">
+                      <p className="font-semibold">Gift note{item.giftMessage.to ? ` for ${item.giftMessage.to}` : ""}</p>
+                      <p>{item.giftMessage.message}</p>
+                      {item.giftMessage.from && <p>From: {item.giftMessage.from}</p>}
+                    </div>
+                  )}
                 </li>
               ))}
             </ul>
