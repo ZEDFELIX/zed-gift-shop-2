@@ -75,11 +75,16 @@ export async function DELETE(req: Request) {
   const user = await getCurrentUser();
   if (!user) return NextResponse.json({ error: "Please sign in to manage saved gifts." }, { status: 401 });
   const url = new URL(req.url);
+  const wishlist = await prisma.wishlist.findUnique({ where: { userId: user.id }, select: { id: true } });
+  if (!wishlist) return NextResponse.json({ ok: true, saved: false, cleared: url.searchParams.get("clear") === "1" });
+
+  if (url.searchParams.get("clear") === "1") {
+    await prisma.wishlistItem.deleteMany({ where: { wishlistId: wishlist.id } });
+    return NextResponse.json({ ok: true, saved: false, cleared: true });
+  }
+
   const parsed = schema.safeParse({ productId: url.searchParams.get("productId") });
   if (!parsed.success) return NextResponse.json({ error: "Choose a valid gift." }, { status: 400 });
-  const wishlist = await prisma.wishlist.findUnique({ where: { userId: user.id }, select: { id: true } });
-  if (wishlist) {
-    await prisma.wishlistItem.deleteMany({ where: { wishlistId: wishlist.id, productId: parsed.data.productId } });
-  }
+  await prisma.wishlistItem.deleteMany({ where: { wishlistId: wishlist.id, productId: parsed.data.productId } });
   return NextResponse.json({ ok: true, saved: false });
 }
