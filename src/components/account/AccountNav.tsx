@@ -2,11 +2,12 @@
 
 import { usePathname } from "next/navigation";
 import Link from "next/link";
-import { Bell, House, LayoutDashboard, MapPin, Package, Settings } from "lucide-react";
+import { Bell, Heart, House, LayoutDashboard, MapPin, Package, Settings } from "lucide-react";
 
 const TABS = [
   { href: "/account", label: "Overview", icon: House },
   { href: "/account/orders", label: "Orders", icon: Package },
+  { href: "/account/wishlist", label: "Saved gifts", icon: Heart },
   { href: "/account/addresses", label: "Addresses", icon: MapPin },
   { href: "/account/reminders", label: "Occasion reminders", icon: Bell },
   { href: "/account/settings", label: "Settings", icon: Settings },
