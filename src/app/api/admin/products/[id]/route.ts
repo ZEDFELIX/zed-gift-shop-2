@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
-import { requireAdmin } from "@/lib/auth";
+import { requirePermission } from "@/lib/api";
 import { prisma } from "@/lib/prisma";
 import { notifyStockAlerts } from "@/lib/data/stock-alerts";
 import { parsePersonalizationFieldsJson, productCreateSchema } from "@/lib/validations";
@@ -9,7 +9,7 @@ export const runtime = "nodejs";
 
 async function guard() {
   try {
-    return await requireAdmin();
+    return await requirePermission("products.manage");
   } catch {
     return null;
   }
