@@ -1,3 +1,4 @@
+import { redirect } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import { adminListProducts } from "@/lib/data/products";
@@ -18,7 +19,8 @@ export default async function AdminProductsPage({ searchParams }: { searchParams
  adminListProducts({ q, status, page }),
  getCurrentUser().catch(() => null),
  ]);
- const showStock = me?.role === "ADMIN";
+ if (me?.role !== "ADMIN") redirect("/admin");
+ const showStock = true;
 
  return (
  <div className="space-y-4">
