@@ -6,11 +6,10 @@ import { prisma } from "@/lib/prisma";
 /**
  * Admin role/permission matrix.
  *
- * The Prisma `Role` enum only has CUSTOMER / STAFF / ADMIN, so finer-grained
- * responsibilities are expressed as capabilities layered on top of the role.
- * Everything here is server-side; the client never decides what an admin may do.
+ * ADMIN can configure and manage the whole store. STAFF is intentionally
+ * limited to routine fulfilment tasks and cannot change store-wide settings,
+ * pricing rules, content, categories, delivery configuration, or team access.
  */
-
 export type AdminRole = Extract<Role, "ADMIN" | "STAFF">;
 
 export const PERMISSIONS = [
@@ -39,23 +38,17 @@ export type Permission = (typeof PERMISSIONS)[number];
 
 const ALL: readonly Permission[] = PERMISSIONS;
 
-/** Capabilities granted per admin role. ADMIN is intentionally unrestricted. */
+/** ADMIN is unrestricted; STAFF receives only operational permissions. */
 export const ROLE_PERMISSIONS: Record<AdminRole, readonly Permission[]> = {
   ADMIN: ALL,
   STAFF: [
-    "analytics.view",
-    "categories.manage",
-    "content.manage",
-    "coupons.manage",
     "customers.view",
-    "deliveries.manage",
     "inventory.manage",
     "notifications.view",
     "orders.manage",
     "payments.view",
     "products.manage",
     "reviews.manage",
-    "variants.manage",
   ],
 };
 
@@ -116,12 +109,7 @@ function replacer(key: string, value: unknown): unknown {
   return value;
 }
 
-/**
- * Append-only accountability trail (Kenya DPA 2019).
- *
- * Deliberately never throws: losing the request is worse than losing the log
- * entry, and a failed audit must never break checkout or an admin action.
- */
+/** Append-only accountability trail. Audit failures must not break store actions. */
 export async function writeAuditLog(input: AuditInput): Promise<void> {
   try {
     await prisma.auditLog.create({
