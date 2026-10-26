@@ -22,7 +22,7 @@ export const SITE = {
   phoneHref: "tel:+254711436169",
   whatsappNumber: "254711436169",
   whatsappHref: "https://wa.me/254711436169",
-  email: "info@zedgiftshop2.com",
+  email: "zedgiftshopke@gmail.com",
   address: "3rd Floor Avenue House, Nairobi, Kenya",
   mapsHref: "https://maps.app.goo.gl/R5eMKk1EHTcMpseJA",
   mapsEmbed:
