@@ -1,3 +1,5 @@
+import { redirect } from "next/navigation";
+import { getCurrentUser } from "@/lib/auth";
 import { ReturnsManager } from "@/components/admin/ReturnsManager";
 import { RotateCcw } from "lucide-react";
 
@@ -5,6 +7,8 @@ export const dynamic = "force-dynamic";
 export const metadata = { title: "Returns | Admin" };
 
 export default async function AdminReturnsPage() {
+  const user = await getCurrentUser();
+  if (user?.role !== "ADMIN") redirect("/admin");
   return (
     <div className="space-y-4">
       <div>
