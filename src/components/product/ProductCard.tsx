@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import type { ProductWithRelations } from "@/lib/data/products";
 import { discountPercent, formatKES } from "@/lib/utils";
+import { SaveGiftButton } from "@/components/product/SaveGiftButton";
 
 export function ProductCard({ product, priority = false }: { product: ProductWithRelations; priority?: boolean }) {
   const router = useRouter();
@@ -101,6 +102,7 @@ export function ProductCard({ product, priority = false }: { product: ProductWit
             {media}
           </Link>
         )}
+        <SaveGiftButton productId={product.id} productName={product.name} />
       </div>
 
       <div className="flex min-w-0 flex-1 flex-col p-2.5 text-center sm:p-3 lg:p-4">
