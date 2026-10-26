@@ -177,13 +177,13 @@ export function CartDrawer() {
                   {cart.items.map((item) => (
                     <div
                       key={item.id}
-                      className="glass-card rounded-2xl p-3 border border-white/70 bg-white/45 hover:border-white/90 transition-all mb-3"
+                      className="mb-3 rounded-xl border border-[#e8e2dc] bg-white p-3"
                     >
                       <div className="flex gap-3">
                         <Link
                           href={`/product/${item.slug}`}
-                          className="relative size-20 shrink-0 overflow-hidden rounded-2xl bg-white/45 ring-1 ring-white/70"
-        >
+                          className="relative size-20 shrink-0 overflow-hidden rounded-lg bg-[#f8f5f1]"
+                        >
                           {item.image ? (
                             <Image
                               src={item.image}
@@ -191,10 +191,10 @@ export function CartDrawer() {
                               fill
                               sizes="80px"
                               unoptimized
-                              className="object-cover"
+                              className="object-contain p-1"
                             />
                           ) : (
-                            <span className="grid size-full place-items-center text-rose-400">
+                            <span className="grid size-full place-items-center text-[#542447]">
                               <Gift className="size-6" />
                             </span>
                           )}
@@ -203,53 +203,58 @@ export function CartDrawer() {
                           <div className="flex items-start justify-between gap-2">
                             <Link
                               href={`/product/${item.slug}`}
-                              className="text-sm font-semibold leading-snug text-charcoal hover:text-rose-600"
+                              className="min-w-0 text-sm font-semibold leading-snug text-[#171717] hover:text-[#542447]"
                             >
                               {item.name}
                             </Link>
-                          <button
-                            type="button"
-                            aria-label="Remove"
-                            onClick={() => removeItem(item.id)}
-                            className="grid size-11 place-items-center rounded-sm hover:bg-charcoal/10"
-                          >
-                            <Trash2 className="size-4" />
-                          </button>
-                          </div>
-                          <div className="mt-1 text-xs text-charcoal/500">
-                            {item.personalization && <span className="ml-1 italic">| Personalized</span>}
-                            {item.giftWrapPrice > 0 && <span className="ml-1">| Gift box +{formatKES(item.giftWrapPrice)}</span>}
-                          </div>
-                        </div>
-                        <div className="mt-2 flex items-center justify-between">
-                          <div className="flex items-center rounded-full border border-white/80 bg-white/55 backdrop-blur-xl shadow-inner">
                             <button
                               type="button"
-                              aria-label="Decrease"
-                              onClick={() => changeQty(item, -1)}
-                              className="grid size-11 place-items-center rounded-sm hover:bg-charcoal/10"
+                              aria-label={`Remove ${item.name} from cart`}
+                              title="Remove item"
+                              disabled={busyId === item.id}
+                              onClick={() => removeItem(item.id)}
+                              className="inline-flex min-h-9 shrink-0 items-center justify-center gap-1.5 rounded-lg border border-[#e8dce5] bg-[#faf8f5] px-2.5 text-xs font-semibold text-[#542447] transition-colors hover:border-[#542447] hover:bg-[#542447] hover:text-white disabled:cursor-wait disabled:opacity-50"
                             >
-                              <Minus className="size-4" />
-                            </button>
-                            <span className="mx-2 w-6 text-center text-sm font-semibold">{item.quantity}</span>
-                            <button
-                              type="button"
-                              aria-label="Increase"
-                              onClick={() => changeQty(item, 1)}
-                              className="grid size-11 place-items-center rounded-sm hover:bg-charcoal/10"
-                            >
-                              <Plus className="size-4" />
+                              <Trash2 className="size-3.5" aria-hidden="true" />
+                              <span>Remove</span>
                             </button>
                           </div>
-                          <div className="text-right">
-                            {item.compareAt != null && item.compareAt > item.price && (
-                              <p className="text-[11px] text-charcoal/40 line-through">
-                                {formatKES(item.compareAt)}
+                          <div className="mt-1 text-xs text-[#77716f]">
+                            {item.personalization && <span className="mr-1">Personalized</span>}
+                            {item.giftWrapPrice > 0 && <span className="mr-1">Gift box +{formatKES(item.giftWrapPrice)}</span>}
+                          </div>
+                          <div className="mt-3 flex items-center justify-between gap-2">
+                            <div className="flex items-center rounded-lg border border-[#e8e2dc] bg-[#faf8f5]">
+                              <button
+                                type="button"
+                                aria-label="Decrease quantity"
+                                disabled={busyId === item.id}
+                                onClick={() => changeQty(item, -1)}
+                                className="grid size-9 place-items-center rounded-l-lg text-[#171717] hover:bg-black/5 disabled:opacity-50"
+                              >
+                                <Minus className="size-4" />
+                              </button>
+                              <span className="w-7 text-center text-sm font-semibold text-[#171717]">{item.quantity}</span>
+                              <button
+                                type="button"
+                                aria-label="Increase quantity"
+                                disabled={busyId === item.id}
+                                onClick={() => changeQty(item, 1)}
+                                className="grid size-9 place-items-center rounded-r-lg text-[#171717] hover:bg-black/5 disabled:opacity-50"
+                              >
+                                <Plus className="size-4" />
+                              </button>
+                            </div>
+                            <div className="text-right">
+                              {item.compareAt != null && item.compareAt > item.price && (
+                                <p className="text-[11px] text-[#77716f] line-through">
+                                  {formatKES(item.compareAt)}
+                                </p>
+                              )}
+                              <p className="text-sm font-bold text-[#542447]">
+                                {formatKES(item.lineTotal)}
                               </p>
-                            )}
-                            <p className="text-sm font-bold text-charcoal">
-                              {formatKES(item.lineTotal)}
-                            </p>
+                            </div>
                           </div>
                         </div>
                       </div>
