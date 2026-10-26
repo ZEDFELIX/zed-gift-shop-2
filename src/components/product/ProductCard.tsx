@@ -4,7 +4,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { Star } from "lucide-react";
 import type { ProductWithRelations } from "@/lib/data/products";
 import { discountPercent, formatKES } from "@/lib/utils";
 
@@ -25,9 +24,7 @@ export function ProductCard({ product }: { product: ProductWithRelations }) {
   let badge: { label: string; cls: string } | null = null;
   if (!inStock) {
     badge = { label: "Out of stock", cls: "bg-charcoal text-white" };
-  } else if (personalizable) {
-    badge = { label: "Personalizable", cls: "bg-rose-100 text-rose-700" };
-  } else if (isNew) {
+  } else if (isNew && !personalizable) {
     badge = { label: "New", cls: "bg-plum-800 text-white" };
   }
 
@@ -99,16 +96,6 @@ export function ProductCard({ product }: { product: ProductWithRelations }) {
             aria-label={product.name}
           >
             {media}
-          </Link>
-        )}
-        {personalizable && inStock && (
-          <Link
-            href={`/product/${product.slug}`}
-            className="absolute bottom-2 left-2 z-20 inline-flex min-h-8 items-center gap-1 rounded-full bg-rose-600 px-3 py-1.5 text-[11px] font-semibold text-white shadow-md transition-colors hover:bg-rose-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-500 focus-visible:ring-offset-2"
-            aria-label={`Personalize ${product.name}`}
-          >
-            <Star className="size-3" aria-hidden="true" />
-            Personalize
           </Link>
         )}
       </div>
