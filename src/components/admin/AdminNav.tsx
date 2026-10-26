@@ -8,7 +8,7 @@ const TABS = [
   { href: "/admin", label: "Dashboard", icon: LayoutDashboard, adminOnly: false },
   { href: "/admin/orders", label: "Orders", icon: Package, adminOnly: false },
   { href: "/admin/customers", label: "Customers", icon: UserRound, adminOnly: false },
-  { href: "/admin/products", label: "Products", icon: Gift, adminOnly: false },
+  { href: "/admin/products", label: "Products", icon: Gift, adminOnly: true },
   { href: "/admin/inventory", label: "Inventory", icon: Boxes, adminOnly: false },
   { href: "/admin/reviews", label: "Reviews", icon: Star, adminOnly: false },
   { href: "/admin/returns", label: "Returns & refunds", icon: RotateCcw, adminOnly: true },
