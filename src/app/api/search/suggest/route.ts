@@ -5,19 +5,22 @@ export const runtime = "nodejs";
 
 export async function GET(req: Request) {
  const { searchParams } = new URL(req.url);
- const q = (searchParams.get("q") ?? "").trim();
- if (!q) return NextResponse.json({ results: [] });
+ const q = (searchParams.get("q") ?? "").trim().slice(0, 100);
+ if (!q) return NextResponse.json({ results: [], categories: [] });
+ const terms = [...new Set(q.split(/\\s+/).filter(Boolean))].slice(0, 5);
 
  const [results, categories] = await Promise.all([
  prisma.product.findMany({
  where: {
  status: "ACTIVE",
- OR: [
- { name: { contains: q, mode: "insensitive" } },
- { shortDescription: { contains: q, mode: "insensitive" } },
- { description: { contains: q, mode: "insensitive" } },
- { tags: { has: q } },
- ],
+ AND: terms.map((term) => ({
+  OR: [
+   { name: { contains: term, mode: "insensitive" as const } },
+   { shortDescription: { contains: term, mode: "insensitive" as const } },
+   { description: { contains: term, mode: "insensitive" as const } },
+   { tags: { has: term } },
+  ],
+ })),
  },
  take: 6,
  orderBy: [{ featured: "desc" }, { createdAt: "desc" }],
@@ -31,7 +34,10 @@ export async function GET(req: Request) {
  },
  }),
  prisma.category.findMany({
- where: { kind: { in: ["OCCASION", "RECIPIENT", "CATEGORY"] }, name: { contains: q, mode: "insensitive" } },
+ where: {
+  kind: { in: ["OCCASION", "RECIPIENT", "CATEGORY"] },
+  AND: terms.map((term) => ({ name: { contains: term, mode: "insensitive" as const } })),
+ },
  take: 4,
  select: { name: true, slug: true, kind: true },
  }),
