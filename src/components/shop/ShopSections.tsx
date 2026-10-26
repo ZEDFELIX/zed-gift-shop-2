@@ -68,9 +68,9 @@ function Section({ title, products, href, flash = false, flashSale, titleColor }
           </div>
         </div>
         <div className="flex snap-x snap-mandatory gap-2 overflow-x-auto overscroll-x-contain rounded-xl pb-1 touch-auto scrollbar-none">
-          {products.map((product) => (
+          {products.map((product, index) => (
             <div key={product.id} className="w-[138px] min-w-[138px] shrink-0 snap-start sm:w-[170px] sm:min-w-[170px] lg:w-[190px] lg:min-w-[190px]">
-              <ProductCard product={product} />
+              <ProductCard product={product} priority={index < 2} />
             </div>
           ))}
         </div>
@@ -94,9 +94,9 @@ function Section({ title, products, href, flash = false, flashSale, titleColor }
         Swipe to explore <ArrowRight className="size-3 sm:size-3.5" />
       </div>
       <div className="flex snap-x snap-mandatory gap-1.5 overflow-x-auto overscroll-x-contain pb-1 touch-auto scrollbar-none">
-        {products.map((product) => (
+        {products.map((product, index) => (
           <div key={product.id} className="w-[45vw] min-w-[45vw] shrink-0 snap-start sm:w-[220px] sm:min-w-[220px] lg:w-[240px] lg:min-w-[240px]">
-            <ProductCard product={product} />
+            <ProductCard product={product} priority={index < 2} />
           </div>
         ))}
       </div>
