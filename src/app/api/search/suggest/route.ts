@@ -7,7 +7,7 @@ export async function GET(req: Request) {
  const { searchParams } = new URL(req.url);
  const q = (searchParams.get("q") ?? "").trim().slice(0, 100);
  if (!q) return NextResponse.json({ results: [], categories: [] });
- const terms = [...new Set(q.split(/\\s+/).filter(Boolean))].slice(0, 5);
+ const terms = [...new Set(q.split(/\s+/).filter(Boolean))].slice(0, 5);
 
  const [results, categories] = await Promise.all([
  prisma.product.findMany({
