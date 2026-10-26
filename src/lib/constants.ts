@@ -420,6 +420,7 @@ export const NAV_GROUPS: NavGroup[] = [
 
 export const PLAIN_NAV: NavChild[] = [
   { label: "Shop", href: "/shop" },
+  { label: "Compare gifts", href: "/compare" },
   { label: "Trophies", href: "/product-category/award-trophies-in-nairobi" },
   { label: "Cards", href: "/cards" },
   { label: "Gifts below 1000", href: "/shop?min_price=0&max_price=1000" },
@@ -427,6 +428,7 @@ export const PLAIN_NAV: NavChild[] = [
 ];
 
 export const UTILITY_NAV: NavChild[] = [
+  { label: "Compare gifts", href: "/compare" },
   { label: "Wholesale", href: "/wholesale" },
   { label: "About us", href: "/about" },
   { label: "Blog", href: "/blog" },
