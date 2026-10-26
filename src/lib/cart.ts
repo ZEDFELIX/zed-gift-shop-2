@@ -170,8 +170,15 @@ export async function addToCart(payload: CartItemPayload) {
  }
  }
 
+ const customization = parsePersonalization(payload);
  const existing = cart.items.find(
- (i) => i.productId === payload.productId && i.variantId === payload.variantId && i.savedForLater === false,
+ (i) =>
+  i.productId === payload.productId &&
+  i.variantId === (payload.variantId ?? null) &&
+  i.savedForLater === false &&
+  i.personalizationJson === customization.personalizationJson &&
+  i.giftWrapJson === customization.giftWrapJson &&
+  i.giftMessageJson === customization.giftMessageJson,
  );
  if (existing) {
  const newQty = existing.quantity + desiredQty;
