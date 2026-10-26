@@ -48,7 +48,7 @@ export function FlashSaleCountdown({
 
   if (status === "ended") {
     return (
-      <span className="inline-flex items-center rounded-full bg-black/10 px-3 py-1 text-[11px] font-bold uppercase tracking-wider">
+      <span className="inline-flex items-center rounded-full bg-black/10 px-2 py-1 text-[9px] font-bold uppercase tracking-wide">
         Sale ended
       </span>
     );
@@ -67,20 +67,22 @@ export function FlashSaleCountdown({
   ];
 
   return (
-    <div className="flash-sale-countdown flex w-full items-center justify-end gap-1.5 sm:w-auto sm:flex-col sm:items-start sm:gap-1">
-      <span className="whitespace-nowrap text-[9px] font-bold uppercase tracking-wide opacity-80 sm:text-[11px] sm:tracking-wider">
-        {status === "upcoming" ? "Starts in" : "Ends in"}
+    <div
+      className="flash-sale-countdown flex shrink-0 items-center gap-1"
+      aria-label={`${status === "upcoming" ? "Sale starts in" : "Sale ends in"} ${units.map((u) => `${u.value} ${u.label.toLowerCase()}`).join(", ")}`}
+    >
+      <span className="whitespace-nowrap text-[8px] font-extrabold uppercase tracking-wide opacity-80 sm:text-[9px]">
+        {status === "upcoming" ? "Starts" : "Ends"}
       </span>
-      <div className="flex items-center gap-0.5 sm:gap-1.5">
+      <div className="flex items-center gap-0.5">
         {units.map((u) => (
-          <div key={u.label} className="flex flex-col items-center">
-            <span className="grid min-w-[1.45rem] place-items-center rounded-md bg-white px-0.5 py-0.5 text-[11px] font-extrabold tabular-nums text-rose-600 shadow-sm sm:min-w-[2.25rem] sm:rounded-lg sm:px-1 sm:text-base">
-              {u.value > 99 ? u.value : pad(u.value)}
-            </span>
-            <span className="mt-0 text-[7px] font-bold uppercase tracking-wide opacity-80 sm:mt-0.5 sm:text-[9px] sm:tracking-wider">
-              {u.label}
-            </span>
-          </div>
+          <span
+            key={u.label}
+            className="grid min-w-[1.3rem] place-items-center rounded-md bg-white px-1 py-1 text-[10px] font-extrabold leading-none tabular-nums text-rose-600 shadow-sm sm:min-w-[1.55rem] sm:text-[11px]"
+            title={u.label}
+          >
+            {u.value > 99 ? u.value : pad(u.value)}
+          </span>
         ))}
       </div>
     </div>
