@@ -1,5 +1,6 @@
 import Link from "next/link";
-import { getCurrentUser, requireAdmin } from "@/lib/auth";
+import { redirect } from "next/navigation";
+import { getCurrentUser } from "@/lib/auth";
 import { formatKES } from "@/lib/utils";
 import {
   dashboardMetrics,
@@ -29,9 +30,9 @@ export default async function AdminAnalyticsPage({
 }: {
   searchParams: Promise<{ preset?: string; from?: string; to?: string; bucket?: string }>;
 }) {
-  await requireAdmin();
   const me = await getCurrentUser().catch(() => null);
-  const isAdmin = me?.role === "ADMIN";
+  if (me?.role !== "ADMIN") redirect("/admin");
+  const isAdmin = true;
   const sp = await searchParams;
   const preset = sp.preset ?? "30d";
   const bucket = (["day", "week", "month", "year"].includes(sp.bucket ?? "") ? sp.bucket : "day") as "day" | "week" | "month" | "year";
