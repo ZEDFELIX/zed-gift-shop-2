@@ -122,9 +122,9 @@ export async function DELETE(_req: Request, { params }: { params: Promise<{ id: 
 
   const supabaseUrl = process.env.SUPABASE_URL;
   const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
-  const imageUrls = existing.images.map((image) => image.url);
+  const assetUrls = [...existing.images.map((image) => image.url), ...(existing.videoUrl ? [existing.videoUrl] : [])];
   const storagePaths = supabaseUrl
-    ? [...new Set(imageUrls.map((url) => getProductImageStoragePath(url, supabaseUrl)).filter((path): path is string => Boolean(path)))]
+    ? [...new Set(assetUrls.map((url) => getProductImageStoragePath(url, supabaseUrl)).filter((path): path is string => Boolean(path)))]
     : [];
 
   // If this product uses Supabase Storage files, require server credentials before
@@ -138,13 +138,22 @@ export async function DELETE(_req: Request, { params }: { params: Promise<{ id: 
   // Do not remove an object still referenced by another product.
   const otherProductImages = storagePaths.length
     ? await prisma.productImage.findMany({
-        where: { productId: { not: id }, url: { in: imageUrls } },
+        where: { productId: { not: id }, url: { in: assetUrls } },
         select: { url: true },
       })
     : [];
-  const sharedUrls = new Set(otherProductImages.map((image) => image.url));
+  const otherProductsWithVideo = storagePaths.length
+    ? await prisma.product.findMany({
+        where: { id: { not: id }, videoUrl: { in: assetUrls } },
+        select: { videoUrl: true },
+      })
+    : [];
+  const sharedUrls = new Set([
+    ...otherProductImages.map((image) => image.url),
+    ...otherProductsWithVideo.map((product) => product.videoUrl).filter((url): url is string => Boolean(url)),
+  ]);
   const pathsToDelete = storagePaths.filter((path) => {
-    const matchingUrl = imageUrls.find((url) => getProductImageStoragePath(url, supabaseUrl!) === path);
+    const matchingUrl = assetUrls.find((url) => getProductImageStoragePath(url, supabaseUrl!) === path);
     return matchingUrl && !sharedUrls.has(matchingUrl);
   });
 
