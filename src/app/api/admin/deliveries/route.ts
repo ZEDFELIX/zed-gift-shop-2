@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { requireAdmin } from "@/lib/auth";
+import { requirePermission } from "@/lib/api";
 import { prisma } from "@/lib/prisma";
 import { deliveryZoneSchema } from "@/lib/validations";
 
@@ -7,7 +7,7 @@ export const runtime = "nodejs";
 
 async function guard() {
  try {
- return await requireAdmin();
+ return await requirePermission("deliveries.manage");
  } catch {
  return null;
  }
