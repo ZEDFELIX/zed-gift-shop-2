@@ -30,7 +30,7 @@ export default async function AdminDashboardPage() {
  const lowStock = lowStockRaw.filter((p) => p.quantity <= p.lowStockThreshold);
 
   const quickActions = [
-   { href: "/admin/products/new", label: "Add product", icon: Gift },
+   ...(isAdmin ? [{ href: "/admin/products/new", label: "Add product", icon: Gift }] : []),
    { href: "/admin/orders", label: "Manage orders", icon: Package },
    { href: "/admin/inventory", label: "Check inventory", icon: Boxes },
    ...(isAdmin ? [
