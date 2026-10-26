@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { requireAdmin } from "@/lib/auth";
+import { requirePermission } from "@/lib/api";
 import { prisma } from "@/lib/prisma";
 import { giftWrapCreateSchema } from "@/lib/validations";
 import { writeAuditLog, requestMeta } from "@/lib/audit";
@@ -8,7 +8,7 @@ export const runtime = "nodejs";
 
 export async function GET() {
   try {
-    await requireAdmin();
+    await requirePermission("settings.manage");
   } catch {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
@@ -19,7 +19,7 @@ export async function GET() {
 export async function POST(req: Request) {
   let admin;
   try {
-    admin = await requireAdmin();
+    admin = await requirePermission("settings.manage");
   } catch {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
