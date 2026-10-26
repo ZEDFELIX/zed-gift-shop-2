@@ -53,12 +53,24 @@ export async function getRelatedProducts(productId: string, categoryIds: string[
  if (categoryIds.length === 0) return [];
  return prisma.product.findMany({
  where: {
- id: { not: productId },
- status: "ACTIVE",
- categories: { some: { categoryId: { in: categoryIds } } },
+  id: { not: productId },
+  status: "ACTIVE",
+  categories: { some: { categoryId: { in: categoryIds } } },
+  OR: [
+   { trackInventory: false },
+   { quantity: { gt: 0 } },
+  ],
  },
  include: productInclude,
- take: limit,
+ orderBy: [
+  { bestSeller: "desc" },
+  { featured: "desc" },
+  { ratingAverage: "desc" },
+  { ratingCount: "desc" },
+  { updatedAt: "desc" },
+  { id: "asc" },
+ ],
+ take: Math.min(12, Math.max(1, limit)),
  });
 }
 
