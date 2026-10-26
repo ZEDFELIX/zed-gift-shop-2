@@ -33,8 +33,10 @@ export default async function AdminDashboardPage() {
    { href: "/admin/products/new", label: "Add product", icon: Gift },
    { href: "/admin/orders", label: "Manage orders", icon: Package },
    { href: "/admin/inventory", label: "Check inventory", icon: Boxes },
-   { href: "/admin/coupons", label: "Manage coupons", icon: CreditCard },
-   { href: "/admin/gift-wrap", label: "Gift wrap", icon: Ribbon },
+   ...(isAdmin ? [
+     { href: "/admin/coupons", label: "Manage coupons", icon: CreditCard },
+     { href: "/admin/gift-wrap", label: "Gift wrap settings", icon: Ribbon },
+   ] : []),
    ...(can(me?.role, "staff.manage")
      ? [{ href: "/admin/staff", label: "Manage staff", icon: Users }]
      : []),
