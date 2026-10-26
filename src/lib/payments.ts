@@ -147,7 +147,9 @@ export async function syncOrderToPaymentStatus(orderId: string, status: PaymentS
  */
 export function amountSatisfies(expected: number, reported: number | undefined): boolean {
   if (reported == null || Number.isNaN(reported)) return false;
-  return Math.round(reported) >= Math.round(expected);
+  // STK payments must match the order total exactly. Accepting a larger amount
+  // can attach an unrelated or misreported payment to this order.
+  return Math.round(reported) === Math.round(expected);
 }
 
 // Re-exported for callers that historically imported it from here; the single
