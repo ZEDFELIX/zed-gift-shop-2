@@ -34,7 +34,7 @@ export async function ListingPage({
   sidebar?: ReactNode;
 }) {
   const [result, allCategories] = await Promise.all([
-    listProducts({ ...filters, pageSize: 4 }),
+    listProducts(filters),
     listCategories(),
   ]);
 
@@ -96,9 +96,8 @@ export async function ListingPage({
   const sectionData: { sections: ShopSection[]; shownIds: string[] } = showSections
     ? await getShopSectionData()
     : { sections: [], shownIds: [] };
-  // Keep the main product listing to exactly four items per page. Featured sections
-  // may repeat a product, but must not silently reduce the paginated grid count.
-  const gridItems = result.items;
+  const shownIds = new Set(sectionData.shownIds);
+  const gridItems = result.items.filter((p) => !shownIds.has(p.id));
 
   return (
     <div className="container-zed py-3 sm:py-7 lg:py-9">
