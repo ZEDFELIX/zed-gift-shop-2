@@ -35,13 +35,13 @@ function Section({ title, products, href, flash = false, flashSale, titleColor }
     const textColor = contrastText(boxColor);
     return (
       <section
-        className="relative mb-4 overflow-hidden rounded-2xl border border-rose-100 p-2.5 shadow-sm sm:mb-5 sm:p-3"
+        className="relative mb-4 overflow-hidden rounded-2xl border border-black/10 p-2.5 shadow-sm sm:mb-5 sm:p-3"
         style={{ backgroundColor: boxColor }}
         aria-label={flashSale.title || title}
       >
         <div className="mb-2 flex min-w-0 items-center justify-between gap-2 border-b border-black/10 pb-2">
           <div className="flex min-w-0 items-center gap-2">
-            <span className="grid size-8 shrink-0 place-items-center rounded-xl bg-rose-600 text-white shadow-sm">
+            <span className="grid size-8 shrink-0 place-items-center rounded-xl bg-[#171717] text-white shadow-sm">
               <Zap className="size-4 fill-current" aria-hidden="true" />
             </span>
             <div className="min-w-0">
@@ -79,18 +79,18 @@ function Section({ title, products, href, flash = false, flashSale, titleColor }
   }
   return (
     <section className="glass-panel mb-5 overflow-hidden rounded-xl p-2 sm:mb-6 sm:p-3">
-      <div className="mb-2 flex items-center justify-between gap-2 border-b-2 border-orange-400 pb-1.5">
+      <div className="mb-2 flex items-center justify-between gap-2 border-b border-[#e8e2dc] pb-2">
         <h2 className={`font-display text-sm font-bold sm:text-xl ${titleColor ?? "text-[var(--color-ink)]"}`}>{title}</h2>
         {href && (
           <Link
             href={href}
-            className="shrink-0 rounded-md border border-edge bg-white px-3 py-1.5 text-[11px] font-bold text-[#07111F] shadow-sm transition-colors hover:bg-zed-950 hover:text-white"
+            className="shrink-0 rounded-md border border-edge bg-white px-3 py-1.5 text-[11px] font-semibold text-[#171717] transition-colors hover:bg-[#171717] hover:text-white"
           >
             See all
           </Link>
         )}
       </div>
-      <div className="mb-1 flex items-center gap-1 text-[10px] font-semibold text-charcoal/50 sm:text-[11px]">
+      <div className="mb-1 flex items-center gap-1 text-[10px] font-semibold text-[#77716f] sm:text-[11px]">
         Swipe to explore <ArrowRight className="size-3 sm:size-3.5" />
       </div>
       <div className="flex snap-x snap-mandatory gap-1.5 overflow-x-auto overscroll-x-contain pb-1 touch-auto scrollbar-none">
