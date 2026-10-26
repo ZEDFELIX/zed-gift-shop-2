@@ -43,7 +43,10 @@ function samePhone(a: string, b: string): boolean {
 
 export async function POST(req: Request) {
   const authHeader = req.headers.get("authorization");
-  if (!webhookSecretMatches(authHeader)) {
+  // Daraja does not provide a configurable Authorization header for callbacks.
+  // A secret query parameter on MPESA_CALLBACK_URL is supported as an alternative.
+  const callbackSecret = new URL(req.url).searchParams.get("secret");
+  if (!webhookSecretMatches(authHeader ?? callbackSecret)) {
     return NextResponse.json({ ResultCode: 1, ResultDesc: "Unauthorized" }, { status: 401 });
   }
 
