@@ -5,6 +5,11 @@ import { rateLimit } from "@/lib/rate-limit";
 
 export const runtime = "nodejs";
 
+function safeParseJson(value: string | null) {
+  if (!value) return null;
+  try { return JSON.parse(value) as unknown; } catch { return null; }
+}
+
 const schema = z.object({
   orderNumber: z.string().min(3).max(24).transform((v) => v.trim().toUpperCase()),
   orderKey: z.string().min(3).max(254),
@@ -58,6 +63,9 @@ export async function POST(req: Request) {
       price: i.price,
       giftWrapPrice: i.giftWrapPrice,
       image: i.image,
+      personalization: safeParseJson(i.personalizationJson),
+      giftWrap: safeParseJson(i.giftWrapJson),
+      giftMessage: safeParseJson(i.giftMessageJson),
     })),
   });
 }
