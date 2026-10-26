@@ -66,7 +66,9 @@ export function ProductCard({ product }: { product: ProductWithRelations }) {
           alt={product.images[0]?.alt ?? product.name}
           fill
           sizes="(min-width:1360px) 340px, (min-width:1024px) 25vw, 48vw"
-          className="object-contain object-center transition-transform duration-300 ease-out group-hover:scale-[1.03]"
+          quality={75}
+          loading="lazy"
+          className="object-contain object-center transition-transform duration-200 ease-out group-hover:scale-[1.02]"
         />
       ) : (
         <div className="absolute inset-0 flex items-center justify-center bg-rose-50 text-rose-400 font-display text-lg">
