@@ -150,10 +150,14 @@ export function ProductPurchase({
   const orderLine = `Hello ZED Gift Shop, I'd like to order: ${productName ?? "this gift"} - ${formatKES(
   price,
   )} x ${quantity}`;
-  const shareCaption = productUrl ? `${orderLine}\n\n${productUrl}` : orderLine;
-  const waMessage = `${orderLine}${productUrl ? `\n\nProduct: ${productUrl}` : ""}${
-  productImage ? `\nPhoto: ${productImage}` : ""
-  }`;
+  const shareCaption = [
+    orderLine,
+    productUrl ? `Product page: ${productUrl}` : "",
+    productImage ? `Product image: ${productImage}` : "",
+  ].filter(Boolean).join("\n\n");
+  // The image URL is included in both the native share text and WhatsApp's prefilled message.
+  // When the browser supports file sharing, the native share sheet can attach the actual image too.
+  const waMessage = shareCaption;
 
   async function orderOnWhatsApp() {
   const nav = typeof navigator !== "undefined" ? navigator : undefined;
