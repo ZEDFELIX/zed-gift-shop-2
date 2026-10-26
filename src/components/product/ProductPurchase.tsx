@@ -43,7 +43,7 @@ export function ProductPurchase({
  const [selections, setSelections] = useState<Record<string, string>>({});
  const [quantity, setQuantity] = useState(1);
  const [personalization, setPersonalization] = useState<Record<string, string>>({});
- const [wrapId, setWrapId] = useState<string>(giftWrapOptions[0]?.id ?? "");
+ const [wrapId, setWrapId] = useState<string>("");
  const [giftMessage, setGiftMessage] = useState({ message: "", from: "", to: "" });
  const [useGiftMessage, setUseGiftMessage] = useState(false);
  const [busy, setBusy] = useState(false);
@@ -97,6 +97,14 @@ export function ProductPurchase({
  setBusy(true);
  setError(null);
  const payload: Record<string, unknown> = { productId, quantity };
+ const missingRequired = personalizationFields.find(
+  (field) => field.required && !String(personalization[field.key] ?? "").trim(),
+ );
+ if (missingRequired) {
+  setError(`Please enter ${missingRequired.label.toLowerCase()}.`);
+  setBusy(false);
+  return;
+ }
  if (Object.keys(selections).length > 0 && !allGroupsSelected) {
  setError("Please select all options.");
  setBusy(false);
@@ -284,10 +292,19 @@ export function ProductPurchase({
   )}
 
   {/* Gift wrap */}
- {giftWrapAvailable && (
+ {giftWrapAvailable && giftWrapOptions.length > 0 && (
  <div>
  <p className="label">Gift wrap (optional)</p>
  <div className="flex flex-wrap gap-2">
+ <button
+  type="button"
+  onClick={() => setWrapId("")}
+  className={`rounded-zed border px-3.5 py-3 text-left text-sm backdrop-blur-sm transition-colors ${
+   !wrapId ? "border-soft-sage bg-zed-950 text-white" : "border-white/50 bg-white/30 text-[#07111F] hover:border-soft-sage"
+  }`}
+ >
+  No gift wrap
+ </button>
  {giftWrapOptions.map((w) => {
  const active = wrapId === w.id;
  return (
