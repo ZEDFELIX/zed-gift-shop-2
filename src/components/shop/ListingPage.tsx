@@ -120,10 +120,18 @@ export async function ListingPage({
       <div className={sidebar ? "lg:flex lg:items-start lg:gap-8" : undefined}>
         {sidebar ? <div className="hidden shrink-0 lg:block lg:w-60 xl:w-64">{sidebar}</div> : null}
         <div className="min-w-0 flex-1">
-          <header className="mb-4 flex items-center justify-between gap-2 sm:mb-5 sm:gap-3">
-            <h1 className="min-w-0 flex-1 break-words font-display text-xl font-bold leading-tight text-[var(--color-ink)] sm:text-3xl">
-              {title}
-            </h1>
+          <header className="mb-4 flex items-end justify-between gap-3 border-b border-[#eee6ed] pb-3 sm:mb-6 sm:gap-4 sm:pb-4">
+            <div className="min-w-0 flex-1">
+              <p className="mb-1 text-[9px] font-bold uppercase tracking-[0.18em] text-[#8b3a7a] sm:text-[10px]">
+                Thoughtful gifts, beautifully chosen
+              </p>
+              <h1 className="min-w-0 break-words font-display text-xl font-bold leading-tight tracking-tight text-[#211923] sm:text-3xl">
+                {title}
+              </h1>
+              <p className="mt-1 text-[11px] text-[#716772] sm:text-sm">
+                {result.total.toLocaleString("en-KE")} {result.total === 1 ? "gift" : "gifts"} to explore
+              </p>
+            </div>
             <div className="flex shrink-0 items-center justify-end gap-2">
               <Suspense fallback={null}>
                 <ShopFiltersMenu
