@@ -32,7 +32,7 @@ async function transport() {
  subject: mail.subject,
  text: mail.text,
  html: mail.html,
- ...(mail.replyTo ? { reply_to: mail.replyTo } : {}),
+ ...((mail.replyTo ?? process.env.EMAIL_REPLY_TO) ? { reply_to: mail.replyTo ?? process.env.EMAIL_REPLY_TO } : {}),
  }),
  });
  const data = (await res.json().catch(() => ({}))) as { id?: string };
@@ -67,7 +67,7 @@ async function transport() {
  subject: mail.subject,
  text: mail.text,
  html: mail.html,
- ...(mail.replyTo ? { replyTo: mail.replyTo } : {}),
+ ...((mail.replyTo ?? process.env.EMAIL_REPLY_TO) ? { replyTo: mail.replyTo ?? process.env.EMAIL_REPLY_TO } : {}),
  });
  return { ok: true, messageId: info.messageId };
  },
