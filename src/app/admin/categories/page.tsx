@@ -1,4 +1,5 @@
-import { requireAdmin } from "@/lib/auth";
+import { redirect } from "next/navigation";
+import { getCurrentUser } from "@/lib/auth";
 import { listCategoriesAdmin } from "@/lib/data/admin";
 import { CategoriesManager } from "@/components/admin/CategoriesManager";
 
@@ -10,7 +11,8 @@ export default async function AdminCategoriesPage({
 }: {
   searchParams: Promise<{ kind?: string }>;
 }) {
-  await requireAdmin();
+  const currentUser = await getCurrentUser();
+  if (currentUser?.role !== "ADMIN") redirect("/admin");
   const sp = await searchParams;
   const kind = sp.kind ?? "ALL";
   const categories = await listCategoriesAdmin(kind);
