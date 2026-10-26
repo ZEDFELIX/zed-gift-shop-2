@@ -25,8 +25,6 @@ export function ProductCard({ product }: { product: ProductWithRelations }) {
   let badge: { label: string; cls: string } | null = null;
   if (!inStock) {
     badge = { label: "Out of stock", cls: "bg-charcoal text-white" };
-  } else if (sale != null && sale > 0) {
-    badge = { label: `Sale -${sale}%`, cls: "bg-rose-500 text-white" };
   } else if (personalizable) {
     badge = { label: "Personalizable", cls: "bg-rose-100 text-rose-700" };
   } else if (isNew) {
@@ -118,6 +116,14 @@ export function ProductCard({ product }: { product: ProductWithRelations }) {
             <p className="min-w-0 text-xs text-charcoal/40 line-through">
               {formatKES(product.compareAtPrice)}
             </p>
+          ) : null}
+          {sale != null && sale > 0 && product.compareAtPrice != null && product.compareAtPrice > product.price ? (
+            <span
+              className="inline-flex max-w-full shrink-0 items-center rounded-full bg-rose-500 px-1.5 py-0.5 text-[9px] font-bold leading-none text-white shadow-sm sm:px-2 sm:text-[10px]"
+              aria-label={`Save ${sale} percent`}
+            >
+              -{sale}% OFF
+            </span>
           ) : null}
         </div>
 
