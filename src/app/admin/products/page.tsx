@@ -5,6 +5,7 @@ import { adminListProducts } from "@/lib/data/products";
 import { formatKES } from "@/lib/utils";
 import { getCurrentUser } from "@/lib/auth";
 import { CsvImportButton } from "@/components/admin/CsvImportButton";
+import { DeleteProductButton } from "@/components/admin/DeleteProductButton";
 import { Download, Plus, Search } from "lucide-react";
 
 export const dynamic = "force-dynamic";
@@ -88,7 +89,10 @@ export default async function AdminProductsPage({ searchParams }: { searchParams
  </span>
  </td>
  <td className="p-3 text-right">
+ <div className="inline-flex items-center justify-end gap-3">
  <Link href={`/admin/products/${p.id}`} className="font-semibold text-soft-sage hover:underline">Edit</Link>
+ <DeleteProductButton productId={p.id} productName={p.name} />
+ </div>
  </td>
  </tr>
  ))}
