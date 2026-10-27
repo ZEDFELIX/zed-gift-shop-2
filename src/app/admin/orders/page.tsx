@@ -18,7 +18,7 @@ export default async function AdminOrdersPage({ searchParams }: { searchParams: 
 
  return (
  <div className="space-y-4">
- <form method="GET" className="flex flex-wrap items-center gap-2">
+ <div className="flex flex-wrap items-center justify-between gap-3">\n <form method="GET" className="flex flex-wrap items-center gap-2">
  <input name="q" defaultValue={q} placeholder="Order no., name, email, phone..." className="field w-72" />
  <select name="status" defaultValue={status} className="field w-44">
  <option value="">All statuses</option>
