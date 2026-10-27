@@ -6,7 +6,8 @@ import { formatKES } from "@/lib/utils";
 import { getCurrentUser } from "@/lib/auth";
 import { CsvImportButton } from "@/components/admin/CsvImportButton";
 import { DeleteProductButton } from "@/components/admin/DeleteProductButton";
-import { Download, Plus, Search } from "lucide-react";
+import { ProductArchiveButton } from "@/components/admin/ProductArchiveButton";
+import { Download, Plus, Search, AlertTriangle } from "lucide-react";
 
 export const dynamic = "force-dynamic";
 export const metadata = { title: "Products | Admin" };
@@ -21,7 +22,7 @@ export default async function AdminProductsPage({ searchParams }: { searchParams
  getCurrentUser().catch(() => null),
  ]);
  if (me?.role !== "ADMIN") redirect("/admin");
- const showStock = true;
+ const lowStockCount = items.filter((p) => p.trackInventory && p.quantity <= p.lowStockThreshold && p.status !== "ARCHIVED").length;
 
  return (
  <div className="space-y-4">
@@ -40,10 +41,7 @@ export default async function AdminProductsPage({ searchParams }: { searchParams
  </form>
  <div className="flex flex-wrap items-center gap-2">
  <CsvImportButton />
- <Link
- href="/api/admin/products/export"
- className="flex items-center gap-1.5 rounded-zed border border-edge bg-white px-4 py-2.5 text-sm font-semibold text-[#07111F] hover:border-soft-sage"
- >
+ <Link href="/api/admin/products/export" className="flex items-center gap-1.5 rounded-zed border border-edge bg-white px-4 py-2.5 text-sm font-semibold text-[#07111F] hover:border-soft-sage">
  <Download className="size-4" /> Export CSV
  </Link>
  <Link href="/admin/products/new" className="flex items-center gap-1.5 rounded-zed bg-zed-950 px-4 py-2.5 text-sm font-bold text-white">
@@ -52,18 +50,25 @@ export default async function AdminProductsPage({ searchParams }: { searchParams
  </div>
  </div>
 
+ {lowStockCount > 0 && (
+ <div className="flex items-start gap-2 rounded-zed border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800" role="status">
+ <AlertTriangle className="mt-0.5 size-4 shrink-0" />
+ <p><strong>{lowStockCount} product{lowStockCount === 1 ? "" : "s"}</strong> on this page {lowStockCount === 1 ? "is" : "are"} at or below the low-stock threshold. Review stock levels before accepting more orders.</p>
+ </div>
+ )}
+
  <p className="text-sm text-[#334155]">{total} product{total === 1 ? "" : "s"}</p>
 
  <div className="overflow-x-auto rounded-zed border border-edge bg-white">
- <table className="w-full min-w-[640px] text-sm">
+ <table className="w-full min-w-[760px] text-sm">
  <thead>
  <tr className="border-b border-edge bg-panel text-left text-xs uppercase tracking-wider text-[#334155]">
  <th className="p-3">Product</th>
  <th className="p-3">SKU</th>
  <th className="p-3">Price</th>
- {showStock && <th className="p-3">Stock</th>}
+ <th className="p-3">Stock</th>
  <th className="p-3">Status</th>
- <th className="p-3" />
+ <th className="p-3">Actions</th>
  </tr>
  </thead>
  <tbody className="divide-y divide-edge">
@@ -82,22 +87,26 @@ export default async function AdminProductsPage({ searchParams }: { searchParams
  </td>
  <td className="p-3 text-[#334155]">{p.sku ?? "-"}</td>
  <td className="p-3 font-semibold text-[#07111F]">{formatKES(p.price)}</td>
- {showStock && <td className={`p-3 font-semibold ${p.quantity <= p.lowStockThreshold ? "text-red-600" : "text-[#07111F]"}`}>{p.quantity}</td>}
+ <td className={`p-3 font-semibold ${p.trackInventory && p.quantity <= p.lowStockThreshold ? "text-red-600" : "text-[#07111F]"}`}>
+ {p.trackInventory ? p.quantity : "Not tracked"}
+ {p.trackInventory && p.quantity <= p.lowStockThreshold && p.status !== "ARCHIVED" && <span className="ml-2 rounded-full bg-red-50 px-2 py-0.5 text-[10px] font-bold text-red-700">LOW</span>}
+ </td>
  <td className="p-3">
  <span className={`rounded-full px-2 py-0.5 text-[11px] font-bold ${p.status === "ACTIVE" ? "bg-emerald-50 text-emerald-700" : p.status === "DRAFT" ? "bg-amber-50 text-amber-700" : "bg-panel text-[#334155]"}`}>
  {p.status}
  </span>
  </td>
- <td className="p-3 text-right">
- <div className="inline-flex items-center justify-end gap-3">
+ <td className="p-3">
+ <div className="flex flex-wrap items-center justify-end gap-2">
  <Link href={`/admin/products/${p.id}`} className="font-semibold text-soft-sage hover:underline">Edit</Link>
+ <ProductArchiveButton productId={p.id} productName={p.name} status={p.status} />
  <DeleteProductButton productId={p.id} productName={p.name} />
  </div>
  </td>
  </tr>
  ))}
  {items.length === 0 && (
- <tr><td colSpan={showStock ? 6 : 5} className="p-8 text-center text-[#334155]">No products match that search.</td></tr>
+ <tr><td colSpan={6} className="p-8 text-center text-[#334155]">No products match that search.</td></tr>
  )}
  </tbody>
  </table>
