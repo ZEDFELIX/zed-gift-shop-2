@@ -91,6 +91,12 @@ export default async function AdminAnalyticsPage({
           Apply
         </button>
       </form>
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <p className="text-sm text-[#334155]">Reports use successful payments only. Profit is not estimated because product purchase costs are not recorded yet.</p>
+        <Link href={`/api/admin/analytics/export?preset=${encodeURIComponent(preset)}&from=${encodeURIComponent(sp.from ?? "")}&to=${encodeURIComponent(sp.to ?? "")}&bucket=${encodeURIComponent(bucket)}`} className="inline-flex items-center gap-2 rounded-zed bg-zed-950 px-4 py-2.5 text-sm font-semibold text-white hover:opacity-90">
+          Export business report CSV
+        </Link>
+      </div>
 
       <section className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
         {kpis.map((k) => (
