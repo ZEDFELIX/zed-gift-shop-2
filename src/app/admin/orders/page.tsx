@@ -34,7 +34,13 @@ export default async function AdminOrdersPage({ searchParams }: { searchParams: 
  <button type="submit" className="rounded-zed border border-edge bg-white px-4 py-2.5 text-sm font-semibold text-[#07111F] hover:border-soft-sage">Filter</button>
  </form>
 
+ <div className="flex flex-wrap items-center gap-3">
  <p className="text-sm text-[#334155]">{total} order{total === 1 ? "" : "s"}</p>
+ <a href="/api/admin/orders/export" className="inline-flex items-center gap-2 rounded-zed bg-zed-950 px-4 py-2.5 text-sm font-semibold text-white hover:opacity-90">
+ <Download size={16} aria-hidden="true" /> Export CSV
+ </a>
+ </div>
+ </div>
 
  <div className="overflow-x-auto rounded-zed border border-edge bg-white">
  <table className="w-full min-w-[640px] text-sm">
