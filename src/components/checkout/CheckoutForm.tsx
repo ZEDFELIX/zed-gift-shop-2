@@ -303,6 +303,7 @@ method?: string;
   headers: { "Content-Type": "application/json" },
   body: JSON.stringify({
   orderId: orderRef.orderId,
+  pollToken: orderRef.pollToken,
   amount: orderTotal ?? 0,
   email: form.email,
   firstName: form.name.split(" ")[0] || form.name,
