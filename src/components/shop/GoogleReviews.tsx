@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import { ChevronLeft, ChevronRight, Star } from "lucide-react";
+import Image from "next/image";
 
 export type GoogleReview = {
   name: string;
@@ -93,9 +94,13 @@ export function GoogleReviews({ reviews }: { reviews: GoogleReview[] }) {
             >
               <div className="flex items-start gap-1.5">
                 {review.profilePhotoUrl ? (
-                  <img
+                  <Image
                     src={review.profilePhotoUrl}
                     alt={review.name}
+                    width={32}
+                    height={32}
+                    sizes="32px"
+                    unoptimized
                     className="size-8 shrink-0 rounded-full object-cover"
                   />
                 ) : (
