@@ -40,6 +40,7 @@ type CartView = {
 async function request<T>(url: string, init?: RequestInit): Promise<T> {
   const res = await fetch(url, { ...init, cache: "no-store" });
   const data = (await res.json().catch(() => ({}))) as T & { error?: string };
+  if (!res.ok) throw new Error(data.error || "The request could not be completed.");
   return data;
 }
 
@@ -54,10 +55,15 @@ export function CartDrawer() {
 
   const refreshCart = useCallback(async () => {
     setLoading(true);
-    const data = await request<{ cart?: CartView }>("/api/cart");
-    setCart(data.cart ?? null);
-    setLoading(false);
-    router.refresh();
+    try {
+      const data = await request<{ cart?: CartView }>("/api/cart");
+      setCart(data.cart ?? null);
+      router.refresh();
+    } catch {
+      showToast("We couldn't refresh your cart. Please try again.", "error");
+    } finally {
+      setLoading(false);
+    }
   }, [router]);
 
   useEffect(() => {
@@ -90,41 +96,61 @@ export function CartDrawer() {
     const next = Math.max(1, Math.min(99, item.quantity + delta));
     if (next === item.quantity) return;
     setBusyId(item.id);
-    await request<{ ok?: boolean }>(`/api/cart/items/${item.id}`, {
-      method: "PATCH",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ action: "setQuantity", quantity: next }),
-    });
-    setBusyId(null);
-    refreshCart();
+    try {
+      await request<{ ok?: boolean }>(`/api/cart/items/${item.id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ action: "setQuantity", quantity: next }),
+      });
+      await refreshCart();
+    } catch (error) {
+      showToast(error instanceof Error ? error.message : "Couldn't update quantity.", "error");
+    } finally {
+      setBusyId(null);
+    }
   }
 
   async function removeItem(id: string) {
     setBusyId(id);
-    await request(`/api/cart/items/${id}`, { method: "DELETE" });
-    setBusyId(null);
-    showToast("Removed from your cart");
-    refreshCart();
+    try {
+      await request(`/api/cart/items/${id}`, { method: "DELETE" });
+      showToast("Removed from your cart");
+      await refreshCart();
+    } catch (error) {
+      showToast(error instanceof Error ? error.message : "Couldn't remove this item.", "error");
+    } finally {
+      setBusyId(null);
+    }
   }
 
   async function applyCoupon(e: React.FormEvent) {
     e.preventDefault();
-    await request("/api/cart/coupon", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ code: coupon }),
-    });
-    setCoupon("");
-    refreshCart();
+    try {
+      await request("/api/cart/coupon", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ code: coupon }),
+      });
+      setCoupon("");
+      showToast("Coupon updated", "success");
+      await refreshCart();
+    } catch (error) {
+      showToast(error instanceof Error ? error.message : "Couldn't apply that coupon.", "error");
+    }
   }
 
   async function clearCoupon() {
-    await request("/api/cart/coupon", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ code: null }),
-    });
-    refreshCart();
+    try {
+      await request("/api/cart/coupon", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ code: null }),
+      });
+      showToast("Coupon removed", "success");
+      await refreshCart();
+    } catch (error) {
+      showToast(error instanceof Error ? error.message : "Couldn't remove that coupon.", "error");
+    }
   }
 
   const checkoutEnabled = cart && cart.items.length > 0 && cart.items.every((i) => i.inStock);
