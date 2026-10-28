@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { sendAbandonedCheckoutReminders, sendDueReviewRequests, sendLowStockDigest } from "@/lib/cron";
+import { createDatabaseBackup } from "@/lib/storage-backups";
 import { logger } from "@/lib/logger";
 
 export const runtime = "nodejs";
@@ -17,23 +18,33 @@ function authorized(req: Request): boolean {
 
 export async function GET(req: Request) {
  if (!authorized(req)) {
- return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
  }
 
- const [reviewRequests, paymentReminders, lowStock] = await Promise.all([
- sendDueReviewRequests().catch((error) => {
- logger.error("cron.review_requests_error", { error: error instanceof Error ? error.message : String(error) });
- return 0;
- }),
- sendAbandonedCheckoutReminders().catch((error) => {
- logger.error("cron.payment_reminders_error", { error: error instanceof Error ? error.message : String(error) });
- return 0;
- }),
- sendLowStockDigest().catch((error) => {
- logger.error("cron.low_stock_error", { error: error instanceof Error ? error.message : String(error) });
- return 0;
- }),
+ const [reviewRequests, paymentReminders, lowStock, backup] = await Promise.all([
+  sendDueReviewRequests().catch((error) => {
+   logger.error("cron.review_requests_error", { error: error instanceof Error ? error.message : String(error) });
+   return 0;
+  }),
+  sendAbandonedCheckoutReminders().catch((error) => {
+   logger.error("cron.payment_reminders_error", { error: error instanceof Error ? error.message : String(error) });
+   return 0;
+  }),
+  sendLowStockDigest().catch((error) => {
+   logger.error("cron.low_stock_error", { error: error instanceof Error ? error.message : String(error) });
+   return 0;
+  }),
+  createDatabaseBackup().catch((error) => {
+   logger.error("cron.database_backup_error", { error: error instanceof Error ? error.message : String(error) });
+   return null;
+  }),
  ]);
 
- return NextResponse.json({ ok: true, reviewRequests, paymentReminders, lowStock });
+ return NextResponse.json({
+  ok: true,
+  reviewRequests,
+  paymentReminders,
+  lowStock,
+  backup: backup ? { ok: true, ...backup } : { ok: false },
+ });
 }
