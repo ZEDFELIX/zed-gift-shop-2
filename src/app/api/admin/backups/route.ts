@@ -1,12 +1,12 @@
 import { NextResponse } from "next/server";
 import { HttpError, requirePermission } from "@/lib/api";
 import { getSession } from "@/lib/auth";
+import { createDatabaseBackup, listDatabaseBackups } from "@/lib/storage-backups";
 
 async function authorizeBackupAccess() {
   if (!(await getSession())) throw new HttpError("Please sign in.", 401);
   await requirePermission("settings.manage");
 }
-import { createDatabaseBackup, listDatabaseBackups } from "@/lib/storage-backups";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
