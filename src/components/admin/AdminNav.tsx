@@ -2,7 +2,7 @@
 
 import { usePathname } from "next/navigation";
 import Link from "next/link";
-import { BarChart3, Boxes, Building2, CreditCard, Gift, LayoutDashboard, MapPin, Newspaper, Package, Palette, Quote, Ribbon, RotateCcw, ScrollText, Settings, ShieldCheck, Star, Truck, UserRound, Users, Tags, Zap } from "lucide-react";
+import { BarChart3, Boxes, Building2, CreditCard, Database, Gift, LayoutDashboard, MapPin, Newspaper, Package, Palette, Quote, Ribbon, RotateCcw, ScrollText, Settings, ShieldCheck, Star, Truck, UserRound, Users, Tags, Zap } from "lucide-react";
 
 const TABS = [
   { href: "/admin", label: "Dashboard", icon: LayoutDashboard, adminOnly: false },
@@ -26,6 +26,7 @@ const TABS = [
   { href: "/admin/staff", label: "Staff & admins", icon: Users, adminOnly: true },
   { href: "/admin/audit-logs", label: "Audit logs", icon: ScrollText, adminOnly: true },
   { href: "/admin/security", label: "Security & recovery", icon: ShieldCheck, adminOnly: true },
+  { href: "/admin/backups", label: "Backups & storage", icon: Database, adminOnly: true },
   { href: "/account", label: "Back to store", icon: MapPin, adminOnly: false },
 ];
 
