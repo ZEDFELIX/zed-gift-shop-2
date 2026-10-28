@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { sendAbandonedCheckoutReminders, sendDueReviewRequests, sendLowStockDigest } from "@/lib/cron";
 import { createDatabaseBackup } from "@/lib/storage-backups";
+import { expireStalePayments } from "@/lib/payment-expiry";
 import { logger } from "@/lib/logger";
 
 export const runtime = "nodejs";
@@ -21,7 +22,7 @@ export async function GET(req: Request) {
   return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
  }
 
- const [reviewRequests, paymentReminders, lowStock, backup] = await Promise.all([
+ const [reviewRequests, paymentReminders, lowStock, backup, expiredPayments] = await Promise.all([
   sendDueReviewRequests().catch((error) => {
    logger.error("cron.review_requests_error", { error: error instanceof Error ? error.message : String(error) });
    return 0;
@@ -38,6 +39,10 @@ export async function GET(req: Request) {
    logger.error("cron.database_backup_error", { error: error instanceof Error ? error.message : String(error) });
    return null;
   }),
+  expireStalePayments().catch((error) => {
+   logger.error("cron.expire_payments_error", { error: error instanceof Error ? error.message : String(error) });
+   return 0;
+  }),
  ]);
 
  return NextResponse.json({
@@ -45,6 +50,7 @@ export async function GET(req: Request) {
   reviewRequests,
   paymentReminders,
   lowStock,
+  expiredPayments,
   backup: backup ? { ok: true, ...backup } : { ok: false },
  });
 }
