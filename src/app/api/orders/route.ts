@@ -170,7 +170,7 @@ if (push.ok && push.checkoutRequestId) {
         merchantRequestId: push.merchantRequestId ?? null,
         idempotencyKey: push.checkoutRequestId,
         initiatedAt: new Date(),
-        expiredAt: addDays(new Date(), 1),
+        expiredAt: new Date(Date.now() + 2 * 60 * 1000),
       },
     });
 return NextResponse.json({
