@@ -88,28 +88,26 @@ export function AuthForm({ mode }: { mode: "login" | "register" }) {
               type={passwordInputType}
               autoComplete={isLogin ? "current-password" : "new-password"}
               className="field auth-field pl-9 relative z-10 pointer-events-auto select-text"
-              placeholder={showPassword ? "--------" : "--------"}
+              placeholder={isLogin ? "Enter your password" : "Create a password"}
               value={form.password}
               onChange={(e) => setForm({ ...form, password: e.target.value })}
               required
               minLength={isLogin ? 1 : 8}
             />
-            {showPassword ? (
-              <EyeOff
-                className="absolute right-3 top-1/2 size-4 -translate-y-1/2 text-[#334155] cursor-pointer hover:text-zed-950"
-                onClick={() => setShowPassword(false)}
-              />
-            ) : (
-              <Eye
-                className="absolute right-3 top-1/2 size-4 -translate-y-1/2 text-[#334155] cursor-pointer hover:text-zed-950"
-                onClick={() => setShowPassword(true)}
-              />
-            )}
+            <button
+              type="button"
+              onClick={() => setShowPassword((visible) => !visible)}
+              aria-label={showPassword ? "Hide password" : "Show password"}
+              aria-pressed={showPassword}
+              className="absolute right-2 top-1/2 z-20 grid size-9 -translate-y-1/2 place-items-center rounded-lg text-[#334155] transition-colors hover:bg-black/5 hover:text-zed-950 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-zed-950"
+            >
+              {showPassword ? <EyeOff className="size-4" aria-hidden="true" /> : <Eye className="size-4" aria-hidden="true" />}
+            </button>
           </div>
           {!isLogin && <p className="mt-1 text-xs text-[#334155]">At least 8 characters.</p>}
         </div>
 
-        {error && <p className="rounded-zed bg-red-50/70 px-4 py-3 text-sm text-red-700 backdrop-blur-sm">{error}</p>}
+        {error && <p role="alert" aria-live="polite" className="rounded-zed bg-red-50/70 px-4 py-3 text-sm text-red-700 backdrop-blur-sm">{error}</p>}
 
         <button type="submit" disabled={loading} className="flex w-full items-center justify-center gap-2 rounded-zed bg-zed-950 py-3.5 text-sm font-bold uppercase tracking-wider text-white disabled:opacity-50">
           {loading ? <Loader2 className="size-4 animate-spin" /> : <LogIn className="size-4" />}
