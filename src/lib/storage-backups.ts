@@ -1,6 +1,6 @@
 import "server-only";
 
-import { gzipSync } from "node:zlib";
+import { gzipSync, gunzipSync } from "node:zlib";
 import { createClient } from "@supabase/supabase-js";
 import { prisma } from "@/lib/prisma";
 
@@ -125,6 +125,57 @@ export async function createDatabaseBackup() {
   }
 
   return { path, bytes: compressed.byteLength, tables: tables.length, createdAt: createdAt.toISOString() };
+}
+
+/**
+ * Non-destructive recovery preflight: download and decompress one private
+ * snapshot, then validate its format and table/row structure without touching
+ * the live database.
+ */
+export async function verifyDatabaseBackup(name: string) {
+  if (!/^[A-Za-z0-9T._-]+\.json\.gz$/.test(name)) {
+    throw new Error("Invalid backup filename.");
+  }
+
+  const supabase = storageAdmin();
+  const path = `daily/${name}`;
+  const { data, error } = await supabase.storage.from(BUCKET).download(path);
+  if (error || !data) throw new Error(`Could not download backup for verification: ${error?.message ?? "File not found"}`);
+
+  const compressed = Buffer.from(await data.arrayBuffer());
+  if (compressed.byteLength === 0 || compressed.byteLength > 45 * 1024 * 1024) {
+    throw new Error("Backup file size is outside the safe verification limit.");
+  }
+
+  let parsed: unknown;
+  try {
+    const json = gunzipSync(compressed, { maxOutputLength: 256 * 1024 * 1024 }).toString("utf8");
+    parsed = JSON.parse(json);
+  } catch {
+    throw new Error("Backup integrity check failed: the compressed file could not be read as valid JSON.");
+  }
+
+  if (!parsed || typeof parsed !== "object") throw new Error("Backup integrity check failed: invalid snapshot structure.");
+  const snapshot = parsed as { format?: unknown; createdAt?: unknown; tables?: unknown };
+  if (snapshot.format !== "zed-gift-shop-database-backup-v1" || !snapshot.tables || typeof snapshot.tables !== "object" || Array.isArray(snapshot.tables)) {
+    throw new Error("Backup integrity check failed: unsupported snapshot format.");
+  }
+
+  const tables = snapshot.tables as Record<string, unknown>;
+  const tableNames = Object.keys(tables);
+  if (tableNames.length === 0 || tableNames.some((table) => !/^[A-Za-z_][A-Za-z0-9_]*$/.test(table) || !Array.isArray(tables[table]))) {
+    throw new Error("Backup integrity check failed: invalid table data.");
+  }
+
+  const rowCount = tableNames.reduce((sum, table) => sum + (tables[table] as unknown[]).length, 0);
+  return {
+    name,
+    valid: true,
+    createdAt: typeof snapshot.createdAt === "string" ? snapshot.createdAt : null,
+    compressedBytes: compressed.byteLength,
+    tableCount: tableNames.length,
+    rowCount,
+  };
 }
 
 export async function listDatabaseBackups() {
