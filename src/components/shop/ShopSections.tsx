@@ -7,12 +7,12 @@ import { FLASH_SALE_DEFAULT_BOX_COLOR, isHexColor } from "@/lib/data/products";
 import {
   getFlashSaleProducts,
   getFlashSaleSettings,
-  type ProductWithRelations,
+  type ProductCardData,
 } from "@/lib/data/products";
 
 export type ShopSection = {
   title: string;
-  products: ProductWithRelations[];
+  products: ProductCardData[];
   href?: string;
   flash?: boolean;
   flashSale?: FlashSaleSettings;
