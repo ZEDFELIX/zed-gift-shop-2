@@ -8,9 +8,36 @@ const BUCKET = "zed-gift-shop-backups";
 const RETENTION_DAYS = 30;
 
 function storageAdmin() {
-  const url = process.env.SUPABASE_URL || process.env.zedgiftshop_SUPABASE_URL;
-  const key = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.zedgiftshop_SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_SECRET_KEY;
-  if (!url || !key) throw new Error("Supabase Storage backup credentials are not configured.");
+  // Prefer a valid Supabase project URL instead of trusting the first populated variable.
+  // Some Vercel environments may contain a stale/misconfigured SUPABASE_URL value.
+  const candidates = [
+    process.env.SUPABASE_URL,
+    process.env.zedgiftshop_SUPABASE_URL,
+    process.env.NEXT_PUBLIC_SUPABASE_URL,
+    process.env.NEXT_PUBLIC_zedgiftshop_SUPABASE_URL,
+  ].filter((value): value is string => Boolean(value?.trim()));
+
+  const url = candidates.find((candidate) => {
+    try {
+      const parsed = new URL(candidate);
+      return parsed.protocol === "https:" && parsed.hostname.endsWith(".supabase.co");
+    } catch {
+      return false;
+    }
+  });
+
+  const key =
+    process.env.SUPABASE_SERVICE_ROLE_KEY ||
+    process.env.zedgiftshop_SUPABASE_SERVICE_ROLE_KEY ||
+    process.env.SUPABASE_SECRET_KEY;
+
+  if (!url) {
+    throw new Error("No valid Supabase project URL is configured. Set SUPABASE_URL to the project's https://<project-ref>.supabase.co URL.");
+  }
+  if (!key) {
+    throw new Error("Supabase Storage backup credentials are missing a server-side service key.");
+  }
+
   return createClient(url, key, { auth: { persistSession: false, autoRefreshToken: false } });
 }
 
@@ -49,8 +76,11 @@ export async function createDatabaseBackup() {
 
   const createdAt = new Date();
   const path = `daily/${createdAt.toISOString().replace(/[:.]/g, "-")}.json.gz`;
-  const { data: existingBucket } = await supabase.storage.getBucket(BUCKET);
+  const { data: existingBucket, error: bucketLookupError } = await supabase.storage.getBucket(BUCKET);
   if (!existingBucket) {
+    if (bucketLookupError && bucketLookupError.statusCode !== "404" && bucketLookupError.statusCode !== 404) {
+      throw new Error(`Could not access backup bucket: ${bucketLookupError.message}`);
+    }
     const { error } = await supabase.storage.createBucket(BUCKET, {
       public: false,
       fileSizeLimit: "50MiB",
@@ -87,8 +117,13 @@ export async function createDatabaseBackup() {
 
 export async function listDatabaseBackups() {
   const supabase = storageAdmin();
-  const { data: bucket } = await supabase.storage.getBucket(BUCKET);
-  if (!bucket) return [];
+  const { data: bucket, error: bucketLookupError } = await supabase.storage.getBucket(BUCKET);
+  if (!bucket) {
+    if (bucketLookupError && bucketLookupError.statusCode !== "404" && bucketLookupError.statusCode !== 404) {
+      throw new Error(`Could not access backup bucket: ${bucketLookupError.message}`);
+    }
+    return [];
+  }
   const { data, error } = await supabase.storage.from(BUCKET).list("daily", {
     limit: 100,
     sortBy: { column: "name", order: "desc" },
