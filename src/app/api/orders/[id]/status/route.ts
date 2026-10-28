@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { verifyOrderToken } from "@/lib/order-token";
 import { rateLimit } from "@/lib/rate-limit";
+import { expireOrderPaymentIfDue } from "@/lib/payment-expiry";
 
 export const runtime = "nodejs";
 
@@ -27,6 +28,16 @@ export async function GET(req: Request, { params }: { params: Promise<{ id: stri
   const token = req.headers.get("x-order-token") ?? new URL(req.url).searchParams.get("token");
   if (!verifyOrderToken(token, id)) {
     return NextResponse.json({ error: "Order not found." }, { status: 404 });
+  }
+
+  // Expire an unpaid payment attempt before returning status to checkout.
+  try {
+    await expireOrderPaymentIfDue(id);
+  } catch (error) {
+    console.error("[order-status] expiry cleanup failed", {
+      orderId: id,
+      message: error instanceof Error ? error.message : "Unknown error",
+    });
   }
 
   const order = await prisma.order.findUnique({
