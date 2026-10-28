@@ -51,6 +51,7 @@ export async function POST(req: Request) {
  select: {
  id: true,
  orderNumber: true,
+ userId: true,
  orderStatus: true,
  paymentStatus: true,
  total: true,
