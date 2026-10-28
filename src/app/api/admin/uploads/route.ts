@@ -9,10 +9,34 @@ export const runtime = "nodejs";
 const BUCKET = "product-images";
 
 function supabaseAdmin() {
-  const url = process.env.SUPABASE_URL;
-  const key = process.env.SUPABASE_SERVICE_ROLE_KEY;
-  if (!url || !key) return null;
-  return createClient(url, key, { auth: { persistSession: false } });
+  // Prefer the Zed Gift Shop-specific project settings and keep each URL paired
+  // with a key from the same project. Generic Supabase variables may target a
+  // different project in the same Vercel environment.
+  const candidates = [
+    {
+      url: process.env.zedgiftshop_SUPABASE_URL || process.env.NEXT_PUBLIC_zedgiftshop_SUPABASE_URL,
+      key: process.env.zedgiftshop_SUPABASE_SERVICE_ROLE_KEY || process.env.zedgiftshop_SUPABASE_SECRET_KEY,
+    },
+    {
+      url: process.env.NEXT_PUBLIC_SUPABASE_URL,
+      key: process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_SECRET_KEY,
+    },
+    {
+      url: process.env.SUPABASE_URL,
+      key: process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_SECRET_KEY,
+    },
+  ];
+  const config = candidates.find(({ url, key }) => {
+    if (!url?.trim() || !key?.trim()) return false;
+    try {
+      const parsed = new URL(url);
+      return parsed.protocol === "https:" && parsed.hostname.endsWith(".supabase.co");
+    } catch {
+      return false;
+    }
+  });
+  if (!config?.url || !config.key) return null;
+  return createClient(config.url, config.key, { auth: { persistSession: false, autoRefreshToken: false } });
 }
 
 function safeFileName(name: string): string {
