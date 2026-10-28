@@ -2,10 +2,14 @@ import "server-only";
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
-import { initiateFlutterwaveCharge, verifyFlutterwaveTransaction } from "@/lib/flutterwave";
+import { initiateFlutterwaveCharge } from "@/lib/flutterwave";
+import { getSession } from "@/lib/auth";
+import { verifyOrderToken } from "@/lib/order-token";
+import { rateLimit } from "@/lib/rate-limit";
 
 const schema = z.object({
   orderId: z.string().min(1).max(64),
+  pollToken: z.string().max(1024).optional(),
   amount: z.number().positive().max(1_000_000),
   email: z.string().email(),
   firstName: z.string().min(1).max(100),
@@ -14,7 +18,19 @@ const schema = z.object({
   currency: z.string().default("KES"),
 });
 
+function clientKey(req: Request): string {
+  const forwarded = req.headers.get("x-forwarded-for");
+  return forwarded?.split(",")[0]?.trim() || req.headers.get("x-real-ip") || "unknown";
+}
+
 export async function POST(req: Request) {
+ const limit = await rateLimit(`flutterwave-retry:${clientKey(req)}`, { limit: 6, windowSeconds: 300 });
+ if (!limit.ok) {
+   return NextResponse.json(
+     { error: "Too many payment attempts. Please wait a moment and try again." },
+     { status: 429, headers: { "Retry-After": String(limit.retryAfterSeconds) } },
+   );
+ }
  let body: unknown;
  try {
  body = await req.json();
@@ -27,7 +43,7 @@ export async function POST(req: Request) {
  return NextResponse.json({ error: "Missing required fields." }, { status: 400 });
  }
 
- const { orderId } = parsed.data;
+ const { orderId, pollToken } = parsed.data;
 
  // Verify the order exists and is unpaid
  const order = await prisma.order.findUnique({
@@ -46,6 +62,15 @@ export async function POST(req: Request) {
 
  if (!order) {
  return NextResponse.json({ error: "Order not found." }, { status: 404 });
+ }
+
+ // Starting a charge requires the signed-in owner or the signed guest token
+ // issued at checkout. Knowing an order ID alone must never trigger a charge.
+ const session = await getSession();
+ const ownsOrder = Boolean(session && order.userId && session.sub === order.userId);
+ const hasGuestToken = verifyOrderToken(pollToken, order.id);
+ if (!ownsOrder && !hasGuestToken) {
+   return NextResponse.json({ error: "You are not allowed to pay for this order." }, { status: 403 });
  }
 
  if (order.paymentStatus === "SUCCESSFUL") {
