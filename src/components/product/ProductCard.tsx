@@ -4,11 +4,11 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import type { ProductWithRelations } from "@/lib/data/products";
+import type { ProductCardData } from "@/lib/data/products";
 import { discountPercent, formatKES } from "@/lib/utils";
 import { SaveGiftButton } from "@/components/product/SaveGiftButton";
 
-export function ProductCard({ product, priority = false }: { product: ProductWithRelations; priority?: boolean }) {
+export function ProductCard({ product, priority = false }: { product: ProductCardData; priority?: boolean }) {
   const router = useRouter();
   const [adding, setAdding] = useState(false);
   const image = product.images[0]?.url;
