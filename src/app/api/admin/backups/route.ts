@@ -40,6 +40,12 @@ export async function POST() {
       : message === "AUTH_REQUIRED" ? 401
       : message === "ADMIN_REQUIRED" || message === "FORBIDDEN" || message.includes("permission") ? 403
       : 500;
+    if (status >= 500) {
+      console.error("[admin/backups] POST failed", {
+        name: error instanceof Error ? error.name : "UnknownError",
+        message,
+      });
+    }
     const messageForClient = status === 401 ? "Please sign in."
       : status === 403 ? "You do not have permission to create backups."
       : "Backup failed. Check server logs and storage configuration.";
