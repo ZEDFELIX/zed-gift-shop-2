@@ -38,12 +38,22 @@ export function ProductCard({ product, priority = false }: { product: ProductCar
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ productId: product.id, quantity: 1 }),
       });
-      if (res.ok) {
-        window.dispatchEvent(new CustomEvent("zed:open-cart"));
-        router.refresh();
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) {
+        window.dispatchEvent(new CustomEvent("zed:toast", {
+          detail: { message: data.error || "We couldn't add this gift. Please try again.", type: "error" },
+        }));
+        return;
       }
+      window.dispatchEvent(new CustomEvent("zed:toast", {
+        detail: { message: `${product.name} added to your cart.`, type: "success" },
+      }));
+      window.dispatchEvent(new CustomEvent("zed:open-cart"));
+      router.refresh();
     } catch {
-      // Swallow network errors; cart drawer stays closed.
+      window.dispatchEvent(new CustomEvent("zed:toast", {
+        detail: { message: "Connection issue. Please check your internet and try again.", type: "error" },
+      }));
     } finally {
       setAdding(false);
     }
@@ -83,25 +93,13 @@ export function ProductCard({ product, priority = false }: { product: ProductCar
   return (
     <article className="zed-product-card group flex h-full flex-col overflow-hidden rounded-lg">
       <div className="relative transition-opacity group-hover:opacity-100">
-        {canQuickAdd ? (
-          <button
-            type="button"
-            onClick={quickAdd}
-            disabled={adding}
-            className="zed-product-media block w-full min-w-0 cursor-pointer overflow-hidden bg-white text-left"
-            aria-label={`Add ${product.name} to cart`}
-          >
-            {media}
-          </button>
-        ) : (
-          <Link
-            href={`/product/${product.slug}`}
-            className="zed-product-media block w-full min-w-0 overflow-hidden bg-white"
-            aria-label={product.name}
-          >
-            {media}
-          </Link>
-        )}
+        <Link
+          href={`/product/${product.slug}`}
+          className="zed-product-media block w-full min-w-0 overflow-hidden bg-white"
+          aria-label={`View ${product.name} details`}
+        >
+          {media}
+        </Link>
         <SaveGiftButton productId={product.id} productName={product.name} />
       </div>
 
@@ -129,13 +127,23 @@ export function ProductCard({ product, priority = false }: { product: ProductCar
           ) : null}
         </div>
 
-        <div className="mt-auto flex flex-col items-center gap-0.5 pt-1.5">
-          {!personalizable && (
+        <div className="mt-auto flex flex-col items-center gap-1 pt-2">
+          {canQuickAdd ? (
+            <button
+              type="button"
+              onClick={quickAdd}
+              disabled={adding}
+              className="inline-flex min-h-8 w-full items-center justify-center rounded-lg bg-[#542447] px-2 py-1.5 text-[10px] font-bold text-white transition-colors hover:bg-[#3f1935] disabled:cursor-not-allowed disabled:opacity-60 sm:min-h-9 sm:text-[11px]"
+              aria-label={`Add ${product.name} to cart`}
+            >
+              {adding ? "Adding…" : "Add to cart"}
+            </button>
+          ) : (
             <Link
               href={`/product/${product.slug}`}
-              className="inline-flex items-center gap-1 text-[10px] font-semibold text-charcoal/70 transition-colors hover:text-rose-600 sm:text-[11px]"
+              className="inline-flex min-h-8 w-full items-center justify-center rounded-lg border border-[#542447]/20 px-2 py-1.5 text-[10px] font-bold text-[#542447] transition-colors hover:bg-[#542447]/5 sm:min-h-9 sm:text-[11px]"
             >
-              View details
+              {personalizable ? "Personalise gift" : "View details"}
             </Link>
           )}
           {lowStock && (
