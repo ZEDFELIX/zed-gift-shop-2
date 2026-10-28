@@ -74,9 +74,8 @@ export async function createDatabaseBackup() {
     const cutoff = Date.now() - RETENTION_DAYS * 24 * 60 * 60 * 1000;
     const expired = files
       .filter((file) => {
-        const timestamp = Date.parse(file.name.replace(/\.json\.gz$/, "").replace(/-/g, (m, offset) => m));
-        // ISO timestamp filename uses dashes, so rely on storage creation time where available.
-        const created = file.created_at ? Date.parse(file.created_at) : timestamp;
+        // Only delete files with trusted storage metadata; never infer dates from filenames.
+        const created = file.created_at ? Date.parse(file.created_at) : NaN;
         return Number.isFinite(created) && created < cutoff;
       })
       .map((file) => `daily/${file.name}`);
