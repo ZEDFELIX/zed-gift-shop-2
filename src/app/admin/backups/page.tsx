@@ -16,6 +16,7 @@ export default function AdminBackupsPage() {
   const [backups, setBackups] = useState<Backup[]>([]);
   const [loading, setLoading] = useState(true);
   const [creating, setCreating] = useState(false);
+  const [verifying, setVerifying] = useState<string | null>(null);
   const [message, setMessage] = useState("");
 
   const loadBackups = useCallback(async () => {
@@ -50,6 +51,26 @@ export default function AdminBackupsPage() {
     }
   }
 
+  async function verifyBackup(name: string) {
+    setVerifying(name);
+    setMessage("");
+    try {
+      const response = await fetch("/api/admin/backups/verify", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name }),
+      });
+      const data = await response.json();
+      if (!response.ok || !data.ok) throw new Error(data.error || "Backup verification failed.");
+      const result = data.verification as { tableCount: number; rowCount: number; compressedBytes: number };
+      setMessage(`Backup integrity verified: ${result.tableCount} tables and ${result.rowCount} rows. No live data was changed.`);
+    } catch (error) {
+      setMessage(error instanceof Error ? error.message : "Backup verification failed.");
+    } finally {
+      setVerifying(null);
+    }
+  }
+
   return (
     <div className="space-y-6">
       <div className="rounded-zed border border-edge bg-white p-5 sm:p-6">
@@ -78,12 +99,22 @@ export default function AdminBackupsPage() {
           backups.length ? (
             <div className="mt-4 divide-y divide-[#E8ECE9]">
               {backups.map((backup) => (
-                <div key={backup.name} className="flex flex-col gap-1 py-4 sm:flex-row sm:items-center sm:justify-between">
-                  <p className="break-all text-sm font-medium text-[#1F2937]">{backup.name}</p>
-                  <div className="flex gap-4 text-xs text-[#64748B]">
-                    <span>{formatBytes(backup.size)}</span>
-                    <span>{backup.createdAt ? new Date(backup.createdAt).toLocaleString() : "Date unavailable"}</span>
+                <div key={backup.name} className="flex flex-col gap-2 py-4 sm:flex-row sm:items-center sm:justify-between">
+                  <div className="min-w-0">
+                    <p className="break-all text-sm font-medium text-[#1F2937]">{backup.name}</p>
+                    <div className="mt-1 flex flex-wrap gap-4 text-xs text-[#64748B]">
+                      <span>{formatBytes(backup.size)}</span>
+                      <span>{backup.createdAt ? new Date(backup.createdAt).toLocaleString() : "Date unavailable"}</span>
+                    </div>
                   </div>
+                  <button
+                    type="button"
+                    onClick={() => void verifyBackup(backup.name)}
+                    disabled={Boolean(verifying) || creating}
+                    className="shrink-0 self-start rounded-lg border border-[#D8E2DC] px-3 py-2 text-xs font-semibold text-[#173F35] transition hover:bg-[#F5F7F5] disabled:cursor-not-allowed disabled:opacity-50 sm:self-center"
+                  >
+                    {verifying === backup.name ? "Verifying…" : "Verify integrity"}
+                  </button>
                 </div>
               ))}
             </div>
