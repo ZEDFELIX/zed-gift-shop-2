@@ -35,8 +35,17 @@ async function transport() {
  ...((mail.replyTo ?? process.env.EMAIL_REPLY_TO) ? { reply_to: mail.replyTo ?? process.env.EMAIL_REPLY_TO } : {}),
  }),
  });
- const data = (await res.json().catch(() => ({}))) as { id?: string };
- if (!res.ok || !data.id) throw new Error(`Resend request failed (${res.status}).`);
+ const data = (await res.json().catch(() => ({}))) as {
+  id?: string;
+  message?: string;
+  name?: string;
+ };
+ if (!res.ok || !data.id) {
+  // Provider error messages identify issues such as an unverified sender domain
+  // or a restricted API key. Keep these in server logs only, never in responses.
+  const detail = data.message ?? data.name;
+  throw new Error(`Resend request failed (${res.status})${detail ? `: ${detail.slice(0, 240)}` : "."}`);
+ }
  return { ok: true, messageId: data.id };
  },
  };
