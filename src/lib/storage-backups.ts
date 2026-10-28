@@ -90,7 +90,7 @@ export async function createDatabaseBackup() {
   const path = `daily/${createdAt.toISOString().replace(/[:.]/g, "-")}.json.gz`;
   const { data: existingBucket, error: bucketLookupError } = await supabase.storage.getBucket(BUCKET);
   if (!existingBucket) {
-    if (bucketLookupError && bucketLookupError.statusCode !== "404" && bucketLookupError.statusCode !== 404) {
+    if (bucketLookupError && String(bucketLookupError.statusCode) !== "404") {
       throw new Error(`Could not access backup bucket: ${bucketLookupError.message}`);
     }
     const { error } = await supabase.storage.createBucket(BUCKET, {
@@ -131,7 +131,7 @@ export async function listDatabaseBackups() {
   const supabase = storageAdmin();
   const { data: bucket, error: bucketLookupError } = await supabase.storage.getBucket(BUCKET);
   if (!bucket) {
-    if (bucketLookupError && bucketLookupError.statusCode !== "404" && bucketLookupError.statusCode !== 404) {
+    if (bucketLookupError && String(bucketLookupError.statusCode) !== "404") {
       throw new Error(`Could not access backup bucket: ${bucketLookupError.message}`);
     }
     return [];
