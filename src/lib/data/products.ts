@@ -31,6 +31,27 @@ export const productInclude = {
 
 export type ProductWithRelations = Prisma.ProductGetPayload<{ include: typeof productInclude }>;
 
+// Minimal payload for shop cards: avoid sending categories, collections and variants
+// to the browser when the listing only needs pricing, stock and the primary image.
+const productCardSelect = {
+  id: true,
+  slug: true,
+  name: true,
+  price: true,
+  compareAtPrice: true,
+  tags: true,
+  trackInventory: true,
+  quantity: true,
+  reservedQuantity: true,
+  personalizationEnabled: true,
+  images: {
+    select: { url: true, alt: true, sortOrder: true },
+    orderBy: { sortOrder: "asc" as const },
+  },
+} satisfies Prisma.ProductSelect;
+
+export type ProductCardData = Prisma.ProductGetPayload<{ select: typeof productCardSelect }>;
+
 export function productSeoTitle(p: { name: string; headline?: string | null }) {
  return p.headline ? `${p.name} - ${p.headline}` : p.name;
 }
@@ -147,7 +168,7 @@ export async function getFlashSaleProducts(limit = 6) {
         { collections: { some: { collection: { slug: "customer-service-week" } } } },
       ],
     },
-    include: productInclude,
+    select: productCardSelect,
     orderBy: [{ featured: "desc" }, { updatedAt: "desc" }],
     take: limit,
   });
@@ -301,7 +322,7 @@ export async function listProducts(filters: ProductListFilters) {
  const [items, total] = await Promise.all([
  prisma.product.findMany({
  where,
- include: productInclude,
+ select: productCardSelect,
     orderBy: sortMap[sort] ?? DEFAULT_SORT,
  skip: (page - 1) * pageSize,
  take: pageSize,
