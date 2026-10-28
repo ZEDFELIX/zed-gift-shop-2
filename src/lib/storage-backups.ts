@@ -8,37 +8,49 @@ const BUCKET = "zed-gift-shop-backups";
 const RETENTION_DAYS = 30;
 
 function storageAdmin() {
-  // Prefer a valid Supabase project URL instead of trusting the first populated variable.
-  // Some Vercel environments may contain a stale/misconfigured SUPABASE_URL value.
+  // Keep the URL and server key from the same environment-variable family.
+  // The generic SUPABASE_URL currently points at a different Supabase project,
+  // so prefer the Zed Gift Shop-specific pair to avoid cross-project mismatches.
   const candidates = [
-    process.env.SUPABASE_URL,
-    process.env.zedgiftshop_SUPABASE_URL,
-    process.env.NEXT_PUBLIC_SUPABASE_URL,
-    process.env.NEXT_PUBLIC_zedgiftshop_SUPABASE_URL,
-  ].filter((value): value is string => Boolean(value?.trim()));
+    {
+      url: process.env.zedgiftshop_SUPABASE_URL,
+      key: process.env.zedgiftshop_SUPABASE_SERVICE_ROLE_KEY,
+    },
+    {
+      url: process.env.NEXT_PUBLIC_zedgiftshop_SUPABASE_URL,
+      key: process.env.zedgiftshop_SUPABASE_SERVICE_ROLE_KEY,
+    },
+    {
+      url: process.env.NEXT_PUBLIC_SUPABASE_URL,
+      key: process.env.SUPABASE_SERVICE_ROLE_KEY,
+    },
+    {
+      url: process.env.SUPABASE_URL,
+      key: process.env.SUPABASE_SERVICE_ROLE_KEY,
+    },
+    {
+      url: process.env.SUPABASE_URL,
+      key: process.env.SUPABASE_SECRET_KEY,
+    },
+  ];
 
-  const url = candidates.find((candidate) => {
+  const config = candidates.find(({ url, key }) => {
+    if (!url?.trim() || !key?.trim()) return false;
     try {
-      const parsed = new URL(candidate);
+      const parsed = new URL(url);
       return parsed.protocol === "https:" && parsed.hostname.endsWith(".supabase.co");
     } catch {
       return false;
     }
   });
 
-  const key =
-    process.env.SUPABASE_SERVICE_ROLE_KEY ||
-    process.env.zedgiftshop_SUPABASE_SERVICE_ROLE_KEY ||
-    process.env.SUPABASE_SECRET_KEY;
-
-  if (!url) {
-    throw new Error("No valid Supabase project URL is configured. Set SUPABASE_URL to the project's https://<project-ref>.supabase.co URL.");
-  }
-  if (!key) {
-    throw new Error("Supabase Storage backup credentials are missing a server-side service key.");
+  if (!config?.url || !config.key) {
+    throw new Error("No matching Supabase project URL and server-side storage key are configured.");
   }
 
-  return createClient(url, key, { auth: { persistSession: false, autoRefreshToken: false } });
+  return createClient(config.url, config.key, {
+    auth: { persistSession: false, autoRefreshToken: false },
+  });
 }
 
 /**
