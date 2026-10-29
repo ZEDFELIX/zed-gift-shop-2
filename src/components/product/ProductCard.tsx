@@ -18,7 +18,7 @@ export function ProductCard({ product, priority = false }: { product: ProductCar
   let badge: { label: string; cls: string } | null = null;
   if (!inStock) {
     badge = { label: "Out of stock", cls: "bg-charcoal text-white" };
-  } else if (isNew && !personalizable) {
+  } else if (isNew) {
     badge = { label: "New", cls: "bg-plum-800 text-white" };
   }
 
