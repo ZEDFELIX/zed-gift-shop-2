@@ -8,10 +8,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const url = SITE.url;
 
   const staticRoutes = [
-    "", "/shop", "/search", "/deals", "/collections", "/gifts", "/personalized", "/wishlist",
-    "/gift-builder", "/gift-finder", "/track", "/contact", "/about", "/faq", "/policies/delivery", "/policies/refunds",
-    "/policies/cancellation", "/policies/payment", "/policies/privacy", "/policies/cookies", "/policies/terms",
-    "/login", "/register", "/forgot-password", "/blog", "/cards", "/wholesale", "/gifts-under-1000",
+    "", "/shop", "/deals", "/collections", "/gifts", "/personalized",
+    "/gift-builder", "/gift-finder", "/contact", "/about", "/faq", "/policies/delivery", "/policies/refunds",
+    "/policies/cancellation", "/policies/payment", "/policies/privacy", "/policies/terms",
+    "/blog", "/cards", "/wholesale", "/gifts-under-1000",
   ].map((p) => ({
     url: `${url}${p}`,
     lastModified: new Date(),
