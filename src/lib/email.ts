@@ -138,17 +138,17 @@ export async function sendOrderConfirmation(input: {
 }) {
  const rows = input.items
  .map(
- (i) => `<tr><td style="padding:6px 0;">${i.name} x ${i.qty}</td><td style="padding:6px 0;text-align:right;">${i.lineTotal}</td></tr>`,
+ (i) => `<tr><td style="padding:6px 0;">${escapeHtml(i.name)} x ${i.qty}</td><td style="padding:6px 0;text-align:right;">${escapeHtml(i.lineTotal)}</td></tr>`,
  )
  .join("");
  const subject = `Order ${input.orderNumber} received - thanks for your order`;
  const text = `Hi, your order ${input.orderNumber} has been received. Total: ${input.total}. Track it: ${input.statusUrl}`;
  const html = `
  <h2 style="margin:0 0 12px;">Thanks for your order!</h2>
- <p style="margin:0 0 16px;">We have received order <strong>${input.orderNumber}</strong> and are busy preparing your gift.</p>
+ <p style="margin:0 0 16px;">We have received order <strong>${escapeHtml(input.orderNumber)}</strong> and are busy preparing your gift.</p>
  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border-top:1px solid #eee;">${rows}</table>
- <p style="text-align:right;font-weight:bold;border-top:1px solid #eee;padding-top:12px;">Total: ${input.total}</p>
- <a href="${input.statusUrl}" style="display:inline-block;margin-top:16px;background:#0F5C4D;color:#ffffff;padding:12px 20px;border-radius:8px;text-decoration:none;font-weight:bold;">Track your order</a>
+ <p style="text-align:right;font-weight:bold;border-top:1px solid #eee;padding-top:12px;">Total: ${escapeHtml(input.total)}</p>
+ <a href="${escapeHtml(input.statusUrl)}" style="display:inline-block;margin-top:16px;background:#0F5C4D;color:#ffffff;padding:12px 20px;border-radius:8px;text-decoration:none;font-weight:bold;">Track your order</a>
  `;
  return sendEmail({ to: input.to, subject, text, html: layout({ subject, text, html }).html });
 }
@@ -156,15 +156,15 @@ export async function sendOrderConfirmation(input: {
 export async function sendOrderStatusUpdate(input: { to: string; orderNumber: string; status: string; statusUrl: string }) {
  const subject = `Order ${input.orderNumber}: ${input.status}`;
  const text = `Your order ${input.orderNumber} is now: ${input.status}. View: ${input.statusUrl}`;
- const html = `<p style="margin:0 0 12px;">Good news - your order <strong>${input.orderNumber}</strong> has a status update:</p>
- <p style="font-size:18px;font-weight:bold;color:#0F5C4D;">${input.status}</p>
+ const html = `<p style="margin:0 0 12px;">Good news - your order <strong>${escapeHtml(input.orderNumber)}</strong> has a status update:</p>
+ <p style="font-size:18px;font-weight:bold;color:#0F5C4D;">${escapeHtml(input.status)}</p>
  <a href="${input.statusUrl}" style="display:inline-block;margin-top:16px;background:#0F5C4D;color:#ffffff;padding:12px 20px;border-radius:8px;text-decoration:none;font-weight:bold;">Track your order</a>`;
  return sendEmail({ to: input.to, subject, text, html: layout({ subject, text, html }).html });
 }
 
 export async function sendPasswordReset(input: { to: string; resetUrl: string }) {
  const subject = `Reset your ${SITE.name} password`;
- const text = `Reset your password here: ${input.resetUrl}. This link expires in 1 hour.`;
+ const text = `Reset your password here: ${input.resetUrl}. This link expires in 30 minutes.`;
  const html = `<p style="margin:0 0 12px;">We received a request to reset your password. Click below to choose a new one.</p>
  <a href="${input.resetUrl}" style="display:inline-block;margin:8px 0 12px;background:#0F5C4D;color:#ffffff;padding:12px 20px;border-radius:8px;text-decoration:none;font-weight:bold;">Reset password</a>
  <p style="font-size:12px;color:#888;">This link expires in 1 hour. If you didn't request this, you can ignore this email.</p>`;
