@@ -95,7 +95,7 @@ export async function createDatabaseBackup() {
     }
     const { error } = await supabase.storage.createBucket(BUCKET, {
       public: false,
-      fileSizeLimit: "50MiB",
+      fileSizeLimit: "50MB",
       allowedMimeTypes: ["application/gzip", "application/octet-stream"],
     });
     if (error && !/already exists/i.test(error.message)) throw new Error(`Could not create private backup bucket: ${error.message}`);
