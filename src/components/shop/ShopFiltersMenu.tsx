@@ -134,12 +134,12 @@ export function ShopFiltersMenu({
   );
 
   return (
-    <div className="relative hidden shrink-0" ref={ref}>
+    <div className="relative shrink-0" ref={ref}>
       <button
         type="button"
         onClick={() => setOpen((o) => !o)}
         aria-expanded={open}
-        className="shop-filter-trigger glass-panel inline-flex items-center gap-1.5 rounded-zed px-3 py-2 text-sm font-semibold text-[var(--color-ink)] sm:gap-2 sm:px-3.5"
+        className="hidden"
       >
         <SlidersHorizontal className="size-4" />
         Filters
