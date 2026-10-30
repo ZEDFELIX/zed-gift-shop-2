@@ -3,6 +3,7 @@ import { getCurrentUser } from "@/lib/auth";
 import { getSettings } from "@/lib/data/settings";
 import { SettingsForm } from "@/components/admin/SettingsForm";
 import { PasswordForm } from "@/components/account/PasswordForm";
+import { CarouselManager } from "@/components/admin/CarouselManager";
 
 export const dynamic = "force-dynamic";
 export const metadata = { title: "Settings | Admin" };
@@ -29,6 +30,7 @@ export default async function AdminSettingsPage() {
  return (
  <div className="space-y-6">
  <PasswordForm />
+ <CarouselManager initial={Array.isArray(s.carouselSections) ? s.carouselSections as { id: string; title: string; query: string; href: string; backgroundColor: string; titleColor: string; enabled: boolean }[] : []} />
  <SettingsForm
 initial={{
   announcementBar: String(s.announcementBar ?? ""),
