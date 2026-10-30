@@ -158,6 +158,27 @@ export async function getMostBoughtProducts(limit = 6) {
   return products.sort((a, b) => (rank.get(a.id) ?? 999) - (rank.get(b.id) ?? 999));
 }
 
+
+/** Fresh catalogue picks for the storefront's New Arrivals rail. */
+export async function getNewArrivalProducts(limit = 8) {
+  return prisma.product.findMany({
+    where: { status: "ACTIVE" },
+    select: productCardSelect,
+    orderBy: [{ publishedAt: "desc" }, { createdAt: "desc" }, { id: "asc" }],
+    take: limit,
+  });
+}
+
+/** Popular picks based on catalogue popularity signals, with stable ordering. */
+export async function getPopularShopProducts(limit = 8) {
+  return prisma.product.findMany({
+    where: { status: "ACTIVE" },
+    select: productCardSelect,
+    orderBy: [{ bestSeller: "desc" }, { ratingCount: "desc" }, { ratingAverage: "desc" }, { updatedAt: "desc" }],
+    take: limit,
+  });
+}
+
 export async function getFlashSaleProducts(limit = 6) {
   return prisma.product.findMany({
     where: {
