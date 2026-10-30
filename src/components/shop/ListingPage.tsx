@@ -41,6 +41,11 @@ export async function ListingPage({
     listCategories(),
   ]);
 
+  // Reuse real product photos already stored in the shop catalogue for the desktop hero.
+  const heroImages = result.items
+    .flatMap((product) => product.images?.[0]?.url ? [{ url: product.images[0].url, name: product.name }] : [])
+    .slice(0, 4);
+
   const occasions = allCategories
     .filter((c) => c.kind === "OCCASION")
     .map((c) => ({ slug: c.slug, name: c.name, count: c._count.products }));
@@ -145,20 +150,15 @@ export async function ListingPage({
               <>
                 {/* Desktop-only merchandising: mobile storefront remains unchanged. */}
                 <section className="relative mb-5 hidden overflow-hidden rounded-2xl border border-[#eadde8] bg-[#f8eef5] px-7 py-6 shadow-sm lg:flex lg:items-center xl:px-9 xl:py-7">
-                  <div className="pointer-events-none absolute inset-y-0 right-0 hidden w-[62%] grid-cols-4 gap-1.5 pl-10 lg:grid">
-                    <div className="relative overflow-hidden rounded-l-[3rem]">
-                      <img src="https://images.unsplash.com/photo-1513201099705-a9746e1e201f?auto=format&fit=crop&w=520&q=85" alt="Beautifully wrapped gifts" className="h-full w-full object-cover" />
+                  {heroImages.length > 0 && (
+                    <div className="pointer-events-none absolute inset-y-0 right-0 hidden w-[62%] grid-cols-4 gap-1.5 pl-10 lg:grid">
+                      {heroImages.map((photo, index) => (
+                        <div key={photo.url} className={`relative overflow-hidden ${index === 0 ? "rounded-l-[3rem]" : ""} ${index === heroImages.length - 1 ? "rounded-r-2xl" : ""}`}>
+                          <img src={photo.url} alt={photo.name} className="h-full w-full object-cover" />
+                        </div>
+                      ))}
                     </div>
-                    <div className="relative overflow-hidden">
-                      <img src="https://images.unsplash.com/photo-1490750967868-88aa4486c946?auto=format&fit=crop&w=520&q=85" alt="Fresh flowers and celebration gifts" className="h-full w-full object-cover" />
-                    </div>
-                    <div className="relative overflow-hidden">
-                      <img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=520&q=85" alt="Premium watches and accessories" className="h-full w-full object-cover" />
-                    </div>
-                    <div className="relative overflow-hidden rounded-r-2xl">
-                      <img src="https://images.unsplash.com/photo-1549465220-1a8b9238cd48?auto=format&fit=crop&w=520&q=85" alt="Gift boxes and gift wrapping" className="h-full w-full object-cover" />
-                    </div>
-                  </div>
+                  )}
                   <div className="pointer-events-none absolute inset-0 z-[1] bg-gradient-to-r from-[#fff8fc] via-[#fff8fc]/95 to-[#fff8fc]/5" />
                   <div className="relative z-10 max-w-[48%]">
                     <p className="mb-2 flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.2em] text-[#8a5578]"><Sparkles className="size-3.5" /> Thoughtful gifting starts here</p>
