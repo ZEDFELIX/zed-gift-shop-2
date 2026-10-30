@@ -5,7 +5,8 @@ import { useRouter } from "next/navigation";
 import { Plus, Save, Trash2 } from "lucide-react";
 
 type Carousel = { id: string; title: string; query: string; href: string; backgroundColor: string; titleColor: string; enabled: boolean };
-const defaults: Carousel[] = [\n  { id: "limited-offers", title: "Limited-time offers", query: "flash sale", href: "/shop?flashSale=1", backgroundColor: "#FBE9EE", titleColor: "#171717", enabled: true },
+const defaults: Carousel[] = [
+  { id: "limited-offers", title: "Limited-time offers", query: "flash sale", href: "/shop?flashSale=1", backgroundColor: "#FBE9EE", titleColor: "#171717", enabled: true },
   { id: "gift-sets", title: "Gift Sets", query: "gift set", href: "/shop?q=gift%20set", backgroundColor: "#F7EDF4", titleColor: "#6B2D5C", enabled: true },
   { id: "new-arrivals", title: "New arrivals", query: "", href: "/shop?sort=new", backgroundColor: "#FFFFFF", titleColor: "#6B2D5C", enabled: true },
   { id: "popular-gifts", title: "Popular gifts", query: "", href: "/shop?sort=popular", backgroundColor: "#FFFFFF", titleColor: "#6B2D5C", enabled: true },
