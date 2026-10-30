@@ -9,6 +9,8 @@ import { ShopFiltersMenu } from "@/components/shop/ShopFiltersMenu";
 import { Pagination } from "@/components/shop/Pagination";
 import { ShopSections, getShopSectionData, type ShopSection } from "@/components/shop/ShopSections";
 import type { ReactNode } from "react";
+import Link from "next/link";
+import { CATEGORY_STRIP } from "@/lib/constants";
 
 const SORT_LABELS: Record<string, string> = {
   featured: "Featured",
@@ -117,6 +119,17 @@ export async function ListingPage({
           }}
         />
       )}
+      <nav aria-label="Shop gift categories" className="mb-4 -mx-1 flex gap-2 overflow-x-auto px-1 pb-2 scrollbar-none sm:mb-5">
+        {CATEGORY_STRIP.map((item) => (
+          <Link
+            key={item.href}
+            href={item.href}
+            className="inline-flex min-h-9 shrink-0 items-center rounded-full border border-[#eadce8] bg-white px-3.5 py-2 text-[11px] font-semibold text-[#4A1F42] shadow-sm transition hover:border-[#D61F6B] hover:bg-[#FDF2F7] sm:text-xs"
+          >
+            {item.label}
+          </Link>
+        ))}
+      </nav>
       <div className={sidebar ? "lg:flex lg:items-start lg:gap-8" : undefined}>
         {sidebar ? <div className="hidden shrink-0 lg:block lg:w-60 xl:w-64">{sidebar}</div> : null}
         <div className="min-w-0 flex-1">
