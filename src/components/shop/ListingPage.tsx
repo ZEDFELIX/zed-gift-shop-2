@@ -1,6 +1,8 @@
 import "server-only";
 
 import { Suspense } from "react";
+import Link from "next/link";
+import { ArrowRight, Gift, Sparkles } from "lucide-react";
 import { listProducts, type ProductListFilters } from "@/lib/data/products";
 import { jsonLdItemList } from "@/lib/seo";
 import { listCategories } from "@/lib/data/catalog";
@@ -141,6 +143,46 @@ export async function ListingPage({
           </header>
 
           <div className="mt-3 sm:mt-4">
+            {showSections && (
+              <>
+                {/* Desktop-only merchandising: mobile storefront remains unchanged. */}
+                <section className="relative mb-5 hidden overflow-hidden rounded-2xl border border-[#eadde8] bg-gradient-to-r from-[#fff7fb] via-[#f8eef5] to-[#f2e8f1] px-7 py-6 shadow-sm lg:flex lg:items-center lg:justify-between xl:px-9 xl:py-7">
+                  <div className="pointer-events-none absolute -right-8 -top-16 size-64 rounded-full border-[28px] border-white/40" />
+                  <div className="pointer-events-none absolute right-36 -bottom-24 size-52 rounded-full bg-white/35 blur-2xl" />
+                  <div className="relative z-10 max-w-2xl">
+                    <p className="mb-2 flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.2em] text-[#8a5578]"><Sparkles className="size-3.5" /> Thoughtful gifting starts here</p>
+                    <h2 className="font-display text-2xl font-bold leading-tight tracking-tight text-[#2b2029] xl:text-3xl">Make every moment feel special.</h2>
+                    <p className="mt-2 max-w-xl text-sm leading-relaxed text-[#71616d]">Find a thoughtful gift for the people and moments that matter most.</p>
+                    <Link href="/shop?sort=new" className="mt-4 inline-flex min-h-10 items-center gap-2 rounded-full bg-[#6B2D5C] px-5 py-2.5 text-xs font-bold text-white shadow-sm transition hover:bg-[#542248] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#6B2D5C] focus-visible:ring-offset-2">Explore gifts <ArrowRight className="size-4" /></Link>
+                  </div>
+                  <div className="relative z-10 mr-8 hidden size-28 shrink-0 items-center justify-center rounded-[2rem] border border-white/80 bg-white/65 text-[#8a5578] shadow-sm xl:flex">
+                    <Gift className="size-14 stroke-[1.25]" />
+                  </div>
+                </section>
+                {occasions.length > 0 && (
+                  <section className="mb-5 hidden lg:block">
+                    <div className="mb-3 flex items-end justify-between gap-4">
+                      <div>
+                        <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-[#96758b]">Find the right moment</p>
+                        <h2 className="mt-1 font-display text-lg font-bold text-[#241d23] xl:text-xl">Shop by occasion</h2>
+                      </div>
+                      <span className="text-xs text-[#857780]">A little something for every celebration</span>
+                    </div>
+                    <div className="grid grid-cols-3 gap-3 xl:grid-cols-4">
+                      {occasions.slice(0, 4).map((occasion, index) => (
+                        <Link key={occasion.slug} href={`/shop?occasion=${encodeURIComponent(occasion.slug)}`} className="group flex min-h-[88px] items-center justify-between gap-3 rounded-xl border border-[#eee5ec] bg-white/80 px-4 py-3 shadow-[0_2px_10px_rgba(48,28,43,0.03)] transition hover:-translate-y-0.5 hover:border-[#d9bfd2] hover:bg-[#fffafd] hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#8a5578]">
+                          <div className="flex min-w-0 items-center gap-3">
+                            <span className={`grid size-11 shrink-0 place-items-center rounded-xl text-sm font-bold ${index % 2 === 0 ? "bg-[#f5eaf2] text-[#794568]" : "bg-[#f7f0e8] text-[#8b6844]"}`}>{occasion.name.trim().slice(0, 1).toUpperCase()}</span>
+                            <span className="min-w-0"><span className="block truncate text-sm font-bold text-[#342832] group-hover:text-[#6B2D5C]">{occasion.name}</span><span className="mt-1 block text-[11px] text-[#8a7d86]">{occasion.count} {occasion.count === 1 ? "gift" : "gifts"}</span></span>
+                          </div>
+                          <ArrowRight className="size-4 shrink-0 text-[#a58b9d] transition group-hover:translate-x-0.5 group-hover:text-[#6B2D5C]" />
+                        </Link>
+                      ))}
+                    </div>
+                  </section>
+                )}
+              </>
+            )}
             {showSections && <ShopSections sections={sectionData.sections} />}
             {gridItems.length > 0 ? (
               <div className="glass-panel rounded-2xl p-1.5 sm:p-3">
