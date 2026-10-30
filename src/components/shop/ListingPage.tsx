@@ -144,17 +144,27 @@ export async function ListingPage({
             {showSections && (
               <>
                 {/* Desktop-only merchandising: mobile storefront remains unchanged. */}
-                <section className="relative mb-5 hidden overflow-hidden rounded-2xl border border-[#eadde8] bg-gradient-to-r from-[#fff7fb] via-[#f8eef5] to-[#f2e8f1] px-7 py-6 shadow-sm lg:flex lg:items-center lg:justify-between xl:px-9 xl:py-7">
-                  <div className="pointer-events-none absolute -right-8 -top-16 size-64 rounded-full border-[28px] border-white/40" />
-                  <div className="pointer-events-none absolute right-36 -bottom-24 size-52 rounded-full bg-white/35 blur-2xl" />
-                  <div className="relative z-10 max-w-2xl">
+                <section className="relative mb-5 hidden overflow-hidden rounded-2xl border border-[#eadde8] bg-[#f8eef5] px-7 py-6 shadow-sm lg:flex lg:min-h-[188px] lg:items-center xl:min-h-[204px] xl:px-9 xl:py-7">
+                  <div className="pointer-events-none absolute inset-y-0 right-0 hidden w-[62%] grid-cols-4 gap-1.5 pl-10 lg:grid">
+                    <div className="relative overflow-hidden rounded-l-[3rem]">
+                      <img src="https://images.unsplash.com/photo-1513201099705-a9746e1e201f?auto=format&fit=crop&w=520&q=85" alt="Beautifully wrapped gifts" className="h-full w-full object-cover" />
+                    </div>
+                    <div className="relative overflow-hidden">
+                      <img src="https://images.unsplash.com/photo-1490750967868-88aa4486c946?auto=format&fit=crop&w=520&q=85" alt="Fresh flowers and celebration gifts" className="h-full w-full object-cover" />
+                    </div>
+                    <div className="relative overflow-hidden">
+                      <img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=520&q=85" alt="Premium watches and accessories" className="h-full w-full object-cover" />
+                    </div>
+                    <div className="relative overflow-hidden rounded-r-2xl">
+                      <img src="https://images.unsplash.com/photo-1549465220-1a8b9238cd48?auto=format&fit=crop&w=520&q=85" alt="Gift boxes and gift wrapping" className="h-full w-full object-cover" />
+                    </div>
+                  </div>
+                  <div className="pointer-events-none absolute inset-0 z-[1] bg-gradient-to-r from-[#fff8fc] via-[#fff8fc]/95 to-[#fff8fc]/5" />
+                  <div className="relative z-10 max-w-[48%]">
                     <p className="mb-2 flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.2em] text-[#8a5578]"><Sparkles className="size-3.5" /> Thoughtful gifting starts here</p>
                     <h2 className="font-display text-2xl font-bold leading-tight tracking-tight text-[#2b2029] xl:text-3xl">Make every moment feel special.</h2>
                     <p className="mt-2 max-w-xl text-sm leading-relaxed text-[#71616d]">Find a thoughtful gift for the people and moments that matter most.</p>
                     <Link href="/shop?sort=new" className="mt-4 inline-flex min-h-10 items-center gap-2 rounded-full bg-[#6B2D5C] px-5 py-2.5 text-xs font-bold text-white shadow-sm transition hover:bg-[#542248] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#6B2D5C] focus-visible:ring-offset-2">Explore gifts <ArrowRight className="size-4" /></Link>
-                  </div>
-                  <div className="relative z-10 mr-8 hidden size-28 shrink-0 items-center justify-center rounded-[2rem] border border-white/80 bg-white/65 text-[#8a5578] shadow-sm xl:flex">
-                    <Gift className="size-14 stroke-[1.25]" />
                   </div>
                 </section>
                 {occasions.length > 0 && (
