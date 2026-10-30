@@ -7,6 +7,8 @@ import { FLASH_SALE_DEFAULT_BOX_COLOR, isHexColor } from "@/lib/data/products";
 import {
   getFlashSaleProducts,
   getFlashSaleSettings,
+  getNewArrivalProducts,
+  getPopularShopProducts,
   type ProductCardData,
 } from "@/lib/data/products";
 
@@ -115,18 +117,55 @@ export function ShopSections({ sections }: { sections: ShopSection[] }) {
 }
 
 /**
- * Builds the shop-page highlight section(s). Only the flash sale carousel is
- * shown; `shownIds` lets the caller hide its products in the grid.
+ * Build a richer storefront from live catalogue data. Each product appears in
+ * only one curated rail and is removed from the main grid to avoid repetition.
  */
 export async function getShopSectionData(): Promise<{ sections: ShopSection[]; shownIds: string[] }> {
-  const [flashSale, flashSaleSettings] = await Promise.all([
-    getFlashSaleProducts(6),
+  const [flashSale, flashSaleSettings, arrivals, popular] = await Promise.all([
+    getFlashSaleProducts(8),
     getFlashSaleSettings(),
+    getNewArrivalProducts(8),
+    getPopularShopProducts(8),
   ]);
 
-  const sections: ShopSection[] = flashSale.length
-    ? [{ title: "Flash Sale", products: flashSale, flash: true, href: "/shop?flashSale=1", flashSale: flashSaleSettings }]
-    : [];
+  const used = new Set<string>();
+  const unique = (items: ProductCardData[]) => items.filter((item) => {
+    if (used.has(item.id)) return false;
+    used.add(item.id);
+    return true;
+  });
 
-  return { sections, shownIds: flashSale.map((p) => p.id) };
+  const sections: ShopSection[] = [];
+  const flashItems = unique(flashSale);
+  if (flashItems.length) {
+    sections.push({
+      title: "Limited-time offers",
+      products: flashItems,
+      flash: true,
+      href: "/shop?flashSale=1",
+      flashSale: flashSaleSettings,
+    });
+  }
+
+  const newItems = unique(arrivals);
+  if (newItems.length) {
+    sections.push({
+      title: "New arrivals",
+      products: newItems,
+      href: "/shop?sort=new",
+      titleColor: "text-[#6B2D5C]",
+    });
+  }
+
+  const popularItems = unique(popular);
+  if (popularItems.length) {
+    sections.push({
+      title: "Popular gifts",
+      products: popularItems,
+      href: "/shop?sort=popular",
+      titleColor: "text-[#6B2D5C]",
+    });
+  }
+
+  return { sections, shownIds: [...used] };
 }
