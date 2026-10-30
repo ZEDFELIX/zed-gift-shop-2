@@ -144,7 +144,7 @@ export async function ListingPage({
             {showSections && (
               <>
                 {/* Desktop-only merchandising: mobile storefront remains unchanged. */}
-                <section className="relative mb-5 hidden overflow-hidden rounded-2xl border border-[#eadde8] bg-[#f8eef5] px-7 py-6 shadow-sm lg:flex lg:min-h-[188px] lg:items-center xl:min-h-[204px] xl:px-9 xl:py-7">
+                <section className="relative mb-5 hidden overflow-hidden rounded-2xl border border-[#eadde8] bg-[#f8eef5] px-7 py-6 shadow-sm lg:flex lg:items-center xl:px-9 xl:py-7">
                   <div className="pointer-events-none absolute inset-y-0 right-0 hidden w-[62%] grid-cols-4 gap-1.5 pl-10 lg:grid">
                     <div className="relative overflow-hidden rounded-l-[3rem]">
                       <img src="https://images.unsplash.com/photo-1513201099705-a9746e1e201f?auto=format&fit=crop&w=520&q=85" alt="Beautifully wrapped gifts" className="h-full w-full object-cover" />
