@@ -21,6 +21,8 @@ export type ShopSection = {
   flash?: boolean;
   flashSale?: FlashSaleSettings;
   titleColor?: string;
+  backgroundColor?: string;
+  giftSet?: boolean;
 };
 
 /** Picks readable title text (ink or white) for any admin-chosen box color. */
@@ -129,6 +131,7 @@ export async function getShopSectionData(): Promise<{ sections: ShopSection[]; s
     getGiftSetProducts(8),
     getNewArrivalProducts(8),
     getPopularShopProducts(8),
+    getSetting("carouselSections"),
   ]);
 
   const used = new Set<string>();
@@ -156,7 +159,9 @@ export async function getShopSectionData(): Promise<{ sections: ShopSection[]; s
       title: "Gift Sets",
       products: giftSetItems,
       href: "/shop?q=gift%20set",
-      titleColor: "#6B2D5C",\n      backgroundColor: "#F7EDF4",\n      giftSet: true,
+      titleColor: "#6B2D5C",
+      backgroundColor: "#F7EDF4",
+      giftSet: true,
     });
   }
 
@@ -176,7 +181,7 @@ export async function getShopSectionData(): Promise<{ sections: ShopSection[]; s
       title: "Popular gifts",
       products: popularItems,
       href: "/shop?sort=popular",
-      titleColor: "text-[#6B2D5C]",
+      titleColor: "#6B2D5C",
     });
   }
 
