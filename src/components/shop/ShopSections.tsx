@@ -196,7 +196,7 @@ export async function getShopSectionData(): Promise<{ sections: ShopSection[]; s
       if (item.enabled === false || !item.title?.trim()) continue;
       const existing = defaultsById.get(item.id || "");
       if (existing) {
-        configuredSections.push({ ...existing, title: item.title, href: item.href || existing.href, backgroundColor: item.backgroundColor || "#FFFFFF", titleColor: item.titleColor || "#171717" });
+        configuredSections.push({ ...existing, title: item.title, href: item.href || existing.href, backgroundColor: item.backgroundColor || "#FFFFFF", titleColor: item.titleColor || "#171717", flashSale: existing.flashSale ? { ...existing.flashSale, boxColor: item.backgroundColor || existing.flashSale.boxColor } : undefined });
         continue;
       }
       if (!item.query?.trim()) continue;
