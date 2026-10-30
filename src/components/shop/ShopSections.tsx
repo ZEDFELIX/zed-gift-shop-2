@@ -156,7 +156,7 @@ export async function getShopSectionData(): Promise<{ sections: ShopSection[]; s
       title: "Gift Sets",
       products: giftSetItems,
       href: "/shop?q=gift%20set",
-      titleColor: "text-[#6B2D5C]",
+      titleColor: "#6B2D5C",\n      backgroundColor: "#F7EDF4",\n      giftSet: true,
     });
   }
 
@@ -166,7 +166,7 @@ export async function getShopSectionData(): Promise<{ sections: ShopSection[]; s
       title: "New arrivals",
       products: newItems,
       href: "/shop?sort=new",
-      titleColor: "text-[#6B2D5C]",
+      titleColor: "#6B2D5C",
     });
   }
 
