@@ -55,6 +55,14 @@ export function ProductCard({ product, priority = false }: { product: ProductCar
           href={`/product/${product.slug}`}
           className="zed-product-media block w-full min-w-0 overflow-hidden bg-white"
           aria-label={`View ${product.name} details`}
+          onClick={() => {
+            try {
+              const key = "zed-recently-viewed-v1";
+              const previous = JSON.parse(window.localStorage.getItem(key) || "[]") as ProductCardData[];
+              const next = [product, ...previous.filter((item) => item.id !== product.id)].slice(0, 8);
+              window.localStorage.setItem(key, JSON.stringify(next));
+            } catch { /* Keep product navigation working when storage is unavailable. */ }
+          }}
         >
           {media}
         </Link>
