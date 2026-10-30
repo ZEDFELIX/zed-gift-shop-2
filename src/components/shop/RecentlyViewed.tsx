@@ -1,0 +1,49 @@
+"use client";
+
+import { useEffect, useState } from "react";
+import { ArrowRight, Clock3 } from "lucide-react";
+import { ProductCard } from "@/components/product/ProductCard";
+import type { ProductCardData } from "@/lib/data/products";
+
+const STORAGE_KEY = "zed-recently-viewed-v1";
+
+export function RecentlyViewed() {
+  const [products, setProducts] = useState<ProductCardData[]>([]);
+
+  useEffect(() => {
+    try {
+      const saved = JSON.parse(window.localStorage.getItem(STORAGE_KEY) || "[]");
+      if (Array.isArray(saved)) {
+        setProducts(saved.filter((item) => item && typeof item.id === "string" && typeof item.slug === "string").slice(0, 8));
+      }
+    } catch {
+      setProducts([]);
+    }
+  }, []);
+
+  if (!products.length) return null;
+
+  return (
+    <section className="mb-5 hidden overflow-hidden rounded-xl border border-[#eee5ec] bg-white/80 p-2.5 shadow-[0_2px_12px_rgba(48,28,43,0.04)] lg:block sm:p-3" aria-label="Recently viewed gifts">
+      <div className="mb-2 flex items-center justify-between gap-3 border-b border-[#eee5ec] pb-2">
+        <div className="flex min-w-0 items-center gap-2">
+          <span className="grid size-8 shrink-0 place-items-center rounded-lg bg-[#f5eaf2] text-[#794568]">
+            <Clock3 className="size-4" />
+          </span>
+          <div className="min-w-0">
+            <h2 className="truncate text-sm font-bold text-[#342832] sm:text-base">Pick up where you left off</h2>
+            <p className="text-[10px] text-[#8a7d86] sm:text-[11px]">Your recently viewed gifts</p>
+          </div>
+        </div>
+        <span className="shrink-0 inline-flex items-center gap-1 text-[10px] font-semibold text-[#8a5578]">Recently viewed <ArrowRight className="size-3" /></span>
+      </div>
+      <div className="flex snap-x snap-mandatory gap-2 overflow-x-auto overscroll-x-contain pb-1 scrollbar-none">
+        {products.map((product, index) => (
+          <div key={product.id} className="w-[116px] min-w-[116px] shrink-0 snap-start sm:w-[138px] sm:min-w-[138px]">
+            <ProductCard product={product} priority={index < 2} />
+          </div>
+        ))}
+      </div>
+    </section>
+  );
+}
