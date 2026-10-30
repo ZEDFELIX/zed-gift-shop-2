@@ -159,6 +159,28 @@ export async function getMostBoughtProducts(limit = 6) {
 }
 
 
+/** Gift-set carousel: only active products assigned to a gift-set category or tagged as a gift set. */
+export async function getGiftSetProducts(limit = 8) {
+  return prisma.product.findMany({
+    where: {
+      status: "ACTIVE",
+      OR: [
+        { tags: { has: "gift-set" } },
+        { tags: { has: "gift set" } },
+        { categories: { some: { category: { OR: [
+          { slug: { contains: "gift-set" } },
+          { slug: { contains: "giftsets" } },
+          { name: { contains: "gift set", mode: "insensitive" } },
+          { name: { contains: "giftsets", mode: "insensitive" } },
+        ] } } } },
+      ],
+    },
+    select: productCardSelect,
+    orderBy: [{ bestSeller: "desc" }, { featured: "desc" }, { updatedAt: "desc" }],
+    take: Math.min(24, Math.max(1, limit)),
+  });
+}
+
 /** Fresh catalogue picks for the storefront's New Arrivals rail. */
 export async function getNewArrivalProducts(limit = 8) {
   return prisma.product.findMany({
