@@ -11,6 +11,7 @@ import {
   Menu,
   Phone,
   Search,
+  SlidersHorizontal,
   ShieldCheck,
   ShoppingBag,
   User,
@@ -159,6 +160,11 @@ export function HeaderContent({
           </form>
 
           <div className="ml-auto flex items-center gap-1 lg:gap-2">
+            {pathname.startsWith("/shop") && (
+              <button type="button" onClick={() => window.dispatchEvent(new CustomEvent("zed:toggle-shop-filters"))} className="inline-flex h-9 items-center gap-1.5 rounded-md border border-edge bg-white/70 px-2.5 text-[11px] font-semibold text-[var(--color-ink)] transition hover:bg-zed-900/5 sm:px-3 sm:text-xs" aria-label="Open shop filters">
+                <SlidersHorizontal className="size-4" /> <span>Filters</span>
+              </button>
+            )}
             <a
               href={`tel:${contactPhone.replace(/\s+/g, "")}`}
               className="hidden items-center gap-1.5 rounded-md px-2 py-1.5 text-[12px] font-semibold text-[var(--color-ink)] hover:bg-zed-900/5 xl:flex"
