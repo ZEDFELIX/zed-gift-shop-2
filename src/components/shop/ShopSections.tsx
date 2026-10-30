@@ -7,6 +7,7 @@ import { FLASH_SALE_DEFAULT_BOX_COLOR, isHexColor } from "@/lib/data/products";
 import {
   getFlashSaleProducts,
   getFlashSaleSettings,
+  getGiftSetProducts,
   getNewArrivalProducts,
   getPopularShopProducts,
   type ProductCardData,
@@ -121,9 +122,10 @@ export function ShopSections({ sections }: { sections: ShopSection[] }) {
  * only one curated rail and is removed from the main grid to avoid repetition.
  */
 export async function getShopSectionData(): Promise<{ sections: ShopSection[]; shownIds: string[] }> {
-  const [flashSale, flashSaleSettings, arrivals, popular] = await Promise.all([
+  const [flashSale, flashSaleSettings, giftSets, arrivals, popular] = await Promise.all([
     getFlashSaleProducts(8),
     getFlashSaleSettings(),
+    getGiftSetProducts(8),
     getNewArrivalProducts(8),
     getPopularShopProducts(8),
   ]);
@@ -144,6 +146,16 @@ export async function getShopSectionData(): Promise<{ sections: ShopSection[]; s
       flash: true,
       href: "/shop?flashSale=1",
       flashSale: flashSaleSettings,
+    });
+  }
+
+  const giftSetItems = unique(giftSets);
+  if (giftSetItems.length) {
+    sections.push({
+      title: "Gift Sets",
+      products: giftSetItems,
+      href: "/shop?q=gift%20set",
+      titleColor: "text-[#6B2D5C]",
     });
   }
 
