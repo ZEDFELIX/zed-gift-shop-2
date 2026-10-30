@@ -39,6 +39,12 @@ export function ShopFiltersMenu({
   }, [searchParams]);
 
   useEffect(() => {
+    function onOpenFromHeader() { setOpen((value) => !value); }
+    window.addEventListener("zed:toggle-shop-filters", onOpenFromHeader);
+    return () => window.removeEventListener("zed:toggle-shop-filters", onOpenFromHeader);
+  }, []);
+
+  useEffect(() => {
     function onDoc(e: MouseEvent) {
       if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false);
     }
@@ -128,7 +134,7 @@ export function ShopFiltersMenu({
   );
 
   return (
-    <div className="relative shrink-0" ref={ref}>
+    <div className="relative hidden shrink-0" ref={ref}>
       <button
         type="button"
         onClick={() => setOpen((o) => !o)}
@@ -146,7 +152,7 @@ export function ShopFiltersMenu({
       </button>
 
       {open && (
-        <div className="shop-filter-dropdown absolute right-0 z-50 mt-2 max-h-[70vh] w-[min(88vw,340px)] overflow-y-auto rounded-zed border border-edge bg-white p-3 shadow-glass-lg sm:w-[min(90vw,360px)] sm:p-4">
+        <div className="shop-filter-dropdown fixed right-3 top-[68px] z-[90] max-h-[calc(100vh-88px)] w-[min(90vw,360px)] overflow-y-auto rounded-zed border border-edge bg-white p-3 shadow-glass-lg sm:right-6 sm:top-[88px] sm:p-4">
           <div>
             <p className="mb-2 text-[11px] font-bold uppercase tracking-[0.14em] text-charcoal/50">Sort</p>
             <div className="relative">
