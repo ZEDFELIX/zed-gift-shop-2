@@ -6,6 +6,7 @@ import { ArrowRight, Gift, Sparkles } from "lucide-react";
 import { listProducts, type ProductListFilters } from "@/lib/data/products";
 import { jsonLdItemList } from "@/lib/seo";
 import { listCategories } from "@/lib/data/catalog";
+import { getSetting } from "@/lib/data/settings";
 import { ProductGrid } from "@/components/shop/ProductGrid";
 import { ShopFiltersMenu } from "@/components/shop/ShopFiltersMenu";
 import { Pagination } from "@/components/shop/Pagination";
@@ -36,15 +37,21 @@ export async function ListingPage({
   href: string;
   sidebar?: ReactNode;
 }) {
-  const [result, allCategories] = await Promise.all([
+  const [result, allCategories, savedHero] = await Promise.all([
     listProducts(filters),
     listCategories(),
+    getSetting("shopHeroBanner"),
   ]);
 
+  const hero = savedHero && typeof savedHero === "object" && !Array.isArray(savedHero) ? savedHero as { eyebrow?: string; title?: string; description?: string; buttonLabel?: string; buttonHref?: string; imageUrls?: string[] } : {};
+
   // Reuse real product photos already stored in the shop catalogue for the desktop hero.
-  const heroImages = result.items
+  const catalogueHeroImages = result.items
     .flatMap((product) => product.images?.[0]?.url ? [{ url: product.images[0].url, name: product.name }] : [])
     .slice(0, 4);
+  const heroImages = Array.isArray(hero.imageUrls) && hero.imageUrls.some((url) => typeof url === "string" && url.trim())
+    ? hero.imageUrls.filter((url): url is string => typeof url === "string" && url.trim().length > 0).slice(0, 4).map((url, index) => ({ url, name: `Shop gift ${index + 1}` }))
+    : catalogueHeroImages;
 
   const occasions = allCategories
     .filter((c) => c.kind === "OCCASION")
@@ -161,10 +168,10 @@ export async function ListingPage({
                   )}
                   <div className="pointer-events-none absolute inset-0 z-[1] bg-gradient-to-r from-[#fff8fc] via-[#fff8fc]/95 to-[#fff8fc]/5" />
                   <div className="relative z-10 max-w-[48%]">
-                    <p className="mb-2 flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.2em] text-[#8a5578]"><Sparkles className="size-3.5" /> Thoughtful gifting starts here</p>
-                    <h2 className="font-display text-2xl font-bold leading-tight tracking-tight text-[#2b2029] xl:text-3xl">Make every moment feel special.</h2>
-                    <p className="mt-2 max-w-xl text-sm leading-relaxed text-[#71616d]">Find a thoughtful gift for the people and moments that matter most.</p>
-                    <Link href="/shop?sort=new" className="mt-4 inline-flex min-h-10 items-center gap-2 rounded-full bg-[#6B2D5C] px-5 py-2.5 text-xs font-bold text-white shadow-sm transition hover:bg-[#542248] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#6B2D5C] focus-visible:ring-offset-2">Explore gifts <ArrowRight className="size-4" /></Link>
+                    <p className="mb-2 flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.2em] text-[#8a5578]"><Sparkles className="size-3.5" /> {hero.eyebrow || "Thoughtful gifting starts here"}</p>
+                    <h2 className="font-display text-2xl font-bold leading-tight tracking-tight text-[#2b2029] xl:text-3xl">{hero.title || "Make every moment feel special."}</h2>
+                    <p className="mt-2 max-w-xl text-sm leading-relaxed text-[#71616d]">{hero.description || "Find a thoughtful gift for the people and moments that matter most."}</p>
+                    <Link href={hero.buttonHref || "/shop?sort=new"} className="mt-4 inline-flex min-h-10 items-center gap-2 rounded-full bg-[#6B2D5C] px-5 py-2.5 text-xs font-bold text-white shadow-sm transition hover:bg-[#542248] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#6B2D5C] focus-visible:ring-offset-2">{hero.buttonLabel || "Explore gifts"} <ArrowRight className="size-4" /></Link>
                   </div>
                 </section>
                 {occasions.length > 0 && (
