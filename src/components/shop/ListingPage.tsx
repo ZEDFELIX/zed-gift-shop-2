@@ -135,15 +135,9 @@ export async function ListingPage({
         <div className="min-w-0 flex-1">
           <header className="mb-4 flex items-end justify-between gap-3 border-b border-[#eee6ed] pb-3 sm:mb-6 sm:gap-4 sm:pb-4">
             <div className="min-w-0 flex-1">
-              <p className="mb-1 text-[9px] font-bold uppercase tracking-[0.18em] text-[#542447] sm:text-[10px]">
-                Thoughtful gifts, beautifully chosen
-              </p>
               <h1 className="min-w-0 break-words font-display text-xl font-bold leading-tight tracking-tight text-[#171717] sm:text-3xl">
                 {title}
               </h1>
-              <p className="mt-1 text-[11px] text-[#77716f] sm:text-sm">
-                {result.total.toLocaleString("en-KE")} {result.total === 1 ? "gift" : "gifts"} to explore
-              </p>
             </div>
             <div className="flex shrink-0 items-center justify-end gap-2">
               <Suspense fallback={null}>
