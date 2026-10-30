@@ -165,6 +165,8 @@ export async function getGiftSetProducts(limit = 8) {
     where: {
       status: "ACTIVE",
       OR: [
+        { name: { contains: "gift set", mode: "insensitive" } },
+        { name: { contains: "giftset", mode: "insensitive" } },
         { tags: { has: "gift-set" } },
         { tags: { has: "gift set" } },
         { categories: { some: { category: { OR: [
