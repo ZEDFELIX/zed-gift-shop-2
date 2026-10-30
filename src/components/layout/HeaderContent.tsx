@@ -291,7 +291,6 @@ export function HeaderContent({
               >
                 <Phone className="size-4 text-soft-sage" /> {contactPhone}
               </a>
-              <DownloadAppButton className="mb-2 flex w-full items-center justify-center gap-2 rounded-md border border-edge px-4 py-3 text-sm font-semibold text-[var(--color-ink)]" />
               {isAuthed && userRole === "ADMIN" && (
                 <Link
                   href="/admin"
@@ -308,6 +307,7 @@ export function HeaderContent({
               >
                 {isAuthed ? "My Account" : "Sign in / Create account"}
               </Link>
+              <DownloadAppButton className="mt-2 flex w-full items-center justify-center gap-2 rounded-md bg-[#6B2D5C] px-4 py-3 text-sm font-bold text-white shadow-sm transition hover:bg-[#542248]" />
             </div>
           </div>
         </div>
