@@ -433,6 +433,7 @@ export const UTILITY_NAV: NavChild[] = [
   { label: "About us", href: "/about" },
   { label: "Blog", href: "/blog" },
   { label: "Track order", href: "/track" },
+  { label: "Wishlist", href: "/account/wishlist" },
   { label: "Contact", href: "/contact" },
 ];
 
