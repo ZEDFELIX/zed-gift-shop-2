@@ -75,7 +75,7 @@ function Section({ title, products, href, flash = false, flashSale, titleColor, 
         </div>
         <div className="flex snap-x snap-mandatory gap-2 overflow-x-auto overscroll-x-contain rounded-xl pb-1 touch-auto scrollbar-none">
           {products.map((product, index) => (
-            <div key={product.id} className="w-[138px] min-w-[138px] shrink-0 snap-start sm:w-[170px] sm:min-w-[170px] lg:w-[190px] lg:min-w-[190px]">
+            <div key={product.id} className="w-[148px] min-w-[148px] shrink-0 snap-start sm:w-[170px] sm:min-w-[170px] lg:w-[190px] lg:min-w-[190px]">
               <ProductCard product={product} priority={index < 2} />
             </div>
           ))}
@@ -101,7 +101,7 @@ function Section({ title, products, href, flash = false, flashSale, titleColor, 
       </div>
       <div className="flex snap-x snap-mandatory gap-1.5 overflow-x-auto overscroll-x-contain pb-1 touch-auto scrollbar-none">
         {products.map((product, index) => (
-          <div key={product.id} className="w-[138px] min-w-[138px] shrink-0 snap-start sm:w-[170px] sm:min-w-[170px] lg:w-[190px] lg:min-w-[190px]">
+          <div key={product.id} className="w-[148px] min-w-[148px] shrink-0 snap-start sm:w-[170px] sm:min-w-[170px] lg:w-[190px] lg:min-w-[190px]">
             <ProductCard product={product} priority={index < 2} />
           </div>
         ))}
@@ -146,7 +146,7 @@ export async function getShopSectionData(): Promise<{ sections: ShopSection[]; s
   const startsAt = flashSaleSettings.startsAt ? new Date(flashSaleSettings.startsAt).getTime() : null;
   const endsAt = flashSaleSettings.endsAt ? new Date(flashSaleSettings.endsAt).getTime() : null;
   const saleWindowValid = (startsAt === null || Number.isFinite(startsAt)) && (endsAt === null || Number.isFinite(endsAt));
-  const saleVisible = flashSaleSettings.active && saleWindowValid && (startsAt === null || now >= startsAt || now < startsAt) && (endsAt === null || now < endsAt);
+  const saleVisible = flashSaleSettings.active && saleWindowValid && (startsAt === null || now >= startsAt) && (endsAt === null || now < endsAt);
   const flashItems = saleVisible ? unique(flashSale) : [];
   if (flashItems.length) {
     sections.push({
