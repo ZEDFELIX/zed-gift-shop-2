@@ -10,6 +10,7 @@ export function ProductCard({ product, priority = false, textColor, flashSaleTag
   const sale = discountPercent(product.price, product.compareAtPrice);
   const inStock = !product.trackInventory || product.quantity > product.reservedQuantity;
   const isNew = product.tags.some((t) => ["new", "new arrival"].includes(t.toLowerCase()));
+  const showFlashSaleTag = flashSaleTag || product.tags.some((tag) => tag.trim().toLowerCase() === "flash-sale");
   const lowStock =
     product.trackInventory &&
     inStock &&
@@ -24,7 +25,7 @@ export function ProductCard({ product, priority = false, textColor, flashSaleTag
 
   const media = (
     <div className="relative aspect-[6/5] w-full min-w-0 overflow-hidden bg-white transition-transform duration-300 sm:aspect-[5/4] lg:aspect-[1/1]">
-      {flashSaleTag && (
+      {showFlashSaleTag && (
         <span className="absolute right-0 top-3 z-20 rounded-l-md bg-[#E11D48] px-1.5 py-2 text-[9px] font-extrabold uppercase leading-none tracking-[0.12em] text-white shadow-md [writing-mode:vertical-rl]" aria-label="Flash sale">
           Flash Sale
         </span>
