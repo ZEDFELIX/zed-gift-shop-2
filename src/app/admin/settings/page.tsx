@@ -36,6 +36,7 @@ export default async function AdminSettingsPage() {
  <SettingsForm
 initial={{
   announcementBar: String(s.announcementBar ?? ""),
+  announcementColor: String(s.announcementColor ?? "#6B2D5C"),
   contactPhone: String(s.contactPhone ?? ""),
   contactEmail: String(s.contactEmail ?? ""),
   heroTitle: String(s.heroTitle ?? ""),
