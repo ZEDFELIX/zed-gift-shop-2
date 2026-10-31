@@ -238,6 +238,7 @@ export function HeaderContent({
       <div className={`relative z-30 border-b border-edge bg-white ${pathname.startsWith("/product/") ? "hidden md:block" : ""}`}>
         <div className="container-zed flex items-center justify-end overflow-x-auto py-1.5 sm:py-2">
           <nav className="flex items-center gap-3.5 sm:gap-5" aria-label="Utility">
+            <DownloadAppButton className="inline-flex shrink-0 items-center gap-1.5 whitespace-nowrap rounded-md bg-[#6B2D5C] px-3 py-1.5 text-[11px] font-bold text-white shadow-sm transition hover:bg-[#542248] sm:text-xs" />
             {UTILITY_NAV.map((item) => (
               <Link key={item.href} href={item.href} className="whitespace-nowrap text-[12px] font-semibold text-[var(--color-ink)] transition-colors hover:text-soft-sage sm:text-[13px]">
                 {item.label}
