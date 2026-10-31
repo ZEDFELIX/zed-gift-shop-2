@@ -156,12 +156,12 @@ export async function ListingPage({
             {showSections && (
               <>
                 {/* Desktop-only merchandising: mobile storefront remains unchanged. */}
-                <section className="relative mb-5 hidden overflow-hidden rounded-2xl border border-[#eadde8] bg-[#f8eef5] px-7 py-6 shadow-sm lg:flex lg:items-center xl:px-9 xl:py-7">
+                <section className="relative mb-5 hidden min-h-[190px] overflow-hidden rounded-2xl border border-[#eadde8] bg-[#f8eef5] px-7 py-6 shadow-sm lg:flex lg:items-center xl:px-9 xl:py-7">
                   {heroImages.length > 0 && (
-                    <div className="pointer-events-none absolute inset-y-0 right-0 hidden w-[62%] grid-cols-4 gap-1.5 pl-10 lg:grid">
-                      {heroImages.map((photo, index) => (
-                        <div key={photo.url} className={`relative overflow-hidden ${index === 0 ? "rounded-l-[3rem]" : ""} ${index === heroImages.length - 1 ? "rounded-r-2xl" : ""}`}>
-                          <img src={photo.url} alt={photo.name} className="h-full w-full object-cover" />
+                    <div className="pointer-events-none absolute inset-y-0 right-0 hidden w-[58%] grid-cols-4 items-center gap-2 pl-10 pr-4 lg:grid">
+                      {heroImages.map((photo) => (
+                        <div key={photo.url} className="flex h-[126px] min-w-0 items-center justify-center overflow-hidden rounded-xl border border-white/80 bg-white/75 p-2 shadow-sm xl:h-[140px]">
+                          <img src={photo.url} alt={photo.name} className="h-full w-full object-contain" />
                         </div>
                       ))}
                     </div>
