@@ -140,18 +140,28 @@ export async function ListingPage({
 
           <div className="mt-1 sm:mt-3">
             {showSections && categories.length > 0 && (
-              <section className="mb-4 sm:hidden">
+              <section className="mb-4 sm:hidden" aria-label="Shop by category">
                 <div className="mb-2 flex items-center justify-between">
-                  <h2 className="text-sm font-extrabold text-[#252525]">Categories</h2>
-                  <Link href="/shop" className="text-[10px] font-semibold text-[#8aa83d]">See all</Link>
+                  <h2 className="text-sm font-extrabold text-[var(--color-ink)]">Categories</h2>
+                  <Link href="/shop" className="shrink-0 text-[11px] font-bold text-[var(--color-rose-500)]">See all</Link>
                 </div>
-                <div className="flex gap-2 overflow-x-auto pb-1 scrollbar-none">
-                  {categories.filter((category) => category.count > 0).slice(0, 10).map((category, index) => (
-                    <Link key={category.slug} href={"/shop?category=" + encodeURIComponent(category.slug)} className="flex h-[54px] min-w-[88px] shrink-0 items-center justify-between gap-1 overflow-hidden rounded-xl border border-[#e8e8e8] bg-white px-2 shadow-sm">
-                      <span className="max-w-[54px] text-[10px] font-bold leading-tight text-[#343434]">{category.name}</span>
-                      <span className={"grid size-8 shrink-0 place-items-center rounded-lg text-xs font-black " + (index % 3 === 0 ? "bg-[#eef4df] text-[#72952e]" : index % 3 === 1 ? "bg-[#f8eaf0] text-[#b35a7b]" : "bg-[#edf0f5] text-[#65748b]")}>{category.name.slice(0,1).toUpperCase()}</span>
-                    </Link>
-                  ))}
+                <div className="-mx-3 flex snap-x snap-mandatory gap-2 overflow-x-auto px-3 pb-2 scrollbar-none" role="group" aria-label="Product categories">
+                  {categories.filter((category) => category.count > 0).slice(0, 10).map((category) => {
+                    const active = filters.category === category.slug;
+                    return (
+                      <Link
+                        key={category.slug}
+                        href={"/shop?category=" + encodeURIComponent(category.slug)}
+                        aria-current={active ? "page" : undefined}
+                        className={"inline-flex h-10 min-w-max shrink-0 snap-start items-center gap-2 rounded-full border px-3.5 text-xs font-bold shadow-sm transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-rose-500)] " + (active
+                          ? "border-[var(--color-plum-800)] bg-[var(--color-plum-800)] text-white"
+                          : "border-[var(--color-rose-500)]/25 bg-white text-[var(--color-ink)] hover:border-[var(--color-rose-500)] hover:bg-[var(--color-warm-ivory)]")}
+                      >
+                        <span className={"grid size-6 shrink-0 place-items-center rounded-full text-[10px] font-black " + (active ? "bg-white/20 text-white" : "bg-[var(--color-rose-500)] text-white")}>{category.name.slice(0, 1).toUpperCase()}</span>
+                        <span>{category.name}</span>
+                      </Link>
+                    );
+                  })}
                 </div>
               </section>
             )}
