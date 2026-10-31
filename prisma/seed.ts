@@ -331,6 +331,36 @@ giftWrapAvailable: p.giftWrapAvailable ?? false,
  await linkCollections(product.id, collections.length ? collections : ["new-arrivals"]);
   }
 
+  // Populate occasion pages from real catalogue products so every occasion
+  // button opens a curated, non-empty product listing.
+  const occasionRules: Array<{ slug: string; match: RegExp }> = [
+    { slug: "birthday", match: /birthday|birthday-gift|birthday gifts/i },
+    { slug: "anniversary", match: /anniversary|couple|calendar keychain/i },
+    { slug: "graduation", match: /graduation|graduate|achievement/i },
+    { slug: "corporate", match: /corporate|branded|executive|office|staff|client|company|bulk/i },
+    { slug: "valentines", match: /valentine|romantic|love|heart|couple/i },
+    { slug: "fathers-day", match: /father|dad|for-him|men gifts/i },
+    { slug: "wedding", match: /wedding|bride|groom|bridal|his-and-hers/i },
+    { slug: "just-because", match: /just-because|surprise|keepsake|personalized|personalised/i },
+  ];
+  const occasionProducts = await prisma.product.findMany({
+    where: { status: "ACTIVE" },
+    select: { id: true, name: true, slug: true, shortDescription: true, description: true, tags: true },
+  });
+  for (const product of occasionProducts) {
+    const searchable = [product.name, product.slug, product.shortDescription ?? "", product.description ?? "", ...product.tags].join(" ");
+    const matchedSlugs = occasionRules.filter((rule) => rule.match.test(searchable)).map((rule) => rule.slug);
+    for (const slug of matchedSlugs) {
+      const occasion = await prisma.category.findUnique({ where: { slug }, select: { id: true } });
+      if (!occasion) continue;
+      await prisma.productCategory.upsert({
+        where: { productId_categoryId: { productId: product.id, categoryId: occasion.id } },
+        update: {},
+        create: { productId: product.id, categoryId: occasion.id },
+      });
+    }
+  }
+
   if (missingCategoryRefs.size > 0) {
     console.warn(
       `Warning: ${missingCategoryRefs.size} catalogue category reference(s) did not match a seeded category:`,
