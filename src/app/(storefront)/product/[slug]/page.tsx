@@ -94,7 +94,7 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
  });
 
   return (
-  <div className="container-zed py-4 sm:py-8 lg:py-12">
+  <div className="container-zed px-0 pb-8 pt-0 sm:px-4 sm:py-8 lg:py-12">
   <TrackPageView
     event="view_item"
     params={{ currency: "KES", value: product.price, items: [{ item_id: product.id, item_name: product.name }] }}
@@ -103,7 +103,7 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
  <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumb) }} />
 
  {/* Breadcrumbs */}
- <nav aria-label="Breadcrumb" className="mb-4 flex items-center gap-1.5 overflow-x-auto text-xs text-[rgba(48,37,34,0.62)]">
+ <nav aria-label="Breadcrumb" className="mb-4 hidden items-center gap-1.5 overflow-x-auto text-xs text-[rgba(48,37,34,0.62)]">
  <Link href="/" className="hover:text-zed-700">Home</Link>
  <ChevronRight className="size-3.5 shrink-0" />
  <Link href="/shop" className="hover:text-zed-700">Shop</Link>
@@ -119,9 +119,9 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
  <span className="whitespace-nowrap text-[var(--color-ink)]">{product.name}</span>
  </nav>
 
- <div className="grid min-w-0 gap-6 sm:gap-8 lg:grid-cols-2 lg:gap-14">
+ <div className="grid min-w-0 gap-4 sm:gap-8 lg:grid-cols-2 lg:gap-14">
   {/* Gallery */}
-  <div className="space-y-3">
+  <div className="space-y-2 sm:space-y-3">
   <ProductGallery images={product.images.map((img) => ({ url: img.url, alt: img.alt }))} name={product.name} sale={sale} />
  {product.videoUrl && (
   <div className="mt-3 overflow-hidden rounded-zed bg-black/5 ring-1 ring-white/50">
@@ -145,7 +145,7 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
  ))}
  </div>
 
- <h1 className="mt-3 font-display text-[26px] font-black leading-tight text-[var(--color-ink)] sm:text-3xl lg:text-4xl">{product.name}</h1>
+ <h1 className="mt-2 font-display text-[21px] font-extrabold leading-tight text-[var(--color-ink)] sm:mt-3 sm:text-3xl lg:text-4xl">{product.name}</h1>
  {product.headline && <p className="mt-2 text-lg text-soft-sage">{product.headline}</p>}
 
  <div className="mt-3 flex items-center gap-2">
@@ -218,7 +218,7 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
  </div>
 
  {/* USPs */}
- <div className="glass-card mt-6 grid gap-3 rounded-zed p-3 sm:mt-8 sm:p-5 sm:grid-cols-2">
+ <div className="glass-card mt-5 grid gap-3 rounded-zed p-3 sm:mt-8 sm:p-5 sm:grid-cols-2">
   <div className="flex items-center gap-2.5 text-sm text-[var(--color-ink)]">
   <Truck className="size-5 shrink-0 text-soft-sage" />
   Same-day Nairobi before 5 PM · countrywide 1–7 working days
@@ -241,14 +241,14 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
 
  {/* Description */}
  {product.description && (
- <section className="mx-auto mt-10 max-w-3xl sm:mt-14">
+ <section className="mx-auto mt-8 max-w-3xl px-4 sm:mt-14 sm:px-0">
  <h2 className="font-display text-2xl font-bold text-[var(--color-ink)]">About this gift</h2>
  <p className="mt-4 whitespace-pre-line leading-relaxed text-[var(--color-ink)]">{product.description}</p>
  </section>
  )}
 
  {/* Reviews */}
- <section id="reviews" className="mx-auto mt-10 max-w-4xl sm:mt-14">
+ <section id="reviews" className="mx-auto mt-8 max-w-4xl px-4 sm:mt-14 sm:px-0">
   <h2 className="font-display text-2xl font-bold text-[var(--color-ink)]">Customer reviews</h2>
   {reviews.length > 0 && (
   <div className="mt-1">
@@ -344,7 +344,7 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
 
  {/* Related */}
  {related.length > 0 && (
- <section className="mt-10 sm:mt-16">
+ <section className="mt-8 px-4 sm:mt-16 sm:px-0">
  <h2 className="font-display text-2xl font-bold text-[var(--color-ink)]">You may also love</h2>
  <div className="mt-4 grid grid-cols-2 gap-x-2.5 gap-y-4 sm:mt-6 sm:gap-x-6 sm:gap-y-8 lg:grid-cols-4">
  {related.map((p) => (
