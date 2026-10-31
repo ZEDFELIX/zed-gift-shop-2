@@ -207,11 +207,7 @@ export async function getFlashSaleProducts(limit = 6) {
   return prisma.product.findMany({
     where: {
       status: "ACTIVE",
-      OR: [
-        { tags: { has: "flash-sale" } },
-        { tags: { has: "customer-service-week" } },
-        { collections: { some: { collection: { slug: "customer-service-week" } } } },
-      ],
+      tags: { has: "flash-sale" },
     },
     select: productCardSelect,
     orderBy: [{ featured: "desc" }, { updatedAt: "desc" }],
@@ -248,7 +244,7 @@ export async function getFlashSaleSettings(): Promise<FlashSaleSettings> {
     subtitle: typeof subtitle === "string" ? subtitle : "Limited-time offers on selected gifts.",
     startsAt: typeof startsAt === "string" ? startsAt : "",
     endsAt: typeof endsAt === "string" ? endsAt : "",
-    active: active !== false,
+    active: active === true,
     boxColor: isHexColor(boxColor) ? boxColor : FLASH_SALE_DEFAULT_BOX_COLOR,
   };
 }
