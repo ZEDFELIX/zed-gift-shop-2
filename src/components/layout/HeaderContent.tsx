@@ -105,7 +105,7 @@ export function HeaderContent({
       {/* Compact responsive announcement bar */}
       <div className="relative z-30 border-b border-white/10 bg-[var(--color-announcement,#6B2D5C)] text-[var(--color-announcement-fg,#fff)]">
         <div className="container-zed flex min-h-9 items-center justify-between gap-2 px-3 sm:min-h-10 sm:px-4">
-          <p className="min-w-0 flex-1 truncate text-center text-[10px] font-semibold tracking-wide sm:text-xs md:text-left">
+          <p className="min-w-0 flex-1 overflow-x-auto whitespace-nowrap text-center text-[10px] font-semibold tracking-wide scrollbar-none touch-pan-x sm:text-xs md:overflow-hidden md:text-left md:text-ellipsis">
             {announcement}
           </p>
           <div className="flex shrink-0 items-center gap-3 border-l border-white/25 pl-3 text-[10px] font-semibold sm:gap-4 sm:pl-4 sm:text-[11px]">
