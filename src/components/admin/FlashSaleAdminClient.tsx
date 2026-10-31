@@ -6,7 +6,15 @@ import { FlashSaleCountdown } from "@/components/shop/FlashSaleCountdown";
 
 type Product = { id: string; name: string; quantity: number; status: string; tags: string[] };
 
-function readableTextColor(hex: string) {\n  const value = /^#([0-9a-f]{6})$/i.exec(hex.trim());\n  if (!value) return "#171717";\n  const n = Number.parseInt(value[1], 16);\n  const luminance = (0.299 * ((n >> 16) & 255) + 0.587 * ((n >> 8) & 255) + 0.114 * (n & 255)) / 255;\n  return luminance > 0.6 ? "#171717" : "#FFFFFF";\n}\n\nfunction saleStatus(startsAt: string, endsAt: string, active: boolean) {
+function readableTextColor(hex: string) {
+  const value = /^#([0-9a-f]{6})$/i.exec(hex.trim());
+  if (!value) return "#171717";
+  const n = Number.parseInt(value[1], 16);
+  const luminance = (0.299 * ((n >> 16) & 255) + 0.587 * ((n >> 8) & 255) + 0.114 * (n & 255)) / 255;
+  return luminance > 0.6 ? "#171717" : "#FFFFFF";
+}
+
+function saleStatus(startsAt: string, endsAt: string, active: boolean) {
   if (!active) return { label: "Disabled", className: "bg-slate-100 text-slate-600" };
   const now = Date.now();
   const start = startsAt ? new Date(startsAt).getTime() : null;
