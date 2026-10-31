@@ -79,6 +79,20 @@ export function HeaderContent({
     setSearchOpen(false);
   }, [pathname]);
 
+  // Keep the shop page fixed while the mobile drawer is open. The drawer's
+  // navigation area can scroll independently without moving the page behind it.
+  useEffect(() => {
+    if (!mobileOpen) return;
+    const previousBodyOverflow = document.body.style.overflow;
+    const previousHtmlOverflow = document.documentElement.style.overflow;
+    document.body.style.overflow = "hidden";
+    document.documentElement.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = previousBodyOverflow;
+      document.documentElement.style.overflow = previousHtmlOverflow;
+    };
+  }, [mobileOpen]);
+
   useEffect(() => {
     function onKey(e: KeyboardEvent) {
       if (e.key === "Escape") {
@@ -270,7 +284,7 @@ export function HeaderContent({
                 className="w-full min-w-0 bg-transparent py-2 text-sm outline-none"
               />
             </form>
-            <nav className="min-h-0 flex-1 overflow-hidden p-3" aria-label="Mobile">
+            <nav className="min-h-0 flex-1 overflow-y-auto overscroll-contain touch-pan-y p-3" aria-label="Mobile">
               {NAV_GROUPS.map((group) => (
                 <MobileGroup key={group.label} group={group} onClose={() => setMobileOpen(false)} />
               ))}
