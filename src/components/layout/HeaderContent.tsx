@@ -9,6 +9,7 @@ import {
   UsersRound,
   LogIn,
   Menu,
+  MessageCircle,
   Phone,
   Search,
   SlidersHorizontal,
@@ -101,29 +102,23 @@ export function HeaderContent({
 
   return (
     <>
-      {/* Mobile announcement bar — contacts stacked on the left, message sweeps from the middle */}
-      <div className="relative z-30 border-b border-edge/60 bg-[var(--color-announcement,#6B2D5C)] text-[var(--color-announcement-fg,#fff)] lg:hidden">
-        <div className="zed-announcement-wrap h-11">
-          <div className="flex h-11 shrink-0 flex-col items-start justify-center px-3 text-[10px] font-bold leading-tight sm:text-[11px]">
-            <a href={telHref} className="whitespace-nowrap hover:underline">Call us on: {contactPhone}</a>
-            <a href={waHref} target="_blank" rel="noreferrer noopener" className="whitespace-nowrap hover:underline">WhatsApp: {whatsappNumber}</a>
-          </div>
-          <div className="flex h-11 min-w-0 flex-1 items-center justify-center overflow-hidden px-3 text-center">
-            <span className="truncate text-[11px] font-semibold sm:text-[12px]">{announcement}</span>
-          </div>
-        </div>
-        <p className="sr-only">{announcement ? `${announcement} · ` : ""}Call us on: {contactPhone} · WhatsApp: {whatsappNumber}</p>
-      </div>
-
-      {/* Desktop announcement bar — contacts stacked on the left, message sweeps from the middle */}
-      <div className="relative z-30 hidden border-b border-zed-900/15 bg-[var(--color-announcement,#6B2D5C)] text-[var(--color-announcement-fg,#fff)] md:block">
-        <div className="container-zed zed-announcement-wrap h-11">
-          <div className="flex h-11 shrink-0 flex-col items-start justify-center border-r border-white/25 pr-4 text-[10px] font-bold leading-tight sm:text-[11px]">
-            <a href={telHref} className="whitespace-nowrap hover:underline">Call us on: {contactPhone}</a>
-            <a href={waHref} target="_blank" rel="noreferrer noopener" className="whitespace-nowrap hover:underline">WhatsApp: {whatsappNumber}</a>
-          </div>
-          <div className="flex h-11 min-w-0 flex-1 items-center justify-center overflow-hidden text-center">
-            <span className="truncate text-[12px] font-semibold">{announcement}</span>
+      {/* Compact responsive announcement bar */}
+      <div className="relative z-30 border-b border-white/10 bg-[var(--color-announcement,#6B2D5C)] text-[var(--color-announcement-fg,#fff)]">
+        <div className="container-zed flex min-h-9 items-center justify-between gap-2 px-3 sm:min-h-10 sm:px-4">
+          <p className="min-w-0 flex-1 truncate text-center text-[10px] font-semibold tracking-wide sm:text-xs md:text-left">
+            {announcement}
+          </p>
+          <div className="flex shrink-0 items-center gap-3 border-l border-white/25 pl-3 text-[10px] font-semibold sm:gap-4 sm:pl-4 sm:text-[11px]">
+            <a href={telHref} className="inline-flex items-center gap-1.5 whitespace-nowrap transition-opacity hover:opacity-75" aria-label={`Call us on ${contactPhone}`}>
+              <Phone className="size-3" aria-hidden="true" />
+              <span className="hidden sm:inline">{contactPhone}</span>
+              <span className="sm:hidden">Call</span>
+            </a>
+            <a href={waHref} target="_blank" rel="noreferrer noopener" className="inline-flex items-center gap-1.5 whitespace-nowrap transition-opacity hover:opacity-75" aria-label={`WhatsApp ${whatsappNumber}`}>
+              <MessageCircle className="size-3.5" aria-hidden="true" />
+              <span className="hidden sm:inline">WhatsApp</span>
+              <span className="sm:hidden">Chat</span>
+            </a>
           </div>
         </div>
         <p className="sr-only">{announcement ? `${announcement} · ` : ""}Call us on: {contactPhone} · WhatsApp: {whatsappNumber}</p>
