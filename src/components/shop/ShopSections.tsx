@@ -76,7 +76,7 @@ function Section({ title, products, href, flash = false, flashSale, titleColor, 
         <div className="flex snap-x snap-mandatory gap-2 overflow-x-auto overscroll-x-contain rounded-xl pb-1 touch-auto scrollbar-none">
           {products.map((product, index) => (
             <div key={product.id} className="w-[148px] min-w-[148px] shrink-0 snap-start sm:w-[170px] sm:min-w-[170px] lg:w-[190px] lg:min-w-[190px]">
-              <ProductCard product={product} priority={index < 2} textColor={textColor} />
+              <ProductCard product={product} priority={index < 2} textColor={textColor} flashSaleTag />
             </div>
           ))}
         </div>
