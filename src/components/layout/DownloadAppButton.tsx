@@ -89,8 +89,6 @@ export function DownloadAppButton({ className = "" }: { className?: string }) {
   const { installed, install } = useInstallPrompt();
   const [busy, setBusy] = useState(false);
 
-  if (installed) return null;
-
   async function handleClick() {
     if (busy) return;
     setBusy(true);
@@ -108,12 +106,12 @@ export function DownloadAppButton({ className = "" }: { className?: string }) {
     <button
       type="button"
       onClick={handleClick}
-      disabled={busy}
-      className={className}
+      disabled={busy || installed}
+      className={`${className} ${installed ? "cursor-default opacity-90" : ""}`}
       aria-label="Download ZED Gift Shop app"
     >
       <Download className="size-4" />
-      <span>{busy ? "Installing..." : "Download App"}</span>
+      <span>{installed ? "App Installed" : busy ? "Installing..." : "Download App"}</span>
     </button>
   );
 }
