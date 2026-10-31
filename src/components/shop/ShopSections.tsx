@@ -84,7 +84,7 @@ function Section({ title, products, href, flash = false, flashSale, titleColor, 
     );
   }
   return (
-    <section className={`mb-5 overflow-hidden rounded-2xl border p-2 shadow-sm sm:mb-6 sm:p-3 ${giftSet ? "border-[#d9bfd2] ring-1 ring-[#ead9e7]" : "border-[#e8e2dc]"}`} style={{ backgroundColor: backgroundColor || "#FFFFFF" }}>
+    <section className={`mb-4 overflow-hidden rounded-2xl border p-2 shadow-sm sm:mb-5 sm:p-3 ${giftSet ? "border-[#d9bfd2] ring-1 ring-[#ead9e7]" : "border-[#e8e2dc]"}`} style={{ backgroundColor: backgroundColor || "#FFFFFF" }}>
       <div className="mb-2 flex items-center justify-between gap-2 border-b border-[#e8e2dc] pb-2">
         <h2 className="font-display text-sm font-bold sm:text-xl" style={{ color: titleColor || "var(--color-ink)" }}>{giftSet ? <span className="inline-flex items-center gap-2"><span className="grid size-7 place-items-center rounded-lg bg-[#6B2D5C] text-xs text-white">G</span>{title}</span> : title}</h2>
         {href && (
