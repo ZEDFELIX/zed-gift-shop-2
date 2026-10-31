@@ -69,8 +69,7 @@ export async function ListingPage({
     filters.max != null ? `up to KES ${filters.max}` : undefined,
   ].filter(Boolean);
 
-  // Keep the current search/filter/sort state when changing pages. Previously
-  // pagination linked to /shop?page=N and silently dropped active filters.
+  // Preserve all active filters when moving between result pages.
   const paginationParams = new URLSearchParams();
   const queryValues: Record<string, string | number | boolean | undefined> = {
     q: filters.q,
@@ -99,6 +98,7 @@ export async function ListingPage({
     : { sections: [], shownIds: [] };
   const shownIds = new Set(sectionData.shownIds);
   const gridItems = result.items.filter((p) => !shownIds.has(p.id));
+  const visibleCategories = categories.filter((category) => category.count > 0);
 
   return (
     <div className="container-zed bg-[#f7f7f7] py-2 sm:bg-transparent sm:py-5 lg:py-6">
@@ -122,8 +122,7 @@ export async function ListingPage({
         {sidebar ? <div className="hidden shrink-0 lg:block lg:w-60 xl:w-64">{sidebar}</div> : null}
         <div className="min-w-0 flex-1">
           <header className="mb-4 hidden items-end justify-between gap-3 border-b border-[#eee6ed] pb-3 sm:mb-6 sm:flex sm:gap-4 sm:pb-4">
-            <div className="min-w-0 flex-1">
-            </div>
+            <div className="min-w-0 flex-1" />
             <div className="flex shrink-0 items-center justify-end gap-2">
               <Suspense fallback={null}>
                 <ShopFiltersMenu
@@ -139,19 +138,41 @@ export async function ListingPage({
           </header>
 
           <div className="mt-1 sm:mt-3">
-            {showSections && categories.length > 0 && (
-              <section className="mb-4 sm:hidden">
-                <div className="mb-2 flex items-center justify-between">
-                  <h2 className="text-sm font-extrabold text-[#252525]">Categories</h2>
-                  <Link href="/shop" className="text-[10px] font-semibold text-[#8aa83d]">See all</Link>
+            {visibleCategories.length > 0 && (
+              <section aria-label="Browse product categories" className="mb-5 sm:mb-7">
+                <div className="mb-3 flex items-center justify-between gap-3">
+                  <div>
+                    <h2 className="text-sm font-extrabold text-[#252525] sm:text-base">Shop by category</h2>
+                    <p className="mt-0.5 text-[10px] text-[#777] sm:text-xs">Choose a category to explore</p>
+                  </div>
+                  <Link href="/shop" className="shrink-0 text-[10px] font-semibold text-[#72952e] hover:underline sm:text-xs">View all</Link>
                 </div>
-                <div className="flex gap-2 overflow-x-auto pb-1 scrollbar-none">
-                  {categories.filter((category) => category.count > 0).slice(0, 10).map((category, index) => (
-                    <Link key={category.slug} href={"/shop?category=" + encodeURIComponent(category.slug)} className="flex h-[54px] min-w-[88px] shrink-0 items-center justify-between gap-1 overflow-hidden rounded-xl border border-[#e8e8e8] bg-white px-2 shadow-sm">
-                      <span className="max-w-[54px] text-[10px] font-bold leading-tight text-[#343434]">{category.name}</span>
-                      <span className={"grid size-8 shrink-0 place-items-center rounded-lg text-xs font-black " + (index % 3 === 0 ? "bg-[#eef4df] text-[#72952e]" : index % 3 === 1 ? "bg-[#f8eaf0] text-[#b35a7b]" : "bg-[#edf0f5] text-[#65748b]")}>{category.name.slice(0,1).toUpperCase()}</span>
-                    </Link>
-                  ))}
+                <div className="flex snap-x snap-mandatory gap-2.5 overflow-x-auto overscroll-x-contain pb-2 scrollbar-none touch-pan-x sm:gap-3">
+                  {visibleCategories.map((category, index) => {
+                    const active = filters.category === category.slug;
+                    const tone = index % 3;
+                    const toneClass = tone === 0
+                      ? "bg-[#eef4df] text-[#72952e]"
+                      : tone === 1
+                        ? "bg-[#f8eaf0] text-[#b35a7b]"
+                        : "bg-[#edf0f5] text-[#65748b]";
+                    return (
+                      <Link
+                        key={category.slug}
+                        href={`/shop?category=${encodeURIComponent(category.slug)}`}
+                        aria-current={active ? "page" : undefined}
+                        className={`group flex h-[68px] min-w-[142px] max-w-[178px] shrink-0 snap-start items-center gap-3 rounded-xl border bg-white px-3 text-left shadow-sm transition hover:-translate-y-0.5 hover:shadow-md sm:h-[76px] sm:min-w-[158px] sm:px-3.5 ${active ? "border-[var(--color-rose-500)] ring-1 ring-[var(--color-rose-500)]" : "border-[#e5e5e5] hover:border-[#c9c9c9]"}`}
+                      >
+                        <span className={`grid size-10 shrink-0 place-items-center rounded-lg text-sm font-black sm:size-11 ${toneClass}`}>
+                          {category.name.slice(0, 1).toUpperCase()}
+                        </span>
+                        <span className="min-w-0 flex-1">
+                          <span className="block line-clamp-2 text-[11px] font-bold leading-tight text-[#303030] sm:text-xs">{category.name}</span>
+                          <span className="mt-1 block text-[9px] text-[#888] sm:text-[10px]">{category.count} {category.count === 1 ? "item" : "items"}</span>
+                        </span>
+                      </Link>
+                    );
+                  })}
                 </div>
               </section>
             )}
