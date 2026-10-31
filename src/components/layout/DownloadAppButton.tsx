@@ -8,7 +8,6 @@ type BIPEvent = Event & {
   userChoice: Promise<{ outcome: "accepted" | "dismissed" }>;
 };
 
-const INSTALLED_KEY = "zed:app-installed";
 const DISMISSED_KEY = "appPopupDismissed";
 
 function isIOS(): boolean {
@@ -31,14 +30,6 @@ export function useInstallPrompt() {
       setInstalled(true);
       return;
     }
-    try {
-      if (window.localStorage.getItem(INSTALLED_KEY) === "true") {
-        setInstalled(true);
-        return;
-      }
-    } catch {
-      // Storage unavailable - fall through to prompt listening.
-    }
     const onPrompt = (e: Event) => {
       e.preventDefault();
       setDeferred(e as BIPEvent);
@@ -46,11 +37,6 @@ export function useInstallPrompt() {
     const onInstalled = () => {
       setInstalled(true);
       setDeferred(null);
-      try {
-        window.localStorage.setItem(INSTALLED_KEY, "true");
-      } catch {
-        // Ignore storage failures.
-      }
     };
     window.addEventListener("beforeinstallprompt", onPrompt);
     window.addEventListener("appinstalled", onInstalled);
@@ -67,12 +53,7 @@ export function useInstallPrompt() {
       const choice = await deferred.userChoice;
       setDeferred(null);
       if (choice.outcome === "accepted") {
-        setInstalled(true);
-        try {
-          window.localStorage.setItem(INSTALLED_KEY, "true");
-        } catch {
-          // Ignore storage failures.
-        }
+        // Acceptance is not proof the app finished installing. appinstalled or standalone mode confirms it.
         return "installed";
       }
       return "dismissed";
@@ -133,15 +114,13 @@ export function DownloadAppPopup() {
   // Shown on the first visit of each session until installed. Closing it hides
   // it for this session only - the bottom-nav "Install" entry re-opens it.
   useEffect(() => {
-    let hide = false;
+    let dismissed = false;
     try {
-      hide =
-        window.localStorage.getItem(INSTALLED_KEY) === "true" ||
-        window.sessionStorage.getItem(DISMISSED_KEY) === "true";
+      dismissed = window.sessionStorage.getItem(DISMISSED_KEY) === "true";
     } catch {
-      hide = false;
+      dismissed = false;
     }
-    setOpen(!hide);
+    setOpen(!installed && !dismissed);
   }, [installed]);
 
   useEffect(() => {
