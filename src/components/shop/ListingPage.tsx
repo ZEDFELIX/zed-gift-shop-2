@@ -173,7 +173,8 @@ export async function ListingPage({
                       </Link>
                     );
                   })}
-                </div>             </section>
+                </div>
+              </section>
             )}
             {showSections && <ShopSections sections={sectionData.sections} />}
             {gridItems.length > 0 ? (
