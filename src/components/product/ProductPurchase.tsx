@@ -186,9 +186,9 @@ export function ProductPurchase({
   }
 
  return (
- <div className="space-y-6">
+ <div className="space-y-4 pb-24 md:space-y-6 md:pb-0">
   {/* Views & reviews summary */}
-  <div className="flex items-center gap-3 text-sm text-[#334155]">
+  <div className="hidden items-center gap-3 text-sm text-[#334155] md:flex">
   <span className="flex items-center gap-1 text-[#07111F]">
   <Sparkles className="size-4 text-soft-sage" /> Available online
   </span>
@@ -369,7 +369,7 @@ export function ProductPurchase({
  )}
 
  {/* Quantity + price + add */}
- <div className="flex flex-wrap items-center gap-4">
+ <div className="flex flex-wrap items-center justify-between gap-3">
  <div className="flex items-center rounded-zed border border-edge">
  <button type="button" aria-label="Decrease quantity" onClick={() => setQuantity((q) => Math.max(1, q - 1))} className="grid size-11 place-items-center hover:bg-zed-900/5">
  <Minus className="size-4" />
@@ -379,7 +379,7 @@ export function ProductPurchase({
  <Plus className="size-4" />
  </button>
  </div>
- <div className="flex items-baseline gap-2">
+ <div className="hidden items-baseline gap-2 md:flex">
  <p className="font-display text-[22px] font-black text-[#07111F] sm:text-3xl">{formatKES(price * quantity)}</p>
  {compareAtPrice != null && compareAtPrice > basePrice && (
  <p className="text-lg text-[#334155] line-through">{formatKES(compareAtPrice * quantity)}</p>
@@ -387,7 +387,7 @@ export function ProductPurchase({
  </div>
  </div>
 
- <div className="max-w-sm">
+ <div className="hidden max-w-sm md:block">
   {inStock ? (
     <button
       type="button"
@@ -419,6 +419,20 @@ export function ProductPurchase({
   <ShieldCheck className="size-4 text-soft-sage" /> Secure M-PESA checkout · Free gift box included
   </p>
  </div>
+
+
+  {/* Mobile sticky purchase bar */}
+  <div className="fixed inset-x-0 bottom-0 z-[60] flex items-center gap-3 border-t border-black/10 bg-white/95 px-3 pb-[max(10px,env(safe-area-inset-bottom))] pt-2 shadow-[0_-6px_24px_rgba(0,0,0,0.10)] backdrop-blur md:hidden">
+    <div className="min-w-0 flex-1">
+      <p className="text-[10px] font-medium text-[#64748b]">Total price</p>
+      <p className="truncate text-lg font-extrabold leading-tight text-[var(--color-ink)]">{formatKES(price * quantity)}</p>
+    </div>
+    {inStock ? (
+      <button type="button" onClick={addToCart} disabled={busy} className="inline-flex min-h-11 min-w-[48%] items-center justify-center gap-2 rounded-full bg-[#9dbb35] px-5 text-sm font-bold text-[#17210b] shadow-sm disabled:opacity-60">
+        <ShoppingBag className="size-4" /> {busy ? "Adding…" : "Add to Cart"}
+      </button>
+    ) : <span className="rounded-full bg-black/5 px-4 py-3 text-xs font-semibold text-[#64748b]">Out of stock</span>}
+  </div>
  </div>
  );
 }
