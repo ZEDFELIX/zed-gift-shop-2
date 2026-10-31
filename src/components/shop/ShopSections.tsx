@@ -41,11 +41,11 @@ function Section({ title, products, href, flash = false, flashSale, titleColor, 
     const textColor = contrastText(boxColor);
     return (
       <section
-        className="relative mb-4 overflow-hidden rounded-2xl border border-black/10 p-2.5 shadow-sm sm:mb-5 sm:p-3"
-        style={{ backgroundColor: boxColor }}
+        className="relative mb-4 overflow-hidden rounded-2xl border p-2.5 shadow-sm sm:mb-5 sm:p-3"
+        style={{ backgroundColor: boxColor, color: textColor, borderColor: textColor === "#FFFFFF" ? "rgba(255,255,255,.22)" : "rgba(0,0,0,.10)" }}
         aria-label={flashSale.title || title}
       >
-        <div className="mb-2 flex min-w-0 items-center justify-between gap-2 border-b border-black/10 pb-2">
+        <div className="mb-2 flex min-w-0 items-center justify-between gap-2 border-b pb-2" style={{ borderColor: textColor === "#FFFFFF" ? "rgba(255,255,255,.22)" : "rgba(0,0,0,.10)" }}>
           <div className="flex min-w-0 items-center gap-2">
             <span className="grid size-8 shrink-0 place-items-center rounded-xl bg-[#171717] text-white shadow-sm">
               <Zap className="size-4 fill-current" aria-hidden="true" />
@@ -66,7 +66,7 @@ function Section({ title, products, href, flash = false, flashSale, titleColor, 
             {href && (
               <Link
                 href={href}
-                className="inline-flex min-h-8 shrink-0 items-center gap-1 rounded-full border border-black/10 bg-white px-2.5 py-1.5 text-[10px] font-bold text-rose-700 shadow-sm transition-colors hover:bg-rose-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-500 sm:px-3 sm:text-xs"
+                className="inline-flex min-h-8 shrink-0 items-center gap-1 rounded-full border px-2.5 py-1.5 text-[10px] font-bold shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 sm:px-3 sm:text-xs" style={{ color: textColor, borderColor: textColor === "#FFFFFF" ? "rgba(255,255,255,.45)" : "rgba(0,0,0,.16)", backgroundColor: textColor === "#FFFFFF" ? "rgba(255,255,255,.12)" : "rgba(255,255,255,.9)" }}
               >
                 See all <ArrowRight className="size-3" aria-hidden="true" />
               </Link>
