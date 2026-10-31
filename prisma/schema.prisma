@@ -172,6 +172,7 @@ model User {
  emailVerified DateTime?
  passwordHash String?
  phone String?
+ avatarUrl String?
  role Role @default(CUSTOMER)
  status UserStatus @default(ACTIVE)
  favoritesJson String?
