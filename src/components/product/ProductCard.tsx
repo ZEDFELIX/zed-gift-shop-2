@@ -5,7 +5,7 @@ import Link from "next/link";
 import type { ProductCardData } from "@/lib/data/products";
 import { discountPercent, formatKES } from "@/lib/utils";
 
-export function ProductCard({ product, priority = false, textColor }: { product: ProductCardData; priority?: boolean; textColor?: string }) {
+export function ProductCard({ product, priority = false, textColor, flashSaleTag = false }: { product: ProductCardData; priority?: boolean; textColor?: string; flashSaleTag?: boolean }) {
   const image = product.images[0]?.url;
   const sale = discountPercent(product.price, product.compareAtPrice);
   const inStock = !product.trackInventory || product.quantity > product.reservedQuantity;
@@ -24,6 +24,11 @@ export function ProductCard({ product, priority = false, textColor }: { product:
 
   const media = (
     <div className="relative aspect-[6/5] w-full min-w-0 overflow-hidden bg-white transition-transform duration-300 sm:aspect-[5/4] lg:aspect-[1/1]">
+      {flashSaleTag && (
+        <span className="absolute right-0 top-3 z-20 rounded-l-md bg-[#E11D48] px-1.5 py-2 text-[9px] font-extrabold uppercase leading-none tracking-[0.12em] text-white shadow-md [writing-mode:vertical-rl]" aria-label="Flash sale">
+          Flash Sale
+        </span>
+      )}
       {badge && (
         <span className={`absolute left-2 top-2 z-10 rounded-full px-2 py-0.5 text-[11px] font-bold uppercase tracking-wide shadow ${badge.cls}`}>
           {badge.label}
