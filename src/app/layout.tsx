@@ -2,7 +2,7 @@ import "server-only";
 
 import { Metadata, Viewport } from "next";
 import type { CSSProperties } from "react";
-import { jost, libreBaskerville, poppins, quicksand, displaySans } from "@/app/fonts";
+import { roboto } from "@/app/fonts";
 import { SITE } from "@/lib/constants";
 import { getSettings } from "@/lib/data/settings";
 import { buildMetadata, jsonLdOrganization, jsonLdWebsite } from "@/lib/seo";
@@ -71,10 +71,10 @@ export default async function RootLayout({ children }: { children: React.ReactNo
  return (
     <html
       lang="en"
-      className={`${jost.variable} ${quicksand.variable} ${poppins.variable} ${libreBaskerville.variable} ${displaySans.variable}`}
+      className={roboto.variable}
       suppressHydrationWarning
     >
-    <body style={colors} className={`zed-page-bg min-h-screen bg-pure-white text-ink font-sans antialiased ${displaySans.variable}`} suppressHydrationWarning>
+    <body style={colors} className="zed-page-bg min-h-screen bg-pure-white text-ink font-sans antialiased" suppressHydrationWarning>
     <script
     type="application/ld+json"
     dangerouslySetInnerHTML={{ __html: storeJsonLd }}
