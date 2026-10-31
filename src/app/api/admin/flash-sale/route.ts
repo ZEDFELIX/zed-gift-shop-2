@@ -21,13 +21,15 @@ export async function GET() {
    endsAt: endsAt ? JSON.parse(endsAt.value) : "",
    active: active ? Boolean(JSON.parse(active.value)) : false,
    boxColor: boxColor && /^#[0-9a-fA-F]{6}$/.test(String(JSON.parse(boxColor.value))) ? String(JSON.parse(boxColor.value)) : "#FBE9EE",
+   productIds: await prisma.product.findMany({ where: { tags: { has: "flash-sale" } }, select: { id: true } }).then((items) => items.map((item) => item.id)),
   });
 }
 
 export async function PATCH(req: Request) {
  try { await requirePermission("settings.manage"); } catch { return NextResponse.json({ error: "Unauthorized" }, { status: 401 }); }
  const body = await req.json();
-  const productIds = Array.isArray(body.productIds) ? body.productIds.filter((id: unknown): id is string => typeof id === "string") : [];
+  const hasProductSelection = Array.isArray(body.productIds);
+  const productIds = hasProductSelection ? [...new Set(body.productIds.filter((id: unknown): id is string => typeof id === "string"))] : [];
   const boxColor = typeof body.boxColor === "string" && /^#[0-9a-fA-F]{6}$/.test(body.boxColor.trim()) ? body.boxColor.trim() : "#FBE9EE";
   const values = [
    ["flashSaleTitle", String(body.title ?? "").trim()],
@@ -41,16 +43,17 @@ export async function PATCH(req: Request) {
   for (const [key, value] of values) {
    await tx.adminSetting.upsert({ where: { key }, update: { value: JSON.stringify(value) }, create: { key, value: JSON.stringify(value) } });
   }
-  const current = await tx.product.findMany({ where: { tags: { has: "flash-sale" } }, select: { id: true, tags: true } });
-  for (const p of current) {
-   const tags = p.tags.filter((tag) => tag !== "flash-sale");
-   if (productIds.includes(p.id)) tags.push("flash-sale");
-   await tx.product.update({ where: { id: p.id }, data: { tags } });
-  }
-  if (productIds.length) {
+  if (hasProductSelection) {
    const selected = await tx.product.findMany({ where: { id: { in: productIds } }, select: { id: true, tags: true } });
-   for (const p of selected) {
-    if (!p.tags.includes("flash-sale")) await tx.product.update({ where: { id: p.id }, data: { tags: [...p.tags, "flash-sale"] } });
+   const selectedIds = new Set(selected.map((product) => product.id));
+   const current = await tx.product.findMany({ where: { tags: { has: "flash-sale" } }, select: { id: true, tags: true } });
+   for (const product of current) {
+    if (selectedIds.has(product.id)) continue;
+    await tx.product.update({ where: { id: product.id }, data: { tags: product.tags.filter((tag) => tag !== "flash-sale") } });
+   }
+   for (const product of selected) {
+    if (product.tags.includes("flash-sale")) continue;
+    await tx.product.update({ where: { id: product.id }, data: { tags: [...product.tags, "flash-sale"] } });
    }
   }
  });
