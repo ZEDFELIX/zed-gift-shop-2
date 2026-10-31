@@ -73,6 +73,48 @@ export function ColorsForm({ initial }: Props) {
         </p>
       </section>
 
+      <section className="rounded-zed border border-edge bg-white p-6">
+        <h2 className="font-display text-lg font-bold text-[#07111F]">New brand palette</h2>
+        <p className="mt-1 text-sm text-[#334155]">Apply the approved palette as a starting point, then customise every colour below with the colour picker or HEX value.</p>
+        <div className="mt-4 grid gap-3 sm:grid-cols-3">
+          {[
+            { name: "Royal Plum", hex: "#6C2D5C", role: "Primary + announcement" },
+            { name: "Midnight Slate", hex: "#263746", role: "Secondary" },
+            { name: "Soft Ivory", hex: "#F3F0EA", role: "Background" },
+          ].map((preset) => (
+            <button
+              key={preset.name}
+              type="button"
+              onClick={() => {
+                const key = preset.name === "Royal Plum" ? "primaryColor" : preset.name === "Midnight Slate" ? "secondaryColor" : "backgroundColor";
+                set(key, preset.hex);
+                if (preset.name === "Royal Plum") set("announcementColor", preset.hex);
+              }}
+              className="flex items-center gap-3 rounded-xl border border-edge p-3 text-left transition hover:border-[#6C2D5C] hover:bg-panel/50"
+            >
+              <span className="size-10 shrink-0 rounded-lg border border-black/10" style={{ backgroundColor: preset.hex }} />
+              <span className="min-w-0">
+                <span className="block text-sm font-bold text-[#07111F]">{preset.name}</span>
+                <span className="block text-xs text-[#64748B]">{preset.hex} · {preset.role}</span>
+              </span>
+            </button>
+          ))}
+        </div>
+        <button
+          type="button"
+          onClick={() => setColors((current) => ({
+            ...current,
+            primaryColor: "#6C2D5C",
+            secondaryColor: "#263746",
+            backgroundColor: "#F3F0EA",
+            announcementColor: "#6C2D5C",
+          }))}
+          className="mt-3 rounded-md bg-[#263746] px-4 py-2 text-xs font-bold text-white transition hover:opacity-90"
+        >
+          Apply complete brand palette
+        </button>
+      </section>
+
       <div className="grid gap-5 lg:grid-cols-2">
         {BRAND_COLORS.map((color) => (
           <section key={color.key} className="rounded-zed border border-edge bg-white p-6">
