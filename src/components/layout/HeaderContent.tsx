@@ -13,6 +13,8 @@ import {
   Phone,
   Search,
   SlidersHorizontal,
+  Heart,
+  Home,
   ShieldCheck,
   ShoppingBag,
   User,
@@ -131,8 +133,22 @@ export function HeaderContent({
         <p className="sr-only">{announcement ? `${announcement} · ` : ""}Call us on: {contactPhone} · WhatsApp: {whatsappNumber}</p>
       </div>
 
+      {/* Compact app-style mobile storefront header */}
+      <div className={pathname.startsWith("/product/") ? "hidden" : "sticky top-0 z-40 bg-[#f7f7f7]/95 px-3 pb-2 pt-2 backdrop-blur-xl md:hidden"}>
+        <div className="flex h-10 items-center justify-between">
+          <button type="button" aria-label="Open menu" onClick={() => setMobileOpen(true)} className="grid size-9 place-items-center rounded-full bg-white shadow-sm"><Menu className="size-5" /></button>
+          <Brand storeName={storeName} />
+          <button type="button" onClick={openCart} aria-label="Open cart" className="relative grid size-9 place-items-center rounded-full bg-white shadow-sm"><ShoppingBag className="size-[18px]" />{cartCount > 0 && <span className="absolute -right-1 -top-1 grid min-w-4 place-items-center rounded-full bg-zed-950 px-1 text-[9px] font-bold text-white">{cartCount}</span>}</button>
+        </div>
+        <form role="search" onSubmit={onHeaderSearch} className="mt-2 flex h-10 items-center gap-2 rounded-full border border-[#ececec] bg-white px-3 shadow-sm">
+          <Search className="size-4 shrink-0 text-[#a3a3a3]" />
+          <input value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} type="search" placeholder="What are you looking for?" aria-label="Products search" className="min-w-0 flex-1 bg-transparent text-xs outline-none placeholder:text-[#a3a3a3]" />
+          <button type="button" onClick={() => window.dispatchEvent(new CustomEvent("zed:toggle-shop-filters"))} aria-label="Filters" className="grid size-8 place-items-center rounded-full text-[#555]"><SlidersHorizontal className="size-4" /></button>
+        </form>
+      </div>
+
       {/* Main header row */}
-      <div className={`sticky top-0 z-40 px-2 pt-1.5 sm:px-3 sm:pt-2 lg:px-5 ${pathname.startsWith("/product/") ? "hidden md:block" : ""}`}><div className="zed-glass-nav rounded-2xl">
+      <div className={`sticky top-0 z-40 px-2 pt-1.5 sm:px-3 sm:pt-2 lg:px-5 ${(pathname.startsWith("/product/") || pathname.startsWith("/shop")) ? "hidden md:block" : ""}`}><div className="zed-glass-nav rounded-2xl">
         <div className="container-zed flex h-[56px] items-center gap-2 px-2.5 sm:h-[60px] sm:gap-2.5 sm:px-4 lg:h-[74px] lg:gap-6 lg:px-10">
           <button
             type="button"
@@ -317,11 +333,11 @@ export function HeaderContent({
 
       <SearchPanel open={searchOpen} onClose={() => setSearchOpen(false)} />
 
-       <nav aria-label="Mobile quick navigation" className="fixed inset-x-3 bottom-3 z-[60] grid grid-cols-4 rounded-2xl border border-edge bg-white p-1 shadow-glass-lg lg:hidden">
-         <Link href="/shop" className="flex flex-col items-center gap-0.5 px-1 py-2 text-[10px] font-semibold text-ink hover:text-rose-600"><ShoppingBag className="size-4" /><span>Shop</span></Link>
-         <button type="button" onClick={() => setSearchOpen(true)} className="flex flex-col items-center gap-0.5 px-1 py-2 text-[10px] font-semibold text-ink hover:text-rose-600"><Search className="size-4" /><span>Search</span></button>
-         <Link href="/about" className="flex flex-col items-center gap-0.5 px-1 py-2 text-[10px] font-semibold text-ink hover:text-rose-600"><UsersRound className="size-4" /><span>About Us</span></Link>
-         <Link href={accountHref} className="flex flex-col items-center gap-0.5 px-1 py-2 text-[10px] font-semibold text-ink hover:text-rose-600"><User className="size-4" /><span>My Account</span></Link>
+       <nav aria-label="Mobile quick navigation" className="fixed inset-x-3 bottom-3 z-[80] grid grid-cols-4 rounded-full border border-white/80 bg-white/90 p-1 shadow-[0_8px_28px_rgba(0,0,0,.12)] backdrop-blur-xl lg:hidden">
+         <Link href="/" className="flex flex-col items-center justify-center gap-0.5 rounded-full px-1 py-1.5 text-[10px] font-semibold text-[#62666d]"><Home className="size-5" /><span>Home</span></Link>
+         <button type="button" onClick={openCart} className="flex flex-col items-center justify-center gap-0.5 rounded-full px-1 py-1.5 text-[10px] font-semibold text-[#62666d]"><ShoppingBag className="size-5" /><span>Cart</span></button>
+         <Link href="/account/wishlist" className="flex flex-col items-center justify-center gap-0.5 rounded-full px-1 py-1.5 text-[10px] font-semibold text-[#62666d]"><Heart className="size-5" /><span>Wishlist</span></Link>
+         <Link href={accountHref} className="flex flex-col items-center justify-center gap-0.5 rounded-full px-1 py-1.5 text-[10px] font-semibold text-[#62666d]"><User className="size-5" /><span>Account</span></Link>
        </nav>
     </>
   );
