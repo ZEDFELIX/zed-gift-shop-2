@@ -102,8 +102,15 @@ export function HeaderContent({
 
   return (
     <>
+      {pathname.startsWith("/product/") && (
+        <div className="sticky top-0 z-50 flex h-12 items-center justify-between border-b border-black/5 bg-white/95 px-4 shadow-sm backdrop-blur md:hidden">
+          <Link href="/shop" aria-label="Back to shop" className="grid size-9 place-items-center rounded-full bg-black/5 text-[var(--color-ink)]"><ChevronDown className="size-5 rotate-90" /></Link>
+          <span className="text-sm font-semibold text-[var(--color-ink)]">Details</span>
+          <button type="button" onClick={openCart} aria-label={`Open cart, ${cartCount} items`} className="relative grid size-9 place-items-center rounded-full bg-black/5 text-[var(--color-ink)]"><ShoppingBag className="size-[18px]" />{cartCount > 0 && <span className="absolute -right-1 -top-1 grid min-w-4 place-items-center rounded-full bg-zed-950 px-1 text-[9px] font-bold text-white">{cartCount}</span>}</button>
+        </div>
+      )}
       {/* Compact responsive announcement bar */}
-      <div className="relative z-30 border-b border-white/10 bg-[var(--color-announcement,#6B2D5C)] text-[var(--color-announcement-fg,#fff)]">
+      <div className="relative z-30 hidden md:block border-b border-white/10 bg-[var(--color-announcement,#6B2D5C)] text-[var(--color-announcement-fg,#fff)]">
         <div className="container-zed flex min-h-9 items-center justify-between gap-2 px-3 sm:min-h-10 sm:px-4">
           <p className="min-w-0 flex-1 overflow-x-auto whitespace-nowrap text-center text-[10px] font-semibold tracking-wide scrollbar-none touch-pan-x sm:text-xs md:overflow-hidden md:text-left md:text-ellipsis">
             {announcement}
@@ -125,7 +132,7 @@ export function HeaderContent({
       </div>
 
       {/* Main header row */}
-      <div className="sticky top-0 z-40 px-2 pt-1.5 sm:px-3 sm:pt-2 lg:px-5"><div className="zed-glass-nav rounded-2xl">
+      <div className={`sticky top-0 z-40 px-2 pt-1.5 sm:px-3 sm:pt-2 lg:px-5 ${pathname.startsWith("/product/") ? "hidden md:block" : ""}`}><div className="zed-glass-nav rounded-2xl">
         <div className="container-zed flex h-[56px] items-center gap-2 px-2.5 sm:h-[60px] sm:gap-2.5 sm:px-4 lg:h-[74px] lg:gap-6 lg:px-10">
           <button
             type="button"
@@ -213,7 +220,7 @@ export function HeaderContent({
       </div></div>
 
       {/* Utility bar — key links, shown below the announcement bar on every screen */}
-      <div className="relative z-30 border-b border-edge bg-white">
+      <div className={`relative z-30 border-b border-edge bg-white ${pathname.startsWith("/product/") ? "hidden md:block" : ""}`}>
         <div className="container-zed flex items-center justify-end overflow-x-auto py-1.5 sm:py-2">
           <nav className="flex items-center gap-3.5 sm:gap-5" aria-label="Utility">
             {UTILITY_NAV.map((item) => (
