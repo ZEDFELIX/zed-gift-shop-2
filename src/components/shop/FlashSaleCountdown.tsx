@@ -32,12 +32,6 @@ export function FlashSaleCountdown({
     return "live" as const;
   }, [active, start, end, now]);
 
-  const fallbackEnd = useMemo(() => {
-    const d = new Date();
-    d.setHours(23, 59, 59, 999);
-    return d.getTime();
-  }, []);
-
   useEffect(() => {
     if (status !== "live" && status !== "upcoming") return;
     const id = window.setInterval(() => setNow(Date.now()), 1000);
@@ -54,7 +48,7 @@ export function FlashSaleCountdown({
     );
   }
 
-  const target = status === "upcoming" ? start : (end ?? fallbackEnd);
+  const target = status === "upcoming" ? start : end;
   if (target === null) return null;
 
   const remaining = Math.max(0, target - now);
