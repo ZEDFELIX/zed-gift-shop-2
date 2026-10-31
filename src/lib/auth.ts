@@ -86,7 +86,7 @@ export async function getCurrentUser() {
       where: { id: session.sub },
       select: {
         id: true, name: true, email: true, phone: true, role: true,
-        emailVerified: true, createdAt: true,
+        emailVerified: true, createdAt: true, avatarUrl: true,
       },
     });
     return user;
