@@ -183,14 +183,12 @@ export async function ListingPage({
                       </div>
                       <span className="text-xs text-[#857780]">A little something for every celebration</span>
                     </div>
-                    <div className="grid grid-cols-3 gap-3 xl:grid-cols-4">
-                      {occasions.slice(0, 4).map((occasion, index) => (
-                        <Link key={occasion.slug} href={`/shop?occasion=${encodeURIComponent(occasion.slug)}`} className="group flex min-h-[88px] items-center justify-between gap-3 rounded-xl border border-[#eee5ec] bg-white/80 px-4 py-3 shadow-[0_2px_10px_rgba(48,28,43,0.03)] transition hover:-translate-y-0.5 hover:border-[#d9bfd2] hover:bg-[#fffafd] hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#8a5578]">
-                          <div className="flex min-w-0 items-center gap-3">
-                            <span className={`grid size-11 shrink-0 place-items-center rounded-xl text-sm font-bold ${index % 2 === 0 ? "bg-[#f5eaf2] text-[#794568]" : "bg-[#f7f0e8] text-[#8b6844]"}`}>{occasion.name.trim().slice(0, 1).toUpperCase()}</span>
-                            <span className="min-w-0"><span className="block truncate text-sm font-bold text-[#342832] group-hover:text-[#6B2D5C]">{occasion.name}</span><span className="mt-1 block text-[11px] text-[#8a7d86]">{occasion.count} {occasion.count === 1 ? "gift" : "gifts"}</span></span>
-                          </div>
-                          <ArrowRight className="size-4 shrink-0 text-[#a58b9d] transition group-hover:translate-x-0.5 group-hover:text-[#6B2D5C]" />
+                    <div className="flex flex-wrap gap-2">
+                      {occasions.filter((occasion) => occasion.count > 0).map((occasion, index) => (
+                        <Link key={occasion.slug} href={`/shop?occasion=${encodeURIComponent(occasion.slug)}`} className="group inline-flex min-h-8 items-center gap-1.5 rounded-full border border-[#eadde8] bg-white/85 px-3 py-1.5 text-xs font-semibold text-[#493b46] shadow-[0_1px_4px_rgba(48,28,43,0.04)] transition hover:border-[#cfaec5] hover:bg-[#fff8fc] hover:text-[#6B2D5C] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#8a5578]">
+                          <span className={`grid size-5 place-items-center rounded-full text-[10px] font-bold ${index % 2 === 0 ? "bg-[#f5eaf2] text-[#794568]" : "bg-[#f7f0e8] text-[#8b6844]"}`}>{occasion.name.trim().slice(0, 1).toUpperCase()}</span>
+                          <span>{occasion.name}</span>
+                          <span className="text-[10px] font-medium text-[#9a8794]">({occasion.count})</span>
                         </Link>
                       ))}
                     </div>
