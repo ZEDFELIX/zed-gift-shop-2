@@ -22,7 +22,7 @@ export const BRAND_COLORS: BrandColor[] = [
   {
     key: "primaryColor",
     label: "Primary colour",
-    default: "#E5397F",
+    default: "#6C2D5C",
     description:
       "The main accent customers see most. It highlights prices, links, active states and accents throughout the store.",
     usedFor: [
@@ -38,7 +38,7 @@ export const BRAND_COLORS: BrandColor[] = [
   {
     key: "secondaryColor",
     label: "Secondary colour",
-    default: "#6B2D5C",
+    default: "#263746",
     description:
       "The deep brand colour. It anchors the header, footer and primary buttons for a premium, grounded look.",
     usedFor: [
@@ -65,7 +65,7 @@ export const BRAND_COLORS: BrandColor[] = [
   {
     key: "backgroundColor",
     label: "Background colour",
-    default: "#FFFFFF",
+    default: "#F3F0EA",
     description:
       "The page canvas behind all content. It is also used for cards and white surfaces, so keep it light for readable text.",
     usedFor: [
@@ -78,7 +78,7 @@ export const BRAND_COLORS: BrandColor[] = [
   {
     key: "announcementColor",
     label: "Announcement bar colour",
-    default: "#6B2D5C",
+    default: "#6C2D5C",
     description:
       "The background of the scrolling announcement bar at the top of every page. It changes only this bar - nothing else on the store is affected.",
     usedFor: ["Top announcement bar", "Mobile information bar"],
