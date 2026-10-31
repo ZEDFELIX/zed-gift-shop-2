@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { getCurrentUser } from "@/lib/auth";
 import { getOrdersForUser } from "@/lib/data/orders";
 import { prisma } from "@/lib/prisma";
@@ -32,19 +33,25 @@ export default async function AccountOverviewPage() {
   </Link>
   </section>
   )}
-  <section className="glass-card rounded-xl p-3 sm:rounded-2xl sm:p-4">
- <div className="flex flex-wrap items-center justify-between gap-3">
- <div>
- <p className="font-display text-base sm:text-lg font-bold text-[#07111F]">{user.name}</p>
- <p className="text-xs sm:text-sm text-[#334155]">{user.email}</p>
- {user.phone && <p className="text-sm text-[#334155]">{user.phone}</p>}
- </div>
- <div className="text-right text-xs sm:text-sm">
- <p className="text-[#334155]">Member since</p>
- <p className="font-semibold text-[#07111F]">{user.createdAt.toLocaleDateString("en-KE", { month: "short", year: "numeric" })}</p>
- </div>
- </div>
- </section>
+  <section className="overflow-hidden rounded-3xl border border-[#e9e9e9] bg-white shadow-sm">
+   <div className="bg-[#f1f5e9] px-4 pb-5 pt-5 sm:px-6">
+    <div className="flex items-center gap-3">
+     <div className="relative grid size-[68px] shrink-0 place-items-center overflow-hidden rounded-full border-4 border-white bg-white shadow-sm">
+      {user.avatarUrl ? <Image src={user.avatarUrl} alt={user.name} fill sizes="68px" className="object-cover" unoptimized /> : <span className="text-2xl font-black text-[#8aa83d]">{user.name.trim().charAt(0).toUpperCase()}</span>}
+     </div>
+     <div className="min-w-0 flex-1">
+      <p className="text-[10px] font-bold uppercase tracking-[0.14em] text-[#71854b]">Welcome back</p>
+      <h2 className="mt-0.5 truncate text-lg font-extrabold text-[#252525]">{user.name}</h2>
+      <p className="truncate text-xs text-[#66705b]">{user.email}</p>
+     </div>
+     <Link href="/account/settings" className="shrink-0 rounded-full bg-white px-3 py-2 text-[11px] font-bold text-[#66872b] shadow-sm">Edit</Link>
+    </div>
+   </div>
+   <div className="grid grid-cols-2 gap-3 px-4 py-3 sm:px-6">
+    <div><p className="text-[10px] text-[#888]">Phone number</p><p className="mt-0.5 truncate text-xs font-semibold text-[#333]">{user.phone || "Add phone number"}</p></div>
+    <div><p className="text-[10px] text-[#888]">Member since</p><p className="mt-0.5 text-xs font-semibold text-[#333]">{user.createdAt.toLocaleDateString("en-KE", { month: "short", year: "numeric" })}</p></div>
+   </div>
+  </section>
 
  <section className="grid min-w-0 grid-cols-2 gap-2 sm:gap-3">
  <Link href="/account/orders" className="glass-card rounded-xl p-3 sm:rounded-2xl sm:p-4 transition-all hover:-translate-y-1 hover:shadow-glass-lg">
