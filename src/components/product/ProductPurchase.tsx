@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
-import { Check, Minus, Plus, ShieldCheck, ShoppingBag, Sparkles } from "lucide-react";
+import { Check, Minus, Plus, ShieldCheck, ShoppingBag, Sparkles, MessageCircle } from "lucide-react";
 import { formatKES } from "@/lib/utils";
 
 type Variant = { id: string; name: string; value: string; priceOffset: number; inStock: boolean };
@@ -428,10 +428,15 @@ export function ProductPurchase({
       <p className="truncate text-lg font-extrabold leading-tight text-[var(--color-ink)]">{formatKES(price * quantity)}</p>
     </div>
     {inStock ? (
-      <button type="button" onClick={addToCart} disabled={busy} className="inline-flex min-h-11 min-w-[48%] items-center justify-center gap-2 rounded-full bg-[#9dbb35] px-5 text-sm font-bold text-[#17210b] shadow-sm disabled:opacity-60">
-        <ShoppingBag className="size-4" /> {busy ? "Adding…" : "Add to Cart"}
+      <button type="button" onClick={addToCart} disabled={busy} className="inline-flex min-h-11 min-w-0 flex-1 items-center justify-center gap-1.5 rounded-full bg-[#9dbb35] px-3 text-xs font-bold text-[#17210b] shadow-sm disabled:opacity-60">
+        <ShoppingBag className="size-4 shrink-0" /> {busy ? "Adding…" : "Add to cart"}
       </button>
-    ) : <span className="rounded-full bg-black/5 px-4 py-3 text-xs font-semibold text-[#64748b]">Out of stock</span>}
+    ) : <span className="min-w-0 flex-1 rounded-full bg-black/5 px-2 py-3 text-center text-[11px] font-semibold text-[#64748b]">Out of stock</span>}
+    {whatsappNumber && productName ? (
+      <button type="button" onClick={orderOnWhatsApp} className="inline-flex min-h-11 min-w-0 flex-1 items-center justify-center gap-1.5 rounded-full bg-[#25D366] px-3 text-xs font-bold text-white shadow-sm">
+        <MessageCircle className="size-4 shrink-0" /> WhatsApp
+      </button>
+    ) : null}
   </div>
  </div>
  );
