@@ -19,14 +19,14 @@ export function AccountNav({ isAdmin = false }: { isAdmin?: boolean }) {
     ? [...TABS, { href: "/admin", label: "Admin dashboard", icon: LayoutDashboard }]
     : TABS;
   return (
-  <nav className="glass-nav flex gap-1 overflow-x-auto rounded-zed p-1.5 lg:flex-col lg:overflow-visible">
+  <nav className="flex gap-1 overflow-x-auto rounded-2xl border border-[#e9e9e9] bg-white p-1.5 shadow-sm scrollbar-none lg:flex-col lg:overflow-visible">
   {tabs.map(({ href, label, icon: Icon }) => {
   const active = pathname === href || (href !== "/account" && pathname.startsWith(href));
   return (
   <Link
   key={href}
   href={href}
-  className={`flex min-h-11 shrink-0 items-center gap-2 rounded-zed px-4 py-2.5 text-xs sm:text-sm font-semibold transition-colors ${active ? "bg-zed-950 text-white" : "text-[#07111F] hover:bg-white/50 hover:text-[#07111F]"}`}
+  className={`flex min-h-11 shrink-0 items-center gap-2 rounded-full px-4 py-2.5 text-xs sm:text-sm font-semibold transition-colors ${active ? "bg-[#eaf1dc] text-[#64852c]" : "text-[#62666d] hover:bg-[#f7f7f7] hover:text-[#252525]"}`}
   >
   <Icon className="size-4" /> {label}
   </Link>
