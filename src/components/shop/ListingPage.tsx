@@ -144,7 +144,7 @@ export async function ListingPage({
               <section className="mb-4 sm:hidden">
                 <div className="mb-2 flex items-center justify-between">
                   <h2 className="text-sm font-extrabold text-[#252525]">Categories</h2>
-                  <Link href="/categories" className="text-[10px] font-semibold text-[#8aa83d]">See all</Link>
+                  <Link href="/shop" className="text-[10px] font-semibold text-[#8aa83d]">See all</Link>
                 </div>
                 <div className="flex gap-2 overflow-x-auto pb-1 scrollbar-none">
                   {categories.filter((category) => category.count > 0).slice(0, 10).map((category, index) => (
