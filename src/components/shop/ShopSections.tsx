@@ -142,7 +142,12 @@ export async function getShopSectionData(): Promise<{ sections: ShopSection[]; s
   });
 
   const sections: ShopSection[] = [];
-  const flashItems = unique(flashSale);
+  const now = Date.now();
+  const startsAt = flashSaleSettings.startsAt ? new Date(flashSaleSettings.startsAt).getTime() : null;
+  const endsAt = flashSaleSettings.endsAt ? new Date(flashSaleSettings.endsAt).getTime() : null;
+  const saleWindowValid = (startsAt === null || Number.isFinite(startsAt)) && (endsAt === null || Number.isFinite(endsAt));
+  const saleVisible = flashSaleSettings.active && saleWindowValid && (startsAt === null || now >= startsAt || now < startsAt) && (endsAt === null || now < endsAt);
+  const flashItems = saleVisible ? unique(flashSale) : [];
   if (flashItems.length) {
     sections.push({
       title: "Limited-time offers",
