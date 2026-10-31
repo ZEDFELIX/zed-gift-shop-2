@@ -24,22 +24,22 @@ export function RecentlyViewed() {
   if (!products.length) return null;
 
   return (
-    <section className="mb-5 hidden overflow-hidden rounded-xl border border-[#eee5ec] bg-white/80 p-2.5 shadow-[0_2px_12px_rgba(48,28,43,0.04)] lg:block sm:p-3" aria-label="Recently viewed gifts">
-      <div className="mb-2 flex items-center justify-between gap-3 border-b border-[#eee5ec] pb-2">
+    <section className="mb-3 hidden overflow-hidden rounded-lg border border-[#eee5ec] bg-white p-2 lg:block" aria-label="Recently viewed gifts">
+      <div className="mb-1.5 flex items-center justify-between gap-2 border-b border-[#eee5ec] pb-1.5">
         <div className="flex min-w-0 items-center gap-2">
-          <span className="grid size-8 shrink-0 place-items-center rounded-lg bg-[#f5eaf2] text-[#794568]">
-            <Clock3 className="size-4" />
+          <span className="grid size-6 shrink-0 place-items-center rounded-md bg-[#f5eaf2] text-[#794568]">
+            <Clock3 className="size-3" />
           </span>
           <div className="min-w-0">
-            <h2 className="truncate text-sm font-bold text-[#342832] sm:text-base">Pick up where you left off</h2>
-            <p className="text-[10px] text-[#8a7d86] sm:text-[11px]">Your recently viewed gifts</p>
+            <h2 className="truncate text-xs font-bold text-[#342832]">Pick up where you left off</h2>
+            
           </div>
         </div>
-        <span className="shrink-0 inline-flex items-center gap-1 text-[10px] font-semibold text-[#8a5578]">Recently viewed <ArrowRight className="size-3" /></span>
+        <span className="shrink-0 inline-flex items-center gap-1 text-[9px] font-semibold text-[#8a5578]">Recently viewed <ArrowRight className="size-3" /></span>
       </div>
-      <div className="flex snap-x snap-mandatory gap-2 overflow-x-auto overscroll-x-contain pb-1 scrollbar-none">
+      <div className="flex snap-x snap-mandatory gap-1.5 overflow-x-auto overscroll-x-contain scrollbar-none">
         {products.map((product, index) => (
-          <div key={product.id} className="w-[116px] min-w-[116px] shrink-0 snap-start sm:w-[138px] sm:min-w-[138px]">
+          <div key={product.id} className="w-[96px] min-w-[96px] shrink-0 snap-start sm:w-[108px] sm:min-w-[108px]">
             <ProductCard product={product} priority={index < 2} />
           </div>
         ))}
