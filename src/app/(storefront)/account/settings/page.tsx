@@ -9,7 +9,7 @@ export default async function AccountSettingsPage() {
   const user = (await getCurrentUser())!;
   return (
   <div className="space-y-6">
-  <ProfileForm name={user.name} email={user.email} phone={user.phone} />
+  <ProfileForm name={user.name} email={user.email} phone={user.phone} avatarUrl={user.avatarUrl} />
   <PasswordForm />
   {user.role === "CUSTOMER" ? (
     <DeleteAccountForm email={user.email} />
