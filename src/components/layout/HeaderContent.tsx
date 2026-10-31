@@ -133,22 +133,8 @@ export function HeaderContent({
         <p className="sr-only">{announcement ? `${announcement} · ` : ""}Call us on: {contactPhone} · WhatsApp: {whatsappNumber}</p>
       </div>
 
-      {/* Compact app-style mobile storefront header */}
-      <div className={pathname.startsWith("/product/") ? "hidden" : "sticky top-0 z-40 bg-[#f7f7f7]/95 px-3 pb-2 pt-2 backdrop-blur-xl md:hidden"}>
-        <div className="flex h-10 items-center justify-between">
-          <button type="button" aria-label="Open menu" onClick={() => setMobileOpen(true)} className="grid size-9 place-items-center rounded-full bg-white shadow-sm"><Menu className="size-5" /></button>
-          <Brand storeName={storeName} />
-          <button type="button" onClick={openCart} aria-label="Open cart" className="relative grid size-9 place-items-center rounded-full bg-white shadow-sm"><ShoppingBag className="size-[18px]" />{cartCount > 0 && <span className="absolute -right-1 -top-1 grid min-w-4 place-items-center rounded-full bg-zed-950 px-1 text-[9px] font-bold text-white">{cartCount}</span>}</button>
-        </div>
-        <form role="search" onSubmit={onHeaderSearch} className="mt-2 flex h-10 items-center gap-2 rounded-full border border-[#ececec] bg-white px-3 shadow-sm">
-          <Search className="size-4 shrink-0 text-[#a3a3a3]" />
-          <input value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} type="search" placeholder="What are you looking for?" aria-label="Products search" className="min-w-0 flex-1 bg-transparent text-xs outline-none placeholder:text-[#a3a3a3]" />
-          <button type="button" onClick={() => window.dispatchEvent(new CustomEvent("zed:toggle-shop-filters"))} aria-label="Filters" className="grid size-8 place-items-center rounded-full text-[#555]"><SlidersHorizontal className="size-4" /></button>
-        </form>
-      </div>
-
       {/* Main header row */}
-      <div className={`sticky top-0 z-40 px-2 pt-1.5 sm:px-3 sm:pt-2 lg:px-5 ${(pathname.startsWith("/product/") || pathname.startsWith("/shop")) ? "hidden md:block" : ""}`}><div className="zed-glass-nav rounded-2xl">
+      <div className={`sticky top-0 z-40 px-2 pt-1.5 sm:px-3 sm:pt-2 lg:px-5 ${pathname.startsWith("/product/") ? "hidden md:block" : ""}`}><div className="zed-glass-nav rounded-2xl">
         <div className="container-zed flex h-[56px] items-center gap-2 px-2.5 sm:h-[60px] sm:gap-2.5 sm:px-4 lg:h-[74px] lg:gap-6 lg:px-10">
           <button
             type="button"
@@ -236,7 +222,7 @@ export function HeaderContent({
       </div></div>
 
       {/* Utility bar — key links, shown below the announcement bar on every screen */}
-      <div className={`relative z-30 border-b border-edge bg-white ${(pathname.startsWith("/product/") || pathname.startsWith("/shop")) ? "hidden md:block" : ""}`}>
+      <div className={`relative z-30 border-b border-edge bg-white ${pathname.startsWith("/product/") ? "hidden md:block" : ""}`}>
         <div className="container-zed flex items-center justify-end overflow-x-auto py-1.5 sm:py-2">
           <nav className="flex items-center gap-3.5 sm:gap-5" aria-label="Utility">
             {UTILITY_NAV.map((item) => (
