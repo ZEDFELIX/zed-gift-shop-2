@@ -102,7 +102,7 @@ export async function ListingPage({
   const gridItems = result.items.filter((p) => !shownIds.has(p.id));
 
   return (
-    <div className="container-zed py-2 sm:py-5 lg:py-6">
+    <div className="container-zed bg-[#f7f7f7] py-2 sm:bg-transparent sm:py-5 lg:py-6">
       {activeFilters.length > 0 && result.items.length > 0 && (
         <script
           type="application/ld+json"
@@ -122,7 +122,7 @@ export async function ListingPage({
       <div className={sidebar ? "lg:flex lg:items-start lg:gap-8" : undefined}>
         {sidebar ? <div className="hidden shrink-0 lg:block lg:w-60 xl:w-64">{sidebar}</div> : null}
         <div className="min-w-0 flex-1">
-          <header className="mb-4 flex items-end justify-between gap-3 border-b border-[#eee6ed] pb-3 sm:mb-6 sm:gap-4 sm:pb-4">
+          <header className="mb-4 hidden items-end justify-between gap-3 border-b border-[#eee6ed] pb-3 sm:mb-6 sm:flex sm:gap-4 sm:pb-4">
             <div className="min-w-0 flex-1">
             </div>
             <div className="flex shrink-0 items-center justify-end gap-2">
@@ -139,7 +139,24 @@ export async function ListingPage({
             </div>
           </header>
 
-          <div className="mt-2 sm:mt-3">
+          <div className="mt-1 sm:mt-3">
+            {showSections && categories.length > 0 && (
+              <section className="mb-4 sm:hidden">
+                <div className="mb-2 flex items-center justify-between">
+                  <h2 className="text-sm font-extrabold text-[#252525]">Categories</h2>
+                  <Link href="/categories" className="text-[10px] font-semibold text-[#8aa83d]">See all</Link>
+                </div>
+                <div className="flex gap-2 overflow-x-auto pb-1 scrollbar-none">
+                  {categories.filter((category) => category.count > 0).slice(0, 10).map((category, index) => (
+                    <Link key={category.slug} href={"/shop?category=" + encodeURIComponent(category.slug)} className="flex h-[54px] min-w-[88px] shrink-0 items-center justify-between gap-1 overflow-hidden rounded-xl border border-[#e8e8e8] bg-white px-2 shadow-sm">
+                      <span className="max-w-[54px] text-[10px] font-bold leading-tight text-[#343434]">{category.name}</span>
+                      <span className={"grid size-8 shrink-0 place-items-center rounded-lg text-xs font-black " + (index % 3 === 0 ? "bg-[#eef4df] text-[#72952e]" : index % 3 === 1 ? "bg-[#f8eaf0] text-[#b35a7b]" : "bg-[#edf0f5] text-[#65748b]")}>{category.name.slice(0,1).toUpperCase()}</span>
+                    </Link>
+                  ))}
+                </div>
+              </section>
+            )}
+            {showSections && (
             {showSections && (
               <>
                 {occasions.length > 0 && (
@@ -167,7 +184,7 @@ export async function ListingPage({
             {showSections && <RecentlyViewed />}
             {showSections && <ShopSections sections={sectionData.sections} />}
             {gridItems.length > 0 ? (
-              <div className="glass-panel rounded-2xl p-1.5 sm:p-3">
+              <div className="rounded-2xl bg-transparent p-0 sm:glass-panel sm:p-3">
                 <ProductGrid products={gridItems} />
               </div>
             ) : showSections ? null : (
