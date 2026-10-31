@@ -155,25 +155,6 @@ export async function ListingPage({
           <div className="mt-3 sm:mt-4">
             {showSections && (
               <>
-                {/* Desktop-only merchandising: mobile storefront remains unchanged. */}
-                <section className="relative mb-5 hidden min-h-[190px] overflow-hidden rounded-2xl border border-[#eadde8] bg-[#f8eef5] px-7 py-6 shadow-sm lg:flex lg:items-center xl:px-9 xl:py-7">
-                  {heroImages.length > 0 && (
-                    <div className="pointer-events-none absolute inset-y-0 right-0 hidden w-[58%] grid-cols-4 items-center gap-2 pl-10 pr-4 lg:grid">
-                      {heroImages.map((photo) => (
-                        <div key={photo.url} className="flex h-[126px] min-w-0 items-center justify-center overflow-hidden rounded-xl border border-white/80 bg-white/75 p-2 shadow-sm xl:h-[140px]">
-                          <img src={photo.url} alt={photo.name} className="h-full w-full object-contain" />
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                  <div className="pointer-events-none absolute inset-0 z-[1] bg-gradient-to-r from-[#fff8fc] via-[#fff8fc]/95 to-[#fff8fc]/5" />
-                  <div className="relative z-10 max-w-[48%]">
-                    <p className="mb-2 flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.2em] text-[#8a5578]"><Sparkles className="size-3.5" /> {hero.eyebrow || "Thoughtful gifting starts here"}</p>
-                    <h2 className="font-display text-2xl font-bold leading-tight tracking-tight text-[#2b2029] xl:text-3xl">{hero.title || "Make every moment feel special."}</h2>
-                    <p className="mt-2 max-w-xl text-sm leading-relaxed text-[#71616d]">{hero.description || "Find a thoughtful gift for the people and moments that matter most."}</p>
-                    <Link href={hero.buttonHref || "/shop?sort=new"} className="mt-4 inline-flex min-h-10 items-center gap-2 rounded-full bg-[#6B2D5C] px-5 py-2.5 text-xs font-bold text-white shadow-sm transition hover:bg-[#542248] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#6B2D5C] focus-visible:ring-offset-2">{hero.buttonLabel || "Explore gifts"} <ArrowRight className="size-4" /></Link>
-                  </div>
-                </section>
                 {occasions.length > 0 && (
                   <section className="mb-5 hidden lg:block">
                     <div className="mb-3 flex items-end justify-between gap-4">
