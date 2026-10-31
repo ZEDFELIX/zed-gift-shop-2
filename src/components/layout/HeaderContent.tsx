@@ -112,7 +112,7 @@ export function HeaderContent({
         </div>
       )}
       {/* Compact responsive announcement bar */}
-      <div className="relative z-30 hidden md:block border-b border-white/10 bg-[var(--color-announcement,#6B2D5C)] text-[var(--color-announcement-fg,#fff)]">
+      <div className="relative z-30 block border-b border-white/10 bg-[var(--color-announcement,#6B2D5C)] text-[var(--color-announcement-fg,#fff)]">
         <div className="container-zed flex min-h-9 items-center justify-between gap-2 px-3 sm:min-h-10 sm:px-4">
           <p className="min-w-0 flex-1 overflow-x-auto whitespace-nowrap text-center text-[10px] font-semibold tracking-wide scrollbar-none touch-pan-x sm:text-xs md:overflow-hidden md:text-left md:text-ellipsis">
             {announcement}
