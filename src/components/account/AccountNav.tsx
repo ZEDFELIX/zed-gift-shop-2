@@ -35,7 +35,6 @@ export function AccountNav({ isAdmin = false }: { isAdmin?: boolean }) {
     <div className="mt-3 hidden rounded-[15px] bg-[#f5f5f5] px-3 py-3 lg:block">
      <p className="text-[10px] font-semibold text-[#333]">Need a hand?</p>
      <p className="mt-1 text-[10px] leading-relaxed text-[#888]">Our team is ready to help with your orders and gifts.</p>
-     <a href="https://wa.me/" className="mt-2 inline-block text-[10px] font-semibold text-[#333] underline underline-offset-2">Contact support</a>
     </div>
    </nav>
   );
