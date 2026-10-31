@@ -29,7 +29,9 @@ export async function PATCH(req: Request) {
  try { await requirePermission("settings.manage"); } catch { return NextResponse.json({ error: "Unauthorized" }, { status: 401 }); }
  const body = await req.json();
   const hasProductSelection = Array.isArray(body.productIds);
-  const productIds = hasProductSelection ? [...new Set(body.productIds.filter((id: unknown): id is string => typeof id === "string"))] : [];
+  const productIds: string[] = hasProductSelection
+    ? Array.from(new Set<string>((body.productIds as unknown[]).filter((id): id is string => typeof id === "string")))
+    : [];
   const boxColor = typeof body.boxColor === "string" && /^#[0-9a-fA-F]{6}$/.test(body.boxColor.trim()) ? body.boxColor.trim() : "#FBE9EE";
   const values = [
    ["flashSaleTitle", String(body.title ?? "").trim()],
