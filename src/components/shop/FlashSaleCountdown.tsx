@@ -16,10 +16,12 @@ export function FlashSaleCountdown({
   startsAt = "",
   endsAt = "",
   active = false,
+  textColor = "#171717",
 }: {
   startsAt?: string;
   endsAt?: string;
   active?: boolean;
+  textColor?: string;
 }) {
   const start = useMemo(() => parseTime(startsAt), [startsAt]);
   const end = useMemo(() => parseTime(endsAt), [endsAt]);
@@ -42,7 +44,7 @@ export function FlashSaleCountdown({
 
   if (status === "ended") {
     return (
-      <span className="inline-flex items-center rounded-full bg-black/10 px-2 py-1 text-[9px] font-bold uppercase tracking-wide">
+      <span className="inline-flex items-center rounded-full px-2 py-1 text-[9px] font-bold uppercase tracking-wide" style={{ backgroundColor: textColor === "#FFFFFF" ? "rgba(255,255,255,.16)" : "rgba(0,0,0,.08)", color: textColor }}>
         Sale ended
       </span>
     );
@@ -62,7 +64,7 @@ export function FlashSaleCountdown({
 
   return (
     <div
-      className="flash-sale-countdown flex shrink-0 items-center gap-1"
+      className="flash-sale-countdown flex shrink-0 items-center gap-1" style={{ color: textColor }}
       aria-label={`${status === "upcoming" ? "Sale starts in" : "Sale ends in"} ${units.map((u) => `${u.value} ${u.label.toLowerCase()}`).join(", ")}`}
     >
       <span className="whitespace-nowrap text-[8px] font-extrabold uppercase tracking-wide opacity-80 sm:text-[9px]">
@@ -72,7 +74,7 @@ export function FlashSaleCountdown({
         {units.map((u) => (
           <span
             key={u.label}
-            className="grid min-w-[1.3rem] place-items-center rounded-md bg-white px-1 py-1 text-[10px] font-extrabold leading-none tabular-nums text-rose-600 shadow-sm sm:min-w-[1.55rem] sm:text-[11px]"
+            className="grid min-w-[1.3rem] place-items-center rounded-md px-1 py-1 text-[10px] font-extrabold leading-none tabular-nums shadow-sm sm:min-w-[1.55rem] sm:text-[11px]" style={{ backgroundColor: textColor === "#FFFFFF" ? "rgba(255,255,255,.94)" : "#6C2D5C", color: textColor === "#FFFFFF" ? "#263746" : "#FFFFFF" }}
             title={u.label}
           >
             {u.value > 99 ? u.value : pad(u.value)}
