@@ -5,7 +5,7 @@ import Link from "next/link";
 import type { ProductCardData } from "@/lib/data/products";
 import { discountPercent, formatKES } from "@/lib/utils";
 
-export function ProductCard({ product, priority = false }: { product: ProductCardData; priority?: boolean }) {
+export function ProductCard({ product, priority = false, textColor }: { product: ProductCardData; priority?: boolean; textColor?: string }) {
   const image = product.images[0]?.url;
   const sale = discountPercent(product.price, product.compareAtPrice);
   const inStock = !product.trackInventory || product.quantity > product.reservedQuantity;
@@ -68,17 +68,17 @@ export function ProductCard({ product, priority = false }: { product: ProductCar
         </Link>
       </div>
 
-      <div className="flex min-w-0 flex-1 flex-col p-2.5 text-center sm:p-3 lg:p-4">
+      <div className="flex min-w-0 flex-1 flex-col p-2.5 text-center sm:p-3 lg:p-4" style={textColor ? { color: textColor } : undefined}>
         <h3 className="line-clamp-2 min-h-[2.4rem] text-[12px] font-semibold leading-snug [overflow-wrap:anywhere] sm:min-h-[2.7rem] sm:text-sm lg:min-h-[3rem] lg:text-base">
-          <Link href={`/product/${product.slug}`} className="hover:text-rose-600">
+          <Link href={`/product/${product.slug}`} style={textColor ? { color: textColor } : undefined} className={textColor ? "transition-opacity hover:opacity-80" : "hover:text-rose-600"}>
             {product.name}
           </Link>
         </h3>
 
         <div className="mt-1 flex min-h-[1.2rem] flex-wrap items-baseline justify-center gap-x-1">
-          <p className="break-words text-[13px] font-bold text-charcoal-950 sm:text-[15px] lg:text-lg">{formatKES(product.price)}</p>
+          <p className="break-words text-[13px] font-bold text-charcoal-950 sm:text-[15px] lg:text-lg" style={textColor ? { color: textColor } : undefined}>{formatKES(product.price)}</p>
           {product.compareAtPrice != null && product.compareAtPrice > product.price ? (
-            <p className="min-w-0 text-xs text-charcoal/40 line-through">
+            <p className="min-w-0 text-xs line-through" style={textColor ? { color: textColor, opacity: 0.72 } : undefined}>
               {formatKES(product.compareAtPrice)}
             </p>
           ) : null}
@@ -93,7 +93,7 @@ export function ProductCard({ product, priority = false }: { product: ProductCar
         </div>
 
         {lowStock && (
-          <p className="mt-auto pt-2 text-[10px] font-medium leading-4 text-rose-500 sm:text-[11px]">
+          <p className="mt-auto pt-2 text-[10px] font-semibold leading-4 text-rose-500 sm:text-[11px]" style={textColor ? { color: "#FFD166" } : undefined}>
             Only {product.quantity - product.reservedQuantity} left
           </p>
         )}
