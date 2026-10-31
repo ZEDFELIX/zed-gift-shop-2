@@ -240,7 +240,7 @@ export function HeaderContent({
             className="absolute inset-0 bg-zed-950/50 backdrop-blur-sm animate-fade-in"
             onClick={() => setMobileOpen(false)}
           />
-          <div className="glass-strong absolute inset-y-0 left-0 flex w-[min(90vw,360px)] flex-col shadow-glass-lg">
+          <div className="glass-strong absolute inset-y-0 left-0 flex h-dvh max-h-dvh w-[min(90vw,360px)] flex-col overflow-hidden shadow-glass-lg">
             <div className="flex items-center justify-between border-b border-edge px-4 py-4">
               <Brand storeName={storeName} />
               <button
@@ -270,7 +270,7 @@ export function HeaderContent({
                 className="w-full min-w-0 bg-transparent py-2 text-sm outline-none"
               />
             </form>
-            <nav className="flex-1 overflow-y-auto p-3" aria-label="Mobile">
+            <nav className="min-h-0 flex-1 overflow-y-auto overscroll-contain p-3" aria-label="Mobile">
               {NAV_GROUPS.map((group) => (
                 <MobileGroup key={group.label} group={group} onClose={() => setMobileOpen(false)} />
               ))}
@@ -287,7 +287,7 @@ export function HeaderContent({
                 ))}
               </div>
             </nav>
-            <div className="border-t border-edge p-3">
+            <div className="shrink-0 border-t border-edge bg-white/95 p-3 pb-[calc(0.75rem+env(safe-area-inset-bottom))]">
               <a
                 href={`tel:${contactPhone.replace(/\s+/g, "")}`}
                 className="mb-2 flex items-center justify-center gap-2 rounded-md border border-edge px-4 py-3 text-sm font-semibold"
