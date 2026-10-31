@@ -9,7 +9,6 @@ import { ProductGrid } from "@/components/shop/ProductGrid";
 import { ShopFiltersMenu } from "@/components/shop/ShopFiltersMenu";
 import { Pagination } from "@/components/shop/Pagination";
 import { ShopSections, getShopSectionData, type ShopSection } from "@/components/shop/ShopSections";
-import { RecentlyViewed } from "@/components/shop/RecentlyViewed";
 import type { ReactNode } from "react";
 
 const SORT_LABELS: Record<string, string> = {
@@ -156,7 +155,6 @@ export async function ListingPage({
                 </div>
               </section>
             )}
-            {showSections && <RecentlyViewed />}
             {showSections && <ShopSections sections={sectionData.sections} />}
             {gridItems.length > 0 ? (
               <div className="rounded-2xl bg-transparent p-0 sm:glass-panel sm:p-3">
