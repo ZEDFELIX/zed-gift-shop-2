@@ -2,11 +2,9 @@ import "server-only";
 
 import { Suspense } from "react";
 import Link from "next/link";
-import { ArrowRight, Gift, Sparkles } from "lucide-react";
 import { listProducts, type ProductListFilters } from "@/lib/data/products";
 import { jsonLdItemList } from "@/lib/seo";
 import { listCategories } from "@/lib/data/catalog";
-import { getSetting } from "@/lib/data/settings";
 import { ProductGrid } from "@/components/shop/ProductGrid";
 import { ShopFiltersMenu } from "@/components/shop/ShopFiltersMenu";
 import { Pagination } from "@/components/shop/Pagination";
@@ -37,21 +35,10 @@ export async function ListingPage({
   href: string;
   sidebar?: ReactNode;
 }) {
-  const [result, allCategories, savedHero] = await Promise.all([
+  const [result, allCategories] = await Promise.all([
     listProducts(filters),
     listCategories(),
-    getSetting("shopHeroBanner"),
   ]);
-
-  const hero = savedHero && typeof savedHero === "object" && !Array.isArray(savedHero) ? savedHero as { eyebrow?: string; title?: string; description?: string; buttonLabel?: string; buttonHref?: string; imageUrls?: string[] } : {};
-
-  // Reuse real product photos already stored in the shop catalogue for the desktop hero.
-  const catalogueHeroImages = result.items
-    .flatMap((product) => product.images?.[0]?.url ? [{ url: product.images[0].url, name: product.name }] : [])
-    .slice(0, 4);
-  const heroImages = Array.isArray(hero.imageUrls) && hero.imageUrls.some((url) => typeof url === "string" && url.trim())
-    ? hero.imageUrls.filter((url): url is string => typeof url === "string" && url.trim().length > 0).slice(0, 4).map((url, index) => ({ url, name: `Shop gift ${index + 1}` }))
-    : catalogueHeroImages;
 
   const occasions = allCategories
     .filter((c) => c.kind === "OCCASION")
@@ -115,7 +102,7 @@ export async function ListingPage({
   const gridItems = result.items.filter((p) => !shownIds.has(p.id));
 
   return (
-    <div className="container-zed py-3 sm:py-7 lg:py-9">
+    <div className="container-zed py-2 sm:py-5 lg:py-6">
       {activeFilters.length > 0 && result.items.length > 0 && (
         <script
           type="application/ld+json"
@@ -152,11 +139,11 @@ export async function ListingPage({
             </div>
           </header>
 
-          <div className="mt-3 sm:mt-4">
+          <div className="mt-2 sm:mt-3">
             {showSections && (
               <>
                 {occasions.length > 0 && (
-                  <section className="mb-5 hidden lg:block">
+                  <section className="mb-4 hidden lg:block xl:mb-5">
                     <div className="mb-3 flex items-end justify-between gap-4">
                       <div>
                         <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-[#96758b]">Find the right moment</p>
