@@ -62,7 +62,7 @@ function Section({ title, products, href, flash = false, flashSale, titleColor, 
             </div>
           </div>
           <div className="flex shrink-0 items-center gap-1.5 sm:gap-2" style={{ color: textColor }}>
-            <FlashSaleCountdown startsAt={flashSale.startsAt} endsAt={flashSale.endsAt} active={flashSale.active} />
+            <FlashSaleCountdown startsAt={flashSale.startsAt} endsAt={flashSale.endsAt} active={flashSale.active} textColor={textColor} />
             {href && (
               <Link
                 href={href}
