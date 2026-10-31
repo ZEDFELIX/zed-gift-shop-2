@@ -270,7 +270,7 @@ export function HeaderContent({
                 className="w-full min-w-0 bg-transparent py-2 text-sm outline-none"
               />
             </form>
-            <nav className="min-h-0 flex-1 overflow-y-auto overscroll-contain p-3" aria-label="Mobile">
+            <nav className="min-h-0 flex-1 overflow-hidden p-3" aria-label="Mobile">
               {NAV_GROUPS.map((group) => (
                 <MobileGroup key={group.label} group={group} onClose={() => setMobileOpen(false)} />
               ))}
