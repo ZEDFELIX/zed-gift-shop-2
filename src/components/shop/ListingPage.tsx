@@ -147,7 +147,7 @@ export async function ListingPage({
                   </div>
                   <Link href="/shop" className="shrink-0 text-[10px] font-semibold text-[#72952e] hover:underline sm:text-xs">View all</Link>
                 </div>
-                <div className="flex snap-x snap-mandatory gap-2.5 overflow-x-auto overscroll-x-contain pb-2 scrollbar-none touch-pan-x sm:gap-3">
+                <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 sm:gap-3 xl:grid-cols-4">
                   {visibleCategories.map((category, index) => {
                     const active = filters.category === category.slug;
                     const tone = index % 3;
@@ -161,15 +161,16 @@ export async function ListingPage({
                         key={category.slug}
                         href={`/shop?category=${encodeURIComponent(category.slug)}`}
                         aria-current={active ? "page" : undefined}
-                        className={`group flex h-[68px] min-w-[142px] max-w-[178px] shrink-0 snap-start items-center gap-3 rounded-xl border bg-white px-3 text-left shadow-sm transition hover:-translate-y-0.5 hover:shadow-md sm:h-[76px] sm:min-w-[158px] sm:px-3.5 ${active ? "border-[var(--color-rose-500)] ring-1 ring-[var(--color-rose-500)]" : "border-[#e5e5e5] hover:border-[#c9c9c9]"}`}
+                        className={`group flex min-h-[62px] min-w-0 items-center gap-2.5 rounded-xl border bg-white px-2.5 py-2.5 text-left shadow-sm transition hover:border-[#c9c9c9] hover:shadow-md sm:min-h-[70px] sm:gap-3 sm:px-3.5 ${active ? "border-[var(--color-rose-500)] bg-[#fffafd] ring-1 ring-[var(--color-rose-500)]" : "border-[#e5e5e5]"}`}
                       >
-                        <span className={`grid size-10 shrink-0 place-items-center rounded-lg text-sm font-black sm:size-11 ${toneClass}`}>
+                        <span className={`grid size-9 shrink-0 place-items-center rounded-lg text-sm font-black sm:size-10 ${toneClass}`}>
                           {category.name.slice(0, 1).toUpperCase()}
                         </span>
                         <span className="min-w-0 flex-1">
-                          <span className="block line-clamp-2 text-[11px] font-bold leading-tight text-[#303030] sm:text-xs">{category.name}</span>
+                          <span className="block line-clamp-2 break-words text-[11px] font-bold leading-tight text-[#303030] sm:text-xs">{category.name}</span>
                           <span className="mt-1 block text-[9px] text-[#888] sm:text-[10px]">{category.count} {category.count === 1 ? "item" : "items"}</span>
                         </span>
+                        <span aria-hidden="true" className={`shrink-0 text-sm transition-transform group-hover:translate-x-0.5 ${active ? "text-[var(--color-rose-500)]" : "text-[#aaa]"}`}>›</span>
                       </Link>
                     );
                   })}
