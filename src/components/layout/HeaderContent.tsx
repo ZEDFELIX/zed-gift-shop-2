@@ -310,7 +310,7 @@ export function HeaderContent({
               >
                 {isAuthed ? "My Account" : "Sign in / Create account"}
               </Link>
-              <DownloadAppButton className="mt-2 flex w-full items-center justify-center gap-2 rounded-md bg-zed-950 px-4 py-3 text-sm font-bold text-white shadow-sm transition hover:bg-zed-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-rose-500)]" />
+              <DownloadAppButton className="mt-2 flex w-full items-center justify-center gap-2 rounded-md bg-[#6B2D5C] px-4 py-3 text-sm font-bold text-white shadow-sm transition hover:bg-[#542248]" />
             </div>
           </div>
         </div>
