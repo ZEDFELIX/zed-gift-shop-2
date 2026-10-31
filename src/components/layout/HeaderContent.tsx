@@ -236,7 +236,7 @@ export function HeaderContent({
       </div></div>
 
       {/* Utility bar — key links, shown below the announcement bar on every screen */}
-      <div className={`relative z-30 border-b border-edge bg-white ${pathname.startsWith("/product/") ? "hidden md:block" : ""}`}>
+      <div className={`relative z-30 border-b border-edge bg-white ${(pathname.startsWith("/product/") || pathname.startsWith("/shop")) ? "hidden md:block" : ""}`}>
         <div className="container-zed flex items-center justify-end overflow-x-auto py-1.5 sm:py-2">
           <nav className="flex items-center gap-3.5 sm:gap-5" aria-label="Utility">
             {UTILITY_NAV.map((item) => (
@@ -333,7 +333,7 @@ export function HeaderContent({
 
       <SearchPanel open={searchOpen} onClose={() => setSearchOpen(false)} />
 
-       <nav aria-label="Mobile quick navigation" className="fixed inset-x-3 bottom-3 z-[80] grid grid-cols-4 rounded-full border border-white/80 bg-white/90 p-1 shadow-[0_8px_28px_rgba(0,0,0,.12)] backdrop-blur-xl lg:hidden">
+       <nav aria-label="Mobile quick navigation" className={`fixed inset-x-3 bottom-3 z-[80] grid grid-cols-4 rounded-full border border-white/80 bg-white/90 p-1 shadow-[0_8px_28px_rgba(0,0,0,.12)] backdrop-blur-xl lg:hidden ${pathname.startsWith("/product/") ? "hidden" : ""}`}>
          <Link href="/" className="flex flex-col items-center justify-center gap-0.5 rounded-full px-1 py-1.5 text-[10px] font-semibold text-[#62666d]"><Home className="size-5" /><span>Home</span></Link>
          <button type="button" onClick={openCart} className="flex flex-col items-center justify-center gap-0.5 rounded-full px-1 py-1.5 text-[10px] font-semibold text-[#62666d]"><ShoppingBag className="size-5" /><span>Cart</span></button>
          <Link href="/account/wishlist" className="flex flex-col items-center justify-center gap-0.5 rounded-full px-1 py-1.5 text-[10px] font-semibold text-[#62666d]"><Heart className="size-5" /><span>Wishlist</span></Link>
