@@ -12,7 +12,7 @@ export function AuthForm({ mode }: { mode: "login" | "register" }) {
   const isLogin = mode === "login";
 
   const [form, setForm] = useState({ name: "", email: "", password: "" });
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(() => searchParams.get("auth") === "google_not_configured" ? "Google sign-in is not configured yet." : searchParams.get("auth") === "google_failed" ? "Google sign-in could not be completed. Please try again." : null);
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
 
@@ -113,6 +113,20 @@ export function AuthForm({ mode }: { mode: "login" | "register" }) {
           {loading ? <Loader2 className="size-4 animate-spin" /> : <LogIn className="size-4" />}
           {isLogin ? "Log in" : "Create account"}
         </button>
+
+        <div className="flex items-center gap-3 text-xs text-[#64748B]">
+          <span className="h-px flex-1 bg-[#E2E8F0]" />
+          <span>OR</span>
+          <span className="h-px flex-1 bg-[#E2E8F0]" />
+        </div>
+
+        <a
+          href={`/api/auth/google?next=${encodeURIComponent(next)}`}
+          className="flex w-full items-center justify-center gap-3 rounded-zed border border-[#CBD5E1] bg-white py-3 text-sm font-semibold text-[#1F2937] transition hover:bg-[#F8FAFC] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-zed-950"
+        >
+          <span aria-hidden="true" className="font-bold text-base">G</span>
+          Continue with Google
+        </a>
 
         <p className="pt-1 text-center text-sm text-[#334155]">
           {isLogin ? (
