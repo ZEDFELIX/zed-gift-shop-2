@@ -11,11 +11,45 @@ function prune(now: number) {
  }
 }
 
+async function redisRateLimit(key: string, opts: { limit: number; windowSeconds: number }) {
+ const url = process.env.UPSTASH_REDIS_REST_URL?.replace(/\\/$/, "");
+ const token = process.env.UPSTASH_REDIS_REST_TOKEN;
+ if (!url || !token) return null;
+
+ // Atomic fixed-window counter shared by all serverless instances.
+ const script = 'local count = redis.call("INCR", KEYS[1]); if count == 1 then redis.call("EXPIRE", KEYS[1], ARGV[1]); end; local ttl = redis.call("TTL", KEYS[1]); return {count, ttl};';
+ const response = await fetch(url, {
+  method: "POST",
+  headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" },
+  body: JSON.stringify(["EVAL", script, "1", `zed:rate:${key}`, String(opts.windowSeconds)]),
+  cache: "no-store",
+ });
+ const data = await response.json() as { result?: [number, number]; error?: string };
+ if (!response.ok || data.error || !Array.isArray(data.result)) {
+  throw new Error("Shared rate-limit service returned an invalid response.");
+ }
+ const count = Number(data.result[0]);
+ const ttl = Number(data.result[1]);
+ return {
+  ok: count <= opts.limit,
+  remaining: Math.max(0, opts.limit - count),
+  retryAfterSeconds: count <= opts.limit ? 0 : Math.max(1, ttl),
+ };
+}
+
 export async function rateLimit(key: string, opts: { limit: number; windowSeconds: number }): Promise<{
  ok: boolean;
  remaining: number;
  retryAfterSeconds: number;
 }> {
+ try {
+  const shared = await redisRateLimit(key, opts);
+  if (shared) return shared;
+ } catch (error) {
+  // Keep the shop available during a Redis outage, with a local fallback.
+  console.error("[rate-limit] shared store unavailable; using local fallback.", error instanceof Error ? error.message : "Unknown error");
+ }
+
  const now = Date.now();
  prune(now);
 
