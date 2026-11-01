@@ -8,7 +8,6 @@ import { getSettings } from "@/lib/data/settings";
 import { buildMetadata, jsonLdOrganization, jsonLdWebsite } from "@/lib/seo";
 import { ToastHost } from "@/components/ui/ToastHost";
 import { ServiceWorkerReg } from "@/components/layout/ServiceWorkerReg";
-import { AppLaunchScreen } from "@/components/layout/AppLaunchScreen";
 import "@/app/globals.css";
 import "@/app/glassmorphism.css";
 
@@ -85,7 +84,6 @@ export default async function RootLayout({ children }: { children: React.ReactNo
     dangerouslySetInnerHTML={{ __html: websiteJsonLd }}
     />
    {children}
-    <AppLaunchScreen />
     <ToastHost />
     <ServiceWorkerReg />
   </body>
