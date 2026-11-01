@@ -92,7 +92,7 @@ export function RemindersManager() {
  <div className="space-y-4">
  <div className="flex flex-wrap items-center justify-between gap-2">
  <p className="text-sm text-[#334155]">Never miss a day - sit back, we&apos;ll remind you.</p>
- <button type="button" onClick={() => setShowForm((s) => !s)} className="flex items-center gap-1.5 rounded-zed bg-zed-950 px-4 py-2.5 text-sm font-bold text-white">
+ <button type="button" onClick={() => setShowForm((s) => !s)} className="flex items-center gap-1.5 rounded-zed bg-plum-800 hover:bg-plum-900 px-4 py-2.5 text-sm font-bold text-white">
  <Plus className="size-4" /> {showForm ? "Cancel" : "Add reminder"}
  </button>
  </div>
@@ -128,7 +128,7 @@ export function RemindersManager() {
  Remind me every year on this date
  </label>
  {error && <p className="rounded-zed bg-red-50 px-4 py-3 text-sm text-red-700 sm:col-span-2">{error}</p>}
- <button type="submit" disabled={busy} className="flex items-center justify-center gap-2 rounded-zed bg-zed-950 py-3 text-sm font-bold text-white disabled:opacity-50 sm:col-span-2">
+ <button type="submit" disabled={busy} className="flex items-center justify-center gap-2 rounded-zed bg-plum-800 hover:bg-plum-900 py-3 text-sm font-bold text-white disabled:opacity-50 sm:col-span-2">
  {busy ? <Loader2 className="size-4 animate-spin" /> : <Plus className="size-4" />} Save reminder
  </button>
  </form>
