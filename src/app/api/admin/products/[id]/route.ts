@@ -120,9 +120,35 @@ export async function DELETE(_req: Request, { params }: { params: Promise<{ id: 
   });
   if (!existing) return NextResponse.json({ error: "Product not found." }, { status: 404 });
 
-  const supabaseUrl = process.env.SUPABASE_URL;
-  const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
   const assetUrls = [...existing.images.map((image) => image.url), ...(existing.videoUrl ? [existing.videoUrl] : [])];
+  // Resolve the Supabase URL and service key as a matching pair. This matters
+  // because this project also has generic Supabase variables for a different
+  // project; product uploads prefer the Zed Gift Shop-specific credentials.
+  const storageCandidates = [
+    {
+      url: process.env.zedgiftshop_SUPABASE_URL || process.env.NEXT_PUBLIC_zedgiftshop_SUPABASE_URL,
+      key: process.env.zedgiftshop_SUPABASE_SERVICE_ROLE_KEY || process.env.zedgiftshop_SUPABASE_SECRET_KEY,
+    },
+    {
+      url: process.env.NEXT_PUBLIC_SUPABASE_URL,
+      key: process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_SECRET_KEY,
+    },
+    {
+      url: process.env.SUPABASE_URL,
+      key: process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_SECRET_KEY,
+    },
+  ];
+  const storageConfig = storageCandidates.find(({ url, key }) => {
+    if (!url?.trim() || !key?.trim()) return false;
+    try {
+      const origin = new URL(url).origin;
+      return assetUrls.some((assetUrl) => new URL(assetUrl).origin === origin);
+    } catch {
+      return false;
+    }
+  });
+  const supabaseUrl = storageConfig?.url ?? null;
+  const serviceRoleKey = storageConfig?.key ?? null;
   const storagePaths = supabaseUrl
     ? [...new Set(assetUrls.map((url) => getProductImageStoragePath(url, supabaseUrl)).filter((path): path is string => Boolean(path)))]
     : [];
@@ -131,7 +157,7 @@ export async function DELETE(_req: Request, { params }: { params: Promise<{ id: 
   // deleting the database record; otherwise a normal admin delete could orphan files.
   if (storagePaths.length > 0 && (!supabaseUrl || !serviceRoleKey)) {
     return NextResponse.json({
-      error: "Product images are in Supabase Storage, but storage deletion is not configured. Set SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY before deleting this product.",
+      error: "Product images are in Supabase Storage, but matching server-side storage credentials are not configured. Set the Zed Gift Shop Supabase URL and service-role key before deleting this product.",
     }, { status: 503 });
   }
 
