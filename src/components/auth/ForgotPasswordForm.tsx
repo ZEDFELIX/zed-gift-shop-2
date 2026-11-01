@@ -40,7 +40,7 @@ export function ForgotPasswordForm() {
  </span>
  <h1 className="mt-4 font-display text-2xl font-bold text-[#07111F]">Check your inbox</h1>
  <p className="mt-2 text-sm text-[#334155]">
- If an account exists for <strong>{email}</strong>, we&apos;ve emailed you a link to reset your password. It expires in 1 hour.
+ If an account exists for <strong>{email}</strong>, we&apos;ve emailed you a link to reset your password. It expires in 30 minutes.
  </p>
  <Link href="/login" className="mt-6 inline-block font-semibold text-soft-sage underline underline-offset-2">Back to log in</Link>
  </div>
