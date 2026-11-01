@@ -8,6 +8,7 @@ const FOOTER_LINKS: { href: string; label: string }[] = [
   { href: "/blog", label: "Blog" },
   { href: "/faq", label: "FAQs" },
   { href: "/track", label: "Track order" },
+  { href: "/wrap-a-gift", label: "Wrap a Gift" },
   { href: "/contact", label: "Contact us" },
   { href: "/policies/delivery", label: "Delivery & Returns" },
   { href: "/policies/refunds", label: "Returns & Refunds" },
