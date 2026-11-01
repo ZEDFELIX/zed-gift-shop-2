@@ -183,13 +183,16 @@ export async function getGiftSetProducts(limit = 8) {
   });
 }
 
-/** Fresh catalogue picks for the storefront's New Arrivals rail. */
+/** Latest catalogue activity for the storefront's New Arrivals rail.
+ * New products and edited products move to the front automatically. Draft and
+ * archived products stay out of the public rail.
+ */
 export async function getNewArrivalProducts(limit = 8) {
   return prisma.product.findMany({
     where: { status: "ACTIVE" },
     select: productCardSelect,
-    orderBy: [{ publishedAt: "desc" }, { createdAt: "desc" }, { id: "asc" }],
-    take: limit,
+    orderBy: [{ updatedAt: "desc" }, { createdAt: "desc" }, { id: "asc" }],
+    take: Math.min(24, Math.max(1, limit)),
   });
 }
 
