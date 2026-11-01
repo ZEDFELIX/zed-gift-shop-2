@@ -215,10 +215,10 @@
   .btn,.btn-primary,.btn-rose,.btn-outline{padding-top:.75rem;padding-bottom:.75rem;font-size:14px;border-radius:14px}
 
   /* Section rhythm. */
-  section{padding-top:1.5rem;padding-bottom:1.5rem}
+  section{padding-top:.75rem;padding-bottom:.75rem}
   h1{font-size:1.75rem;line-height:1.2}
   h2{font-size:1.25rem}
-  p{line-height:1.6}
+  p{line-height:1.5}
 
   /* Two products per row with a 12px gutter; two lines of title text. */
   article h3{font-size:14px;line-height:1.35;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
