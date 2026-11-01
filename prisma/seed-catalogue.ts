@@ -45,13 +45,9 @@ async function main() {
   for (const [index, parent] of RIO_CATEGORIES.entries()) {
     await prisma.category.upsert({
       where: { slug: parent.slug },
-      update: {
-        name: parent.name,
-        kind: "CATEGORY",
-        parentId: null,
-        sortOrder: index,
-        active: true,
-      },
+      // Existing category names, ordering and active state are admin-managed.
+      // Deployment seeding only creates missing defaults.
+      update: {},
       create: {
         slug: parent.slug,
         name: parent.name,
@@ -67,13 +63,8 @@ async function main() {
     for (const [childIndex, child] of (parent.children ?? []).entries()) {
       await prisma.category.upsert({
         where: { slug: child.slug },
-        update: {
-          name: child.name,
-          kind: "CATEGORY",
-          parent: { connect: { slug: parent.slug } },
-          sortOrder: childIndex,
-          active: true,
-        },
+        // Never overwrite category edits made in the admin panel.
+        update: {},
         create: {
           slug: child.slug,
           name: child.name,
