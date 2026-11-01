@@ -407,6 +407,7 @@ export const NAV_GROUPS: NavGroup[] = [
       { label: "Men", href: "/product-category/men-gifts" },
       { label: "Women", href: "/product-category/ladies-gifts" },
       { label: "Cards", href: "/cards" },
+  { label: "Wrap a Gift", href: "/wrap-a-gift" },
       { label: "Trophies", href: "/product-category/award-trophies-in-nairobi" },
       { label: "Corporate Gifts", href: "/product-category/corporate-gifts-kenya" },
       { label: "Promotional Gifts", href: "/product-category/promotional-gifts" },
@@ -434,6 +435,7 @@ export const UTILITY_NAV: NavChild[] = [
   { label: "Blog", href: "/blog" },
   { label: "Track order", href: "/track" },
   { label: "Wishlist", href: "/account/wishlist" },
+  { label: "Wrap a Gift", href: "/wrap-a-gift" },
   { label: "Contact", href: "/contact" },
 ];
 
