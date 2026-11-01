@@ -11,6 +11,8 @@ for (const file of [".env.local", ".env"]) {
 export default defineConfig({
   schema: "prisma/schema.prisma",
   migrations: {
-    seed: "node --import tsx prisma/seed.ts",
+    // Use the safe, additive bootstrap seed. The legacy seed.ts contains
+    // demo catalogue upserts and must never run against production data.
+    seed: "node --import tsx prisma/seed-catalogue.ts",
   },
 });
