@@ -41,11 +41,11 @@ function Section({ title, products, href, flash = false, flashSale, titleColor, 
     const textColor = contrastText(boxColor);
     return (
       <section
-        className="relative mb-4 overflow-hidden rounded-2xl border p-2.5 shadow-sm sm:mb-5 sm:p-3"
+        className="relative mb-3 overflow-hidden rounded-2xl border p-2 shadow-sm sm:mb-4 sm:p-2.5"
         style={{ backgroundColor: boxColor, color: textColor, borderColor: textColor === "#FFFFFF" ? "rgba(255,255,255,.22)" : "rgba(0,0,0,.10)" }}
         aria-label={flashSale.title || title}
       >
-        <div className="mb-2 flex min-w-0 items-center justify-between gap-2 border-b pb-2" style={{ borderColor: textColor === "#FFFFFF" ? "rgba(255,255,255,.22)" : "rgba(0,0,0,.10)" }}>
+        <div className="mb-1.5 flex min-w-0 items-center justify-between gap-2 border-b pb-1.5" style={{ borderColor: textColor === "#FFFFFF" ? "rgba(255,255,255,.22)" : "rgba(0,0,0,.10)" }}>
           <div className="flex min-w-0 items-center gap-2">
             <span className="grid size-8 shrink-0 place-items-center rounded-xl bg-[#171717] text-white shadow-sm">
               <Zap className="size-4 fill-current" aria-hidden="true" />
@@ -84,8 +84,8 @@ function Section({ title, products, href, flash = false, flashSale, titleColor, 
     );
   }
   return (
-    <section className={`mb-4 overflow-hidden rounded-2xl border p-2 shadow-sm sm:mb-5 sm:p-3 ${giftSet ? "border-[#d9bfd2] ring-1 ring-[#ead9e7]" : "border-[#e8e2dc]"}`} style={{ backgroundColor: backgroundColor || "#FFFFFF" }}>
-      <div className="mb-2 flex items-center justify-between gap-2 border-b border-[#e8e2dc] pb-2">
+    <section className={`mb-3 overflow-hidden rounded-2xl border p-2 shadow-sm sm:mb-4 sm:p-2.5 ${giftSet ? "border-[#d9bfd2] ring-1 ring-[#ead9e7]" : "border-[#e8e2dc]"}`} style={{ backgroundColor: backgroundColor || "#FFFFFF" }}>
+      <div className="mb-1.5 flex items-center justify-between gap-2 border-b border-[#e8e2dc] pb-1.5">
         <h2 className="font-display text-sm font-bold sm:text-xl" style={{ color: titleColor || "var(--color-ink)" }}>{giftSet ? <span className="inline-flex items-center gap-2"><span className="grid size-7 place-items-center rounded-lg bg-[#6B2D5C] text-xs text-white">G</span>{title}</span> : title}</h2>
         {href && (
           <Link
