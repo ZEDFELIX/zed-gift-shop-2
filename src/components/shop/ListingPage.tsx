@@ -69,7 +69,6 @@ export async function ListingPage({
     filters.max != null ? `up to KES ${filters.max}` : undefined,
   ].filter(Boolean);
 
-  // Preserve all active filters when moving between result pages.
   const paginationParams = new URLSearchParams();
   const queryValues: Record<string, string | number | boolean | undefined> = {
     q: filters.q,
@@ -137,17 +136,14 @@ export async function ListingPage({
             </div>
           </header>
 
-          <div className="mt-1 sm:mt-3">
+          <div className="mt-0">
             {visibleCategories.length > 0 && (
-              <section aria-label="Browse product categories" className="mb-5 sm:mb-7">
-                <div className="mb-3 flex items-center justify-between gap-3">
-                  <div>
-                    <h2 className="text-sm font-extrabold text-[#252525] sm:text-base">Shop by category</h2>
-                    <p className="mt-0.5 text-[10px] text-[#777] sm:text-xs">Choose a category to explore</p>
-                  </div>
-                  <Link href="/shop" className="shrink-0 text-[10px] font-semibold text-[#72952e] hover:underline sm:text-xs">View all</Link>
+              <section aria-label="Browse product categories" className="mb-2 sm:mb-3">
+                <div className="mb-1.5 flex items-center justify-between gap-2">
+                  <h2 className="text-xs font-extrabold leading-tight text-[#252525] sm:text-sm">Shop by category</h2>
+                  <Link href="/shop" className="shrink-0 text-[9px] font-semibold leading-tight text-[#72952e] hover:underline sm:text-[10px]">View all</Link>
                 </div>
-                <div className="flex snap-x snap-mandatory items-stretch gap-2 overflow-x-auto overscroll-x-contain pb-2 scrollbar-none touch-pan-x sm:gap-2.5">
+                <div className="flex snap-x snap-mandatory items-center gap-1.5 overflow-x-auto overscroll-x-contain pb-0 scrollbar-none touch-pan-x sm:gap-2">
                   {visibleCategories.map((category, index) => {
                     const active = filters.category === category.slug;
                     const tone = index % 3;
@@ -161,14 +157,14 @@ export async function ListingPage({
                         key={category.slug}
                         href={`/shop?category=${encodeURIComponent(category.slug)}`}
                         aria-current={active ? "page" : undefined}
-                        className={`flex h-[58px] min-w-[132px] max-w-[160px] shrink-0 snap-start items-center gap-2 rounded-lg border bg-white px-2.5 text-left transition-colors sm:h-[64px] sm:min-w-[148px] sm:gap-2.5 sm:px-3 ${active ? "border-[var(--color-rose-500)] ring-1 ring-[var(--color-rose-500)]" : "border-[#e5e5e5] hover:border-[#c9c9c9]"}`}
+                        className={`flex h-[44px] min-w-[116px] max-w-[145px] shrink-0 snap-start items-center gap-1.5 rounded-md border bg-white px-2 text-left transition-colors sm:h-[48px] sm:min-w-[130px] sm:gap-2 sm:px-2.5 ${active ? "border-[var(--color-rose-500)] ring-1 ring-[var(--color-rose-500)]" : "border-[#e5e5e5] hover:border-[#c9c9c9]"}`}
                       >
-                        <span className={`grid size-8 shrink-0 place-items-center rounded-md text-xs font-black sm:size-9 ${toneClass}`}>
+                        <span className={`grid size-7 shrink-0 place-items-center rounded text-[11px] font-black sm:size-8 ${toneClass}`}>
                           {category.name.slice(0, 1).toUpperCase()}
                         </span>
                         <span className="min-w-0 flex-1">
-                          <span className="block line-clamp-2 text-[10px] font-bold leading-tight text-[#303030] sm:text-[11px]">{category.name}</span>
-                          <span className="mt-1 block text-[9px] leading-none text-[#888]">{category.count} {category.count === 1 ? "item" : "items"}</span>
+                          <span className="block line-clamp-1 text-[9px] font-bold leading-tight text-[#303030] sm:text-[10px]">{category.name}</span>
+                          <span className="mt-0.5 block text-[8px] leading-none text-[#888]">{category.count} {category.count === 1 ? "item" : "items"}</span>
                         </span>
                       </Link>
                     );
