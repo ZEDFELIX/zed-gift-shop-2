@@ -90,7 +90,7 @@ export function ProductCard({ product, priority = false, textColor, flashSaleTag
           ) : null}
           {sale != null && sale > 0 && product.compareAtPrice != null && product.compareAtPrice > product.price ? (
             <span
-              className={`inline-flex max-w-full shrink-0 items-center rounded-full px-1.5 py-0.5 text-[9px] font-bold leading-none shadow-sm sm:px-2 sm:text-[10px] ${showFlashSaleTag ? "bg-rose-500 text-[#6B2D5C]" : "bg-rose-500 text-white"}`}
+              className="inline-flex max-w-full shrink-0 items-center rounded-full bg-rose-500 px-1.5 py-0.5 text-[9px] font-bold leading-none text-white shadow-sm sm:px-2 sm:text-[10px]"
               aria-label={`Save ${sale} percent`}
             >
               -{sale}% OFF
