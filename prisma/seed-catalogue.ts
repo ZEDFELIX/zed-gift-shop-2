@@ -142,10 +142,9 @@ async function main() {
     });
   }
 
-  // Replace the entire catalogue: remove every existing product so only Rio
-  // Gift Shop products remain. Cascades delete images, category links, reviews,
-  // wishlist items, cart items and stock alerts tied to those products.
-  await prisma.product.deleteMany();
+  // Deployment seeding must never delete live products or their related
+  // customer data. Existing products are preserved below; only missing catalogue
+  // entries are created. Product changes belong in the admin panel.
 
   let created = 0;
   for (const [index, item] of RIO_PRODUCTS.entries()) {
