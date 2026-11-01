@@ -42,30 +42,10 @@ async function main() {
   }
 
   if (existing) {
-    // Normal builds must never silently rotate the administrator's password.
-    // A deliberate one-time reset requires ZED_ADMIN_RESET_PASSWORD=true and
-    // a strong ZED_ADMIN_PASSWORD in the deployment environment.
-    const passwordHash =
-      resetExistingPassword && password
-        ? await bcrypt.hash(password, 12)
-        : undefined;
-
-    await prisma.user.update({
-      where: { email },
-      data: {
-        name: "ZED 2 Admin",
-        role: "ADMIN",
-        status: "ACTIVE",
-        ...(passwordHash ? { passwordHash } : {}),
-        failedLoginAttempts: 0,
-        lockedUntil: null,
-      },
-    });
-    console.log(
-      resetExistingPassword && password
-        ? "Admin account verified and password reset completed."
-        : "Admin account verified; existing password preserved.",
-    );
+    // A deployment must not mutate an existing administrator record.
+    // Preserve the password, role, status, profile, lockout counters and
+    // security state. Account changes belong in the admin account workflow.
+    console.log("Existing admin account preserved; deployment made no account changes.");
   } else {
     if (!password) {
       throw new Error(
