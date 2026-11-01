@@ -16,7 +16,7 @@ export default async function AccountOrdersPage() {
  <div className="glass-card rounded-zed p-10 text-center">
  <p className="font-display text-xl font-bold text-[#07111F]">No orders yet</p>
  <p className="mt-1 text-sm text-[#334155]">Your past orders and their status will show up here.</p>
- <Link href="/shop" className="mt-5 inline-block rounded-zed bg-zed-950 px-6 py-3 text-sm font-bold text-white">Browse gifts</Link>
+ <Link href="/shop" className="mt-5 inline-block rounded-zed bg-plum-800 hover:bg-plum-900 px-6 py-3 text-sm font-bold text-white">Browse gifts</Link>
  </div>
  );
  }
