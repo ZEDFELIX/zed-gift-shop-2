@@ -54,14 +54,14 @@ export function ProfileForm({ name, email, phone, avatarUrl }: { name: string; e
    </div>
    <div className="space-y-5 p-4 sm:p-6">
     <div className="flex items-center gap-4">
-     <div className="relative grid size-20 shrink-0 place-items-center overflow-hidden rounded-full border-4 border-[#edf3df] bg-[#f3f5ee]">
-      {avatar ? <Image src={avatar} alt="Your profile photo" fill sizes="80px" className="object-cover" unoptimized /> : <UserRound className="size-9 text-[#8aa83d]" />}
+     <div className="relative grid size-20 shrink-0 place-items-center overflow-hidden rounded-full border-4 border-plum-200 bg-plum-50">
+      {avatar ? <Image src={avatar} alt="Your profile photo" fill sizes="80px" className="object-cover" unoptimized /> : <UserRound className="size-9 text-plum-700" />}
      </div>
      <div className="min-w-0">
       <p className="text-sm font-bold text-[#252525]">Profile picture</p>
       <p className="mt-0.5 text-xs text-[#777]">JPG, PNG or WebP · up to 3 MB</p>
       <input ref={fileRef} type="file" accept="image/jpeg,image/png,image/webp" className="sr-only" onChange={(e) => uploadAvatar(e.target.files?.[0])} />
-      <button type="button" disabled={uploading} onClick={() => fileRef.current?.click()} className="mt-2 inline-flex min-h-9 items-center gap-2 rounded-full bg-[#eaf1dc] px-4 text-xs font-bold text-[#66872b] disabled:opacity-60">
+      <button type="button" disabled={uploading} onClick={() => fileRef.current?.click()} className="mt-2 inline-flex min-h-9 items-center gap-2 rounded-full bg-plum-100 px-4 text-xs font-bold text-plum-800 disabled:opacity-60">
        {uploading ? <Loader2 className="size-4 animate-spin" /> : <Camera className="size-4" />} {uploading ? "Uploading…" : "Change photo"}
       </button>
      </div>
@@ -73,7 +73,7 @@ export function ProfileForm({ name, email, phone, avatarUrl }: { name: string; e
     </div>
     {error && <p className="rounded-xl bg-red-50 px-4 py-3 text-sm text-red-700">{error}</p>}
     {status === "saved" && <p className="rounded-xl bg-emerald-50 px-4 py-3 text-sm text-emerald-700">Your profile has been updated.</p>}
-    <button type="submit" disabled={status === "saving"} className="inline-flex min-h-11 items-center gap-2 rounded-full bg-[#91ad3b] px-6 text-sm font-bold text-[#1e2b0d] disabled:opacity-50">
+    <button type="submit" disabled={status === "saving"} className="inline-flex min-h-11 items-center gap-2 rounded-full bg-plum-800 px-6 text-sm font-bold text-white hover:bg-plum-900 disabled:opacity-50">
      {status === "saving" ? <Loader2 className="size-4 animate-spin" /> : <Check className="size-4" />} Save changes
     </button>
    </div>
