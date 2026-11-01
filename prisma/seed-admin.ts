@@ -6,7 +6,6 @@ const prisma = new PrismaClient();
 async function main() {
   const email = process.env.ZED_ADMIN_EMAIL?.trim().toLowerCase();
   const password = process.env.ZED_ADMIN_PASSWORD;
-  const resetExistingPassword = process.env.ZED_ADMIN_RESET_PASSWORD === "true";
 
   if (!email) {
     throw new Error("Admin bootstrap requires ZED_ADMIN_EMAIL.");
