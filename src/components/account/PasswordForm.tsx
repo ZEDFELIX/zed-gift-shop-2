@@ -63,7 +63,7 @@ export function PasswordForm() {
  {status === "error" && <p className="rounded-zed bg-red-50 px-4 py-3 text-sm text-red-700">{error}</p>}
  {status === "saved" && <p className="rounded-zed bg-emerald-50 px-4 py-3 text-sm text-emerald-700">Password changed.</p>}
  <div className="flex flex-wrap gap-2">
- <button type="submit" disabled={status === "saving"} className="flex items-center gap-2 rounded-zed bg-zed-950 px-5 py-3 text-sm font-bold text-white disabled:opacity-50">
+ <button type="submit" disabled={status === "saving"} className="flex items-center gap-2 rounded-zed bg-plum-800 hover:bg-plum-900 px-5 py-3 text-sm font-bold text-white disabled:opacity-50">
  {status === "saving" ? <Loader2 className="size-4 animate-spin" /> : <Save className="size-4" />} Update password
  </button>
  <button type="button" onClick={logout} className="flex items-center gap-2 rounded-zed border border-edge px-5 py-3 text-sm font-semibold text-[#07111F] hover:border-red-200 hover:text-red-600">
