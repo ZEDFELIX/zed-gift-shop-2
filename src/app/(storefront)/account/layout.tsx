@@ -14,9 +14,9 @@ export default async function AccountLayout({ children }: { children: React.Reac
  const initials = user.name.trim().charAt(0).toUpperCase() || "U";
 
  return (
-  <div className="min-h-screen bg-[#f3f3f3] pb-16 pt-3 text-[#171717] sm:pb-10 sm:pt-5">
+  <div className="min-h-screen bg-plum-50 pb-16 pt-3 text-plum-950 sm:pb-10 sm:pt-5">
    <div className="mx-auto w-full max-w-7xl px-2.5 min-[380px]:px-3 sm:px-5 lg:px-7">
-    <header className="mb-3 overflow-hidden rounded-[17px] bg-[#202020] text-white shadow-[0_5px_18px_rgba(0,0,0,0.08)] sm:mb-4 sm:rounded-[20px]">
+    <header className="mb-3 overflow-hidden rounded-[17px] bg-plum-900 text-white shadow-[0_5px_18px_rgba(0,0,0,0.08)] sm:mb-4 sm:rounded-[20px]">
      <div className="flex min-w-0 items-center gap-2.5 px-3 py-3 min-[380px]:gap-3 min-[380px]:px-3.5 sm:gap-4 sm:px-5 sm:py-4">
       <div className="relative grid size-11 shrink-0 place-items-center overflow-hidden rounded-full border border-white/25 bg-white/10 text-lg font-semibold text-white min-[380px]:size-12 sm:size-14 sm:text-xl">
        {user.avatarUrl ? <Image src={user.avatarUrl} alt="Profile picture" fill sizes="56px" className="object-cover" unoptimized /> : initials}
@@ -38,7 +38,7 @@ export default async function AccountLayout({ children }: { children: React.Reac
 
     <div className="grid min-w-0 items-start gap-2.5 sm:gap-3 lg:grid-cols-[190px_minmax(0,1fr)] lg:gap-4">
      <aside className="min-w-0 lg:sticky lg:top-20"><AccountNav isAdmin={user.role === "ADMIN"} /></aside>
-     <main className="min-w-0 rounded-[17px] border border-[#e5e5e5] bg-white p-3 shadow-[0_2px_10px_rgba(0,0,0,0.02)] min-[380px]:p-3.5 sm:rounded-[19px] sm:p-5 lg:p-6">
+     <main className="min-w-0 rounded-[17px] border border-plum-100 bg-white p-3 shadow-[0_2px_10px_rgba(74,31,66,0.04)] min-[380px]:p-3.5 sm:rounded-[19px] sm:p-5 lg:p-6">
       {children}
      </main>
     </div>
