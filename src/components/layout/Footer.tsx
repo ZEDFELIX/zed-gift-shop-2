@@ -28,11 +28,11 @@ export async function Footer() {
   const mapsHref = String(settings.mapsHref ?? SITE.mapsHref);
   const description = String(settings.footerDescription ?? "");
   return (
-    <footer className="zed-glass-footer mt-16 border-t border-white/10 text-white">
-      <div className="container-zed grid gap-8 py-10 sm:grid-cols-2">
+    <footer className="zed-glass-footer mt-8 border-t border-white/10 text-white">
+      <div className="container-zed grid gap-6 py-7 sm:grid-cols-2">
         <div>
           <p className="text-[13px] font-bold uppercase tracking-[0.16em] text-white">Get In Touch</p>
-          <ul className="mt-4 space-y-3 text-sm text-white/75">
+          <ul className="mt-3 space-y-2 text-sm text-white/75">
             <li className="flex items-start gap-2">
               <Phone className="mt-0.5 size-4 shrink-0 text-champagne" />
               <a href={`tel:${phone.replace(/\s+/g, "")}`} data-track="phone_click" className="hover:text-white">{phone}</a>
@@ -64,7 +64,7 @@ export async function Footer() {
       <div className="border-t border-white/10">
         <nav
           aria-label="Policies and help"
-          className="container-zed flex flex-wrap items-center gap-x-5 gap-y-2 py-4 text-xs text-white/60"
+          className="container-zed flex flex-wrap items-center gap-x-4 gap-y-1.5 py-3 text-xs text-white/60"
         >
           {FOOTER_LINKS.map((l) => (
             <Link key={l.href} href={l.href} className="transition-colors hover:text-white">
@@ -75,7 +75,7 @@ export async function Footer() {
       </div>
 
       <div className="border-t border-white/10">
-        <div className="container-zed flex flex-col items-center justify-between gap-2 py-5 text-xs text-white/50 sm:flex-row">
+        <div className="container-zed flex flex-col items-center justify-between gap-2 py-4 text-xs text-white/50 sm:flex-row">
           <p>
             {String(settings.copyrightText ?? DEFAULTS.copyrightText)
               .replaceAll("{year}", String(new Date().getFullYear()))
