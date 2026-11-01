@@ -174,6 +174,25 @@ export function WrapAGiftClient({ wraps }: { wraps: WrapOption[] }) {
         )}
       </section>
 
+      <section className="mt-8 overflow-hidden rounded-2xl border border-[#eadfe8] bg-[#542447] px-5 py-6 text-white sm:flex sm:items-center sm:justify-between sm:gap-6 sm:px-8">
+        <div className="max-w-xl">
+          <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-[#eadce8]">Already have a present?</p>
+          <h2 className="mt-2 font-display text-2xl font-bold">Bring a gift. We’ll wrap it.</h2>
+          <p className="mt-2 text-sm leading-6 text-white/80">
+            You don’t need to buy the gift from us. Bring your own item and we’ll help give it a beautiful finish. This service is for gift wrapping only.
+          </p>
+          <p className="mt-2 text-xs text-white/65">Visit us at 3rd Floor Avenue House, Nairobi, or message us to arrange your wrapping.</p>
+        </div>
+        <a
+          href="https://wa.me/254711436169?text=Hi%20Zed%20Gift%20Shop%2C%20I%20have%20my%20own%20gift%20and%20would%20like%20to%20use%20your%20gift-wrapping%20service.%20Please%20share%20the%20wrapping%20options%20and%20prices."
+          target="_blank"
+          rel="noreferrer noopener"
+          className="mt-5 inline-flex min-h-11 shrink-0 items-center justify-center gap-2 rounded-xl bg-white px-5 py-3 text-sm font-bold text-[#542447] transition hover:bg-[#f8f1f7] sm:mt-0"
+        >
+          Arrange gift wrapping <ArrowRight className="size-4" />
+        </a>
+      </section>
+
       <section id="your-gifts" className="mt-10 scroll-mt-24">
         <div className="mb-4 flex items-center gap-2">
           <ShoppingBag className="size-5 text-[#542447]" />
