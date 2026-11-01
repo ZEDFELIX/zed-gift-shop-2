@@ -12,7 +12,7 @@ function prune(now: number) {
 }
 
 async function redisRateLimit(key: string, opts: { limit: number; windowSeconds: number }) {
- const url = process.env.UPSTASH_REDIS_REST_URL?.replace(/\\/$/, "");
+ const url = process.env.UPSTASH_REDIS_REST_URL?.replace(/\/$/, "");
  const token = process.env.UPSTASH_REDIS_REST_TOKEN;
  if (!url || !token) return null;
 
