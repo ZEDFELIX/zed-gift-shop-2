@@ -112,6 +112,10 @@ export function GiftWrapManager() {
           <input id="gw-sort" className="field" type="number" min={0} value={draft.sortOrder ?? 0} onChange={(e) => setDraft({ sortOrder: Number(e.target.value) })} />
         </div>
         <div className="sm:col-span-2">
+          <label className="label" htmlFor="gw-image">Wrapping photo URL (optional)</label>
+          <input id="gw-image" className="field" type="url" value={draft.image ?? ""} onChange={(e) => setDraft({ image: e.target.value })} placeholder="https://…" />
+        </div>
+        <div className="sm:col-span-2">
           <label className="label" htmlFor="gw-desc">Description (optional - shown on product page)</label>
           <input id="gw-desc" className="field" value={draft.description ?? ""} onChange={(e) => setDraft({ description: e.target.value })} placeholder="Kraft box with ribbon" />
         </div>
