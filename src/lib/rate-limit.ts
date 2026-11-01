@@ -43,6 +43,7 @@ export const RATE_LIMITS = {
   register: { limit: 5, windowSeconds: 3600 },
   mpesaPush: { limit: 6, windowSeconds: 600 },
   contact: { limit: 5, windowSeconds: 3600 },
+  passwordReset: { limit: 10, windowSeconds: 300 },
   checkout: { limit: 12, windowSeconds: 600 },
   reviewSubmit: { limit: 5, windowSeconds: 3600 },
   reviewHelpful: { limit: 30, windowSeconds: 600 },
