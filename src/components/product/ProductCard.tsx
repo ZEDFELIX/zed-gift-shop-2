@@ -82,7 +82,7 @@ export function ProductCard({ product, priority = false, textColor, flashSaleTag
         </h3>
 
         <div className="mt-1 flex min-h-[1.2rem] flex-wrap items-baseline justify-center gap-x-1">
-          <p className="break-words text-[13px] font-bold text-charcoal-950 sm:text-[15px] lg:text-lg" style={textColor ? { color: "#FFD166" } : undefined}>{formatKES(product.price)}</p>
+          <p className="break-words text-[13px] font-bold text-charcoal-950 sm:text-[15px] lg:text-lg" style={textColor ? { color: textColor } : undefined}>{formatKES(product.price)}</p>
           {product.compareAtPrice != null && product.compareAtPrice > product.price ? (
             <p className="min-w-0 text-xs line-through" style={textColor ? { color: textColor, opacity: 0.72 } : undefined}>
               {formatKES(product.compareAtPrice)}
@@ -99,7 +99,7 @@ export function ProductCard({ product, priority = false, textColor, flashSaleTag
         </div>
 
         {lowStock && (
-          <p className="mt-auto pt-2 text-[10px] font-semibold leading-4 text-rose-500 sm:text-[11px]" style={cardTextColor ? { color: cardTextColor } : undefined}>
+          <p className="mt-auto pt-2 text-[10px] font-semibold leading-4 text-rose-500 sm:text-[11px]" style={textColor ? { color: "#FFD166" } : undefined}>
             Only {product.quantity - product.reservedQuantity} left
           </p>
         )}
