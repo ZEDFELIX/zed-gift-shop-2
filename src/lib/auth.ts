@@ -30,7 +30,7 @@ export async function signSession(payload: SessionPayload): Promise<string> {
  .setProtectedHeader({ alg: "HS256" })
  .setSubject(payload.sub)
  .setIssuedAt()
- .setExpirationTime("30d")
+ .setExpirationTime("12h")
  .sign(getSecret());
 }
 
@@ -85,11 +85,14 @@ export async function getCurrentUser() {
     const user = await prisma.user.findUnique({
       where: { id: session.sub },
       select: {
-        id: true, name: true, email: true, phone: true, role: true,
+        id: true, name: true, email: true, phone: true, role: true, status: true,
         emailVerified: true, createdAt: true, avatarUrl: true,
       },
     });
-    return user;
+    // A suspended or disabled account must lose access even if an older JWT remains valid.
+    if (!user || user.status !== "ACTIVE") return null;
+    const { status: _status, ...safeUser } = user;
+    return safeUser;
   } catch {
     return null;
   }
