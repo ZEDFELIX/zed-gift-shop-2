@@ -32,7 +32,9 @@ export async function POST(req: Request) {
   }
 
   const user = await prisma.user.findUnique({ where: { email } });
-  const passwordValid = user?.passwordHash
+  const now = new Date();
+  const isLocked = Boolean(user?.lockedUntil && user.lockedUntil > now);
+  const passwordValid = user?.passwordHash && !isLocked
     ? await verifyPassword(parsed.data.password, user.passwordHash)
     : false;
 
@@ -40,8 +42,26 @@ export async function POST(req: Request) {
   // account in the seed step. It is never a permanent login bypass: all
   // subsequent logins must match the stored password hash.
   if (!user || user.status !== "ACTIVE" || !passwordValid) {
+    if (user && user.status === "ACTIVE" && !isLocked) {
+      const failed = await prisma.user.update({
+        where: { id: user.id },
+        data: { failedLoginAttempts: { increment: 1 } },
+        select: { failedLoginAttempts: true },
+      });
+      if (failed.failedLoginAttempts >= 5) {
+        await prisma.user.update({
+          where: { id: user.id },
+          data: { lockedUntil: new Date(Date.now() + 15 * 60 * 1000) },
+        });
+      }
+    }
     return NextResponse.json({ error: "Incorrect email or password." }, { status: 401 });
   }
+
+  await prisma.user.update({
+    where: { id: user.id },
+    data: { failedLoginAttempts: 0, lockedUntil: null, lastLoginAt: now },
+  });
 
   await setSessionCookie({
     sub: user.id,
