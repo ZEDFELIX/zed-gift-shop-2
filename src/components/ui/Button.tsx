@@ -20,15 +20,15 @@ const sizeStyles: Record<Size, string> = {
 
 const variantStyles: Record<Variant, string> = {
   primary:
-    "bg-zed-950 text-white hover:bg-zed-900 disabled:bg-zed-950 disabled:opacity-60",
+    "bg-plum-800 text-white hover:bg-plum-900 disabled:bg-plum-800 disabled:opacity-60",
   secondary:
-    "bg-white hover:bg-zed-950/5 border border-edge text-[#07111F] hover:bg-zed-900/5 disabled:bg-white disabled:opacity-60 disabled:border-edge",
+    "bg-white border border-plum-200 text-plum-900 hover:bg-plum-50 hover:border-plum-300 disabled:bg-white disabled:opacity-60 disabled:border-edge",
   outline:
-    "border border-edge bg-white text-[#07111F] hover:bg-zed-950 hover:text-white disabled:bg-white disabled:opacity-60 disabled:border-edge",
+    "border border-plum-200 bg-white text-plum-900 hover:bg-plum-800 hover:text-white hover:border-plum-800 disabled:bg-white disabled:opacity-60 disabled:border-edge",
   danger:
     "border border-red-200 bg-white text-red-600 hover:bg-red-50 disabled:bg-white disabled:opacity-60 disabled:border-red-200",
   ghost:
-    "bg-transparent text-charcoal/70 hover:bg-zed-950/5 disabled:bg-transparent disabled:opacity-60",
+    "bg-transparent text-plum-900/75 hover:bg-plum-50 disabled:bg-transparent disabled:opacity-60",
 };
 
 export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
