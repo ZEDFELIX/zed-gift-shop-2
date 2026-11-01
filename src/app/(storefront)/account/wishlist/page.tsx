@@ -34,7 +34,7 @@ export default async function WishlistPage() {
     <section className="glass-card rounded-zed p-8 text-center sm:p-12">
       <h2 className="font-display text-xl font-bold text-[#07111F]">Your saved gifts will appear here</h2>
       <p className="mt-2 text-sm text-[#334155]">Tap the heart on a gift to keep it handy for later.</p>
-      <Link href="/shop" className="mt-5 inline-flex rounded-zed bg-zed-950 px-5 py-3 text-sm font-bold text-white">Explore gifts</Link>
+      <Link href="/shop" className="mt-5 inline-flex rounded-zed bg-plum-800 hover:bg-plum-900 px-5 py-3 text-sm font-bold text-white">Explore gifts</Link>
     </section>
   );
 
@@ -42,13 +42,13 @@ export default async function WishlistPage() {
     <section className="space-y-4">
       <div className="flex flex-wrap items-end justify-between gap-3">
         <div>
-          <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-[#542447]">Your personal collection</p>
+          <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-plum-800">Your personal collection</p>
           <h2 className="mt-1 font-display text-xl font-bold text-[#171717] sm:text-2xl">Saved gifts</h2>
           <p className="mt-1 text-sm text-[#334155]">{items.length} saved {items.length === 1 ? "gift" : "gifts"} — ready whenever you are.</p>
         </div>
         <div className="flex flex-wrap items-center gap-2">
           <ClearWishlistButton count={items.length} />
-          <Link href="/shop" className="inline-flex min-h-10 items-center justify-center rounded-lg bg-[#542447] px-4 py-2 text-xs font-bold text-white transition hover:bg-[#3f1b35]">Discover more gifts</Link>
+          <Link href="/shop" className="inline-flex min-h-10 items-center justify-center rounded-lg bg-plum-800 px-4 py-2 text-xs font-bold text-white transition hover:bg-plum-900">Discover more gifts</Link>
         </div>
       </div>
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4 xl:grid-cols-4">
@@ -61,7 +61,7 @@ export default async function WishlistPage() {
                 {image?.url ? <Image src={image.url} alt={image.alt ?? product.name} fill sizes="(min-width:1280px) 220px, 45vw" className="object-contain" /> : <span className="grid h-full place-items-center text-sm text-charcoal/50">ZED</span>}
               </Link>
               <div className="flex flex-1 flex-col p-3">
-                <Link href={`/product/${product.slug}`} className="line-clamp-2 min-h-10 text-sm font-semibold text-[#171717] hover:text-[#542447]">{product.name}</Link>
+                <Link href={`/product/${product.slug}`} className="line-clamp-2 min-h-10 text-sm font-semibold text-[#171717] hover:text-plum-800">{product.name}</Link>
                 <div className="mt-1 flex flex-wrap items-baseline gap-x-2 gap-y-0.5">
                   <p className="font-bold text-[#171717]">{formatKES(product.price)}</p>
                   {product.compareAtPrice != null && product.compareAtPrice > product.price ? <p className="text-xs text-charcoal/45 line-through">{formatKES(product.compareAtPrice)}</p> : null}
