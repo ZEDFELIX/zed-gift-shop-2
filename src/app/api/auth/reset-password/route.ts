@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 import { passwordSchema } from "@/lib/validations";
 import { resetPassword } from "@/lib/auth";
+import { rateLimit, RATE_LIMITS } from "@/lib/rate-limit";
 
 const schema = z.object({
  token: z.string().min(10).max(200),
@@ -9,6 +10,13 @@ const schema = z.object({
 });
 
 export async function POST(req: Request) {
+ const forwardedFor = req.headers.get("x-forwarded-for")?.split(",")[0]?.trim();
+ const clientIp = forwardedFor || req.headers.get("x-real-ip") || "unknown";
+ const rl = await rateLimit("password-reset:" + clientIp, RATE_LIMITS.passwordReset);
+ if (!rl.ok) {
+   return NextResponse.json({ error: "Too many reset attempts. Please wait a few minutes and try again." }, { status: 429 });
+ }
+
  let body: unknown;
  try {
  body = await req.json();
