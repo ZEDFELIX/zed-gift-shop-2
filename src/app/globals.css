@@ -1,6 +1,8 @@
 @import "tailwindcss";
 
  :root {
+  /* Use the device Roboto font when available; avoid build-time Google Fonts downloads. */
+  --font-roboto: Roboto, Arial, Helvetica, sans-serif;
   --font-jost: var(--font-roboto), Arial, sans-serif;
   --font-quicksand: var(--font-roboto), Arial, sans-serif;
   --font-poppins: var(--font-roboto), Arial, sans-serif;
