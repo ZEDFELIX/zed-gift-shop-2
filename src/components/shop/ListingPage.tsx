@@ -140,7 +140,6 @@ export async function ListingPage({
             {visibleCategories.length > 0 && (
               <section aria-label="Browse product categories" className="mb-2 sm:mb-3">
                 <div className="mb-1.5 flex items-center justify-between gap-2">
-                  <h2 className="text-xs font-extrabold leading-tight text-[#252525] sm:text-sm">Shop by category</h2>
                   <Link href="/shop" className="shrink-0 text-[9px] font-semibold leading-tight text-[#72952e] hover:underline sm:text-[10px]">View all</Link>
                 </div>
                 <div className="flex snap-x snap-mandatory items-center gap-1.5 overflow-x-auto overscroll-x-contain pb-0 scrollbar-none touch-pan-x sm:gap-2">
