@@ -11,8 +11,6 @@ export function ProductCard({ product, priority = false, textColor, flashSaleTag
   const inStock = !product.trackInventory || product.quantity > product.reservedQuantity;
   const isNew = product.tags.some((t) => ["new", "new arrival"].includes(t.toLowerCase()));
   const showFlashSaleTag = flashSaleTag || product.tags.some((tag) => tag.trim().toLowerCase() === "flash-sale");
-  const flashSaleTextColor = "#5B2C6F";
-  const cardTextColor = showFlashSaleTag ? flashSaleTextColor : textColor;
   const lowStock =
     product.trackInventory &&
     inStock &&
@@ -28,7 +26,7 @@ export function ProductCard({ product, priority = false, textColor, flashSaleTag
   const media = (
     <div className="relative aspect-[6/5] w-full min-w-0 overflow-hidden bg-white transition-transform duration-300 sm:aspect-[5/4] lg:aspect-[1/1]">
       {showFlashSaleTag && (
-        <span className="absolute right-0 top-3 z-20 rounded-l-md bg-[#F2EAF4] px-1.5 py-2 text-[9px] font-extrabold uppercase leading-none tracking-[0.12em] text-[#5B2C6F] shadow-md [writing-mode:vertical-rl]" aria-label="Flash sale">
+        <span className="absolute right-0 top-3 z-20 rounded-l-md bg-[#E11D48] px-1.5 py-2 text-[9px] font-extrabold uppercase leading-none tracking-[0.12em] text-[#6B2D5C] shadow-md [writing-mode:vertical-rl]" aria-label="Flash sale">
           Flash Sale
         </span>
       )}
@@ -76,23 +74,23 @@ export function ProductCard({ product, priority = false, textColor, flashSaleTag
         </Link>
       </div>
 
-      <div className="flex min-w-0 flex-1 flex-col p-2.5 text-center sm:p-3 lg:p-4" style={cardTextColor ? { color: cardTextColor } : undefined}>
+      <div className="flex min-w-0 flex-1 flex-col p-2.5 text-center sm:p-3 lg:p-4" style={textColor ? { color: textColor } : undefined}>
         <h3 className="line-clamp-2 min-h-[2.4rem] text-[12px] font-semibold leading-snug [overflow-wrap:anywhere] sm:min-h-[2.7rem] sm:text-sm lg:min-h-[3rem] lg:text-base">
-          <Link href={`/product/${product.slug}`} style={cardTextColor ? { color: cardTextColor } : undefined} className={cardTextColor ? "transition-opacity hover:opacity-80" : "hover:text-rose-600"}>
+          <Link href={`/product/${product.slug}`} style={textColor ? { color: textColor } : undefined} className={textColor ? "transition-opacity hover:opacity-80" : "hover:text-rose-600"}>
             {product.name}
           </Link>
         </h3>
 
         <div className="mt-1 flex min-h-[1.2rem] flex-wrap items-baseline justify-center gap-x-1">
-          <p className="break-words text-[13px] font-bold text-charcoal-950 sm:text-[15px] lg:text-lg" style={cardTextColor ? { color: cardTextColor } : undefined}>{formatKES(product.price)}</p>
+          <p className="break-words text-[13px] font-bold text-charcoal-950 sm:text-[15px] lg:text-lg" style={textColor ? { color: "#FFD166" } : undefined}>{formatKES(product.price)}</p>
           {product.compareAtPrice != null && product.compareAtPrice > product.price ? (
-            <p className="min-w-0 text-xs line-through" style={cardTextColor ? { color: cardTextColor, opacity: 0.72 } : undefined}>
+            <p className="min-w-0 text-xs line-through" style={textColor ? { color: textColor, opacity: 0.72 } : undefined}>
               {formatKES(product.compareAtPrice)}
             </p>
           ) : null}
           {sale != null && sale > 0 && product.compareAtPrice != null && product.compareAtPrice > product.price ? (
             <span
-              className={`inline-flex max-w-full shrink-0 items-center rounded-full px-1.5 py-0.5 text-[9px] font-bold leading-none shadow-sm sm:px-2 sm:text-[10px] ${showFlashSaleTag ? "bg-[#F2EAF4] text-[#5B2C6F]" : "bg-rose-500 text-white"}`}
+              className={`inline-flex max-w-full shrink-0 items-center rounded-full px-1.5 py-0.5 text-[9px] font-bold leading-none shadow-sm sm:px-2 sm:text-[10px] ${showFlashSaleTag ? "bg-rose-500 text-[#6B2D5C]" : "bg-rose-500 text-white"}`}
               aria-label={`Save ${sale} percent`}
             >
               -{sale}% OFF
