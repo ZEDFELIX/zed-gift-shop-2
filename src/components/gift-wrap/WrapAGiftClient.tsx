@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, Check, Gift, Loader2, MessageSquareText, Package, ShoppingBag } from "lucide-react";
@@ -37,7 +37,7 @@ export function WrapAGiftClient({ wraps }: { wraps: WrapOption[] }) {
   const [saved, setSaved] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
 
-  async function loadCart() {
+  const loadCart = useCallback(async () => {
     setLoading(true);
     try {
       const res = await fetch("/api/cart", { cache: "no-store" });
@@ -75,9 +75,9 @@ export function WrapAGiftClient({ wraps }: { wraps: WrapOption[] }) {
     } finally {
       setLoading(false);
     }
-  }
+  }, [wraps]);
 
-  useEffect(() => { void loadCart(); }, []);
+  useEffect(() => { void loadCart(); }, [loadCart]);
 
   async function save(item: CartItem) {
     setSaving(item.id);
