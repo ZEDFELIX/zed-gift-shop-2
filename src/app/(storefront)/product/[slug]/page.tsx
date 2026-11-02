@@ -225,7 +225,7 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
  <div className="glass-card mt-5 grid gap-3 rounded-zed p-3 sm:mt-8 sm:p-5 sm:grid-cols-2">
   <div className="flex items-center gap-2.5 text-sm text-[var(--color-ink)]">
   <Truck className="size-5 shrink-0 text-soft-sage" />
-  Same-day Nairobi before 5 PM · countrywide 1–7 working days
+  Nairobi same-day delivery may be available (please confirm) · countrywide 1–7 working days · delivery fee confirmed before dispatch
   </div>
   <div className="flex items-center gap-2.5 text-sm text-[var(--color-ink)]">
   <ShieldCheck className="size-5 shrink-0 text-soft-sage" />
