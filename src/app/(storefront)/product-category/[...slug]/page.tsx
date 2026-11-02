@@ -24,7 +24,7 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
 
   const path = `/product-category/${slug.join("/")}`;
   return buildMetadata({
-    title: category.seoTitle ?? `${category.name} in Kenya`,
+    title: (category.seoTitle ?? `${category.name} in Kenya`).replace(/\s*\|\s*Zed Gift Shop 2\s*$/i, "").trim(),
     description:
       category.seoDescription ??
       category.description ??
