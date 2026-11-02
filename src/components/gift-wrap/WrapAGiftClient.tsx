@@ -169,7 +169,7 @@ export function WrapAGiftClient({ wraps }: { wraps: WrapOption[] }) {
           </div>
         ) : (
           <div className="rounded-xl border border-dashed border-[#d9c8d6] bg-[#fcf9fc] p-6 text-center text-sm text-[#766b75]">
-            Gift wrapping options are being prepared. Please check back soon.
+            Our wrapping styles and prices are currently arranged directly with our team. Message us to see the available options, confirm the price and arrange a time. You can also bring your own gift to our Nairobi location.
           </div>
         )}
       </section>
