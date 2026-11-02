@@ -5,13 +5,13 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 export function formatKES(amount: number): string {
-  return `KShs${new Intl.NumberFormat("en-KE", { maximumFractionDigits: 0 }).format(Math.round(amount))}`;
+  return `KSh${new Intl.NumberFormat("en-KE", { maximumFractionDigits: 0 }).format(Math.round(amount))}`;
 }
 
 export function formatKESShort(amount: number): string {
-  if (amount >= 1_000_000) return `KShs ${(amount / 1_000_000).toFixed(1)}M`;
-  if (amount >= 1_000) return `KShs ${(amount / 1_000).toFixed(1)}K`;
-  return `KShs ${amount}`;
+  if (amount >= 1_000_000) return `KSh ${(amount / 1_000_000).toFixed(1)}M`;
+  if (amount >= 1_000) return `KSh ${(amount / 1_000).toFixed(1)}K`;
+  return `KSh ${amount}`;
 }
 
 export function formatDate(date: Date | string): string {
