@@ -53,7 +53,7 @@ sitePhone={SITE.phone}
    />
 
  <p className="mt-8 flex items-center justify-center gap-2 text-center text-xs text-[#334155]">
- <Truck className="size-4 text-soft-sage" /> Same-day Nairobi before 5 PM | Countrywide in 1–7 working days
+ <Truck className="size-4 text-soft-sage" /> Nairobi same-day delivery subject to confirmation | Countrywide in 1–7 working days | Delivery fee confirmed before dispatch
  </p>
  </div>
  );
