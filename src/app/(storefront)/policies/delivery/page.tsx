@@ -18,7 +18,7 @@ export default async function DeliveryPolicyPage() {
  <div className="mt-4 space-y-6 text-sm leading-relaxed text-[#07111F]">
  <div>
  <h3 className="font-semibold text-[#07111F]">Same-day Nairobi delivery</h3>
- <p className="mt-1">Orders placed before 5:00pm are delivered the same day across Nairobi. Same-day is dispatched with our own riders, with live WhatsApp updates. We confirm the delivery charge with you before we dispatch.</p>
+ <p className="mt-1">Same-day Nairobi delivery may be available for orders placed before 5:00pm. Availability depends on the item, order confirmation and delivery location, so please contact us to confirm the timing before dispatch. We will confirm the delivery charge with you before dispatch.</p>
  </div>
  <div>
  <h3 className="font-semibold text-[#07111F]">Countrywide delivery</h3>
