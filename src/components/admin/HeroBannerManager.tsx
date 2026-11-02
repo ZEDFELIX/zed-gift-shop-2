@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { Save } from "lucide-react";
 
@@ -33,7 +34,7 @@ export function HeroBannerManager({ initial }: { initial?: Partial<HeroBanner> |
       <label className="text-xs font-semibold">Button link<input className="field mt-1" value={value.buttonHref} onChange={e=>update("buttonHref",e.target.value)} /></label>
     </div>
     <div className="grid gap-3 sm:grid-cols-2">
-      {value.imageUrls.map((url,index)=><label key={index} className="text-xs font-semibold">Banner photo {index+1}<input className="field mt-1" value={url} onChange={e=>update("imageUrls",value.imageUrls.map((x,i)=>i===index?e.target.value:x))} placeholder="Paste an existing product image URL" />{url && <img src={url} alt={`Banner preview ${index+1}`} className="mt-2 h-24 w-full rounded-lg border border-edge object-cover" />}</label>)}
+      {value.imageUrls.map((url,index)=><label key={index} className="text-xs font-semibold">Banner photo {index+1}<input className="field mt-1" value={url} onChange={e=>update("imageUrls",value.imageUrls.map((x,i)=>i===index?e.target.value:x))} placeholder="Paste an existing product image URL" />{url && <Image src={url} alt={`Banner preview ${index+1}`} width={640} height={96} unoptimized className="mt-2 h-24 w-full rounded-lg border border-edge object-cover" />}</label>)}
     </div>
     <div className="flex flex-wrap items-center gap-3"><button type="button" disabled={busy} onClick={save} className="inline-flex items-center gap-2 rounded-zed bg-zed-950 px-4 py-2 text-sm font-bold text-white disabled:opacity-50"><Save className="size-4"/>{busy?"Saving...":"Save banner"}</button>{message && <p className="text-sm text-[#334155]">{message}</p>}</div>
   </section>;
