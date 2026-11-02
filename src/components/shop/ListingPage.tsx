@@ -98,7 +98,7 @@ export async function ListingPage({
   const shownIds = new Set(sectionData.shownIds);
   const gridItems = result.items.filter((p) => !shownIds.has(p.id));
   const visibleCategories = categories
-    .filter((category) => category.count > 0)
+    .filter((category) => category.count > 0 && category.parentId === null)
     .map((category) => ({
       ...category,
       displayName: /^jewerly$/i.test(category.name.trim()) ? "Jewellery" : category.name,
