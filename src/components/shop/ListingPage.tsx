@@ -97,7 +97,12 @@ export async function ListingPage({
     : { sections: [], shownIds: [] };
   const shownIds = new Set(sectionData.shownIds);
   const gridItems = result.items.filter((p) => !shownIds.has(p.id));
-  const visibleCategories = categories.filter((category) => category.count > 0);
+  const visibleCategories = categories
+    .filter((category) => category.count > 0)
+    .map((category) => ({
+      ...category,
+      displayName: /^jewerly$/i.test(category.name.trim()) ? "Jewellery" : category.name,
+    }));
 
   return (
     <div className="container-zed bg-[#f7f7f7] py-2 sm:bg-transparent sm:py-5 lg:py-6">
@@ -159,10 +164,10 @@ export async function ListingPage({
                         className={`flex h-[44px] min-w-[116px] max-w-[145px] shrink-0 snap-start items-center gap-1.5 rounded-md border bg-white px-2 text-left transition-colors sm:h-[48px] sm:min-w-[130px] sm:gap-2 sm:px-2.5 ${active ? "border-[var(--color-rose-500)] ring-1 ring-[var(--color-rose-500)]" : "border-[#e5e5e5] hover:border-[#c9c9c9]"}`}
                       >
                         <span className={`grid size-7 shrink-0 place-items-center rounded text-[11px] font-black sm:size-8 ${toneClass}`}>
-                          {category.name.slice(0, 1).toUpperCase()}
+                          {category.displayName.slice(0, 1).toUpperCase()}
                         </span>
                         <span className="min-w-0 flex-1">
-                          <span className="block line-clamp-1 text-[9px] font-bold leading-tight text-[#303030] sm:text-[10px]">{category.name}</span>
+                          <span className="block line-clamp-1 text-[9px] font-bold leading-tight text-[#303030] sm:text-[10px]">{category.displayName}</span>
                           <span className="mt-0.5 block text-[8px] leading-none text-[#888]">{category.count} {category.count === 1 ? "item" : "items"}</span>
                         </span>
                       </Link>
