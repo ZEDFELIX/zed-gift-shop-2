@@ -29,7 +29,7 @@ export const SITE = {
   "https://maps.google.com/maps?q=ZED%20Gift%20Shop%20Nairobi&t=m&z=15&output=embed&iwloc=near",
   hours: "Mon – Sun, 08:00 – 19:00",
   currency: "KES",
-  currencyPrefix: "KShs",
+  currencyPrefix: "KSh",
   country: "Kenya",
   ratingValue: 4.9,
   reviewCount: 605,
