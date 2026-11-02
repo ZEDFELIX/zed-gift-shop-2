@@ -41,7 +41,7 @@ export async function ListingPage({
 
   const occasions = allCategories
     .filter((c) => c.kind === "OCCASION")
-    .map((c) => ({ slug: c.slug, name: c.name, count: c._count.products }));
+    .map((c) => ({ slug: c.slug, name: c.name, count: c._count.products, parentId: c.parentId }));
   const recipients = allCategories
     .filter((c) => c.kind === "RECIPIENT")
     .map((c) => ({ slug: c.slug, name: c.name, count: c._count.products }));
