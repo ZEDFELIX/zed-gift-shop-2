@@ -12,7 +12,7 @@ const faqs = [
  },
  {
  q: "When will my order arrive?",
- a: "Orders placed before 5:00pm are delivered the same day within Nairobi. Countrywide deliveries usually arrive in 1-3 working days for major towns and 2-7 working days for the rest of Kenya, with tracking.",
+ a: "Same-day delivery may be available in Nairobi for orders placed before 5:00pm. Please confirm availability for your item and location with our team. Countrywide delivery usually takes 1-7 working days depending on the destination.",
  },
  {
  q: "How is delivery charged?",
@@ -28,7 +28,7 @@ const faqs = [
  },
  {
  q: "Can I include a gift message?",
- a: "Of course. Add a handwritten-style gift note at checkout on selected products - it's included in a classic ZED gift box.",
+ a: "Where gift notes are available, you can add your message during checkout. If you need a note or special wrapping for a particular gift, contact us before ordering and we will confirm what is available.",
  },
  {
  q: "What if my gift arrives damaged or wrong?",
