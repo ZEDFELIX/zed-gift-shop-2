@@ -41,13 +41,13 @@ export async function ListingPage({
 
   const occasions = allCategories
     .filter((c) => c.kind === "OCCASION")
-    .map((c) => ({ slug: c.slug, name: c.name, count: c._count.products, parentId: c.parentId }));
+    .map((c) => ({ slug: c.slug, name: c.name, count: c._count.products }));
   const recipients = allCategories
     .filter((c) => c.kind === "RECIPIENT")
     .map((c) => ({ slug: c.slug, name: c.name, count: c._count.products }));
   const categories = allCategories
     .filter((c) => c.kind === "CATEGORY")
-    .map((c) => ({ slug: c.slug, name: c.name, count: c._count.products }));
+    .map((c) => ({ slug: c.slug, name: c.name, count: c._count.products, parentId: c.parentId }));
 
   const nameBySlug = new Map(
     [...occasions, ...recipients, ...categories].map((c) => [c.slug, c.name])
