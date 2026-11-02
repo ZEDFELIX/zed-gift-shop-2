@@ -5,7 +5,7 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 export function formatKES(amount: number): string {
-  return `KSh${new Intl.NumberFormat("en-KE", { maximumFractionDigits: 0 }).format(Math.round(amount))}`;
+  return `KSh ${new Intl.NumberFormat("en-KE", { maximumFractionDigits: 0 }).format(Math.round(amount))}`;
 }
 
 export function formatKESShort(amount: number): string {
