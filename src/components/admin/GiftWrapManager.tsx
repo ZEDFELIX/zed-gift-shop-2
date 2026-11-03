@@ -116,12 +116,12 @@ export function GiftWrapManager() {
           <input id="gw-image" className="field" type="url" value={draft.image ?? ""} onChange={(e) => setDraft({ image: e.target.value })} placeholder="https://…" />
         </div>
         <div className="sm:col-span-2">
-          <label className="label" htmlFor="gw-desc">Description (optional - shown on product page)</label>
+          <label className="label" htmlFor="gw-desc">Description (optional - internal note)</label>
           <input id="gw-desc" className="field" value={draft.description ?? ""} onChange={(e) => setDraft({ description: e.target.value })} placeholder="Kraft box with ribbon" />
         </div>
         <label className="flex items-center gap-2 text-sm text-[#07111F]">
           <input type="checkbox" checked={draft.active ?? true} onChange={(e) => setDraft({ active: e.target.checked })} className="size-4 accent-deep-olive" />
-          Active (shown on product pages)
+          Active (shown on Wrap a Gift page and eligible checkout options)
         </label>
         <div className="flex gap-2 sm:col-span-2">
           <button type="submit" disabled={busy} className="flex items-center gap-2 rounded-zed bg-zed-950 px-5 py-3 text-sm font-bold text-white disabled:opacity-50">
