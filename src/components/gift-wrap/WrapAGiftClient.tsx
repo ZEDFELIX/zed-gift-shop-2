@@ -195,6 +195,7 @@ export function WrapAGiftClient({ wraps }: { wraps: WrapOption[] }) {
                     <h3 className="text-sm font-bold text-[#321b30]">{wrap.name}</h3>
                     <p className="mt-1 text-sm font-bold text-[#542447]">{formatKES(wrap.price)}</p>
                     <p className="mt-1 text-[10px] font-semibold uppercase tracking-wide text-[#9a8496]">Demo option</p>
+                    <a href={ownGiftWhatsApp(wrap.name, wrap.price)} target="_blank" rel="noreferrer noopener" className="mt-3 block rounded-lg border border-[#d9c8d6] px-3 py-2.5 text-center text-xs font-bold text-[#542447] hover:bg-[#f8f1f7]">Ask about this wrap</a>
                   </div>
                 </article>
               ))}
