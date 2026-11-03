@@ -191,8 +191,10 @@ export function ProductForm({ product, categories, collections, showStock = true
  <input id="pf-slug" className="field" value={form.slug} onChange={(e) => set("slug", e.target.value.toLowerCase())} required pattern="^[a-z0-9-]+$" />
  </div>
  <div>
- <label className="label" htmlFor="pf-sku">SKU</label>
- <input id="pf-sku" className="field" value={form.sku} onChange={(e) => set("sku", e.target.value)} />
+ <label className="label">SKU</label>
+ <div className="field flex items-center bg-[#FAF8F5] text-sm text-[#542447]">
+ {isEdit ? (form.sku || "Assigned automatically") : "Generated automatically when saved"}
+ </div>
  </div>
  <div className="lg:col-span-2">
  <label className="label" htmlFor="pf-headline">Short headline</label>
