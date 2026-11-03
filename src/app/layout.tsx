@@ -3,7 +3,6 @@ import "server-only";
 import { Metadata, Viewport } from "next";
 import type { CSSProperties } from "react";
 import { SITE } from "@/lib/constants";
-import { getSettings } from "@/lib/data/settings";
 import { buildMetadata, jsonLdOrganization, jsonLdWebsite } from "@/lib/seo";
 import { ToastHost } from "@/components/ui/ToastHost";
 import { ServiceWorkerReg } from "@/components/layout/ServiceWorkerReg";
@@ -35,7 +34,6 @@ function readableTextColor(hex: string): string {
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
  const storeJsonLd = JSON.stringify(jsonLdOrganization());
  const websiteJsonLd = JSON.stringify(jsonLdWebsite());
- const settings = await getSettings();
  const primary = "#6C2D5C"; // Royal Plum
  const secondary = "#263746"; // Midnight Slate
  const background = "#F3F0EA"; // Soft Ivory
