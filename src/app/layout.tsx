@@ -91,6 +91,8 @@ export default async function RootLayout({ children }: { children: React.ReactNo
       <body style={colors} className="zed-page-bg min-h-screen bg-pure-white text-ink font-sans antialiased" suppressHydrationWarning>
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: storeJsonLd }} />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: websiteJsonLd }} />
+        <PageThemeScope />
+        <style dangerouslySetInnerHTML={{ __html: `${pageThemeCss}\nbody{color:var(--zed-text-body)!important} body :is(h1,h2,h3,h4){color:var(--zed-text-heading)} body :is(small,.text-muted){color:var(--zed-text-muted)} body button{--zed-global-button-text:var(--zed-button-text)} body[data-zed-page]{background:var(--zed-page-background,var(--color-pure-white))!important;color:var(--zed-page-text,var(--zed-text-body))!important} body[data-zed-page] :is(h1,h2,h3,h4){color:var(--zed-page-heading,var(--zed-text-heading))!important} body[data-zed-page] main{color:var(--zed-page-text,var(--zed-text-body))} body[data-zed-page] :is(.zed-product-card,.shop-product-card,.glass-panel,.glass-card,.glass-strong){background:var(--zed-page-card,#fff)!important} body[data-zed-page] :is(.zed-product-card a,.zed-product-card [class*=text-rose-],.shop-product-card a){color:var(--zed-page-primary,var(--zed-brand-primary))!important} body[data-zed-page] :is(main button,[role=button]){background-color:var(--zed-page-button,var(--zed-brand-secondary));color:var(--zed-page-button-text,var(--zed-button-text))!important}` }} />
         {children}
         <ToastHost />
         <ServiceWorkerReg />
