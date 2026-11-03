@@ -13,7 +13,7 @@ export default async function AdminGiftWrapPage() {
       <div>
         <h2 className="font-display text-xl font-bold text-[#07111F]">Gift wrap options</h2>
         <p className="mt-1 text-sm text-[#334155]">
-          These choices appear on product pages where gift wrap is available. Hidden options stay on past orders.
+          These choices and prices appear on the Wrap a Gift page and wherever gift wrapping is offered at checkout. Hidden options stay on past orders.
         </p>
       </div>
       <GiftWrapManager />
