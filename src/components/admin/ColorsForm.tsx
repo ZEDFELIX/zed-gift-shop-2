@@ -67,26 +67,25 @@ export function ColorsForm({ initial }: Props) {
           <h2 className="font-display text-xl font-bold text-[#07111F]">Colours</h2>
         </div>
         <p className="mt-1 text-sm text-[#334155]">
-          These colours theme the entire storefront, plus receipts and invoices. Change a colour and every
-          matching element updates automatically. The announcement bar has its own colour, so you can change it
-          without touching anything else. Full access to every colour on the store.
+          These colours theme the entire storefront, plus receipts and invoices. Use the colour picker or enter any HEX value to customise each brand colour. Saved colours update the storefront theme, including buttons, accents, backgrounds and the announcement bar.
         </p>
       </section>
 
       <section className="rounded-zed border border-edge bg-white p-6">
-        <h2 className="font-display text-lg font-bold text-[#07111F]">New brand palette</h2>
+        <h2 className="font-display text-lg font-bold text-[#07111F]">Brand palette presets</h2>
         <p className="mt-1 text-sm text-[#334155]">Apply the approved palette as a starting point, then customise every colour below with the colour picker or HEX value.</p>
         <div className="mt-4 grid gap-3 sm:grid-cols-3">
           {[
             { name: "Royal Plum", hex: "#6C2D5C", role: "Primary + announcement" },
             { name: "Midnight Slate", hex: "#263746", role: "Secondary" },
+            { name: "Accent Violet", hex: "#7C3AED", role: "Accent" },
             { name: "Milk White", hex: "#FAFAF7", role: "Background" },
           ].map((preset) => (
             <button
               key={preset.name}
               type="button"
               onClick={() => {
-                const key = preset.name === "Royal Plum" ? "primaryColor" : preset.name === "Midnight Slate" ? "secondaryColor" : "backgroundColor";
+                const key = preset.name === "Royal Plum" ? "primaryColor" : preset.name === "Midnight Slate" ? "secondaryColor" : preset.name === "Accent Violet" ? "accentColor" : "backgroundColor";
                 set(key, preset.hex);
                 if (preset.name === "Royal Plum") set("announcementColor", preset.hex);
               }}
@@ -107,6 +106,7 @@ export function ColorsForm({ initial }: Props) {
             primaryColor: "#6C2D5C",
             secondaryColor: "#263746",
             backgroundColor: "#FAFAF7",
+            accentColor: "#7C3AED",
             announcementColor: "#6C2D5C",
           }))}
           className="mt-3 rounded-md bg-[#263746] px-4 py-2 text-xs font-bold text-white transition hover:opacity-90"
