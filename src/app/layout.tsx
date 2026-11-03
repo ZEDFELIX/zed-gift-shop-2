@@ -20,7 +20,7 @@ export const metadata: Metadata = buildMetadata({
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
-  themeColor: "#6B2D5C",
+  themeColor: "#6C2D5C",
 };
 
 /** Picks readable label text (dark or white) for any announcement bar colour. */
@@ -36,36 +36,24 @@ export default async function RootLayout({ children }: { children: React.ReactNo
  const storeJsonLd = JSON.stringify(jsonLdOrganization());
  const websiteJsonLd = JSON.stringify(jsonLdWebsite());
  const settings = await getSettings();
- const primary = String(settings.primaryColor ?? "#E5397F");
- const secondary = String(settings.secondaryColor ?? "#6B2D5C");
- const accent = String(settings.accentColor ?? "#7C3AED");
-  const background = String(settings.backgroundColor ?? "#FFFFFF");
-  const announcementColor = String(settings.announcementColor ?? "#6B2D5C");
-  const colors = {
-  "--color-rose-500": primary,
-  "--color-rose-600": primary,
-  "--color-rose-400": primary,
-  "--color-rose-700": primary,
-  "--color-plum-800": secondary,
-  "--color-plum-900": secondary,
-  "--color-plum-700": secondary,
-  "--color-plum-950": secondary,
-  "--color-violet-500": accent,
-  "--color-violet-600": accent,
-  "--color-violet-700": accent,
-  "--color-deep-olive": secondary,
-  "--color-soft-sage": primary,
-  "--color-champagne": accent,
-  "--color-zed-950": secondary,
-  "--color-zed-900": secondary,
-  "--color-zed-800": secondary,
-  "--color-zed-700": secondary,
-  "--color-zed-600": primary,
-  "--color-pure-white": background,
-  "--color-warm-white": background,
-  "--color-warm-ivory": background,
-  "--color-announcement": announcementColor,
-  "--color-announcement-fg": readableTextColor(announcementColor),
+ const primary = "#6C2D5C"; // Royal Plum
+ const secondary = "#263746"; // Midnight Slate
+ const background = "#F3F0EA"; // Soft Ivory
+ const announcementColor = primary;
+ const colors = {
+  "--color-rose-50": background, "--color-rose-100": background, "--color-rose-200": background, "--color-rose-300": background,
+  "--color-rose-400": primary, "--color-rose-500": primary, "--color-rose-600": primary, "--color-rose-700": secondary, "--color-rose-800": secondary, "--color-rose-900": secondary, "--color-rose-950": secondary,
+  "--color-plum-50": background, "--color-plum-100": background, "--color-plum-200": background, "--color-plum-300": background,
+  "--color-plum-400": primary, "--color-plum-500": primary, "--color-plum-600": primary, "--color-plum-700": secondary, "--color-plum-800": secondary, "--color-plum-900": secondary, "--color-plum-950": secondary,
+  "--color-violet-50": background, "--color-violet-100": background, "--color-violet-200": background, "--color-violet-300": background,
+  "--color-violet-400": primary, "--color-violet-500": primary, "--color-violet-600": primary, "--color-violet-700": secondary, "--color-violet-800": secondary, "--color-violet-900": secondary, "--color-violet-950": secondary,
+  "--color-deep-olive": secondary, "--color-soft-sage": primary, "--color-champagne": background,
+  "--color-zed-950": secondary, "--color-zed-900": secondary, "--color-zed-800": secondary, "--color-zed-700": primary, "--color-zed-600": primary, "--color-zed-500": primary, "--color-zed-lime": background, "--color-zed-50": background,
+  "--color-pure-white": background, "--color-warm-white": background, "--color-warm-ivory": background,
+  "--color-white": background, "--color-black": secondary,
+  "--color-ink": secondary, "--color-charcoal": secondary, "--color-muted": secondary,
+  "--color-stone": background, "--color-edge": "#D8D2C9", "--color-edge-strong": "#C7C0B6", "--color-panel": background,
+  "--color-announcement": announcementColor, "--color-announcement-fg": "#F3F0EA",
  } as CSSProperties;
  return (
     <html
