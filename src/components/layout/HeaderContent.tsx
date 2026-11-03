@@ -157,7 +157,7 @@ export function HeaderContent({
             type="button"
             aria-label="Open menu"
             onClick={() => setMobileOpen(true)}
-            className="grid size-10 shrink-0 place-items-center rounded-md text-[var(--color-ink)] hover:bg-zed-900/5 lg:hidden"
+            className="zed-menu-trigger grid size-10 shrink-0 place-items-center rounded-md text-[var(--zed-brand-secondary)] hover:bg-zed-900/5 lg:hidden"
           >
             <Menu className="size-4" />
           </button>
