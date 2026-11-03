@@ -131,7 +131,11 @@ export function HeaderContent({
           <p className="min-w-0 flex-1 overflow-x-auto whitespace-nowrap text-center text-[10px] font-semibold tracking-wide scrollbar-none touch-pan-x sm:text-xs md:overflow-hidden md:text-left md:text-ellipsis">
             {announcement}
           </p>
-          <div className="flex shrink-0 items-center gap-3 border-l border-white/25 pl-3 text-[10px] font-semibold sm:gap-4 sm:pl-4 sm:text-[11px]">
+          <div className="flex shrink-0 items-center gap-2 border-l border-white/25 pl-2 text-[10px] font-semibold sm:gap-4 sm:pl-4 sm:text-[11px]">
+            <Link href="/wrap-a-gift" className="inline-flex items-center gap-1 whitespace-nowrap rounded-md bg-white/15 px-2 py-1 transition-colors hover:bg-white/25" aria-label="Wrap a Gift">
+              <span className="hidden sm:inline">Wrap a Gift</span>
+              <span className="sm:hidden">Wrap</span>
+            </Link>
             <a href={telHref} className="inline-flex items-center gap-1.5 whitespace-nowrap transition-opacity hover:opacity-75" aria-label={`Call us on ${contactPhone}`}>
               <Phone className="size-3" aria-hidden="true" />
               <span className="hidden sm:inline">{contactPhone}</span>
@@ -234,21 +238,6 @@ export function HeaderContent({
         </div>
       </div></div>
 
-      {/* Primary quick links: prominent on phones, desktop and installed app */}
-      <div className={`relative z-30 border-b border-[#e7dfd3] bg-[#fffdf9] ${pathname.startsWith("/product/") ? "hidden md:block" : ""}`}>
-        <nav aria-label="Quick links" className="container-zed grid grid-cols-4 gap-1 px-2 py-2 sm:gap-2 sm:px-4 sm:py-2.5 lg:max-w-5xl lg:gap-5">
-          {[
-            { label: "Wrap a Gift", href: "/wrap-a-gift" },
-            { label: "Compare Gifts", href: "/compare" },
-            { label: "Wholesale", href: "/wholesale" },
-            { label: "About Us", href: "/about" },
-          ].map((item) => (
-            <Link key={item.href} href={item.href} className={`flex min-w-0 items-center justify-center rounded-lg px-1 py-2 text-center text-[10px] font-bold leading-tight transition-colors sm:px-3 sm:py-2.5 sm:text-xs ${pathname === item.href ? "bg-[#171717] text-white" : "text-[#29251f] hover:bg-[#f2eadf]"}`}>
-              <span className="truncate">{item.label}</span>
-            </Link>
-          ))}
-        </nav>
-      </div>
 
       {/* Mobile drawer */}
       {mobileOpen && (
