@@ -159,7 +159,7 @@ export function ProductPurchase({
 
   const orderLine = `Hello ZED Gift Shop, I'd like to order: ${productName ?? "this gift"} - ${formatKES(
   price,
-  )} x ${quantity}`;
+  )} x ${quantity}` + (wrap ? `\nGift wrapping: ${wrap.name} (+${formatKES(wrap.price)} per item)` : "\nGift wrapping: No");
   const shareCaption = [
     orderLine,
     productUrl ? `Product page: ${productUrl}` : "",
