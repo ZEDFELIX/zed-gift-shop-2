@@ -80,7 +80,7 @@ export function ColorsForm({ initial }: Props) {
           {[
             { name: "Royal Plum", hex: "#6C2D5C", role: "Primary + announcement" },
             { name: "Midnight Slate", hex: "#263746", role: "Secondary" },
-            { name: "Soft Ivory", hex: "#F3F0EA", role: "Background" },
+            { name: "Milk White", hex: "#FAFAF7", role: "Background" },
           ].map((preset) => (
             <button
               key={preset.name}
@@ -106,7 +106,7 @@ export function ColorsForm({ initial }: Props) {
             ...current,
             primaryColor: "#6C2D5C",
             secondaryColor: "#263746",
-            backgroundColor: "#F3F0EA",
+            backgroundColor: "#FAFAF7",
             announcementColor: "#6C2D5C",
           }))}
           className="mt-3 rounded-md bg-[#263746] px-4 py-2 text-xs font-bold text-white transition hover:opacity-90"
