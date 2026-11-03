@@ -137,14 +137,43 @@ export function WrapAGiftClient({ wraps }: { wraps: WrapOption[] }) {
     document.getElementById("your-gifts")?.scrollIntoView({ behavior: "smooth" });
   }
 
-  function ownGiftWhatsApp(wrapName: string, price: number) {
+  function ownGiftWhatsApp(wrapName: string, price: number, image?: string | null) {
     const message = [
-      "Hi Zed Gift Shop, I have my own gift (not bought from your website) and would like wrapping only.",
+      "Hi Zed Gift Shop, I would like wrapping only for my own gift.",
       `Wrapping style: ${wrapName}`,
       `Displayed wrapping price: ${formatKES(price)}`,
-      "Please confirm availability, delivery or drop-off arrangements, and payment options.",
+      ...(image ? [`Wrap photo: ${image}`] : []),
+      "Please confirm availability and drop-off or delivery arrangements.",
     ].join("\\n");
     return `https://wa.me/254711436169?text=${encodeURIComponent(message)}`;
+  }
+
+  async function askAboutWrap(wrap: Pick<WrapOption, "name" | "price" | "image">) {
+    const message = [
+      "Hi Zed Gift Shop, I would like wrapping only for my own gift.",
+      `Wrapping style: ${wrap.name}`,
+      `Displayed wrapping price: ${formatKES(wrap.price)}`,
+      "Please confirm availability and drop-off or delivery arrangements.",
+    ].join("\\n");
+
+    if (wrap.image && typeof navigator !== "undefined" && "share" in navigator) {
+      try {
+        const response = await fetch(wrap.image);
+        if (!response.ok) throw new Error("Could not load wrap photo.");
+        const blob = await response.blob();
+        const extension = blob.type.split("/")[1] || "jpg";
+        const photo = new File([blob], `zed-wrap-${wrap.name.toLowerCase().replace(/[^a-z0-9]+/g, "-")}.${extension}`, { type: blob.type || "image/jpeg" });
+        if (navigator.canShare?.({ files: [photo] })) {
+          await navigator.share({ files: [photo], title: wrap.name, text: message });
+          return;
+        }
+      } catch (error) {
+        if (error instanceof Error && error.name === "AbortError") return;
+      }
+    }
+
+    const url = ownGiftWhatsApp(wrap.name, wrap.price, wrap.image);
+    window.open(url, "_blank", "noopener,noreferrer");
   }
 
   return (
@@ -173,7 +202,7 @@ export function WrapAGiftClient({ wraps }: { wraps: WrapOption[] }) {
                   <h3 className="text-sm font-bold text-[#321b30]">{wrap.name}</h3>
                   <p className="mt-1 text-sm font-bold text-[#542447]">{wrap.price > 0 ? formatKES(wrap.price) : "Free"}</p>
                   <button type="button" onClick={() => applyWrapToCart(wrap.id)} className="mt-3 w-full rounded-lg bg-[#542447] px-3 py-2.5 text-xs font-bold text-white hover:bg-[#3f1b36]">Use for website order</button>
-                  <a href={ownGiftWhatsApp(wrap.name, wrap.price)} target="_blank" rel="noreferrer noopener" className="mt-2 block rounded-lg border border-[#d9c8d6] px-3 py-2.5 text-center text-xs font-bold text-[#542447] hover:bg-[#f8f1f7]">Wrap my own gift</a>
+                  <button type="button" onClick={() => void askAboutWrap(wrap)} className="mt-2 block w-full rounded-lg border border-[#d9c8d6] px-3 py-2.5 text-center text-xs font-bold text-[#542447] hover:bg-[#f8f1f7]">Wrap my own gift</button>
                 </div>
               </article>
             ))}
@@ -195,7 +224,7 @@ export function WrapAGiftClient({ wraps }: { wraps: WrapOption[] }) {
                     <h3 className="text-sm font-bold text-[#321b30]">{wrap.name}</h3>
                     <p className="mt-1 text-sm font-bold text-[#542447]">{formatKES(wrap.price)}</p>
                     <p className="mt-1 text-[10px] font-semibold uppercase tracking-wide text-[#9a8496]">Demo option</p>
-                    <a href={ownGiftWhatsApp(wrap.name, wrap.price)} target="_blank" rel="noreferrer noopener" className="mt-3 block rounded-lg border border-[#d9c8d6] px-3 py-2.5 text-center text-xs font-bold text-[#542447] hover:bg-[#f8f1f7]">Ask about this wrap</a>
+                    <button type="button" onClick={() => void askAboutWrap(wrap)} className="mt-3 block w-full rounded-lg border border-[#d9c8d6] px-3 py-2.5 text-center text-xs font-bold text-[#542447] hover:bg-[#f8f1f7]">Ask about this wrap</button>
                   </div>
                 </article>
               ))}
