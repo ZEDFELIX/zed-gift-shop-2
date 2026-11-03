@@ -50,7 +50,7 @@ export const DEFAULTS: Record<string, SettingValue> = {
   primaryColor: "#6C2D5C",
   secondaryColor: "#263746",
   announcementColor: "#6C2D5C",
-  accentColor: "#7C3AED",
+  accentColor: "#263746",
   backgroundColor: "#F3F0EA",
   returnPolicy: "Returns accepted within 30 days of delivery for unworn and undamaged items with original receipt.",
   newsletterEmail: "info@zedgiftshop2.com",
