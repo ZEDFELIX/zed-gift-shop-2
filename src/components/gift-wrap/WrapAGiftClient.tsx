@@ -18,6 +18,7 @@ type CartItem = {
   id: string;
   slug: string;
   name: string;
+  giftWrapAvailable: boolean;
   image: string | null;
   quantity: number;
   giftWrap: { name: string; price: number } | null;
@@ -129,7 +130,7 @@ export function WrapAGiftClient({ wraps }: { wraps: WrapOption[] }) {
           <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-[#7b5572]">The finishing touch</p>
           <h1 className="mt-2 font-display text-3xl font-bold tracking-tight text-[#321b30] sm:text-4xl">Wrap a Gift</h1>
           <p className="mt-3 max-w-xl text-sm leading-6 text-[#665663] sm:text-base">
-            Make every present feel personal. Choose beautiful packaging and add a message your recipient will remember.
+            Bring your own gift for wrapping, or buy a gift from us and add wrapping before checkout or later from your cart.
           </p>
           <a href="#your-gifts" className="mt-5 inline-flex items-center gap-2 rounded-xl bg-[#542447] px-5 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-[#3f1b36]">
             Personalise your gifts <ArrowRight className="size-4" />
@@ -252,6 +253,7 @@ export function WrapAGiftClient({ wraps }: { wraps: WrapOption[] }) {
                     </div>
                   </div>
 
+                  {item.giftWrapAvailable ? (
                   <div className="mt-4">
                     <p className="mb-2 text-xs font-bold uppercase tracking-wide text-[#6e5369]">Select packaging</p>
                     <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
@@ -268,6 +270,9 @@ export function WrapAGiftClient({ wraps }: { wraps: WrapOption[] }) {
                     </div>
                     {chosen && <p className="mt-2 text-xs text-[#766b75]">Selected: {chosen.name} · {chosen.price > 0 ? formatKES(chosen.price) : "Free"}</p>}
                   </div>
+                  ) : (
+                    <p className="mt-4 rounded-lg bg-[#f8f5ef] px-3 py-2 text-xs leading-5 text-[#756b62]">Online wrapping is not enabled for this product. You can still contact us to check whether we can wrap it as a special request.</p>
+                  )}
 
                   <div className="mt-4 rounded-lg bg-[#fcf9fc] p-3">
                     <label className="mb-2 flex items-center gap-2 text-xs font-bold uppercase tracking-wide text-[#6e5369]"><MessageSquareText className="size-4" /> Gift card message</label>
