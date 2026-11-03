@@ -36,7 +36,7 @@ export default async function AdminColorsPage() {
 
   return (
     <div className="space-y-6">
-      <ColorsForm initial={initial} />
+      <ColorsForm initial={initial} initialTextColors={s.textColors as { heading: string; body: string; muted: string; button: string } | undefined} initialPageThemes={s.pageThemes as Record<string, { background: string; text: string; heading: string; primary: string; button: string; buttonText: string; card: string }> | undefined} />
     </div>
   );
 }
