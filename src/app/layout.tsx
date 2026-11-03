@@ -35,7 +35,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
  const storeJsonLd = JSON.stringify(jsonLdOrganization());
  const websiteJsonLd = JSON.stringify(jsonLdWebsite());
  const primary = "#6C2D5C"; // Royal Plum
- const secondary = "#263746"; // Midnight Slate
+ const secondary = "#D9A0AC"; // Dusty Rose
  const background = "#F3F0EA"; // Soft Ivory
  const announcementColor = primary;
  const colors = {
@@ -48,8 +48,8 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   "--color-deep-olive": secondary, "--color-soft-sage": primary, "--color-champagne": background,
   "--color-zed-950": secondary, "--color-zed-900": secondary, "--color-zed-800": secondary, "--color-zed-700": primary, "--color-zed-600": primary, "--color-zed-500": primary, "--color-zed-lime": background, "--color-zed-50": background,
   "--color-pure-white": background, "--color-warm-white": background, "--color-warm-ivory": background,
-  "--color-white": background, "--color-black": secondary,
-  "--color-ink": secondary, "--color-charcoal": secondary, "--color-muted": secondary,
+  "--color-white": background, "--color-black": "#171717",
+  "--color-ink": "#171717", "--color-charcoal": "#171717", "--color-muted": "#6C2D5C",
   "--color-stone": background, "--color-edge": "#D8D2C9", "--color-edge-strong": "#C7C0B6", "--color-panel": background,
   "--color-announcement": announcementColor, "--color-announcement-fg": "#F3F0EA",
  } as CSSProperties;
