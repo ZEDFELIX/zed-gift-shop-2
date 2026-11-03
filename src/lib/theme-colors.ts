@@ -65,7 +65,7 @@ export const BRAND_COLORS: BrandColor[] = [
   {
     key: "backgroundColor",
     label: "Background colour",
-    default: "#F3F0EA",
+    default: "#FAFAF7",
     description:
       "The page canvas behind all content. It is also used for cards and white surfaces, so keep it light for readable text.",
     usedFor: [
