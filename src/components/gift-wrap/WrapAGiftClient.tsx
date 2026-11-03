@@ -140,11 +140,33 @@ export function WrapAGiftClient({ wraps }: { wraps: WrapOption[] }) {
         <Gift className="absolute bottom-7 right-10 hidden size-24 text-[#b995b0]/50 sm:block" strokeWidth={1} />
       </header>
 
+      <section className="mt-7">
+        <div className="mb-4">
+          <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#8b6a31]">A beautiful finish for every present</p>
+          <h2 className="mt-1 font-display text-xl font-bold text-[#211b17] sm:text-2xl">What kind of gift are you wrapping?</h2>
+          <p className="mt-1 max-w-2xl text-sm leading-6 text-[#756b62]">Use this guide to find the right wrapping size. The exact price is shown on each wrapping option below, before you choose.</p>
+        </div>
+        <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
+          <article className="rounded-2xl border border-[#e9dfd1] bg-[#fffaf2] p-4 sm:p-5"><div className="mb-3 grid size-10 place-items-center rounded-full bg-[#efe2ca] text-[#76552a]"><Gift className="size-5" /></div><h3 className="text-sm font-bold text-[#2b241d]">Small & delicate</h3><p className="mt-1 text-xs leading-5 text-[#756b62]">Jewellery, keyholders, small accessories and compact gifts.</p><p className="mt-3 border-t border-[#e9dfd1] pt-2 text-[11px] font-semibold text-[#76552a]">Neat wrap · tissue · ribbon</p></article>
+          <article className="rounded-2xl border border-[#e9dfd1] bg-[#f8f5ef] p-4 sm:p-5"><div className="mb-3 grid size-10 place-items-center rounded-full bg-[#e9e0d2] text-[#76552a]"><Package className="size-5" /></div><h3 className="text-sm font-bold text-[#2b241d]">Medium presents</h3><p className="mt-1 text-xs leading-5 text-[#756b62]">Watches, perfumes, mugs, wallets, books and standard gift boxes.</p><p className="mt-3 border-t border-[#e9dfd1] pt-2 text-[11px] font-semibold text-[#76552a]">Gift box or paper · ribbon · tag</p></article>
+          <article className="rounded-2xl border border-[#e9dfd1] bg-[#f6f1f5] p-4 sm:p-5"><div className="mb-3 grid size-10 place-items-center rounded-full bg-[#e8dce6] text-[#69455f]"><ShoppingBag className="size-5" /></div><h3 className="text-sm font-bold text-[#2b241d]">Large & multi-item</h3><p className="mt-1 text-xs leading-5 text-[#756b62]">Hampers, shoes, clothing sets and gifts with several items.</p><p className="mt-3 border-t border-[#e5d9e3] pt-2 text-[11px] font-semibold text-[#69455f]">Large packaging · secure finish</p></article>
+          <article className="rounded-2xl border border-[#e9dfd1] bg-[#f5f3ed] p-4 sm:p-5"><div className="mb-3 grid size-10 place-items-center rounded-full bg-[#e8e1cf] text-[#76552a]"><Gift className="size-5" /></div><h3 className="text-sm font-bold text-[#2b241d]">Premium & custom</h3><p className="mt-1 text-xs leading-5 text-[#756b62]">Luxury finishes, keepsake boxes, themed wrapping and special requests.</p><p className="mt-3 border-t border-[#e9dfd1] pt-2 text-[11px] font-semibold text-[#76552a]">Personalised finishing · quote first</p></article>
+        </div>
+      </section>
+
+      <section className="mt-8 rounded-2xl border border-[#e9dfd1] bg-white p-5 sm:p-6">
+        <div className="grid gap-5 sm:grid-cols-3">
+          <div><p className="text-[10px] font-bold uppercase tracking-[0.16em] text-[#9a793f]">01 · Bring it</p><h3 className="mt-1 text-sm font-bold text-[#2b241d]">Bring your own gift</h3><p className="mt-1 text-xs leading-5 text-[#756b62]">You can bring an item bought anywhere. You do not need to purchase the gift from us.</p></div>
+          <div><p className="text-[10px] font-bold uppercase tracking-[0.16em] text-[#9a793f]">02 · Choose it</p><h3 className="mt-1 text-sm font-bold text-[#2b241d]">Select the finish</h3><p className="mt-1 text-xs leading-5 text-[#756b62]">Choose an available wrap style below. Each option displays its price and packaging details.</p></div>
+          <div><p className="text-[10px] font-bold uppercase tracking-[0.16em] text-[#9a793f]">03 · Approve it</p><h3 className="mt-1 text-sm font-bold text-[#2b241d]">Confirm before we wrap</h3><p className="mt-1 text-xs leading-5 text-[#756b62]">Share the gift size or a photo on WhatsApp. We confirm the final price and arrangement first.</p></div>
+        </div>
+      </section>
+
       <section className="mt-8">
         <div className="mb-4 flex items-end justify-between gap-3">
           <div>
             <h2 className="font-display text-xl font-bold text-[#321b30]">Choose your wrapping style</h2>
-            <p className="mt-1 text-sm text-[#766b75]">Available styles and prices are managed by Zed Gift Shop.</p>
+            <p className="mt-1 text-sm text-[#766b75]">Choose from the available finishes below. Prices are shown in KSh; ask us first if your gift needs an oversized or custom wrap.</p>
           </div>
           <Link href="/shop" className="hidden text-sm font-semibold text-[#542447] underline-offset-4 hover:underline sm:inline">Browse gifts</Link>
         </div>
@@ -169,7 +191,7 @@ export function WrapAGiftClient({ wraps }: { wraps: WrapOption[] }) {
           </div>
         ) : (
           <div className="rounded-xl border border-dashed border-[#d9c8d6] bg-[#fcf9fc] p-6 text-center text-sm text-[#766b75]">
-            Our wrapping styles and prices are currently arranged directly with our team. Message us to see the available options, confirm the price and arrange a time. You can also bring your own gift to our Nairobi location.
+            We are updating our online wrap catalogue. Send us a photo or the approximate dimensions of your gift on WhatsApp and we will share the available wrapping styles and confirm the price before you visit.
           </div>
         )}
       </section>
