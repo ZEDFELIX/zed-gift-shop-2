@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { Loader2, Palette, RotateCcw, Save } from "lucide-react";
 import { BRAND_COLORS, isHexColor, type BrandColorKey } from "@/lib/theme-colors";
 
-type Props = { initial: Record<BrandColorKey, string> };
+type Props = { initial: Record<BrandColorKey, string>; initialTextColors?: { heading: string; body: string; muted: string; button: string }; initialPageThemes?: Record<string, { background: string; text: string; heading: string; primary: string; button: string; buttonText: string; card: string }> };
 
 /** Picks readable label text (dark or white) for any background colour. */
 function readable(hex: string): string {
@@ -15,13 +15,13 @@ function readable(hex: string): string {
   return lum > 0.6 ? "#07111F" : "#FFFFFF";
 }
 
-export function ColorsForm({ initial }: Props) {
+export function ColorsForm({ initial, initialTextColors, initialPageThemes }: Props) {
   const router = useRouter();
   const [colors, setColors] = useState<Record<BrandColorKey, string>>(initial);
-  const [textColors, setTextColors] = useState({ heading: "#171717", body: "#29232B", muted: "#716772", button: "#FFFFFF" });
+  const [textColors, setTextColors] = useState(initialTextColors ?? { heading: "#171717", body: "#29232B", muted: "#716772", button: "#FFFFFF" });
   const pageNames = [{ key: "home", label: "Home", path: "/" }, { key: "shop", label: "Shop", path: "/shop" }, { key: "product", label: "Product details", path: "/product" }, { key: "cart", label: "Cart", path: "/cart" }, { key: "checkout", label: "Checkout", path: "/checkout" }, { key: "account", label: "Account", path: "/account" }, { key: "wrap-a-gift", label: "Wrap a Gift", path: "/wrap-a-gift" }, { key: "contact", label: "Contact", path: "/contact" }, { key: "about", label: "About", path: "/about" }, { key: "blog", label: "Blog", path: "/blog" }];
   const defaultPage = { background: "#FAFAF7", text: "#29232B", heading: "#171717", primary: "#6C2D5C", button: "#263746", buttonText: "#FFFFFF", card: "#FFFFFF" };
-  const [pageThemes, setPageThemes] = useState<Record<string, typeof defaultPage>>(() => Object.fromEntries(pageNames.map(p => [p.key, { ...defaultPage }])));
+  const [pageThemes, setPageThemes] = useState<Record<string, typeof defaultPage>>(() => Object.fromEntries(pageNames.map(p => [p.key, { ...defaultPage, ...(initialPageThemes?.[p.key] ?? {}) }])));
   const [busy, setBusy] = useState(false);
   const [status, setStatus] = useState<"idle" | "saved" | "error">("idle");
   const [error, setError] = useState<string | null>(null);
