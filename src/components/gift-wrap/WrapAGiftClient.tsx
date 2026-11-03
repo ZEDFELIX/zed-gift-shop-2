@@ -151,7 +151,7 @@ export function WrapAGiftClient({ wraps }: { wraps: WrapOption[] }) {
     <div className="container-zed py-8 sm:py-12">
       <header className="py-5 sm:py-7">
         <h1 className="font-display text-3xl font-bold tracking-tight text-[#321b30] sm:text-4xl">Wrap a Gift</h1>
-        <p className="mt-2 text-sm text-[#766b75]">Choose a wrapping style to make your gift special.</p>
+        <p className="mt-2 text-sm text-[#766b75]">Choose a wrap.</p>
       </header>
 
       <section className="mt-2">
@@ -180,7 +180,7 @@ export function WrapAGiftClient({ wraps }: { wraps: WrapOption[] }) {
           </div>
         ) : (
           <>
-            <p className="mb-3 text-xs text-[#8a7d88]">Sample designs and prices — replace these with your real packages in Admin → Gift Wrap.</p>
+            <p className="mb-3 text-xs text-[#8a7d88]">Sample wraps. Add your own in Admin → Gift Wrap.</p>
             <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
               {[
                 { id: "demo-classic", name: "Classic Gift Wrap", price: 150, image: "https://images.unsplash.com/photo-1513201099705-a9746e1e201f?auto=format&fit=crop&w=900&q=85" },
@@ -207,12 +207,12 @@ export function WrapAGiftClient({ wraps }: { wraps: WrapOption[] }) {
       <div className="mt-6 grid gap-3 rounded-xl bg-[#f8f3f7] p-4 sm:grid-cols-2">
         <div>
           <h3 className="text-sm font-bold text-[#321b30]">Buying a gift from Zed?</h3>
-          <p className="mt-1 text-xs text-[#5d4658]">Choose “Use for website order” on a wrapping card, save it against your cart item, then continue to the normal checkout and M-Pesa payment.</p>
+          <p className="mt-1 text-xs text-[#5d4658]">Choose a wrap for your cart item, save, then checkout.</p>
           <a href="/shop" className="mt-2 inline-flex items-center gap-1 text-xs font-bold text-[#542447] underline underline-offset-4">Shop gifts <ArrowRight className="size-3" /></a>
         </div>
         <div>
           <h3 className="text-sm font-bold text-[#321b30]">Already have your own gift?</h3>
-          <p className="mt-1 text-xs text-[#5d4658]">Choose “Wrap my own gift” on a wrapping card. WhatsApp opens with the style and displayed price so we can arrange wrapping only.</p>
+          <p className="mt-1 text-xs text-[#5d4658]">Choose a wrap and contact us on WhatsApp.</p>
           <a href={ownGiftWhatsApp("Style to be confirmed", 0)} target="_blank" rel="noreferrer noopener" className="mt-2 inline-flex items-center gap-1 text-xs font-bold text-[#542447] underline underline-offset-4">Arrange wrapping on WhatsApp <ArrowRight className="size-3" /></a>
         </div>
       </div>
@@ -222,7 +222,7 @@ export function WrapAGiftClient({ wraps }: { wraps: WrapOption[] }) {
           <ShoppingBag className="size-5 text-[#542447]" />
           <div>
             <h2 className="font-display text-xl font-bold text-[#321b30]">Your gifts</h2>
-            <p className="text-sm text-[#766b75]">Select wrapping and write a personal card for each item in your cart.</p>
+            <p className="text-sm text-[#766b75]">Choose a wrap and add a message.</p>
           </div>
         </div>
 
@@ -234,7 +234,7 @@ export function WrapAGiftClient({ wraps }: { wraps: WrapOption[] }) {
           <div className="rounded-xl border border-[#eadfe8] bg-white px-5 py-10 text-center">
             <Package className="mx-auto size-10 text-[#b995b0]" />
             <h3 className="mt-3 font-display text-lg font-bold text-[#321b30]">Your cart is waiting for a gift</h3>
-            <p className="mt-1 text-sm text-[#766b75]">Add a product first, then come back to choose its wrapping.</p>
+            <p className="mt-1 text-sm text-[#766b75]">Add a product to your cart first.</p>
             <Link href="/shop" className="mt-5 inline-flex items-center gap-2 rounded-xl bg-[#542447] px-5 py-3 text-sm font-semibold text-white hover:bg-[#3f1b36]">Explore gifts <ArrowRight className="size-4" /></Link>
           </div>
         ) : (
@@ -272,7 +272,7 @@ export function WrapAGiftClient({ wraps }: { wraps: WrapOption[] }) {
                     {chosen && <p className="mt-2 text-xs text-[#766b75]">Selected: {chosen.name} · {chosen.price > 0 ? formatKES(chosen.price) : "Free"}</p>}
                   </div>
                   ) : (
-                    <p className="mt-4 rounded-lg bg-[#f8f5ef] px-3 py-2 text-xs leading-5 text-[#756b62]">Online wrapping is not enabled for this product. You can still contact us to check whether we can wrap it as a special request.</p>
+                    <p className="mt-4 rounded-lg bg-[#f8f5ef] px-3 py-2 text-xs leading-5 text-[#756b62]">Wrapping unavailable for this item. Contact us.</p>
                   )}
 
                   <div className="mt-4 rounded-lg bg-[#fcf9fc] p-3">
@@ -295,7 +295,7 @@ export function WrapAGiftClient({ wraps }: { wraps: WrapOption[] }) {
               );
             })}
             <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-[#eadfe8] bg-[#fcf9fc] p-4">
-              <p className="text-xs text-[#766b75]">Your wrapping and card message will be included with the matching cart item.</p>
+              <p className="text-xs text-[#766b75]">Your gift options are saved with each item.</p>
               <button type="button" onClick={() => window.dispatchEvent(new CustomEvent("zed:open-cart"))} className="inline-flex items-center gap-2 rounded-lg border border-[#d9c8d6] bg-white px-4 py-2.5 text-xs font-bold text-[#542447] hover:bg-[#f8f1f7]">Review cart <ArrowRight className="size-4" /></button>
             </div>
           </div>
