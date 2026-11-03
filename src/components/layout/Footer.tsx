@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Mail, MapPin, Phone } from "lucide-react";
+import { Instagram, Mail, MapPin, Music2, Phone } from "lucide-react";
 import { SITE } from "@/lib/constants";
 import { getSettings, DEFAULTS } from "@/lib/data/settings";
 
@@ -53,7 +53,30 @@ export async function Footer() {
         </div>
 
         <div className="sm:text-right">
-          <p className="font-display text-xl font-bold text-white">{storeName}</p>
+          <p className="text-[13px] font-bold uppercase tracking-[0.16em] text-white">Follow Us</p>
+          <div className="mt-3 flex items-center gap-3 sm:justify-end">
+            <a
+              href="https://www.instagram.com/zedgiftshop/"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Follow Zed Gift Shop on Instagram"
+              className="inline-flex items-center gap-2 rounded-full border border-white/20 px-4 py-2 text-sm text-white/80 transition-colors hover:border-champagne hover:text-white"
+            >
+              <Instagram className="size-4" />
+              Instagram
+            </a>
+            <a
+              href="https://www.tiktok.com/@zedgiftshopke"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Follow Zed Gift Shop on TikTok"
+              className="inline-flex items-center gap-2 rounded-full border border-white/20 px-4 py-2 text-sm text-white/80 transition-colors hover:border-champagne hover:text-white"
+            >
+              <Music2 className="size-4" />
+              TikTok
+            </a>
+          </div>
+          <p className="mt-6 font-display text-xl font-bold text-white">{storeName}</p>
           {description ? (
             <p className="mt-2 text-sm leading-relaxed text-white/60">
               {description}
