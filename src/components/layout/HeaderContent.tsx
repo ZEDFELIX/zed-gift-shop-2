@@ -15,6 +15,7 @@ import {
   SlidersHorizontal,
   Heart,
   Home,
+  Gift,
   ShieldCheck,
   ShoppingBag,
   User,
@@ -132,10 +133,6 @@ export function HeaderContent({
             {announcement}
           </p>
           <div className="flex shrink-0 items-center gap-2 border-l border-white/25 pl-2 text-[10px] font-semibold sm:gap-4 sm:pl-4 sm:text-[11px]">
-            <Link href="/wrap-a-gift" className="inline-flex items-center gap-1 whitespace-nowrap rounded-md bg-white/15 px-2 py-1 transition-colors hover:bg-white/25" aria-label="Wrap a Gift">
-              <span className="hidden sm:inline">Wrap a Gift</span>
-              <span className="sm:hidden">Wrap</span>
-            </Link>
             <a href={telHref} className="inline-flex items-center gap-1.5 whitespace-nowrap transition-opacity hover:opacity-75" aria-label={`Call us on ${contactPhone}`}>
               <Phone className="size-3" aria-hidden="true" />
               <span className="hidden sm:inline">{contactPhone}</span>
@@ -200,6 +197,15 @@ export function HeaderContent({
             >
               {isAuthed ? <User className="size-3.5 text-soft-sage" /> : <LogIn className="size-3.5 text-soft-sage" />}
               <span className="hidden sm:inline">{isAuthed ? "My Account" : "My Account"}</span>
+            </Link>
+            <Link
+              href="/wrap-a-gift"
+              aria-label="Wrap a Gift"
+              title="Wrap a Gift"
+              className="inline-flex h-9 items-center gap-1.5 rounded-md border border-edge bg-white/70 px-2 text-[11px] font-semibold text-[var(--color-ink)] transition hover:bg-zed-900/5 sm:px-2.5 sm:text-xs"
+            >
+              <Gift className="size-4 text-soft-sage" />
+              <span className="hidden sm:inline">Wrap a Gift</span>
             </Link>
             {userRole === "ADMIN" && (
               <Link
