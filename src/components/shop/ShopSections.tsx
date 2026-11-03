@@ -41,23 +41,23 @@ function Section({ title, products, href, flash = false, flashSale, titleColor, 
     const textColor = contrastText(boxColor);
     return (
       <section
-        className="relative mb-3 overflow-hidden rounded-2xl border p-2 shadow-sm sm:mb-4 sm:p-2.5"
+        className="relative mb-3 overflow-hidden rounded-xl border p-1.5 shadow-sm sm:mb-3 sm:p-2"
         style={{ backgroundColor: boxColor, color: textColor, borderColor: textColor === "#FFFFFF" ? "rgba(255,255,255,.22)" : "rgba(0,0,0,.10)" }}
         aria-label={flashSale.title || title}
       >
-        <div className="mb-1.5 flex min-w-0 items-center justify-between gap-2 border-b pb-1.5" style={{ borderColor: textColor === "#FFFFFF" ? "rgba(255,255,255,.22)" : "rgba(0,0,0,.10)" }}>
+        <div className="mb-1 flex min-w-0 items-center justify-between gap-2 border-b pb-1" style={{ borderColor: textColor === "#FFFFFF" ? "rgba(255,255,255,.22)" : "rgba(0,0,0,.10)" }}>
           <div className="flex min-w-0 items-center gap-2">
-            <span className="grid size-8 shrink-0 place-items-center rounded-xl bg-[#171717] text-white shadow-sm">
-              <Zap className="size-4 fill-current" aria-hidden="true" />
+            <span className="grid size-7 shrink-0 place-items-center rounded-lg bg-[#171717] text-white">
+              <Zap className="size-3.5 fill-current" aria-hidden="true" />
             </span>
             <div className="min-w-0">
-              <h2 className="font-ui text-sm font-extrabold leading-tight tracking-tight sm:text-base" style={{ color: textColor }}>
+              <h2 className="font-ui text-[13px] font-extrabold leading-tight tracking-tight sm:text-sm" style={{ color: textColor }}>
                 {flashSale.title || title}
               </h2>
               {flashSale.subtitle ? (
-                <p className="mt-0.5 line-clamp-1 text-[10px] opacity-75 sm:text-xs" style={{ color: textColor }}>{flashSale.subtitle}</p>
+                <p className="mt-0.5 line-clamp-1 text-[9px] opacity-75 sm:text-[11px]" style={{ color: textColor }}>{flashSale.subtitle}</p>
               ) : (
-                <p className="mt-0.5 text-[10px] opacity-75 sm:text-xs" style={{ color: textColor }}>Limited-time offers</p>
+                <p className="mt-0.5 text-[9px] opacity-75 sm:text-[11px]" style={{ color: textColor }}>Limited-time offers</p>
               )}
             </div>
           </div>
@@ -66,14 +66,14 @@ function Section({ title, products, href, flash = false, flashSale, titleColor, 
             {href && (
               <Link
                 href={href}
-                className="inline-flex min-h-8 shrink-0 items-center gap-1 rounded-full border px-2.5 py-1.5 text-[10px] font-bold shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 sm:px-3 sm:text-xs" style={{ color: textColor, borderColor: textColor === "#FFFFFF" ? "rgba(255,255,255,.45)" : "rgba(0,0,0,.16)", backgroundColor: textColor === "#FFFFFF" ? "rgba(255,255,255,.12)" : "rgba(255,255,255,.9)" }}
+                className="inline-flex min-h-7 shrink-0 items-center gap-1 rounded-full border px-2 py-1 text-[9px] font-bold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 sm:px-2.5 sm:text-[11px]" style={{ color: textColor, borderColor: textColor === "#FFFFFF" ? "rgba(255,255,255,.45)" : "rgba(0,0,0,.16)", backgroundColor: textColor === "#FFFFFF" ? "rgba(255,255,255,.12)" : "rgba(255,255,255,.9)" }}
               >
                 See all <ArrowRight className="size-3" aria-hidden="true" />
               </Link>
             )}
           </div>
         </div>
-        <div className="flex snap-x snap-mandatory gap-2 overflow-x-auto overscroll-x-contain rounded-xl pb-1 touch-auto scrollbar-none">
+        <div className="flex snap-x snap-mandatory gap-1.5 overflow-x-auto overscroll-x-contain rounded-lg pb-0.5 touch-auto scrollbar-none">
           {products.map((product, index) => (
             <div key={product.id} className="w-[148px] min-w-[148px] shrink-0 snap-start sm:w-[170px] sm:min-w-[170px] lg:w-[190px] lg:min-w-[190px]">
               <ProductCard product={product} priority={index < 2} flashSaleTag />
