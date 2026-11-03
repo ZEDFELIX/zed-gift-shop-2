@@ -39,6 +39,7 @@ function Section({ title, products, href, flash = false, flashSale, titleColor, 
   if (flash && flashSale) {
     const boxColor = isHexColor(flashSale.boxColor) ? flashSale.boxColor : FLASH_SALE_DEFAULT_BOX_COLOR;
     const textColor = contrastText(boxColor);
+    const darkSale = textColor === "#FFFFFF";
     return (
       <section
         className="relative mb-3 overflow-hidden rounded-xl border p-1.5 shadow-sm sm:mb-3 sm:p-2"
@@ -51,13 +52,13 @@ function Section({ title, products, href, flash = false, flashSale, titleColor, 
               <Zap className="size-3.5 fill-current" aria-hidden="true" />
             </span>
             <div className="min-w-0">
-              <h2 className="font-ui text-[13px] font-extrabold leading-tight tracking-tight sm:text-sm" style={{ color: textColor }}>
+              <h2 className={`font-ui text-[13px] font-extrabold leading-tight tracking-tight sm:text-sm ${darkSale ? "!text-white" : ""}`} style={{ color: textColor }}>
                 {flashSale.title || title}
               </h2>
               {flashSale.subtitle ? (
-                <p className="mt-0.5 line-clamp-1 text-[9px] opacity-75 sm:text-[11px]" style={{ color: textColor }}>{flashSale.subtitle}</p>
+                <p className={`mt-0.5 line-clamp-1 text-[9px] opacity-90 sm:text-[11px] ${darkSale ? "!text-white" : ""}`} style={{ color: textColor }}>{flashSale.subtitle}</p>
               ) : (
-                <p className="mt-0.5 text-[9px] opacity-75 sm:text-[11px]" style={{ color: textColor }}>Limited-time offers</p>
+                <p className={`mt-0.5 text-[9px] opacity-90 sm:text-[11px] ${darkSale ? "!text-white" : ""}`} style={{ color: textColor }}>Limited-time offers</p>
               )}
             </div>
           </div>
@@ -66,7 +67,7 @@ function Section({ title, products, href, flash = false, flashSale, titleColor, 
             {href && (
               <Link
                 href={href}
-                className="inline-flex min-h-7 shrink-0 items-center gap-1 rounded-full border px-2 py-1 text-[9px] font-bold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 sm:px-2.5 sm:text-[11px]" style={{ color: textColor, borderColor: textColor === "#FFFFFF" ? "rgba(255,255,255,.45)" : "rgba(0,0,0,.16)", backgroundColor: textColor === "#FFFFFF" ? "rgba(255,255,255,.12)" : "rgba(255,255,255,.9)" }}
+                className={`inline-flex min-h-7 shrink-0 items-center gap-1 rounded-full border px-2 py-1 text-[9px] font-bold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 sm:px-2.5 sm:text-[11px] ${darkSale ? "!text-white" : ""}`} style={{ color: textColor, borderColor: textColor === "#FFFFFF" ? "rgba(255,255,255,.45)" : "rgba(0,0,0,.16)", backgroundColor: textColor === "#FFFFFF" ? "rgba(255,255,255,.12)" : "rgba(255,255,255,.9)" }}
               >
                 See all <ArrowRight className="size-3" aria-hidden="true" />
               </Link>
