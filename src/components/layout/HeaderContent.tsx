@@ -44,7 +44,7 @@ function Brand({ storeName }: { storeName: string }) {
         width={522}
         height={186}
         priority
-        className="navbar-logo block object-contain object-center h-9 sm:h-11 lg:h-12 w-auto"
+        className="navbar-logo block object-contain object-center h-10 sm:h-12 lg:h-14 w-auto"
       />
     </Link>
   );
@@ -126,7 +126,8 @@ export function HeaderContent({
           <button type="button" onClick={openCart} aria-label={`Open cart, ${cartCount} items`} className="relative grid size-9 place-items-center rounded-full bg-black/5 text-[var(--color-ink)]"><ShoppingBag className="size-[18px]" />{cartCount > 0 && <span className="absolute -right-1 -top-1 grid min-w-4 place-items-center rounded-full bg-zed-950 px-1 text-[9px] font-bold text-white">{cartCount}</span>}</button>
         </div>
       )}
-      {/* Compact responsive announcement bar */}
+      {/* Announcement bar is intentionally limited to the Shop page. */}
+      {pathname.startsWith("/shop") && (
       <div className="relative z-30 block border-b border-white/10 bg-[var(--color-announcement,#6B2D5C)] text-[var(--color-announcement-fg,#fff)]">
         <div className="container-zed flex min-h-8 items-center justify-between gap-2 px-3 sm:min-h-9 sm:px-4">
           <p className="min-w-0 flex-1 overflow-x-auto whitespace-nowrap text-center text-[10px] font-semibold tracking-wide scrollbar-none touch-pan-x sm:text-xs md:overflow-hidden md:text-left md:text-ellipsis">
@@ -147,9 +148,10 @@ export function HeaderContent({
         </div>
         <p className="sr-only">{announcement ? `${announcement} · ` : ""}Call us on: {contactPhone} · WhatsApp: {whatsappNumber}</p>
       </div>
+      )}
 
-      {/* Main header row */}
-      <div className={`sticky top-0 z-40 px-2 pt-1 sm:px-3 sm:pt-1.5 lg:px-5 ${pathname.startsWith("/product/") ? "hidden md:block" : ""}`}><div className="zed-glass-nav rounded-2xl">
+      {/* Main glass header stays pinned while the page scrolls. */}
+      <div className={`sticky top-0 z-[60] px-2 pt-1 sm:px-3 sm:pt-1.5 lg:px-5 ${pathname.startsWith("/product/") ? "hidden md:block" : ""}`}><div className="zed-glass-nav rounded-2xl">
         <div className="container-zed flex h-[58px] items-center gap-2 px-2.5 sm:h-[60px] sm:gap-2.5 sm:px-4 lg:h-[68px] lg:gap-6 lg:px-10">
           <button
             type="button"
