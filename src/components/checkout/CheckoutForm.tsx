@@ -507,7 +507,7 @@ function wizardReached(n: number): boolean {
 
   {wiz === 1 && (
   <>
-  <h2 className="font-display text-lg font-bold text-[#07111F]">Your contact details</h2>
+  <h2 className="font-display text-lg font-bold text-[#07111F]">Contact details</h2>
   <div className="mt-5 grid gap-4 sm:grid-cols-2">
   <div>
   <label className="label" htmlFor="co-name">Full name</label>
@@ -520,18 +520,18 @@ function wizardReached(n: number): boolean {
     <input id="co-phone" value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })} className={`field pl-9 ${form.phone && !phoneIsValid ? "border-red-400" : ""}`} placeholder="0712 345 678" inputMode="tel" autoComplete="tel-national" />
     </div>
     {form.phone && !phoneIsValid && (
-    <p className="mt-1 text-xs text-red-600">Enter a Kenyan mobile number, e.g. 0712 345 678.</p>
+    <p className="mt-1 text-xs text-red-600">Enter a valid Kenyan number.</p>
     )}
     </div>
   <div className="sm:col-span-2">
-  <label className="label" htmlFor="co-email">Email (for order updates)</label>
+  <label className="label" htmlFor="co-email">Email</label>
   <input id="co-email" type="email" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} className="field" placeholder="you@example.com" />
   {form.email && !/.+@.+\..+/.test(form.email) && (
-  <p className="mt-1 text-xs text-red-600">Enter a valid email address.</p>
+  <p className="mt-1 text-xs text-red-600">Enter a valid email.</p>
   )}
   </div>
   </div>
-  <p className="mt-3 text-xs text-[#334155]">Cash on delivery and M-PESA both use the phone number above.</p>
+  <p className="mt-3 text-xs text-[#334155]"></p>
 
   <div className="mt-6 flex items-center justify-end gap-3">
   <button type="button" onClick={() => setWiz(2)} disabled={!contactValid} className="rounded-zed bg-zed-950 px-8 py-3 text-sm font-bold uppercase tracking-wider text-white transition-colors hover:bg-zed-900 disabled:cursor-not-allowed disabled:opacity-40">
@@ -543,7 +543,7 @@ function wizardReached(n: number): boolean {
 
   {wiz === 2 && (
   <>
-  <h2 className="font-display text-lg font-bold text-[#07111F]">Where should we deliver?</h2>
+  <h2 className="font-display text-lg font-bold text-[#07111F]">Delivery address</h2>
 <div className="mt-5 grid gap-4 sm:grid-cols-2">
   <div>
   <label className="label" htmlFor="co-county">County</label>
@@ -592,7 +592,7 @@ function wizardReached(n: number): boolean {
   </div>
   </div>
   {!deliveryValid && (
-  <p className="mt-3 text-xs text-[#334155]">Enter your county, town and delivery address to continue.</p>
+  <p className="mt-3 text-xs text-[#334155]">Add your county, town and address.</p>
   )}
   <div className="mt-6 flex items-center justify-between gap-3">
   {wiz > 1 && (
@@ -611,7 +611,7 @@ function wizardReached(n: number): boolean {
   {wiz === 3 && (
   <>
   <h2 className="font-display text-lg font-bold text-[#07111F]">Delivery method</h2>
-  <p className="mt-1 text-xs text-[#334155]">Choose how your gift is delivered for {[form.area, form.town, form.county].filter(Boolean).join(", ") || form.county}. We confirm the delivery charge with you before dispatch.</p>
+  <p className="mt-1 text-xs text-[#334155]">{[form.area, form.town, form.county].filter(Boolean).join(", ")}</p>
   {form.county && (
   <div className="mt-5">
   {deliveryOptions.length === 0 ? (
@@ -657,9 +657,9 @@ function wizardReached(n: number): boolean {
   {/* Step 4: payment */}
   {wiz === 4 && (
   <>
-<h2 className="font-display text-lg font-bold text-[#07111F]">How would you like to pay?</h2>
+<h2 className="font-display text-lg font-bold text-[#07111F]">Payment</h2>
   <div className="mt-5">
-  <p className="label">Payment method</p>
+  <p className="label">Pay with</p>
   <div className="space-y-2">
   <button
   type="button"
@@ -671,7 +671,7 @@ function wizardReached(n: number): boolean {
  </div>
  <div>
  <p className="text-sm font-semibold text-[#07111F]">M-PESA STK Push</p>
- <p className="text-xs text-[#334155]">Pay instantly with your phone via M-PESA</p>
+ <p className="text-xs text-[#334155]"></p>
  </div>
  </button>
  {cardAvailable && (
@@ -685,7 +685,7 @@ function wizardReached(n: number): boolean {
  </div>
  <div>
  <p className="text-sm font-semibold text-[#07111F]">Card / Mobile Money</p>
- <p className="text-xs text-[#334155]">Pay with card or M-PESA via Flutterwave</p>
+ <p className="text-xs text-[#334155]"></p>
  </div>
  </button>
  )}
@@ -700,7 +700,7 @@ function wizardReached(n: number): boolean {
   </div>
   <div>
   <p className="text-sm font-semibold text-[#07111F]">Bank transfer</p>
-  <p className="text-xs text-[#334155]">Transfer to our account, then we confirm and dispatch</p>
+  <p className="text-xs text-[#334155]"></p>
   </div>
   </button>
   )}
@@ -738,7 +738,7 @@ function wizardReached(n: number): boolean {
   <input type="checkbox" checked={form.isGift} onChange={(e) => setForm({ ...form, isGift: e.target.checked })} className="size-4 accent-deep-olive" />
   This is a gift
   </label>
-  <p className="mt-1 text-xs text-[#07111F]">We&apos;ll wrap it beautifully and hide all pricing from the delivery slip.</p>
+  <p className="mt-1 text-xs text-[#07111F]">Hide prices on the delivery slip.</p>
   </div>
   </div>
 
@@ -748,10 +748,10 @@ function wizardReached(n: number): boolean {
   </div>
 
   {paymentMethod === "COD" && (
-  <p className="mt-3 text-xs text-[#334155]">Cash on delivery total: {formatKES(total)}. Keep the exact amount ready for the rider.</p>
+  <p className="mt-3 text-xs text-[#334155]">Pay {formatKES(total)} to the rider.</p>
   )}
   {paymentMethod === "BANK_TRANSFER" && (
-  <p className="mt-3 text-xs text-[#334155]">You&apos;ll receive our account details with your bank transfer reference after placing the order.</p>
+  <p className="mt-3 text-xs text-[#334155]">Bank details appear after ordering.</p>
   )}
 
   {error && step === "form" && (
@@ -774,7 +774,7 @@ function wizardReached(n: number): boolean {
   {/* Step 5: review - read-only summary with the actual order-placing button */}
   {wiz === 5 && (
   <div className="glass-card rounded-zed p-5 lg:p-7">
-  <h2 className="font-display text-lg font-bold text-[#07111F]">Check your details</h2>
+  <h2 className="font-display text-lg font-bold text-[#07111F]">Review order</h2>
 
   <dl className="mt-4 divide-y divide-white/40 text-sm">
   <div className="flex items-start justify-between gap-4 py-2.5">
@@ -841,10 +841,10 @@ function wizardReached(n: number): boolean {
   onClick={() => setWiz(4)}
   className="mt-2 w-full rounded-zed border border-white/60 py-3 text-sm font-semibold text-[#07111F] transition-colors hover:bg-white/40"
   >
-  Back to edit details
+  Edit details
   </button>
       <p className="mt-3 text-center text-xs leading-relaxed text-[#334155]">
-  By placing this order you agree to our delivery &amp; returns policy.
+  By ordering, you agree to our delivery and returns policy.
   </p>
   </div>
   )}
