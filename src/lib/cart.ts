@@ -128,6 +128,7 @@ function serializeItem(item: CartRecord["items"][number]) {
  productId: item.productId,
  slug: item.product.slug,
  name: item.product.name,
+ giftWrapAvailable: item.product.giftWrapAvailable,
  image: item.product.images[0]?.url ?? null,
  price,
  compareAt,
