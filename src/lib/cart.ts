@@ -170,7 +170,15 @@ export async function addToCart(payload: CartItemPayload) {
  }
  }
 
- const customization = parsePersonalization(payload);
+ let verifiedGiftWrap: CartItemPayload["giftWrap"] = null;
+ if (payload.giftWrap) {
+   if (!product.giftWrapAvailable) return { ok: false, error: "Gift wrapping is not available for this product." };
+   const wrap = await prisma.giftWrap.findFirst({ where: { id: payload.giftWrap.id, active: true } });
+   if (!wrap) return { ok: false, error: "That gift wrap option is unavailable." };
+   verifiedGiftWrap = { id: wrap.id, name: wrap.name, price: wrap.price };
+ }
+ const verifiedPayload: CartItemPayload = { ...payload, giftWrap: verifiedGiftWrap };
+ const customization = parsePersonalization(verifiedPayload);
  const existing = cart.items.find(
  (i) =>
   i.productId === payload.productId &&
@@ -192,7 +200,7 @@ export async function addToCart(payload: CartItemPayload) {
  productId: product.id,
  variantId: variant?.id ?? null,
  quantity: desiredQty,
- ...parsePersonalization(payload),
+ ...parsePersonalization(verifiedPayload),
  },
  });
  }
@@ -247,7 +255,10 @@ export async function setItemPersonalization(itemId: string, personalization: Re
 export async function setItemGiftWrap(itemId: string, giftWrap: { id: string; name: string; price: number } | null) {
  const { cart } = await getOrCreateCart();
  if (!cart.items.some((i) => i.id === itemId)) return { ok: false, error: "Item not found in cart." };
- const wrap = giftWrap ? await prisma.giftWrap.findUnique({ where: { id: giftWrap.id } }) : null;
+ const item = cart.items.find((entry) => entry.id === itemId);
+ if (!item) return { ok: false, error: "Item not found in cart." };
+ if (giftWrap && !item.product.giftWrapAvailable) return { ok: false, error: "Gift wrapping is not available for this product." };
+ const wrap = giftWrap ? await prisma.giftWrap.findFirst({ where: { id: giftWrap.id, active: true } }) : null;
  if (giftWrap && !wrap) return { ok: false, error: "That gift wrap option is unavailable." };
  await prisma.cartItem.update({
  where: { id: itemId },
