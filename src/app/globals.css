@@ -797,7 +797,7 @@ body {
 
 
 /* ZED OFFICIAL BRAND PALETTE — enforced across storefront, account, checkout and admin.
-   Royal Plum #6C2D5C · Dusty Rose #D9A0AC · Milk White #FAFAF7.
+   Royal Plum #6C2D5C · Midnight Slate #263746 · Milk White #FAFAF7.
    All utility color families resolve to these three colours or their tints/shades. */
 @theme {
   --color-white: #FAFAF7; --color-black: #171717;
@@ -828,9 +828,9 @@ body {
   --color-ink:#171717; --color-charcoal:#171717; --color-muted:#171717;
   --color-edge:#D8D2C9; --color-edge-strong:#C7C0B6; --color-panel:#FAFAF7;
 }
-body,.zed-page-bg { color:#171717; background:#FAFAF7; }
-:focus-visible { outline-color:#6C2D5C !important; }
-::selection { background:#6C2D5C; color:#FAFAF7; }
-.text-gradient { background-image:linear-gradient(120deg,#6C2D5C,#D9A0AC) !important; }
-.eyebrow { color:#6C2D5C !important; }
-.field:focus { border-color:#6C2D5C !important; --tw-ring-color:#6C2D5C !important; }
+body,.zed-page-bg { color:var(--color-ink, #171717); background:var(--color-pure-white, #FAFAF7); }
+:focus-visible { outline-color:var(--color-rose-500, #6C2D5C) !important; }
+::selection { background:var(--color-rose-500, #6C2D5C); color:var(--color-pure-white, #FAFAF7); }
+.text-gradient { background-image:linear-gradient(120deg,var(--color-rose-500, #6C2D5C),var(--color-violet-500, #7C3AED)) !important; }
+.eyebrow { color:var(--color-rose-500, #6C2D5C) !important; }
+.field:focus { border-color:var(--color-rose-500, #6C2D5C) !important; --tw-ring-color:var(--color-rose-500, #6C2D5C) !important; }
