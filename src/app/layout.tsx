@@ -64,7 +64,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
     if (!/^[a-z0-9-]+$/.test(page) || !theme || typeof theme !== "object") return "";
     const vars = { background: validColor(theme.background, background), text: validColor(theme.text, textBody), heading: validColor(theme.heading, textHeading), primary: validColor(theme.primary, primary), button: validColor(theme.button, secondary), buttonText: validColor(theme.buttonText, buttonText), card: validColor(theme.card, "#FFFFFF") };
     return `body[data-zed-page="${page}"]{--zed-page-background:${vars.background};--zed-page-text:${vars.text};--zed-page-heading:${vars.heading};--zed-page-primary:${vars.primary};--zed-page-button:${vars.button};--zed-page-button-text:${vars.buttonText};--zed-page-card:${vars.card};}`;
-  }).join("\\n");
+  }).join("\n");
   const colors = {
     "--color-rose-50": background, "--color-rose-100": background, "--color-rose-200": background, "--color-rose-300": background,
     "--color-rose-400": primary, "--color-rose-500": primary, "--color-rose-600": primary, "--color-rose-700": secondary, "--color-rose-800": secondary, "--color-rose-900": secondary, "--color-rose-950": secondary,
