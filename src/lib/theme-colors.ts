@@ -38,9 +38,9 @@ export const BRAND_COLORS: BrandColor[] = [
   {
     key: "secondaryColor",
     label: "Secondary colour",
-    default: "#263746",
+    default: "#D9A0AC",
     description:
-      "The deep brand colour. It anchors the header, footer and primary buttons for a premium, grounded look.",
+      "Dusty Rose is the secondary brand colour, used for supporting surfaces and emphasis.",
     usedFor: [
       "Footer background",
       "Primary buttons (for example Add to cart)",
@@ -52,9 +52,9 @@ export const BRAND_COLORS: BrandColor[] = [
   {
     key: "accentColor",
     label: "Accent colour",
-    default: "#263746",
+    default: "#D9A0AC",
     description:
-      "Midnight Slate is used for secondary emphasis. No extra accent color is permitted.",
+      "Dusty Rose is the secondary accent. No extra accent color is permitted.",
     usedFor: [
       "Gradient headline text",
       "Promotional highlights",
