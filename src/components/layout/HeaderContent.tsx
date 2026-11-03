@@ -182,8 +182,8 @@ export function HeaderContent({
 
           <div className="ml-auto flex items-center gap-1 lg:gap-2">
             {pathname.startsWith("/shop") && (
-              <button type="button" onClick={() => window.dispatchEvent(new CustomEvent("zed:toggle-shop-filters"))} className="inline-flex h-10 items-center gap-1.5 rounded-md border border-edge bg-white/70 px-2.5 text-[11px] font-semibold text-[var(--color-ink)] transition hover:bg-zed-900/5 sm:px-3 sm:text-xs" aria-label="Open shop filters">
-                <SlidersHorizontal className="size-4" /> <span>Filters</span>
+              <button type="button" onClick={() => window.dispatchEvent(new CustomEvent("zed:toggle-shop-filters"))} className="inline-flex h-10 items-center gap-1.5 rounded-md border border-edge bg-white/85 px-2.5 text-[11px] font-semibold !text-[var(--zed-text-body)] shadow-sm transition hover:bg-white sm:px-3 sm:text-xs" aria-label="Open shop filter">
+                <SlidersHorizontal className="size-4" /> <span>Filter</span>
               </button>
             )}
             <a
