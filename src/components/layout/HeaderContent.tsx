@@ -44,7 +44,7 @@ function Brand({ storeName }: { storeName: string }) {
         width={522}
         height={186}
         priority
-        className="navbar-logo block object-contain object-center h-8 sm:h-10 lg:h-12 w-auto"
+        className="navbar-logo block object-contain object-center h-9 sm:h-11 lg:h-12 w-auto"
       />
     </Link>
   );
@@ -150,12 +150,12 @@ export function HeaderContent({
 
       {/* Main header row */}
       <div className={`sticky top-0 z-40 px-2 pt-1 sm:px-3 sm:pt-1.5 lg:px-5 ${pathname.startsWith("/product/") ? "hidden md:block" : ""}`}><div className="zed-glass-nav rounded-2xl">
-        <div className="container-zed flex h-[52px] items-center gap-2 px-2.5 sm:h-[56px] sm:gap-2.5 sm:px-4 lg:h-[68px] lg:gap-6 lg:px-10">
+        <div className="container-zed flex h-[58px] items-center gap-2 px-2.5 sm:h-[60px] sm:gap-2.5 sm:px-4 lg:h-[68px] lg:gap-6 lg:px-10">
           <button
             type="button"
             aria-label="Open menu"
             onClick={() => setMobileOpen(true)}
-            className="grid size-9 shrink-0 place-items-center rounded-md text-[var(--color-ink)] hover:bg-zed-900/5 lg:hidden"
+            className="grid size-10 shrink-0 place-items-center rounded-md text-[var(--color-ink)] hover:bg-zed-900/5 lg:hidden"
           >
             <Menu className="size-4" />
           </button>
@@ -180,7 +180,7 @@ export function HeaderContent({
 
           <div className="ml-auto flex items-center gap-1 lg:gap-2">
             {pathname.startsWith("/shop") && (
-              <button type="button" onClick={() => window.dispatchEvent(new CustomEvent("zed:toggle-shop-filters"))} className="inline-flex h-9 items-center gap-1.5 rounded-md border border-edge bg-white/70 px-2.5 text-[11px] font-semibold text-[var(--color-ink)] transition hover:bg-zed-900/5 sm:px-3 sm:text-xs" aria-label="Open shop filters">
+              <button type="button" onClick={() => window.dispatchEvent(new CustomEvent("zed:toggle-shop-filters"))} className="inline-flex h-10 items-center gap-1.5 rounded-md border border-edge bg-white/70 px-2.5 text-[11px] font-semibold text-[var(--color-ink)] transition hover:bg-zed-900/5 sm:px-3 sm:text-xs" aria-label="Open shop filters">
                 <SlidersHorizontal className="size-4" /> <span>Filters</span>
               </button>
             )}
@@ -220,7 +220,7 @@ export function HeaderContent({
               type="button"
               onClick={() => setSearchOpen(true)}
               aria-label="Search"
-              className="grid size-9 place-items-center rounded-md text-[var(--color-ink)] hover:bg-zed-900/5 md:hidden"
+              className="grid size-10 place-items-center rounded-md text-[var(--color-ink)] hover:bg-zed-900/5 md:hidden"
             >
               <Search className="size-[20px] shrink-0 text-soft-sage" />
             </button>
