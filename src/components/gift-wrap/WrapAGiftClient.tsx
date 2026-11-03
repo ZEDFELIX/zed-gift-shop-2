@@ -123,6 +123,30 @@ export function WrapAGiftClient({ wraps }: { wraps: WrapOption[] }) {
 
   const itemCount = cart?.items.length ?? 0;
 
+  function applyWrapToCart(wrapId: string) {
+    const eligible = (cart?.items ?? []).filter((item) => item.giftWrapAvailable);
+    if (!eligible.length) {
+      document.getElementById("your-gifts")?.scrollIntoView({ behavior: "smooth" });
+      return;
+    }
+    setSelected((current) => {
+      const next = { ...current };
+      for (const item of eligible) next[item.id] = wrapId;
+      return next;
+    });
+    document.getElementById("your-gifts")?.scrollIntoView({ behavior: "smooth" });
+  }
+
+  function ownGiftWhatsApp(wrapName: string, price: number) {
+    const message = [
+      "Hi Zed Gift Shop, I have my own gift (not bought from your website) and would like wrapping only.",
+      `Wrapping style: ${wrapName}`,
+      `Displayed wrapping price: ${formatKES(price)}`,
+      "Please confirm availability, delivery or drop-off arrangements, and payment options.",
+    ].join("\\n");
+    return `https://wa.me/254711436169?text=${encodeURIComponent(message)}`;
+  }
+
   return (
     <div className="container-zed py-8 sm:py-12">
       <header className="py-5 sm:py-7">
@@ -148,6 +172,8 @@ export function WrapAGiftClient({ wraps }: { wraps: WrapOption[] }) {
                 <div className="p-3">
                   <h3 className="text-sm font-bold text-[#321b30]">{wrap.name}</h3>
                   <p className="mt-1 text-sm font-bold text-[#542447]">{wrap.price > 0 ? formatKES(wrap.price) : "Free"}</p>
+                  <button type="button" onClick={() => applyWrapToCart(wrap.id)} className="mt-3 w-full rounded-lg bg-[#542447] px-3 py-2.5 text-xs font-bold text-white hover:bg-[#3f1b36]">Use for website order</button>
+                  <a href={ownGiftWhatsApp(wrap.name, wrap.price)} target="_blank" rel="noreferrer noopener" className="mt-2 block rounded-lg border border-[#d9c8d6] px-3 py-2.5 text-center text-xs font-bold text-[#542447] hover:bg-[#f8f1f7]">Wrap my own gift</a>
                 </div>
               </article>
             ))}
@@ -177,9 +203,17 @@ export function WrapAGiftClient({ wraps }: { wraps: WrapOption[] }) {
         )}
       </section>
 
-      <div className="mt-6 flex flex-wrap items-center justify-between gap-3 rounded-xl bg-[#f8f3f7] px-4 py-3">
-        <p className="text-sm text-[#5d4658]">Bought your gift elsewhere? Bring it to us — we offer wrapping only.</p>
-        <a href="https://wa.me/254711436169?text=Hi%20Zed%20Gift%20Shop%2C%20I%20have%20my%20own%20gift%20and%20would%20like%20it%20wrapped." target="_blank" rel="noreferrer noopener" className="text-sm font-bold text-[#542447] underline underline-offset-4">Arrange wrapping</a>
+      <div className="mt-6 grid gap-3 rounded-xl bg-[#f8f3f7] p-4 sm:grid-cols-2">
+        <div>
+          <h3 className="text-sm font-bold text-[#321b30]">Buying a gift from Zed?</h3>
+          <p className="mt-1 text-xs text-[#5d4658]">Choose “Use for website order” on a wrapping card, save it against your cart item, then continue to the normal checkout and M-Pesa payment.</p>
+          <a href="/shop" className="mt-2 inline-flex items-center gap-1 text-xs font-bold text-[#542447] underline underline-offset-4">Shop gifts <ArrowRight className="size-3" /></a>
+        </div>
+        <div>
+          <h3 className="text-sm font-bold text-[#321b30]">Already have your own gift?</h3>
+          <p className="mt-1 text-xs text-[#5d4658]">Choose “Wrap my own gift” on a wrapping card. WhatsApp opens with the style and displayed price so we can arrange wrapping only.</p>
+          <a href={ownGiftWhatsApp("Style to be confirmed", 0)} target="_blank" rel="noreferrer noopener" className="mt-2 inline-flex items-center gap-1 text-xs font-bold text-[#542447] underline underline-offset-4">Arrange wrapping on WhatsApp <ArrowRight className="size-3" /></a>
+        </div>
       </div>
 
       <section id="your-gifts" className="mt-10 scroll-mt-24">
