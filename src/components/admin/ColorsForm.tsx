@@ -35,8 +35,8 @@ export function ColorsForm({ initial, initialTextColors, initialPageThemes }: Pr
     const invalid = BRAND_COLORS.find((c) => !isHexColor(colors[c.key]));
     const invalidText = Object.entries(textColors).find(([, value]) => !isHexColor(value));
     const invalidPage = Object.entries(pageThemes).flatMap(([page, values]) => Object.entries(values).map(([key, value]) => ({ page, key, value }))).find((item) => !isHexColor(item.value));
-    if (invalid) {
-      setError(`${invalid.label} must be a hex value like #E5397F.`);
+    if (invalid || invalidText || invalidPage) {
+      setError(invalid ? `${invalid.label} must be a hex value like #E5397F.` : invalidText ? `${invalidText[0]} text color must be a valid HEX value.` : `Check the ${invalidPage?.page} page ${invalidPage?.key} color.`);
       setStatus("error");
       return;
     }
