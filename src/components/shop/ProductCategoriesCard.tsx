@@ -64,17 +64,17 @@ export function ProductCategoriesCard() {
 
   return (
     <aside
-      className="w-full rounded-2xl border border-[#542447]/15 bg-[#FAF8F5] p-4 shadow-[0_8px_28px_rgba(23,23,23,0.06)] sm:p-5"
+      className="w-full rounded-2xl border border-[#6C2D5C]/15 bg-[#F3F0EA] p-4 shadow-[0_8px_28px_rgba(23,23,23,0.06)] sm:p-5"
       aria-label="Shop by category"
     >
-      <div className="mb-4 border-b border-[#542447]/15 pb-4">
-        <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#542447]/70">
+      <div className="mb-4 border-b border-[#6C2D5C]/15 pb-4">
+        <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#6C2D5C]/70">
           Find the perfect gift
         </p>
-        <h2 className="mt-1 font-display text-xl font-bold leading-tight text-[#171717]">
+        <h2 className="mt-1 font-display text-xl font-bold leading-tight text-[#263746]">
           Shop by category
         </h2>
-        <p className="mt-1 text-xs leading-relaxed text-[#171717]/65">
+        <p className="mt-1 text-xs leading-relaxed text-[#263746]/65">
           Explore gifts picked for every style and occasion.
         </p>
       </div>
@@ -91,27 +91,27 @@ export function ProductCategoriesCard() {
               <div
                 className={`group flex items-center gap-2 rounded-xl border px-3 py-2.5 transition-all duration-200 ${
                   open
-                    ? "border-[#542447] bg-[#542447] shadow-md"
-                    : "border-[#542447]/15 bg-white hover:-translate-y-0.5 hover:border-[#542447]/45 hover:shadow-md"
+                    ? "border-[#6C2D5C] bg-[#6C2D5C] shadow-md"
+                    : "border-[#6C2D5C]/15 bg-white hover:-translate-y-0.5 hover:border-[#6C2D5C]/45 hover:shadow-md"
                 }`}
               >
                 <Link href={category.href} className="flex min-w-0 flex-1 items-center gap-3">
                   <span
                     className={`grid size-10 shrink-0 place-items-center rounded-lg transition-colors ${
-                      open ? "bg-[#FAF8F5]/15 text-[#FAF8F5]" : "bg-[#542447]/8 text-[#542447] group-hover:bg-[#542447] group-hover:text-[#FAF8F5]"
+                      open ? "bg-[#F3F0EA]/15 text-[#F3F0EA]" : "bg-[#6C2D5C]/8 text-[#6C2D5C] group-hover:bg-[#6C2D5C] group-hover:text-[#F3F0EA]"
                     }`}
                   >
                     <Icon className="size-[18px]" strokeWidth={1.8} />
                   </span>
                   <span className="min-w-0 flex-1">
-                    <span className={`block truncate text-sm font-semibold ${open ? "text-[#FAF8F5]" : "text-[#171717]"}`}>
+                    <span className={`block truncate text-sm font-semibold ${open ? "text-[#F3F0EA]" : "text-[#263746]"}`}>
                       {category.label}
                     </span>
-                    <span className={`mt-0.5 block text-[10px] ${open ? "text-[#FAF8F5]/70" : "text-[#171717]/55"}`}>
+                    <span className={`mt-0.5 block text-[10px] ${open ? "text-[#F3F0EA]/70" : "text-[#263746]/55"}`}>
                       Explore collection
                     </span>
                   </span>
-                  <ArrowUpRight className={`size-4 shrink-0 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5 ${open ? "text-[#FAF8F5]" : "text-[#542447]"}`} />
+                  <ArrowUpRight className={`size-4 shrink-0 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5 ${open ? "text-[#F3F0EA]" : "text-[#6C2D5C]"}`} />
                 </Link>
 
                 {columns.length > 0 && (
@@ -123,8 +123,8 @@ export function ProductCategoriesCard() {
                     aria-label={open ? `Hide ${category.label} options` : `Show ${category.label} options`}
                     className={`grid size-8 shrink-0 place-items-center rounded-lg transition-colors ${
                       open
-                        ? "bg-[#FAF8F5]/15 text-[#FAF8F5] hover:bg-[#FAF8F5]/25"
-                        : "bg-[#542447]/8 text-[#542447] hover:bg-[#542447]/15"
+                        ? "bg-[#F3F0EA]/15 text-[#F3F0EA] hover:bg-[#F3F0EA]/25"
+                        : "bg-[#6C2D5C]/8 text-[#6C2D5C] hover:bg-[#6C2D5C]/15"
                     }`}
                   >
                     <ChevronDown className={`size-4 transition-transform duration-200 ${open ? "rotate-180" : ""}`} />
@@ -133,10 +133,10 @@ export function ProductCategoriesCard() {
               </div>
 
               {open && (
-                <div id={menuId} className="mx-2 mt-1 rounded-b-xl border border-t-0 border-[#542447]/15 bg-white px-3 pb-3 pt-2">
+                <div id={menuId} className="mx-2 mt-1 rounded-b-xl border border-t-0 border-[#6C2D5C]/15 bg-white px-3 pb-3 pt-2">
                   {columns.map((column) => (
                     <div key={column.title} className="mt-2 first:mt-0">
-                      <p className="px-1 text-[10px] font-bold uppercase tracking-wider text-[#542447]/70">
+                      <p className="px-1 text-[10px] font-bold uppercase tracking-wider text-[#6C2D5C]/70">
                         {column.title}
                       </p>
                       <ul className="mt-1 grid grid-cols-1 gap-0.5">
@@ -144,7 +144,7 @@ export function ProductCategoriesCard() {
                           <li key={`${column.title}-${sub.href}`}>
                             <Link
                               href={sub.href}
-                              className="block rounded-lg px-2 py-2 text-xs text-[#171717]/80 transition-colors hover:bg-[#FAF8F5] hover:text-[#542447]"
+                              className="block rounded-lg px-2 py-2 text-xs text-[#263746]/80 transition-colors hover:bg-[#F3F0EA] hover:text-[#6C2D5C]"
                             >
                               {sub.label}
                             </Link>
