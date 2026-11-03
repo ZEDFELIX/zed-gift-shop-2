@@ -68,6 +68,10 @@ export default async function RootLayout({ children }: { children: React.ReactNo
     "--color-stone": background, "--color-edge": secondary, "--color-edge-strong": secondary, "--color-panel": background,
     "--color-announcement": announcement, "--color-announcement-fg": readableTextColor(announcement),
     "--zed-plum": primary, "--zed-slate": secondary, "--zed-milk-white": background,
+    "--zed-brand-primary": primary, "--zed-brand-secondary": secondary, "--zed-brand-accent": accent,
+    "--zed-brand-background": background, "--zed-brand-announcement": announcement,
+    "--zed-glass-tint": `color-mix(in srgb, ${primary} 8%, transparent)`,
+    "--zed-brand-gradient": `linear-gradient(120deg, ${primary}, ${accent})`,
   } as CSSProperties;
 
   return (
