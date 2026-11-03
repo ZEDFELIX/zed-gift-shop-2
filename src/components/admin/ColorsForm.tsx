@@ -33,6 +33,8 @@ export function ColorsForm({ initial, initialTextColors, initialPageThemes }: Pr
   async function save(e: React.FormEvent) {
     e.preventDefault();
     const invalid = BRAND_COLORS.find((c) => !isHexColor(colors[c.key]));
+    const invalidText = Object.entries(textColors).find(([, value]) => !isHexColor(value));
+    const invalidPage = Object.entries(pageThemes).flatMap(([page, values]) => Object.entries(values).map(([key, value]) => ({ page, key, value }))).find((item) => !isHexColor(item.value));
     if (invalid) {
       setError(`${invalid.label} must be a hex value like #E5397F.`);
       setStatus("error");
