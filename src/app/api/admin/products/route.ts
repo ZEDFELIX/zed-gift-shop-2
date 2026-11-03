@@ -56,6 +56,15 @@ export async function POST(req: Request) {
  if (clash) return NextResponse.json({ error: "That slug is already in use." }, { status: 409 });
  }
 
+ // Assign a sequential Zed SKU on the server so staff never need to type one.
+ // Count all existing products, then skip any already-used code.
+ let skuNumber = (await prisma.product.count()) + 1;
+ let generatedSku = `ZGS-${String(skuNumber).padStart(5, "0")}`;
+ while (await prisma.product.findFirst({ where: { sku: generatedSku }, select: { id: true } })) {
+   skuNumber += 1;
+   generatedSku = `ZGS-${String(skuNumber).padStart(5, "0")}`;
+ }
+
  const product = await prisma.product.create({
  data: {
  name: d.name,
@@ -66,7 +75,7 @@ slug: d.slug,
  description: d.description || null,
  price: d.price,
  compareAtPrice: d.compareAtPrice,
- sku: d.sku || null,
+ sku: generatedSku,
  tags: d.tags ?? [],
  status: d.status,
  featured: d.featured ?? false,
