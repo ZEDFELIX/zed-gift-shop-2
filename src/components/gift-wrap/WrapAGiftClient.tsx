@@ -153,9 +153,27 @@ export function WrapAGiftClient({ wraps }: { wraps: WrapOption[] }) {
             ))}
           </div>
         ) : (
-          <div className="rounded-xl border border-dashed border-[#d9c8d6] bg-[#fcf9fc] p-6 text-center text-sm text-[#766b75]">
-            Wrapping styles will appear here soon. Contact us to see the available options.
-          </div>
+          <>
+            <p className="mb-3 text-xs text-[#8a7d88]">Sample designs and prices — replace these with your real packages in Admin → Gift Wrap.</p>
+            <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
+              {[
+                { id: "demo-classic", name: "Classic Gift Wrap", price: 150, image: "https://images.unsplash.com/photo-1513201099705-a9746e1e201f?auto=format&fit=crop&w=900&q=85" },
+                { id: "demo-premium", name: "Premium Gift Wrap", price: 250, image: "https://images.unsplash.com/photo-1549465220-1a8b9238cd48?auto=format&fit=crop&w=900&q=85" },
+                { id: "demo-luxury", name: "Luxury Gift Box", price: 350, image: "https://images.unsplash.com/photo-1513883049090-d0b7439799bf?auto=format&fit=crop&w=900&q=85" },
+              ].map((wrap) => (
+                <article key={wrap.id} className="overflow-hidden rounded-xl border border-[#eadfe8] bg-white">
+                  <div className="relative aspect-square bg-[#faf7fa]">
+                    <Image src={wrap.image} alt={wrap.name} fill sizes="(min-width:1024px) 25vw, 50vw" unoptimized className="object-cover" />
+                  </div>
+                  <div className="p-3">
+                    <h3 className="text-sm font-bold text-[#321b30]">{wrap.name}</h3>
+                    <p className="mt-1 text-sm font-bold text-[#542447]">{formatKES(wrap.price)}</p>
+                    <p className="mt-1 text-[10px] font-semibold uppercase tracking-wide text-[#9a8496]">Demo option</p>
+                  </div>
+                </article>
+              ))}
+            </div>
+          </>
         )}
       </section>
 
