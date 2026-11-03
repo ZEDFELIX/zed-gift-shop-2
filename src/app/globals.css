@@ -793,3 +793,44 @@ body {
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
 }
+
+
+
+/* ZED OFFICIAL BRAND PALETTE — enforced across storefront, account, checkout and admin.
+   Royal Plum #6C2D5C · Midnight Slate #263746 · Soft Ivory #F3F0EA.
+   All utility color families resolve to these three colours or their tints/shades. */
+@theme {
+  --color-white: #F3F0EA; --color-black: #263746;
+  --color-red-50:#F3F0EA; --color-red-100:#F3F0EA; --color-red-200:#F3F0EA; --color-red-300:#F3F0EA; --color-red-400:#6C2D5C; --color-red-500:#6C2D5C; --color-red-600:#6C2D5C; --color-red-700:#263746; --color-red-800:#263746; --color-red-900:#263746; --color-red-950:#263746;
+  --color-orange-50:#F3F0EA; --color-orange-100:#F3F0EA; --color-orange-200:#F3F0EA; --color-orange-300:#F3F0EA; --color-orange-400:#6C2D5C; --color-orange-500:#6C2D5C; --color-orange-600:#6C2D5C; --color-orange-700:#263746; --color-orange-800:#263746; --color-orange-900:#263746; --color-orange-950:#263746;
+  --color-amber-50:#F3F0EA; --color-amber-100:#F3F0EA; --color-amber-200:#F3F0EA; --color-amber-300:#F3F0EA; --color-amber-400:#6C2D5C; --color-amber-500:#6C2D5C; --color-amber-600:#6C2D5C; --color-amber-700:#263746; --color-amber-800:#263746; --color-amber-900:#263746; --color-amber-950:#263746;
+  --color-yellow-50:#F3F0EA; --color-yellow-100:#F3F0EA; --color-yellow-200:#F3F0EA; --color-yellow-300:#F3F0EA; --color-yellow-400:#6C2D5C; --color-yellow-500:#6C2D5C; --color-yellow-600:#6C2D5C; --color-yellow-700:#263746; --color-yellow-800:#263746; --color-yellow-900:#263746; --color-yellow-950:#263746;
+  --color-lime-50:#F3F0EA; --color-lime-100:#F3F0EA; --color-lime-200:#F3F0EA; --color-lime-300:#F3F0EA; --color-lime-400:#6C2D5C; --color-lime-500:#6C2D5C; --color-lime-600:#6C2D5C; --color-lime-700:#263746; --color-lime-800:#263746; --color-lime-900:#263746; --color-lime-950:#263746;
+  --color-green-50:#F3F0EA; --color-green-100:#F3F0EA; --color-green-200:#F3F0EA; --color-green-300:#F3F0EA; --color-green-400:#6C2D5C; --color-green-500:#6C2D5C; --color-green-600:#6C2D5C; --color-green-700:#263746; --color-green-800:#263746; --color-green-900:#263746; --color-green-950:#263746;
+  --color-emerald-50:#F3F0EA; --color-emerald-100:#F3F0EA; --color-emerald-200:#F3F0EA; --color-emerald-300:#F3F0EA; --color-emerald-400:#6C2D5C; --color-emerald-500:#6C2D5C; --color-emerald-600:#6C2D5C; --color-emerald-700:#263746; --color-emerald-800:#263746; --color-emerald-900:#263746; --color-emerald-950:#263746;
+  --color-teal-50:#F3F0EA; --color-teal-100:#F3F0EA; --color-teal-200:#F3F0EA; --color-teal-300:#F3F0EA; --color-teal-400:#6C2D5C; --color-teal-500:#6C2D5C; --color-teal-600:#6C2D5C; --color-teal-700:#263746; --color-teal-800:#263746; --color-teal-900:#263746; --color-teal-950:#263746;
+  --color-cyan-50:#F3F0EA; --color-cyan-100:#F3F0EA; --color-cyan-200:#F3F0EA; --color-cyan-300:#F3F0EA; --color-cyan-400:#6C2D5C; --color-cyan-500:#6C2D5C; --color-cyan-600:#6C2D5C; --color-cyan-700:#263746; --color-cyan-800:#263746; --color-cyan-900:#263746; --color-cyan-950:#263746;
+  --color-sky-50:#F3F0EA; --color-sky-100:#F3F0EA; --color-sky-200:#F3F0EA; --color-sky-300:#F3F0EA; --color-sky-400:#6C2D5C; --color-sky-500:#6C2D5C; --color-sky-600:#6C2D5C; --color-sky-700:#263746; --color-sky-800:#263746; --color-sky-900:#263746; --color-sky-950:#263746;
+  --color-blue-50:#F3F0EA; --color-blue-100:#F3F0EA; --color-blue-200:#F3F0EA; --color-blue-300:#F3F0EA; --color-blue-400:#6C2D5C; --color-blue-500:#6C2D5C; --color-blue-600:#6C2D5C; --color-blue-700:#263746; --color-blue-800:#263746; --color-blue-900:#263746; --color-blue-950:#263746;
+  --color-indigo-50:#F3F0EA; --color-indigo-100:#F3F0EA; --color-indigo-200:#F3F0EA; --color-indigo-300:#F3F0EA; --color-indigo-400:#6C2D5C; --color-indigo-500:#6C2D5C; --color-indigo-600:#6C2D5C; --color-indigo-700:#263746; --color-indigo-800:#263746; --color-indigo-900:#263746; --color-indigo-950:#263746;
+  --color-purple-50:#F3F0EA; --color-purple-100:#F3F0EA; --color-purple-200:#F3F0EA; --color-purple-300:#F3F0EA; --color-purple-400:#6C2D5C; --color-purple-500:#6C2D5C; --color-purple-600:#6C2D5C; --color-purple-700:#263746; --color-purple-800:#263746; --color-purple-900:#263746; --color-purple-950:#263746;
+  --color-fuchsia-50:#F3F0EA; --color-fuchsia-100:#F3F0EA; --color-fuchsia-200:#F3F0EA; --color-fuchsia-300:#F3F0EA; --color-fuchsia-400:#6C2D5C; --color-fuchsia-500:#6C2D5C; --color-fuchsia-600:#6C2D5C; --color-fuchsia-700:#263746; --color-fuchsia-800:#263746; --color-fuchsia-900:#263746; --color-fuchsia-950:#263746;
+  --color-pink-50:#F3F0EA; --color-pink-100:#F3F0EA; --color-pink-200:#F3F0EA; --color-pink-300:#F3F0EA; --color-pink-400:#6C2D5C; --color-pink-500:#6C2D5C; --color-pink-600:#6C2D5C; --color-pink-700:#263746; --color-pink-800:#263746; --color-pink-900:#263746; --color-pink-950:#263746;
+  --color-rose-50:#F3F0EA; --color-rose-100:#F3F0EA; --color-rose-200:#F3F0EA; --color-rose-300:#F3F0EA; --color-rose-400:#6C2D5C; --color-rose-500:#6C2D5C; --color-rose-600:#6C2D5C; --color-rose-700:#263746; --color-rose-800:#263746; --color-rose-900:#263746; --color-rose-950:#263746;
+  --color-slate-50:#F3F0EA; --color-slate-100:#F3F0EA; --color-slate-200:#F3F0EA; --color-slate-300:#F3F0EA; --color-slate-400:#6C2D5C; --color-slate-500:#6C2D5C; --color-slate-600:#6C2D5C; --color-slate-700:#263746; --color-slate-800:#263746; --color-slate-900:#263746; --color-slate-950:#263746;
+  --color-gray-50:#F3F0EA; --color-gray-100:#F3F0EA; --color-gray-200:#F3F0EA; --color-gray-300:#F3F0EA; --color-gray-400:#6C2D5C; --color-gray-500:#6C2D5C; --color-gray-600:#6C2D5C; --color-gray-700:#263746; --color-gray-800:#263746; --color-gray-900:#263746; --color-gray-950:#263746;
+  --color-zinc-50:#F3F0EA; --color-zinc-100:#F3F0EA; --color-zinc-200:#F3F0EA; --color-zinc-300:#F3F0EA; --color-zinc-400:#6C2D5C; --color-zinc-500:#6C2D5C; --color-zinc-600:#6C2D5C; --color-zinc-700:#263746; --color-zinc-800:#263746; --color-zinc-900:#263746; --color-zinc-950:#263746;
+  --color-neutral-50:#F3F0EA; --color-neutral-100:#F3F0EA; --color-neutral-200:#F3F0EA; --color-neutral-300:#F3F0EA; --color-neutral-400:#6C2D5C; --color-neutral-500:#6C2D5C; --color-neutral-600:#6C2D5C; --color-neutral-700:#263746; --color-neutral-800:#263746; --color-neutral-900:#263746; --color-neutral-950:#263746;
+  --color-stone-50:#F3F0EA; --color-stone-100:#F3F0EA; --color-stone-200:#F3F0EA; --color-stone-300:#F3F0EA; --color-stone-400:#6C2D5C; --color-stone-500:#6C2D5C; --color-stone-600:#6C2D5C; --color-stone-700:#263746; --color-stone-800:#263746; --color-stone-900:#263746; --color-stone-950:#263746;
+}
+:root {
+  --zed-plum:#6C2D5C; --zed-slate:#263746; --zed-ivory:#F3F0EA;
+  --color-ink:#263746; --color-charcoal:#263746; --color-muted:#263746;
+  --color-edge:#D8D2C9; --color-edge-strong:#C7C0B6; --color-panel:#F3F0EA;
+}
+body,.zed-page-bg { color:#263746; background:#F3F0EA; }
+:focus-visible { outline-color:#6C2D5C !important; }
+::selection { background:#6C2D5C; color:#F3F0EA; }
+.text-gradient { background-image:linear-gradient(120deg,#6C2D5C,#263746) !important; }
+.eyebrow { color:#6C2D5C !important; }
+.field:focus { border-color:#6C2D5C !important; --tw-ring-color:#6C2D5C !important; }
