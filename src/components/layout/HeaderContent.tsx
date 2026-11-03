@@ -244,6 +244,18 @@ export function HeaderContent({
         </div>
       </div></div>
 
+      {/* Original utility navigation restored; Wrap a Gift stays in the main header actions. */}
+      <div className={`relative z-30 border-b border-edge bg-white ${pathname.startsWith("/product/") ? "hidden md:block" : ""}`}>
+        <div className="container-zed flex items-center justify-end overflow-x-auto py-1 sm:py-1.5">
+          <nav className="flex items-center gap-3.5 sm:gap-5" aria-label="Utility">
+            {UTILITY_NAV.filter((item) => item.href !== "/wrap-a-gift").map((item) => (
+              <Link key={item.href} href={item.href} className="whitespace-nowrap text-[12px] font-semibold text-[var(--color-ink)] transition-colors hover:text-soft-sage sm:text-[13px]">
+                {item.label}
+              </Link>
+            ))}
+          </nav>
+        </div>
+      </div>
 
       {/* Mobile drawer */}
       {mobileOpen && (
