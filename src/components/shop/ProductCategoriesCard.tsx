@@ -71,10 +71,10 @@ export function ProductCategoriesCard() {
         <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#6C2D5C]/70">
           Find the perfect gift
         </p>
-        <h2 className="mt-1 font-display text-xl font-bold leading-tight text-[#263746]">
+        <h2 className="mt-1 font-display text-xl font-bold leading-tight text-[#171717]">
           Shop by category
         </h2>
-        <p className="mt-1 text-xs leading-relaxed text-[#263746]/65">
+        <p className="mt-1 text-xs leading-relaxed text-[#171717]/65">
           Explore gifts picked for every style and occasion.
         </p>
       </div>
@@ -104,10 +104,10 @@ export function ProductCategoriesCard() {
                     <Icon className="size-[18px]" strokeWidth={1.8} />
                   </span>
                   <span className="min-w-0 flex-1">
-                    <span className={`block truncate text-sm font-semibold ${open ? "text-[#F3F0EA]" : "text-[#263746]"}`}>
+                    <span className={`block truncate text-sm font-semibold ${open ? "text-[#F3F0EA]" : "text-[#171717]"}`}>
                       {category.label}
                     </span>
-                    <span className={`mt-0.5 block text-[10px] ${open ? "text-[#F3F0EA]/70" : "text-[#263746]/55"}`}>
+                    <span className={`mt-0.5 block text-[10px] ${open ? "text-[#F3F0EA]/70" : "text-[#171717]/55"}`}>
                       Explore collection
                     </span>
                   </span>
@@ -144,7 +144,7 @@ export function ProductCategoriesCard() {
                           <li key={`${column.title}-${sub.href}`}>
                             <Link
                               href={sub.href}
-                              className="block rounded-lg px-2 py-2 text-xs text-[#263746]/80 transition-colors hover:bg-[#F3F0EA] hover:text-[#6C2D5C]"
+                              className="block rounded-lg px-2 py-2 text-xs text-[#171717]/80 transition-colors hover:bg-[#F3F0EA] hover:text-[#6C2D5C]"
                             >
                               {sub.label}
                             </Link>
