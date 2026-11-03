@@ -1,27 +1,31 @@
-/* ZED Gift Shop — Premium Glassmorphism System
- * Presentation-only layer. Product data, cart, checkout, auth and payments remain unchanged.
- */
+/* ZED Gift Shop — fully theme-aware glassmorphism system.
+   All brand-tinted surfaces, gradients, borders, shadows and controls read the
+   live CSS variables injected from Admin > Brand colors. */
 @layer components {
   :root {
-    --zed-glass-bg: rgba(255,255,255,.58);
-    --zed-glass-bg-strong: rgba(255,255,255,.76);
-    --zed-glass-border: rgba(255,255,255,.58);
-    --zed-glass-border-soft: rgba(108,45,92,.13);
-    --zed-glass-shadow: 0 14px 45px -22px rgba(42,31,45,.32);
-    --zed-glass-shadow-hover: 0 24px 60px -24px rgba(108,45,92,.30);
+    --zed-glass-bg: color-mix(in srgb, var(--zed-brand-background, #FAFAF7) 78%, white 22%);
+    --zed-glass-bg-strong: color-mix(in srgb, var(--zed-brand-background, #FAFAF7) 90%, white 10%);
+    --zed-glass-border: color-mix(in srgb, var(--zed-brand-primary, #6C2D5C) 14%, white 86%);
+    --zed-glass-border-soft: color-mix(in srgb, var(--zed-brand-primary, #6C2D5C) 18%, transparent);
+    --zed-glass-shadow: 0 14px 45px -22px color-mix(in srgb, var(--zed-brand-secondary, #263746) 28%, transparent);
+    --zed-glass-shadow-hover: 0 24px 60px -24px color-mix(in srgb, var(--zed-brand-primary, #6C2D5C) 34%, transparent);
     --zed-glass-blur: 20px;
+    --zed-gradient-brand: linear-gradient(120deg, var(--zed-brand-primary, #6C2D5C), var(--zed-brand-accent, #7C3AED));
+    --zed-gradient-deep: linear-gradient(135deg, var(--zed-brand-secondary, #263746), var(--zed-brand-primary, #6C2D5C));
+    --zed-gradient-soft: linear-gradient(135deg,
+      color-mix(in srgb, var(--zed-brand-primary, #6C2D5C) 10%, var(--zed-brand-background, #FAFAF7)),
+      color-mix(in srgb, var(--zed-brand-accent, #7C3AED) 8%, var(--zed-brand-background, #FAFAF7)));
   }
 
   .zed-glass-nav {
-    background: rgba(255,255,255,.76) !important;
-    border: 1px solid rgba(255,255,255,.78) !important;
-    box-shadow: 0 10px 36px -18px rgba(42,31,45,.30);
+    background: color-mix(in srgb, var(--zed-brand-background, #FAFAF7) 82%, transparent) !important;
+    border: 1px solid var(--zed-glass-border) !important;
+    box-shadow: var(--zed-glass-shadow);
     backdrop-filter: blur(20px) saturate(145%);
     -webkit-backdrop-filter: blur(20px) saturate(145%);
   }
 
-  .zed-glass-surface,
-  .glass-panel {
+  .zed-glass-surface, .glass-panel {
     background: var(--zed-glass-bg);
     border: 1px solid var(--zed-glass-border);
     box-shadow: var(--zed-glass-shadow);
@@ -38,11 +42,12 @@
   }
 
   .zed-product-card {
-    position: relative;
-    isolation: isolate;
-    background: linear-gradient(145deg, rgba(255,255,255,.78), rgba(255,255,255,.48)) !important;
-    border: 1px solid rgba(255,255,255,.82) !important;
-    box-shadow: 0 10px 34px -20px rgba(42,31,45,.30);
+    position: relative; isolation: isolate;
+    background: linear-gradient(145deg,
+      color-mix(in srgb, var(--zed-brand-background, #FAFAF7) 88%, white 12%),
+      color-mix(in srgb, var(--zed-brand-primary, #6C2D5C) 4%, var(--zed-brand-background, #FAFAF7))) !important;
+    border: 1px solid var(--zed-glass-border) !important;
+    box-shadow: var(--zed-glass-shadow);
     backdrop-filter: blur(18px) saturate(135%);
     -webkit-backdrop-filter: blur(18px) saturate(135%);
     transition: transform .35s cubic-bezier(.16,1,.3,1), box-shadow .35s ease, border-color .35s ease;
@@ -50,155 +55,147 @@
   .zed-product-card:hover {
     transform: translateY(-6px);
     box-shadow: var(--zed-glass-shadow-hover);
-    border-color: rgba(255,255,255,.98) !important;
+    border-color: color-mix(in srgb, var(--zed-brand-primary, #6C2D5C) 35%, white) !important;
   }
   .zed-product-card .zed-product-media {
-    background: linear-gradient(135deg, rgba(243,240,234,.95), rgba(243,240,234,.55));
-    border-bottom: 1px solid rgba(255,255,255,.55);
+    background: linear-gradient(135deg,
+      color-mix(in srgb, var(--zed-brand-background, #FAFAF7) 90%, var(--zed-brand-primary, #6C2D5C)),
+      color-mix(in srgb, var(--zed-brand-background, #FAFAF7) 96%, var(--zed-brand-accent, #7C3AED)));
+    border-bottom: 1px solid var(--zed-glass-border);
   }
   .zed-product-card .zed-product-media img {
     transition: transform .6s cubic-bezier(.16,1,.3,1), filter .35s ease;
   }
-  .zed-product-card:hover .zed-product-media img {
-    transform: scale(1.045);
-    filter: saturate(1.04);
-  }
+  .zed-product-card:hover .zed-product-media img { transform: scale(1.045); filter: saturate(1.04); }
   .zed-product-card .zed-wishlist {
-    background: rgba(255,255,255,.72);
-    border: 1px solid rgba(255,255,255,.75);
-    box-shadow: 0 8px 22px -12px rgba(42,31,45,.35);
+    background: color-mix(in srgb, var(--zed-brand-background, #FAFAF7) 78%, transparent);
+    border: 1px solid var(--zed-glass-border);
+    box-shadow: var(--zed-glass-shadow);
     backdrop-filter: blur(14px);
     -webkit-backdrop-filter: blur(14px);
   }
 
   .zed-hero {
-    position: relative;
-    overflow: hidden;
-    isolation: isolate;
-    border: 1px solid rgba(255,255,255,.72);
+    position: relative; overflow: hidden; isolation: isolate;
+    border: 1px solid var(--zed-glass-border);
     background:
-      radial-gradient(circle at 84% 18%, rgba(108,45,92,.18), transparent 28%),
-      radial-gradient(circle at 12% 76%, rgba(38,55,70,.15), transparent 30%),
-      linear-gradient(135deg, rgba(243,240,234,.97), rgba(243,240,234,.82));
-    box-shadow: 0 28px 80px -42px rgba(108,45,92,.38);
+      radial-gradient(circle at 84% 18%, color-mix(in srgb, var(--zed-brand-primary, #6C2D5C) 19%, transparent), transparent 28%),
+      radial-gradient(circle at 12% 76%, color-mix(in srgb, var(--zed-brand-accent, #7C3AED) 14%, transparent), transparent 30%),
+      var(--zed-gradient-soft);
+    box-shadow: 0 28px 80px -42px color-mix(in srgb, var(--zed-brand-primary, #6C2D5C) 38%, transparent);
   }
-  .zed-hero::before,
-  .zed-hero::after {
-    content: "";
-    position: absolute;
-    border-radius: 999px;
-    filter: blur(6px);
-    pointer-events: none;
-    z-index: -1;
+  .zed-hero::before, .zed-hero::after {
+    content: ""; position: absolute; border-radius: 999px; filter: blur(6px);
+    pointer-events: none; z-index: -1;
   }
   .zed-hero::before {
     width: 300px; height: 300px; right: -100px; top: -120px;
-    background: rgba(108,45,92,.14);
+    background: color-mix(in srgb, var(--zed-brand-primary, #6C2D5C) 16%, transparent);
   }
   .zed-hero::after {
     width: 260px; height: 260px; left: -110px; bottom: -140px;
-    background: rgba(38,55,70,.12);
+    background: color-mix(in srgb, var(--zed-brand-accent, #7C3AED) 13%, transparent);
   }
   .zed-hero-glass {
-    background: rgba(255,255,255,.38);
-    border: 1px solid rgba(255,255,255,.68);
-    box-shadow: 0 18px 45px -25px rgba(42,31,45,.28);
-    backdrop-filter: blur(18px);
-    -webkit-backdrop-filter: blur(18px);
+    background: color-mix(in srgb, var(--zed-brand-background, #FAFAF7) 42%, transparent);
+    border: 1px solid var(--zed-glass-border);
+    box-shadow: var(--zed-glass-shadow);
+    backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px);
   }
   .zed-float { animation: zed-float 6s ease-in-out infinite; }
   .zed-float-delay { animation: zed-float 7s ease-in-out 1.2s infinite; }
-  @keyframes zed-float {
-    0%,100% { transform: translateY(0) }
-    50% { transform: translateY(-8px) }
-  }
+  @keyframes zed-float { 0%,100% { transform: translateY(0) } 50% { transform: translateY(-8px) } }
 
-  .zed-category-card,
-  .zed-testimonial,
-  .zed-blog-card,
-  .zed-benefit-card {
-    border: 1px solid rgba(255,255,255,.72) !important;
-    background: rgba(255,255,255,.54) !important;
-    box-shadow: 0 12px 38px -22px rgba(42,31,45,.30);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
+  .zed-category-card, .zed-testimonial, .zed-blog-card, .zed-benefit-card {
+    border: 1px solid var(--zed-glass-border) !important;
+    background: var(--zed-glass-bg) !important;
+    box-shadow: var(--zed-glass-shadow);
+    backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
     transition: transform .3s cubic-bezier(.16,1,.3,1), box-shadow .3s ease, border-color .3s ease;
   }
-  .zed-category-card:hover,
-  .zed-testimonial:hover,
-  .zed-blog-card:hover,
-  .zed-benefit-card:hover {
+  .zed-category-card:hover, .zed-testimonial:hover, .zed-blog-card:hover, .zed-benefit-card:hover {
     transform: translateY(-4px);
-    box-shadow: 0 20px 45px -22px rgba(108,45,92,.28);
-    border-color: rgba(255,255,255,.96) !important;
+    box-shadow: var(--zed-glass-shadow-hover);
+    border-color: color-mix(in srgb, var(--zed-brand-primary, #6C2D5C) 30%, white) !important;
   }
 
   .zed-offer {
-    position: relative;
-    overflow: hidden;
+    position: relative; overflow: hidden;
     background:
-      radial-gradient(circle at 88% 22%, rgba(108,45,92,.18), transparent 28%),
-      radial-gradient(circle at 8% 90%, rgba(38,55,70,.16), transparent 30%),
-      rgba(255,255,255,.52) !important;
-    border: 1px solid rgba(255,255,255,.76) !important;
-    box-shadow: 0 20px 60px -30px rgba(108,45,92,.32);
-    backdrop-filter: blur(18px);
-    -webkit-backdrop-filter: blur(18px);
+      radial-gradient(circle at 88% 22%, color-mix(in srgb, var(--zed-brand-primary, #6C2D5C) 18%, transparent), transparent 28%),
+      radial-gradient(circle at 8% 90%, color-mix(in srgb, var(--zed-brand-accent, #7C3AED) 13%, transparent), transparent 30%),
+      var(--zed-glass-bg) !important;
+    border: 1px solid var(--zed-glass-border) !important;
+    box-shadow: var(--zed-glass-shadow-hover);
+    backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px);
   }
 
   .zed-glass-footer {
-    position: relative;
-    overflow: hidden;
+    position: relative; overflow: hidden;
     background:
-      radial-gradient(circle at 80% 0%, rgba(108,45,92,.13), transparent 32%),
-      linear-gradient(135deg, #2a1f2d, #4a1f42 58%, #2a1f2d) !important;
+      radial-gradient(circle at 80% 0%, color-mix(in srgb, var(--zed-brand-accent, #7C3AED) 20%, transparent), transparent 32%),
+      linear-gradient(135deg, var(--zed-brand-secondary, #263746), var(--zed-brand-primary, #6C2D5C) 58%, var(--zed-brand-secondary, #263746)) !important;
   }
   .zed-glass-footer::before {
-    content: "";
-    position: absolute; inset: 0;
-    background: linear-gradient(115deg, rgba(255,255,255,.06), transparent 35%, rgba(255,255,255,.03));
+    content: ""; position: absolute; inset: 0;
+    background: linear-gradient(115deg, rgba(255,255,255,.07), transparent 35%, rgba(255,255,255,.03));
     pointer-events: none;
   }
 
   .zed-glass-cart {
-    background: rgba(255,255,255,.78) !important;
-    border-right: 1px solid rgba(255,255,255,.78) !important;
-    box-shadow: 28px 0 70px -32px rgba(42,31,45,.38) !important;
-    backdrop-filter: blur(24px) saturate(145%);
-    -webkit-backdrop-filter: blur(24px) saturate(145%);
+    background: color-mix(in srgb, var(--zed-brand-background, #FAFAF7) 84%, transparent) !important;
+    border-right: 1px solid var(--zed-glass-border) !important;
+    box-shadow: 28px 0 70px -32px color-mix(in srgb, var(--zed-brand-secondary, #263746) 35%, transparent) !important;
+    backdrop-filter: blur(24px) saturate(145%); -webkit-backdrop-filter: blur(24px) saturate(145%);
   }
 
-  .zed-checkout-glass .card,
-  .zed-checkout-glass .glass-panel,
-  .zed-checkout-glass [class*="bg-white"] {
-    background: rgba(255,255,255,.60) !important;
-    border-color: rgba(255,255,255,.76) !important;
-    box-shadow: 0 12px 38px -24px rgba(42,31,45,.28);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
+  .zed-checkout-glass .card, .zed-checkout-glass .glass-panel, .zed-checkout-glass [class*="bg-white"] {
+    background: color-mix(in srgb, var(--zed-brand-background, #FAFAF7) 72%, transparent) !important;
+    border-color: var(--zed-glass-border) !important;
+    box-shadow: var(--zed-glass-shadow);
+    backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+  }
+
+  /* Shared button theme: covers native buttons, links styled as buttons and
+     common project button variants without overriding danger/status controls. */
+  .zed-page-bg button[class*="bg-plum-800"],
+  .zed-page-bg button[class*="bg-zed-950"],
+  .zed-page-bg a[class*="bg-plum-800"],
+  .zed-page-bg a[class*="bg-zed-950"],
+  .zed-page-bg button[data-variant="primary"],
+  .zed-page-bg a[data-variant="primary"] {
+    background: var(--zed-brand-secondary, #263746) !important;
+    border-color: var(--zed-brand-secondary, #263746) !important;
+    color: #fff !important;
+  }
+  .zed-page-bg button[class*="bg-rose-"],
+  .zed-page-bg button[class*="bg-violet-"],
+  .zed-page-bg a[class*="bg-rose-"],
+  .zed-page-bg a[class*="bg-violet-"] {
+    background: var(--zed-brand-primary, #6C2D5C) !important;
+    border-color: var(--zed-brand-primary, #6C2D5C) !important;
+    color: #fff !important;
+  }
+  .zed-page-bg button[class*="border-plum-"],
+  .zed-page-bg a[class*="border-plum-"] {
+    border-color: color-mix(in srgb, var(--zed-brand-primary, #6C2D5C) 45%, transparent) !important;
   }
 
   .zed-page-bg {
-    position: relative;
-    isolation: isolate;
+    position: relative; isolation: isolate;
   }
   .zed-page-bg::before {
-    content: "";
-    position: fixed;
-    z-index: -2;
-    inset: 0;
-    pointer-events: none;
+    content: ""; position: fixed; z-index: -2; inset: 0; pointer-events: none;
     background:
-      radial-gradient(circle at 5% 12%, rgba(108,45,92,.055), transparent 24%),
-      radial-gradient(circle at 96% 38%, rgba(38,55,70,.055), transparent 26%),
-      radial-gradient(circle at 42% 100%, rgba(243,240,234,.07), transparent 30%);
+      radial-gradient(circle at 5% 12%, color-mix(in srgb, var(--zed-brand-primary, #6C2D5C) 6%, transparent), transparent 24%),
+      radial-gradient(circle at 96% 38%, color-mix(in srgb, var(--zed-brand-accent, #7C3AED) 6%, transparent), transparent 26%),
+      radial-gradient(circle at 42% 100%, color-mix(in srgb, var(--zed-brand-secondary, #263746) 5%, transparent), transparent 30%);
   }
 
   @media (prefers-reduced-motion: reduce) {
     .zed-float, .zed-float-delay { animation: none !important; }
     .zed-product-card, .zed-category-card, .zed-testimonial, .zed-blog-card, .zed-benefit-card { transition: none !important; }
   }
-
   @media (max-width: 767px) {
     .zed-product-card:hover { transform: none; }
     .zed-hero { border-radius: 1.5rem; }
