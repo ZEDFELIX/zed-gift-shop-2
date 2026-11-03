@@ -18,6 +18,10 @@ function readable(hex: string): string {
 export function ColorsForm({ initial }: Props) {
   const router = useRouter();
   const [colors, setColors] = useState<Record<BrandColorKey, string>>(initial);
+  const [textColors, setTextColors] = useState({ heading: "#171717", body: "#29232B", muted: "#716772", button: "#FFFFFF" });
+  const pageNames = [{ key: "home", label: "Home", path: "/" }, { key: "shop", label: "Shop", path: "/shop" }, { key: "product", label: "Product details", path: "/product" }, { key: "cart", label: "Cart", path: "/cart" }, { key: "checkout", label: "Checkout", path: "/checkout" }, { key: "account", label: "Account", path: "/account" }, { key: "wrap-a-gift", label: "Wrap a Gift", path: "/wrap-a-gift" }, { key: "contact", label: "Contact", path: "/contact" }, { key: "about", label: "About", path: "/about" }, { key: "blog", label: "Blog", path: "/blog" }];
+  const defaultPage = { background: "#FAFAF7", text: "#29232B", heading: "#171717", primary: "#6C2D5C", button: "#263746", buttonText: "#FFFFFF", card: "#FFFFFF" };
+  const [pageThemes, setPageThemes] = useState<Record<string, typeof defaultPage>>(() => Object.fromEntries(pageNames.map(p => [p.key, { ...defaultPage }])));
   const [busy, setBusy] = useState(false);
   const [status, setStatus] = useState<"idle" | "saved" | "error">("idle");
   const [error, setError] = useState<string | null>(null);
@@ -41,7 +45,7 @@ export function ColorsForm({ initial }: Props) {
       const res = await fetch("/api/admin/settings", {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ settings: colors }),
+        body: JSON.stringify({ settings: { ...colors, textColors, pageThemes } }),
       });
       const data = (await res.json()) as { error?: string };
       if (!res.ok) {
