@@ -38,9 +38,9 @@ export const BRAND_COLORS: BrandColor[] = [
   {
     key: "secondaryColor",
     label: "Secondary colour",
-    default: "#D9A0AC",
+    default: "#263746",
     description:
-      "Dusty Rose is the secondary brand colour, used for supporting surfaces and emphasis.",
+      "The deep brand colour. It anchors the header, footer and primary buttons for a premium, grounded look.",
     usedFor: [
       "Footer background",
       "Primary buttons (for example Add to cart)",
@@ -52,9 +52,9 @@ export const BRAND_COLORS: BrandColor[] = [
   {
     key: "accentColor",
     label: "Accent colour",
-    default: "#D9A0AC",
+    default: "#7C3AED",
     description:
-      "Dusty Rose is the secondary accent. No extra accent color is permitted.",
+      "A secondary highlight used sparingly for promotional accents, gradient text and decorative details.",
     usedFor: [
       "Gradient headline text",
       "Promotional highlights",
