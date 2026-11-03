@@ -91,6 +91,8 @@ export function ProductPurchase({
 
  const price = basePrice + (selectedVariant?.priceOffset ?? 0);
  const wrap = giftWrapOptions.find((w) => w.id === wrapId);
+ const wrapPrice = giftWrapAvailable ? (wrap?.price ?? 0) : 0;
+ const lineTotal = (price + wrapPrice) * quantity;
 
  async function addToCart() {
  if (busy) return;
@@ -142,7 +144,7 @@ export function ProductPurchase({
     const { trackEvent } = await import("@/lib/analytics");
     trackEvent("add_to_cart", {
       currency: "KES",
-      value: price * quantity,
+      value: lineTotal,
       items: [{ item_id: productId, item_name: productName ?? slug, quantity }],
     });
   } catch {
@@ -293,8 +295,11 @@ export function ProductPurchase({
 
   {/* Gift wrap */}
  {giftWrapAvailable && giftWrapOptions.length > 0 && (
- <div>
- <p className="label">Gift wrap (optional)</p>
+ <div className="rounded-xl border border-[#e7dfd3] bg-[#fffdf9] p-4">
+ <div className="mb-3">
+ <p className="text-sm font-bold text-[#29231d]">Would you like us to wrap this gift?</p>
+ <p className="mt-1 text-xs leading-5 text-[#74695e]">Choose a wrapping style now, or leave it unwrapped. The wrapping fee is added to your order total.</p>
+ </div>
  <div className="flex flex-wrap gap-2">
  <button
   type="button"
@@ -316,12 +321,17 @@ export function ProductPurchase({
   active ? "border-soft-sage bg-zed-950 text-white" : "border-white/50 bg-white/30 text-[#07111F] hover:border-soft-sage"
   }`}
 >
- <span className="font-semibold">{w.name}</span>
- <span className="ml-1 opacity-70">+{formatKES(w.price)}</span>
+ <span className="block font-semibold">{w.name}</span>
+ <span className="mt-1 block text-xs opacity-80">{w.price > 0 ? "+" + formatKES(w.price) + " per item" : "Included"}</span>
  </button>
  );
  })}
  </div>
+ {wrap && (
+  <p className="mt-3 rounded-lg bg-[#f2eadf] px-3 py-2 text-xs font-semibold text-[#5d482b]">
+   Selected: {wrap.name} · {wrap.price > 0 ? formatKES(wrap.price) + " per item" : "Free"}
+  </p>
+ )}
  </div>
  )}
 
@@ -380,7 +390,7 @@ export function ProductPurchase({
  </button>
  </div>
  <div className="hidden items-baseline gap-2 md:flex">
- <p className="font-display text-[22px] font-black text-[#07111F] sm:text-3xl">{formatKES(price * quantity)}</p>
+ <p className="font-display text-[22px] font-black text-[#07111F] sm:text-3xl">{formatKES(lineTotal)}</p>
  {compareAtPrice != null && compareAtPrice > basePrice && (
  <p className="text-lg text-[#334155] line-through">{formatKES(compareAtPrice * quantity)}</p>
  )}
@@ -425,7 +435,7 @@ export function ProductPurchase({
   <div className="fixed inset-x-0 bottom-0 z-[60] flex items-center gap-3 border-t border-black/10 bg-white/95 px-3 pb-[max(10px,env(safe-area-inset-bottom))] pt-2 shadow-[0_-6px_24px_rgba(0,0,0,0.10)] backdrop-blur md:hidden">
     <div className="min-w-0 flex-1">
       <p className="text-[10px] font-medium text-[#64748b]">Total price</p>
-      <p className="truncate text-lg font-extrabold leading-tight text-[var(--color-ink)]">{formatKES(price * quantity)}</p>
+      <p className="truncate text-lg font-extrabold leading-tight text-[var(--color-ink)]">{formatKES(lineTotal)}</p>
     </div>
     {inStock ? (
       <button type="button" onClick={addToCart} disabled={busy} className="inline-flex min-h-11 min-w-0 flex-1 items-center justify-center gap-1.5 rounded-full bg-[#9dbb35] px-3 text-xs font-bold text-[#17210b] shadow-sm disabled:opacity-60">
