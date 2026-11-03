@@ -52,9 +52,9 @@ export const BRAND_COLORS: BrandColor[] = [
   {
     key: "accentColor",
     label: "Accent colour",
-    default: "#7C3AED",
+    default: "#263746",
     description:
-      "A secondary highlight used sparingly for promotional accents, gradient text and decorative details.",
+      "Midnight Slate is used for secondary emphasis. No extra accent color is permitted.",
     usedFor: [
       "Gradient headline text",
       "Promotional highlights",
