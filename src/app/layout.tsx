@@ -7,6 +7,7 @@ import { buildMetadata, jsonLdOrganization, jsonLdWebsite } from "@/lib/seo";
 import { getSettings } from "@/lib/data/settings";
 import { ToastHost } from "@/components/ui/ToastHost";
 import { ServiceWorkerReg } from "@/components/layout/ServiceWorkerReg";
+import { PageThemeScope } from "@/components/layout/PageThemeScope";
 import "@/app/globals.css";
 import "@/app/glassmorphism.css";
 
@@ -53,6 +54,17 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   const background = validColor(settings.backgroundColor, "#FAFAF7");
   const announcement = validColor(settings.announcementColor, primary);
   const foreground = readableTextColor(background);
+  const textColors = (settings.textColors && typeof settings.textColors === "object" ? settings.textColors : {}) as Record<string, unknown>;
+  const textHeading = validColor(textColors.heading, "#171717");
+  const textBody = validColor(textColors.body, "#29232B");
+  const textMuted = validColor(textColors.muted, "#716772");
+  const buttonText = validColor(textColors.button, "#FFFFFF");
+  const pageThemes = (settings.pageThemes && typeof settings.pageThemes === "object" ? settings.pageThemes : {}) as Record<string, Record<string, unknown>>;
+  const pageThemeCss = Object.entries(pageThemes).map(([page, theme]) => {
+    if (!/^[a-z0-9-]+$/.test(page) || !theme || typeof theme !== "object") return "";
+    const vars = { background: validColor(theme.background, background), text: validColor(theme.text, textBody), heading: validColor(theme.heading, textHeading), primary: validColor(theme.primary, primary), button: validColor(theme.button, secondary), buttonText: validColor(theme.buttonText, buttonText), card: validColor(theme.card, "#FFFFFF") };
+    return `body[data-zed-page="${page}"]{--zed-page-background:${vars.background};--zed-page-text:${vars.text};--zed-page-heading:${vars.heading};--zed-page-primary:${vars.primary};--zed-page-button:${vars.button};--zed-page-button-text:${vars.buttonText};--zed-page-card:${vars.card};}`;
+  }).join("\\n");
   const colors = {
     "--color-rose-50": background, "--color-rose-100": background, "--color-rose-200": background, "--color-rose-300": background,
     "--color-rose-400": primary, "--color-rose-500": primary, "--color-rose-600": primary, "--color-rose-700": secondary, "--color-rose-800": secondary, "--color-rose-900": secondary, "--color-rose-950": secondary,
@@ -69,7 +81,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
     "--color-announcement": announcement, "--color-announcement-fg": readableTextColor(announcement),
     "--zed-plum": primary, "--zed-slate": secondary, "--zed-milk-white": background,
     "--zed-brand-primary": primary, "--zed-brand-secondary": secondary, "--zed-brand-accent": accent,
-    "--zed-brand-background": background, "--zed-brand-announcement": announcement,
+    "--zed-brand-background": background, "--zed-brand-announcement": announcement,\n    "--zed-text-heading": textHeading, "--zed-text-body": textBody, "--zed-text-muted": textMuted, "--zed-button-text": buttonText,
     "--zed-glass-tint": `color-mix(in srgb, ${primary} 8%, transparent)`,
     "--zed-brand-gradient": `linear-gradient(120deg, ${primary}, ${accent})`,
   } as CSSProperties;
