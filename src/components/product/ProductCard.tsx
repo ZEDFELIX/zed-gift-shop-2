@@ -26,7 +26,7 @@ export function ProductCard({ product, priority = false, textColor, flashSaleTag
   const media = (
     <div className="relative aspect-[6/5] w-full min-w-0 overflow-hidden bg-white transition-transform duration-300 sm:aspect-[5/4] lg:aspect-[1/1]">
       {showFlashSaleTag && (
-        <span className="absolute right-0 top-3 z-20 rounded-l-md bg-[#E11D48] px-1.5 py-2 text-[9px] font-extrabold uppercase leading-none tracking-[0.12em] text-white shadow-md [writing-mode:vertical-rl]" aria-label="Flash sale">
+        <span className="absolute right-0 top-3 z-20 zed-sale-tag rounded-l-md bg-[#E11D48] px-1.5 py-2 text-[9px] font-extrabold uppercase leading-none tracking-[0.12em] !text-white shadow-md [writing-mode:vertical-rl]" aria-label="Flash sale">
           Flash Sale
         </span>
       )}
@@ -90,7 +90,7 @@ export function ProductCard({ product, priority = false, textColor, flashSaleTag
           ) : null}
           {sale != null && sale > 0 && product.compareAtPrice != null && product.compareAtPrice > product.price ? (
             <span
-              className="inline-flex max-w-full shrink-0 items-center rounded-full bg-rose-500 px-1.5 py-0.5 text-[9px] font-bold leading-none shadow-sm sm:px-2 sm:text-[10px]"
+              className="zed-sale-tag inline-flex max-w-full shrink-0 items-center rounded-full bg-rose-500 px-1.5 py-0.5 text-[9px] font-bold leading-none !text-white shadow-sm sm:px-2 sm:text-[10px]"
               style={{ color: "#FFFFFF", backgroundColor: "#E11D48" }}
               aria-label={`Save ${sale} percent`}
             >
