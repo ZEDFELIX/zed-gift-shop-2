@@ -32,7 +32,7 @@ export function AdminTopBar({ role, email, name }: { role: string; email: string
         <Link href="/admin" className="flex shrink-0 items-center gap-2.5">
           <Image src="/logo.png" alt="Zed Gift Shop" width={156} height={44} priority className="h-10 w-[132px] object-contain object-left" />
           <span className="hidden sm:block">
-            <span className="block font-display text-[15px] font-bold tracking-tight text-slate-950">ZED GIFT SHOP</span>
+            <span className="block font-display text-[12px] font-bold uppercase tracking-[.16em] text-slate-500">Store Management</span>
             <span className="block text-[9px] font-bold uppercase tracking-[.18em] text-slate-400">Management</span>
           </span>
         </Link>
