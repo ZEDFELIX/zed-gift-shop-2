@@ -24,7 +24,7 @@ export function HeroBannerManager({ initial }: { initial?: Partial<HeroBanner> |
     } catch (error) { setMessage(error instanceof Error ? error.message : "Could not save banner."); }
     finally { setBusy(false); }
   }
-  return <section className="space-y-4 rounded-zed border border-edge bg-white p-6">
+  return <section id="homepage-banners" className="space-y-4 rounded-zed border border-edge bg-white p-6">
     <div><h2 className="font-display text-xl font-bold text-[#07111F]">Shop hero banner</h2><p className="mt-1 text-sm text-[#334155]">Edit the desktop shop banner and its four photos. Paste image URLs from products already uploaded to your shop. Leave a photo blank to use a current catalogue product photo automatically.</p></div>
     <div className="grid gap-3 sm:grid-cols-2">
       <label className="text-xs font-semibold">Small heading<input className="field mt-1" value={value.eyebrow} onChange={e=>update("eyebrow",e.target.value)} /></label>
