@@ -109,7 +109,7 @@ export async function ListingPage({
     }));
 
   return (
-    <div className="container-zed bg-[#f7f7f7] py-2 sm:bg-transparent sm:py-5 lg:py-6">
+    <div className="zed-shop-listing container-zed bg-[#f7f7f7] py-2 sm:bg-transparent sm:py-5 lg:py-6">
       {activeFilters.length > 0 && result.items.length > 0 && (
         <script
           type="application/ld+json"
