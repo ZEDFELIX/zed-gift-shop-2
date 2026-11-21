@@ -135,7 +135,7 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
  <div>
  <div className="flex flex-wrap items-center gap-2">
  {isFlashSaleProduct && (
- <span className="inline-flex items-center rounded-full bg-[#E11D48] px-3 py-1 text-[10px] font-extrabold uppercase tracking-[0.12em] text-white shadow-sm" aria-label="This product is in the Flash Sale">Flash Sale</span>
+ <span className="inline-flex items-center rounded-full bg-[var(--zed-brand-primary)] px-3 py-1 text-[10px] font-extrabold uppercase tracking-[0.12em] text-white shadow-sm" aria-label="This product is in the Flash Sale">Flash Sale</span>
  )}
  {categories.slice(0, 3).map((c) => (
  <Link key={c.id} href={`/gifts/${c.slug}`} className="rounded-full bg-warm-white px-3 py-1 text-[11px] font-semibold text-zed-700 hover:bg-zed-950">
