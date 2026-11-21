@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
-import { Loader2, LogOut, Search, Settings2, ShieldCheck, Store } from "lucide-react";
+import { Loader2, LogOut, Search, Settings2, Store } from "lucide-react";
 import { AdminNotificationBell } from "@/components/admin/AdminNotificationBell";
 
 export function AdminTopBar({ role, email, name }: { role: string; email: string; name: string }) {
