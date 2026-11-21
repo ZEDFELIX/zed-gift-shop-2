@@ -15,6 +15,7 @@ import {
   SlidersHorizontal,
   Heart,
   Home,
+  ClipboardList,
   Gift,
   ShieldCheck,
   ShoppingBag,
@@ -344,11 +345,11 @@ export function HeaderContent({
 
       <SearchPanel open={searchOpen} onClose={() => setSearchOpen(false)} />
 
-       <nav aria-label="Mobile quick navigation" className={`fixed inset-x-3 bottom-3 z-[80] grid grid-cols-4 rounded-full border border-white/80 bg-white/90 p-1 shadow-[0_8px_28px_rgba(0,0,0,.12)] backdrop-blur-xl lg:hidden ${mobileOpen || pathname.startsWith("/product/") ? "hidden" : ""}`}>
-         <Link href="/" className="flex flex-col items-center justify-center gap-0.5 rounded-full px-1 py-1.5 text-[10px] font-semibold text-[#62666d]"><Home className="size-5" /><span>Home</span></Link>
-         <button type="button" onClick={openCart} className="flex flex-col items-center justify-center gap-0.5 rounded-full px-1 py-1.5 text-[10px] font-semibold text-[#62666d]"><ShoppingBag className="size-5" /><span>Cart</span></button>
-         <Link href="/account/wishlist" className="flex flex-col items-center justify-center gap-0.5 rounded-full px-1 py-1.5 text-[10px] font-semibold text-[#62666d]"><Heart className="size-5" /><span>Wishlist</span></Link>
-         <Link href={accountHref} className="flex flex-col items-center justify-center gap-0.5 rounded-full px-1 py-1.5 text-[10px] font-semibold text-[#62666d]"><User className="size-5" /><span>Account</span></Link>
+       <nav aria-label="Mobile quick navigation" className={`zed-mobile-bottom-nav fixed inset-x-3 bottom-3 z-[80] grid grid-cols-4 rounded-full border border-white/80 bg-white/90 p-1 shadow-[0_8px_28px_rgba(0,0,0,.12)] backdrop-blur-xl lg:hidden ${mobileOpen || pathname.startsWith("/product/") ? "hidden" : ""}`}>
+         <Link href="/shop" aria-current={pathname === "/shop" || pathname === "/" ? "page" : undefined} className={`flex flex-col items-center justify-center gap-0.5 rounded-full px-1 py-1.5 text-[10px] font-semibold ${pathname === "/shop" || pathname === "/" ? "is-active" : ""}`}><Home className="size-5" /><span>Home</span></Link>
+         <Link href="/account/orders" aria-current={pathname.startsWith("/account/orders") ? "page" : undefined} className={`flex flex-col items-center justify-center gap-0.5 rounded-full px-1 py-1.5 text-[10px] font-semibold ${pathname.startsWith("/account/orders") ? "is-active" : ""}`}><ClipboardList className="size-5" /><span>Orders</span></Link>
+         <Link href="/account/wishlist" aria-current={pathname.startsWith("/account/wishlist") ? "page" : undefined} className={`flex flex-col items-center justify-center gap-0.5 rounded-full px-1 py-1.5 text-[10px] font-semibold ${pathname.startsWith("/account/wishlist") ? "is-active" : ""}`}><Heart className="size-5" /><span>Favorites</span></Link>
+         <Link href="/account" aria-current={pathname === "/account" ? "page" : undefined} className={`flex flex-col items-center justify-center gap-0.5 rounded-full px-1 py-1.5 text-[10px] font-semibold ${pathname.startsWith("/account") && !pathname.startsWith("/account/orders") && !pathname.startsWith("/account/wishlist") ? "is-active" : ""}`}><User className="size-5" /><span>Profile</span></Link>
        </nav>
     </>
   );
