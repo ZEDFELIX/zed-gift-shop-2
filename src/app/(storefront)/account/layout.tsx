@@ -14,7 +14,7 @@ export default async function AccountLayout({ children }: { children: React.Reac
  const initials = user.name.trim().charAt(0).toUpperCase() || "U";
 
  return (
-  <div className="min-h-screen bg-plum-50 pb-16 pt-3 text-plum-950 sm:pb-10 sm:pt-5">
+  <div className="zed-account-page min-h-screen bg-transparent pb-16 pt-3 text-plum-950 sm:pb-10 sm:pt-5">
    <div className="mx-auto w-full max-w-7xl px-2.5 min-[380px]:px-3 sm:px-5 lg:px-7">
     <header className="mb-3 overflow-hidden rounded-[17px] bg-plum-900 text-white shadow-[0_5px_18px_rgba(0,0,0,0.08)] sm:mb-4 sm:rounded-[20px]">
      <div className="flex min-w-0 items-center gap-2.5 px-3 py-3 min-[380px]:gap-3 min-[380px]:px-3.5 sm:gap-4 sm:px-5 sm:py-4">
