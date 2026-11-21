@@ -59,6 +59,7 @@ export function HeaderContent({
   whatsappNumber,
   storeName,
   isAuthed,
+  customerName,
   userRole,
 }: {
   cartCount: number;
@@ -68,6 +69,7 @@ export function HeaderContent({
   whatsappNumber: string;
   storeName: string;
   isAuthed: boolean;
+  customerName: string | null;
   userRole: "CUSTOMER" | "STAFF" | "ADMIN" | null;
 }) {
   const pathname = usePathname();
@@ -246,6 +248,13 @@ export function HeaderContent({
           </div>
         </div>
       </div></div>
+
+      {pathname.startsWith("/shop") && isAuthed && customerName && (
+        <div className="container-zed flex items-center gap-2 px-3 pb-1 pt-2 text-xs text-[var(--zed-brand-secondary,var(--color-plum-800))] sm:hidden">
+          <span className="grid size-7 place-items-center rounded-full bg-[color-mix(in_srgb,var(--zed-brand-secondary,var(--color-plum-800))_12%,white)] font-bold">{customerName.trim().slice(0,1).toUpperCase()}</span>
+          <span>Welcome back, <strong>{customerName.trim().split(/\\s+/)[0]}</strong></span>
+        </div>
+      )}
 
       {/* Original utility navigation restored; Wrap a Gift stays in the main header actions. */}
       <div className={`relative z-30 border-b border-edge bg-white ${pathname.startsWith("/product/") ? "hidden md:block" : ""}`}>
