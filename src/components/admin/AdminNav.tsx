@@ -49,7 +49,7 @@ export function AdminNav({ isAdmin = false }: { isAdmin?: boolean }) {
         key={href}
         href={href}
         aria-current={active ? "page" : undefined}
-        className={`group flex min-h-10 min-w-0 items-center gap-3 rounded-xl px-3 py-2 text-[13px] font-medium transition-colors ${active ? "zed-admin-nav-active" : "text-slate-600 hover:bg-slate-100 hover:text-slate-950"} ${href === "/account" ? "mt-2 border-t border-slate-100 pt-3" : ""}`}
+        className={`group flex min-h-10 min-w-0 items-center gap-3 rounded-xl px-3 py-2 text-[13px] font-medium transition-colors ${active ? "zed-admin-nav-active" : "text-rose-100/85 hover:bg-white/10 hover:text-white"} ${href === "/account" ? "mt-2 border-t border-slate-100 pt-3" : ""}`}
       >
         <Icon className="size-[17px] shrink-0" />
         <span className={compact ? "" : "truncate"}>{label}</span>
@@ -60,18 +60,18 @@ export function AdminNav({ isAdmin = false }: { isAdmin?: boolean }) {
   return (
     <>
       <details className="zed-admin-mobile-nav group lg:hidden">
-        <summary className="flex min-h-12 cursor-pointer list-none items-center justify-between rounded-xl border border-slate-200 bg-white px-4 text-sm font-semibold text-slate-800 shadow-sm [&::-webkit-details-marker]:hidden">
+        <summary className="flex min-h-12 cursor-pointer list-none items-center justify-between rounded-xl border border-[#6a1637] bg-[#4b0622] px-4 text-sm font-semibold text-white shadow-sm [&::-webkit-details-marker]:hidden">
           <span className="flex items-center gap-2"><Menu className="size-4" /> Admin navigation</span>
           <span className="group-open:hidden"><Menu className="size-4" /></span>
           <span className="hidden group-open:block"><X className="size-4" /></span>
         </summary>
-        <nav aria-label="Admin navigation" className="mt-2 grid max-h-[65vh] grid-cols-2 gap-1 overflow-y-auto rounded-xl border border-slate-200 bg-white p-2 sm:grid-cols-3">
+        <nav aria-label="Admin navigation" className="mt-2 grid max-h-[65vh] grid-cols-2 gap-1 overflow-y-auto rounded-xl border border-[#6a1637] bg-[#4b0622] p-2 sm:grid-cols-3">
           {links(true)}
         </nav>
       </details>
       <aside className="hidden lg:sticky lg:top-5 lg:block">
-        <nav aria-label="Admin navigation" className="max-h-[calc(100vh-2.5rem)] overflow-y-auto rounded-2xl border border-slate-200 bg-white p-2 shadow-[0_8px_28px_-24px_rgba(15,23,42,.35)]">
-          <p className="px-3 pb-2 pt-3 text-[10px] font-bold uppercase tracking-[.16em] text-slate-400">Workspace</p>
+        <nav aria-label="Admin navigation" className="max-h-[calc(100vh-2.5rem)] overflow-y-auto rounded-2xl border border-[#6a1637] bg-[#4b0622] p-2 shadow-[0_8px_28px_-24px_rgba(15,23,42,.35)]">
+          <p className="px-3 pb-2 pt-3 text-[10px] font-bold uppercase tracking-[.16em] text-rose-200/60">Workspace</p>
           <div className="space-y-0.5">{links()}</div>
         </nav>
       </aside>
