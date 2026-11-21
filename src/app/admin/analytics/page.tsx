@@ -21,7 +21,7 @@ const PRESETS = [
   { key: "today", label: "Today" },
   { key: "7d", label: "7 days" },
   { key: "30d", label: "30 days" },
-  { key: "3m", label: "3 months" },
+  { key: "3m", label: "90 days" },
   { key: "12m", label: "12 months" },
 ];
 
