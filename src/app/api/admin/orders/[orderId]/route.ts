@@ -47,6 +47,12 @@ export async function PATCH(req: Request, { params }: { params: Promise<{ orderI
     return NextResponse.json({ error: parsed.error.issues[0]?.message ?? "Please check the fields." }, { status: 400 });
   }
 
+  // Staff can fulfil orders, but only the store owner can change payment
+  // states or record a manual receipt. Provider callbacks remain authoritative.
+  if ((parsed.data.paymentStatus || parsed.data.mpesaReceipt) && actor.role !== "ADMIN") {
+    return NextResponse.json({ error: "Only the store owner can manage payment verification." }, { status: 403 });
+  }
+
   try {
     // Payment status is never written directly: it goes through the payment
     // state machine so PaymentEvent history and stock stay consistent.
