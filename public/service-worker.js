@@ -1,4 +1,4 @@
-const CACHE_NAME = "zed-gift-shop-v4";
+const CACHE_NAME = "zed-gift-shop-v5";
 const STATIC_ASSETS = ["/icon.png", "/logo.png", "/manifest.webmanifest"];
 
 self.addEventListener("install", (event) => {
