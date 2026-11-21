@@ -25,7 +25,7 @@ export function ProductCard({ product, priority = false, textColor, flashSaleTag
   }
 
   const media = (
-    <div className="relative aspect-[6/5] w-full min-w-0 overflow-hidden bg-white transition-transform duration-300 sm:aspect-[5/4] lg:aspect-[1/1]">
+    <div className="zed-product-image-frame relative aspect-square w-full min-w-0 overflow-hidden bg-transparent transition-transform duration-300">
       {showFlashSaleTag && (
         <span className="absolute right-0 top-3 z-20 zed-sale-tag rounded-l-md bg-[var(--zed-brand-primary)] px-1.5 py-2 text-[9px] font-extrabold uppercase leading-none tracking-[0.12em] !text-white shadow-md [writing-mode:vertical-rl]" aria-label="Flash sale">
           Flash Sale
@@ -56,11 +56,11 @@ export function ProductCard({ product, priority = false, textColor, flashSaleTag
   );
 
   return (
-    <article className="zed-product-card group flex h-full flex-col overflow-hidden rounded-2xl border border-[var(--zed-brand-secondary)]/10 bg-white shadow-[0_7px_22px_-18px_rgba(74,31,66,.38)] transition duration-300 hover:-translate-y-0.5 hover:shadow-[0_14px_30px_-18px_rgba(74,31,66,.3)]">
+    <article className="zed-product-card group flex h-full min-w-0 flex-col overflow-hidden rounded-[20px] border border-[var(--zed-store-border)] bg-white/95 shadow-[0_8px_24px_-18px_rgba(74,31,66,.32)] transition duration-300 hover:-translate-y-0.5 hover:shadow-[0_14px_30px_-18px_rgba(74,31,66,.3)]">
       <div className="relative transition-opacity group-hover:opacity-100">
         <Link
           href={`/product/${product.slug}`}
-          className="zed-product-media block w-full min-w-0 overflow-hidden bg-white"
+          className="zed-product-media block w-full min-w-0 overflow-hidden bg-transparent"
           aria-label={`View ${product.name} details`}
           onClick={() => {
             try {
@@ -76,14 +76,14 @@ export function ProductCard({ product, priority = false, textColor, flashSaleTag
         <SaveGiftButton productId={product.id} productName={product.name} />
       </div>
 
-      <div className="flex min-w-0 flex-1 flex-col p-2.5 text-center sm:p-3 lg:p-4" style={textColor ? { color: textColor } : undefined}>
-        <h3 className="line-clamp-2 min-h-[2.4rem] text-[12px] font-semibold leading-snug [overflow-wrap:anywhere] sm:min-h-[2.7rem] sm:text-sm lg:min-h-[3rem] lg:text-base">
-          <Link href={`/product/${product.slug}`} style={textColor ? { color: textColor } : undefined} className={textColor ? "transition-opacity hover:opacity-80" : "hover:text-rose-600"}>
+      <div className="zed-product-info flex min-w-0 flex-1 flex-col p-2.5 text-left sm:p-3 lg:p-4" style={textColor ? { color: textColor } : undefined}>
+        <h3 className="line-clamp-2 min-h-[2.35rem] text-[12px] font-semibold leading-snug [overflow-wrap:anywhere] sm:min-h-[2.7rem] sm:text-sm lg:min-h-[3rem] lg:text-base">
+          <Link href={`/product/${product.slug}`} style={textColor ? { color: textColor } : undefined} className={textColor ? "transition-opacity hover:opacity-80" : "text-[var(--zed-text-heading)] transition-colors hover:text-[var(--zed-brand-secondary)]"}>
             {product.name}
           </Link>
         </h3>
 
-        <div className="mt-1 flex min-h-[1.2rem] flex-wrap items-baseline justify-center gap-x-1">
+        <div className="mt-1 flex min-h-[1.2rem] flex-wrap items-baseline justify-start gap-x-1.5">
           <p className="break-words text-[13px] font-bold text-charcoal-950 sm:text-[15px] lg:text-lg" style={textColor ? { color: textColor } : undefined}>{formatKES(product.price)}</p>
           {product.compareAtPrice != null && product.compareAtPrice > product.price ? (
             <p className="min-w-0 text-xs line-through" style={textColor ? { color: textColor, opacity: 0.72 } : undefined}>
