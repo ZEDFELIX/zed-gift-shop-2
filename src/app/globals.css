@@ -1168,3 +1168,47 @@ body,.zed-page-bg { color:var(--color-ink, #171717); background:var(--color-pure
  .zed-app-shell .zed-product-card{border-radius:21px}
  .zed-app-shell .zed-product-image-frame img{padding:12px}
 }
+
+
+/* Shared page language: product detail, cart, checkout, account and wrap. */
+.zed-app-shell .zed-account-page,
+.zed-app-shell .zed-checkout-page,
+.zed-app-shell .zed-product-detail-page,
+.zed-app-shell .zed-cart-page{color:var(--zed-text-body);background:transparent}
+.zed-app-shell .zed-account-page>div>header{border:1px solid rgba(255,255,255,.92);border-radius:22px;background:linear-gradient(125deg,var(--zed-brand-primary),color-mix(in srgb,var(--zed-brand-primary) 72%,#e9a9c4));box-shadow:0 12px 28px -20px rgba(75,14,48,.45)}
+.zed-app-shell .zed-account-page>div>div>main{border:1px solid rgba(255,255,255,.95);border-radius:22px;background:rgba(255,255,255,.88);box-shadow:0 10px 28px -24px rgba(75,14,48,.25);backdrop-filter:blur(18px)}
+.zed-app-shell .zed-account-page>div>div>aside a[aria-current="page"],
+.zed-app-shell .zed-account-page>div>div>aside a[aria-current="true"]{background:var(--zed-brand-primary);color:#fff}
+.zed-app-shell .zed-checkout-page>header h1,
+.zed-app-shell .zed-cart-page h1,
+.zed-app-shell .zed-product-detail-page h1{color:var(--zed-text-heading);letter-spacing:-.04em}
+.zed-app-shell .zed-checkout-page .glass-panel,
+.zed-app-shell .zed-checkout-page .glass-card,
+.zed-app-shell .zed-cart-page article,
+.zed-app-shell .zed-cart-page section,
+.zed-app-shell .zed-product-detail-page .glass-panel,
+.zed-app-shell .zed-product-detail-page .glass-card{border-color:color-mix(in srgb,var(--zed-brand-secondary) 15%,white);border-radius:20px;background:rgba(255,255,255,.92);box-shadow:0 10px 28px -23px rgba(75,14,48,.28)}
+.zed-app-shell .zed-checkout-page input,
+.zed-app-shell .zed-checkout-page select,
+.zed-app-shell .zed-checkout-page textarea,
+.zed-app-shell .zed-cart-page input,
+.zed-app-shell .zed-product-detail-page input,
+.zed-app-shell .zed-product-detail-page select,
+.zed-app-shell .zed-product-detail-page textarea{border-radius:13px}
+.zed-app-shell .zed-product-detail-page img{border-radius:16px}
+.zed-app-shell .zed-product-detail-page .zed-product-card{background:rgba(255,255,255,.94)}
+.zed-app-shell .zed-account-page a,
+.zed-app-shell .zed-checkout-page a,
+.zed-app-shell .zed-cart-page a{transition:background-color .18s ease,border-color .18s ease,transform .18s ease}
+.zed-app-shell .zed-wrap-page{max-width:1400px;margin-inline:auto}
+.zed-app-shell .zed-wrap-page article,
+.zed-app-shell .zed-wrap-page [class*="rounded-2xl"]{border-radius:20px}
+@media(max-width:767px){
+ .zed-app-shell .zed-account-page{padding-top:8px}
+ .zed-app-shell .zed-account-page>div{padding-inline:10px}
+ .zed-app-shell .zed-account-page>div>header{border-radius:18px}
+ .zed-app-shell .zed-account-page>div>div{gap:10px}
+ .zed-app-shell .zed-account-page>div>div>main{padding:12px}
+ .zed-app-shell .zed-checkout-page,.zed-app-shell .zed-cart-page{padding-top:16px;padding-bottom:26px}
+ .zed-app-shell .zed-product-detail-page{padding-bottom:26px}
+}
