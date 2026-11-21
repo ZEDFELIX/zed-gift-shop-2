@@ -1,4 +1,5 @@
 import { ListingPage } from "@/components/shop/ListingPage";
+import { ShopHeroBanner } from "@/components/shop/ShopHeroBanner";
 import { ProductCategoriesCard } from "@/components/shop/ProductCategoriesCard";
 import { FeaturedCategoriesCard } from "@/components/shop/FeaturedCategoriesCard";
 import { CustomerReviews } from "@/components/shop/CustomerReviews";
@@ -68,9 +69,16 @@ export default async function ShopPage({ searchParams }: { searchParams: Promise
   page: safePage(get("page")),
  } as const;
 
- const deals = await getDealProducts(4);
- const googleRaw = await getSetting("googleReviews");
+ const [deals, googleRaw, heroRaw] = await Promise.all([
+  getDealProducts(4),
+  getSetting("googleReviews"),
+  getSetting("shopHeroBanner"),
+ ]);
  const googleReviews = parseGoogleReviews(googleRaw);
+ const hero = heroRaw && typeof heroRaw === "object" ? heroRaw as {
+  eyebrow?: string; title?: string; description?: string; buttonLabel?: string; buttonHref?: string; imageUrls?: string[];
+ } : null;
+ const heroFallbackImages = deals.map((product) => product.images[0]?.url).filter((url): url is string => Boolean(url));
  const cards = () => (
   <>
     <ProductCategoriesCard />
@@ -85,6 +93,7 @@ export default async function ShopPage({ searchParams }: { searchParams: Promise
      filters={{ ...filters }}
      href="/shop"
      sidebar={cards()}
+     hero={<ShopHeroBanner banner={hero} fallbackImages={heroFallbackImages} />}
     />
     <CustomerReviews />
     {googleReviews.length > 0 && <GoogleReviews reviews={googleReviews} />}

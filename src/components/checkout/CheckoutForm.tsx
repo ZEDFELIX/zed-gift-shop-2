@@ -4,7 +4,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { ArrowLeft, Check, HelpCircle, Landmark, Loader2, Lock, PackageCheck, Phone, RefreshCw, ShieldCheck, Sparkles } from "lucide-react";
+import { ArrowLeft, Check, Gift, HelpCircle, Landmark, Loader2, Lock, PackageCheck, Phone, RefreshCw, ShieldCheck, Sparkles } from "lucide-react";
 import { formatKES } from "@/lib/utils";
 import { SurpriseToggle } from "@/components/product/SurpriseToggle";
 
@@ -23,6 +23,8 @@ type CartView = {
  quantity: number;
  lineTotal: number;
  giftWrapPrice: number;
+ giftWrapAvailable: boolean;
+ giftWrap: { name: string; price: number } | null;
  variant: { id: string; name: string; value: string } | null;
  savedForLater: boolean;
  inStock: boolean;
@@ -45,6 +47,7 @@ type DeliveryOption = {
 };
 
 type UserPrefill = { name: string; email: string; phone: string } | null;
+type GiftWrapOption = { id: string; name: string; price: number };
 
 const methods: Record<DeliveryOption["method"], string> = {
  SAME_DAY: "Same-day",
@@ -70,6 +73,7 @@ export function CheckoutForm({
   sitePhone,
   bankTransferAvailable = false,
   cardAvailable = false,
+  giftWrapOptions = [],
 }: {
   initialCart: CartView;
   counties: string[];
@@ -77,9 +81,11 @@ export function CheckoutForm({
   sitePhone: string;
   bankTransferAvailable?: boolean;
   cardAvailable?: boolean;
+  giftWrapOptions?: GiftWrapOption[];
 }) {
  const router = useRouter();
  const [cart, setCart] = useState<CartView>(initialCart);
+ const [wrapBusy, setWrapBusy] = useState<string | null>(null);
 const [form, setForm] = useState({
   name: user?.name ?? "",
   email: user?.email ?? "",
@@ -156,6 +162,28 @@ const [flutterwaveTxRef, setFlutterwaveTxRef] = useState<string | null>(null);
   }
   }
 
+ async function updateGiftWrap(itemId: string, wrapId: string) {
+  const selected = giftWrapOptions.find((option) => option.id === wrapId);
+  setWrapBusy(itemId);
+  try {
+    const response = await fetch("/api/cart/items/" + itemId, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ action: "giftWrap", giftWrap: selected ? { id: selected.id, name: selected.name, price: selected.price } : null }),
+    });
+    const result = await response.json() as { error?: string };
+    if (!response.ok) throw new Error(result.error ?? "Could not update gift wrapping.");
+    const cartResponse = await fetch("/api/cart", { cache: "no-store" });
+    const cartData = await cartResponse.json() as { cart?: CartView; error?: string };
+    if (!cartResponse.ok || !cartData.cart) throw new Error(cartData.error ?? "Could not refresh your cart.");
+    setCart(cartData.cart);
+    window.dispatchEvent(new CustomEvent("zed:cart-updated"));
+  } catch (error) {
+    setError(error instanceof Error ? error.message : "Could not update gift wrapping.");
+  } finally {
+    setWrapBusy(null);
+  }
+ }
  async function placeOrder() {
  setError(null);
  setStep("processing");
@@ -470,6 +498,16 @@ function wizardReached(n: number): boolean {
  {i.variant ? ` | ${i.variant.value}` : ""}
  {i.giftWrapPrice > 0 ? " | Gift box" : ""}
  </p>
+ {i.giftWrapAvailable && (
+  <label className="mt-1.5 flex flex-wrap items-center gap-2 text-[11px] font-semibold text-[#334155]">
+   <Gift className="size-3.5 text-[var(--zed-brand-primary)]" /> Gift wrap
+   <select value={giftWrapOptions.find((option) => option.name === i.giftWrap?.name)?.id ?? ""} disabled={wrapBusy === i.id} onChange={(event) => void updateGiftWrap(i.id, event.target.value)} className="max-w-[190px] rounded-lg border border-[var(--zed-brand-secondary)]/20 bg-white px-2 py-1.5 text-[11px]">
+    <option value="">No wrapping</option>
+    {giftWrapOptions.map((option) => <option key={option.id} value={option.id}>{option.name} · {formatKES(option.price)}</option>)}
+   </select>
+   {wrapBusy === i.id && <Loader2 className="size-3 animate-spin" />}
+  </label>
+ )}
  </div>
  <p className="font-semibold text-[#07111F]">{formatKES(i.lineTotal)}</p>
  </li>

@@ -28,6 +28,7 @@ export async function ListingPage({
  filters,
   href,
   sidebar,
+  hero,
 }: {
   title: string;
   eyebrow?: string;
@@ -35,6 +36,7 @@ export async function ListingPage({
   filters: ProductListFilters;
   href: string;
   sidebar?: ReactNode;
+  hero?: ReactNode;
 }) {
   const [result, allCategories] = await Promise.all([
     listProducts(filters),
@@ -128,9 +130,9 @@ export async function ListingPage({
         {sidebar ? <div className="hidden shrink-0 lg:block lg:w-60 xl:w-64">{sidebar}</div> : null}
         <div className="min-w-0 flex-1">
           <ShopMobileTools />
-          <header className="mb-4 hidden items-end justify-between gap-3 border-b border-[#eee6ed] pb-3 sm:mb-6 sm:flex sm:gap-4 sm:pb-4">
-            <div className="min-w-0 flex-1" />
-            <div className="flex shrink-0 items-center justify-end gap-2">
+          <header className="mb-3 flex items-end justify-between gap-3 border-b border-[var(--zed-brand-secondary)]/10 pb-3 sm:mb-5 sm:gap-4 sm:pb-4">
+            <div className="min-w-0 flex-1"><h1 className="font-display text-lg font-extrabold tracking-tight text-[var(--zed-text-heading)] sm:text-2xl">{title}</h1><p className="mt-0.5 hidden text-xs text-[var(--zed-text-muted)] sm:block">Thoughtful gifts for every moment.</p></div>
+            <div className="hidden shrink-0 items-center justify-end gap-2 sm:flex">
               <Suspense fallback={null}>
                 <ShopFiltersMenu
                   categories={categories}
@@ -174,6 +176,7 @@ export async function ListingPage({
                 </div>
               </section>
             )}
+            {hero}
             {showSections && <ShopSections sections={sectionData.sections} />}
             {gridItems.length > 0 ? (
               <div className="rounded-2xl bg-transparent p-0 sm:glass-panel sm:p-3">

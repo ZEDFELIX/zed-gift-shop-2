@@ -7,6 +7,7 @@ import { KENYA_COUNTIES } from "@/lib/constants";
 import { CheckoutForm } from "@/components/checkout/CheckoutForm";
 import { TrackPageView } from "@/components/analytics/Trackers";
 import { SITE, bankTransferConfigured } from "@/lib/constants";
+import { prisma } from "@/lib/prisma";
 import { flutterwaveConfigured } from "@/lib/flutterwave";
 import { ShieldCheck, Truck } from "lucide-react";
 
@@ -15,7 +16,11 @@ export const dynamic = "force-dynamic";
 export const metadata = { title: "Checkout", description: "Checkout securely with M-PESA STK Push, or another payment method available for your order." };
 
 export default async function CheckoutPage() {
- const [{ cart }, user] = await Promise.all([readCart().then(async ({ cart }) => ({ cart: cart ? await serializeCart(cart) : null })), getCurrentUser()]);
+ const [{ cart }, user, giftWrapOptions] = await Promise.all([
+  readCart().then(async ({ cart }) => ({ cart: cart ? await serializeCart(cart) : null })),
+  getCurrentUser(),
+  prisma.giftWrap.findMany({ where: { active: true }, orderBy: [{ sortOrder: "asc" }, { name: "asc" }], select: { id: true, name: true, price: true } }).catch(() => []),
+ ]);
 
  if (!cart || (cart.items.length === 0 && cart.count === 0)) {
  return (
@@ -50,6 +55,7 @@ export default async function CheckoutPage() {
 sitePhone={SITE.phone}
    bankTransferAvailable={bankTransferConfigured()}
    cardAvailable={flutterwaveConfigured()}
+   giftWrapOptions={giftWrapOptions}
    />
 
  <p className="mt-8 flex items-center justify-center gap-2 text-center text-xs text-[#334155]">
