@@ -1,6 +1,6 @@
 import Link from "next/link";
 import {
-  ArrowUpRight, Bell, Heart, MapPin, Package, Search, Settings2, UserRound
+  ArrowUpRight, Bell, Gift, Heart, HelpCircle, MapPin, Package, Search, Settings2, UserRound
 } from "lucide-react";
 
 export const metadata = { title: "My account" };
@@ -15,6 +15,8 @@ const accountLinks = [
   { label: "My addresses", detail: "Manage your delivery addresses", icon: MapPin, href: "/account/addresses" },
   { label: "Date reminders", detail: "Keep birthdays and special dates close", icon: Bell, href: "/account/reminders" },
   { label: "Profile settings", detail: "Update your personal and login details", icon: UserRound, href: "/account/settings" },
+  { label: "Gift wrapping", detail: "Personalize a gift or wrap your own", icon: Gift, href: "/wrap-a-gift" },
+  { label: "Help & support", detail: "Get help with orders and gifting", icon: HelpCircle, href: "/faq" },
 ];
 
 function AccountLink({ item }: { item: (typeof shoppingLinks)[number] | (typeof accountLinks)[number] }) {
