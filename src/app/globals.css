@@ -1044,3 +1044,19 @@ body,.zed-page-bg { color:var(--color-ink, #171717); background:var(--color-pure
   .zed-shop-hero > .relative.grid > div:last-child > div:last-child button { width:18px; height:18px; }
   .zed-shop-hero > .relative.grid > div:last-child > div:last-child button svg { width:11px; height:11px; }
 }
+
+
+@media (max-width:767px) {
+  .zed-product-detail-page { padding:0 12px 22px !important; }
+  .zed-product-detail-page > .grid { gap:12px !important; }
+  .zed-product-detail-page .zed-product-gallery, .zed-product-detail-page [class*="gallery"] { border-radius:22px; }
+  .zed-product-detail-page h1 { font-size:21px !important; line-height:1.15; }
+  .zed-product-detail-page .glass-card { border-radius:18px; }
+  .zed-product-detail-page [class*="text-3xl"] { font-size:25px; }
+  .zed-product-detail-page button, .zed-product-detail-page a[role="button"] { min-height:42px; }
+  .zed-product-detail-page .zed-product-media img { object-fit:contain; }
+  .zed-floating-cart-bar { bottom:calc(5.5rem + env(safe-area-inset-bottom)) !important; }
+  main#main .container-zed.max-w-6xl { padding-top:14px; }
+  main#main .container-zed.max-w-6xl > header { margin-bottom:14px; }
+  main#main .container-zed.max-w-6xl > header h1 { font-size:22px; }
+}
