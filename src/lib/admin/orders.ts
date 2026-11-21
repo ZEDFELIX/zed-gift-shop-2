@@ -147,6 +147,18 @@ export async function adminSetPaymentStatus(input: {
 
   const latest = order.payments[0];
 
+  // Manual confirmation is an owner-only exception to provider callbacks.
+  // For M-Pesa, require a receipt that the owner has checked against Daraja.
+  if (next === "SUCCESSFUL") {
+    if (actor.role !== "ADMIN") {
+      throw new AdminActionError("Only the store owner can manually confirm a payment.", 403);
+    }
+    const provider = latest?.provider ?? "M_PESA";
+    if (provider === "M_PESA" && !input.mpesaReceipt?.trim() && !latest?.mpesaReceipt) {
+      throw new AdminActionError("Enter the verified M-Pesa receipt number before confirming this payment.");
+    }
+  }
+
   // SUCCESSFUL is the one transition that must move real stock, so it goes
   // through confirmOrderPaid which owns that side effect.
   if (next === "SUCCESSFUL") {
