@@ -27,7 +27,7 @@ export function FloatingCartBar() {
     };
   }, [refresh]);
   if (!ready || cart.count < 1) return null;
-  return <div className="pointer-events-none fixed inset-x-0 bottom-[calc(4.7rem+env(safe-area-inset-bottom))] z-[65] px-3 lg:bottom-5 lg:left-auto lg:right-6 lg:w-[min(420px,calc(100vw-3rem))]">
+  return <div className="zed-floating-cart-bar pointer-events-none fixed inset-x-0 bottom-[calc(5.5rem+env(safe-area-inset-bottom))] z-[65] px-3 lg:bottom-5 lg:left-auto lg:right-6 lg:w-[min(420px,calc(100vw-3rem))]">
     <Link href="/cart" className="pointer-events-auto flex min-h-[58px] items-center gap-3 rounded-2xl border border-white/50 bg-[var(--zed-brand-primary)] px-4 py-3 text-white shadow-[0_14px_36px_-12px_rgba(74,31,66,.55)] backdrop-blur-2xl transition hover:-translate-y-0.5">
       <span className="relative grid size-9 shrink-0 place-items-center rounded-xl bg-white/15"><ShoppingBag className="size-5" /><span className="absolute -right-1 -top-1 grid min-w-4 place-items-center rounded-full bg-white px-1 text-[9px] font-extrabold text-[var(--zed-brand-primary)]">{cart.count}</span></span>
       <span className="min-w-0 flex-1"><span className="block text-[11px] font-semibold text-white/75">View your cart</span><span className="block truncate text-sm font-bold">{cart.count} {cart.count === 1 ? "item" : "items"}</span></span>
