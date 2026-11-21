@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Loader2, LogOut, Search, Settings2, ShieldCheck, Store } from "lucide-react";
+import { AdminNotificationBell } from "@/components/admin/AdminNotificationBell";
 
 export function AdminTopBar({ role, email }: { role: string; email: string }) {
   const router = useRouter();
@@ -42,6 +43,7 @@ export function AdminTopBar({ role, email }: { role: string; email: string }) {
         </form>
         <span className="hidden rounded-full bg-slate-100 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-slate-600 md:inline-flex">{role}</span>
         <div className="flex shrink-0 items-center gap-1">
+          <AdminNotificationBell />
           <span className="hidden max-w-40 truncate px-2 text-xs text-slate-500 xl:block">{email}</span>
           {role === "ADMIN" && <Link href="/admin/settings" aria-label="Website settings" title="Website settings" className="grid size-10 place-items-center rounded-xl text-slate-500 transition hover:bg-slate-100 hover:text-slate-900"><Settings2 className="size-[17px]" /></Link>}
           <Link href="/" aria-label="View storefront" title="View storefront" className="grid size-10 place-items-center rounded-xl text-slate-500 transition hover:bg-slate-100 hover:text-slate-900"><Store className="size-[17px]" /></Link>
