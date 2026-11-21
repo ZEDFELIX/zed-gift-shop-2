@@ -48,7 +48,7 @@ function Section({ title, products, href, flash = false, flashSale, titleColor, 
       >
         <div className="mb-1 flex min-w-0 items-center justify-between gap-2 border-b pb-1" style={{ borderColor: textColor === "#FFFFFF" ? "rgba(255,255,255,.22)" : "rgba(0,0,0,.10)" }}>
           <div className="flex min-w-0 items-center gap-2">
-            <span className="grid size-7 shrink-0 place-items-center rounded-lg bg-[#171717] text-white">
+            <span className="grid size-7 shrink-0 place-items-center rounded-lg bg-[var(--zed-brand-secondary)] text-white">
               <Zap className="size-3.5 fill-current" aria-hidden="true" />
             </span>
             <div className="min-w-0">
@@ -91,7 +91,7 @@ function Section({ title, products, href, flash = false, flashSale, titleColor, 
         {href && (
           <Link
             href={href}
-            className="shrink-0 rounded-md border border-edge bg-white px-3 py-1.5 text-[11px] font-semibold text-[#171717] transition-colors hover:bg-[#171717] hover:text-white"
+            className="shrink-0 rounded-md border border-edge bg-white px-3 py-1.5 text-[11px] font-semibold text-[#171717] transition-colors hover:bg-[var(--zed-brand-secondary)] hover:text-white"
           >
             See all
           </Link>
