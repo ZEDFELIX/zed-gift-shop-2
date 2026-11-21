@@ -356,3 +356,19 @@
   .zed-app-shell .zed-wrap-page > section:first-of-type article > div:first-child { aspect-ratio:1/1; }
   .zed-app-shell .zed-order-success-page { padding:30px 16px 46px; }
 }
+
+.zed-app-shell .zed-checkout-page > .grid > div:first-child > .glass-card,
+.zed-app-shell .zed-checkout-page > .grid > div:first-child > div.glass-card { border:1px solid var(--zed-ui-line); border-radius:20px; background:rgba(255,255,255,.9); box-shadow:var(--zed-ui-shadow); }
+.zed-app-shell .zed-checkout-page .glass-card { border-color:var(--zed-ui-line); background:rgba(255,255,255,.9); }
+.zed-app-shell .zed-checkout-page button[class*="bg-zed-950"] { border-radius:999px; background:var(--zed-ui-plum) !important; }
+.zed-app-shell .zed-checkout-page button[class*="border-white"] { border-color:#eadbe4; border-radius:999px; }
+.zed-app-shell .zed-checkout-page .glass-panel { border:1px solid var(--zed-ui-line); border-radius:16px; background:#fff8fb; }
+.zed-app-shell .zed-checkout-page aside { position:relative; }
+.zed-app-shell .zed-checkout-page aside > div { border:1px solid var(--zed-ui-line); border-radius:20px; background:rgba(255,255,255,.92); }
+.zed-app-shell .zed-product-detail-page .zed-product-detail-gallery,
+.zed-app-shell .zed-product-detail-page [class*="product-gallery"] { border-radius:22px; overflow:hidden; }
+@media(max-width:767px) {
+ .zed-app-shell .zed-checkout-page > .grid { gap:14px; }
+ .zed-app-shell .zed-checkout-page > .grid > div:first-child > .glass-card { padding:14px; }
+ .zed-app-shell .zed-checkout-page aside > div { padding:14px; }
+}
