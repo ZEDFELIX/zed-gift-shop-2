@@ -99,11 +99,13 @@ export function ProductCard({ product, priority = false, textColor, flashSaleTag
           ) : null}
         </div>
 
-        {lowStock && (
+        {lowStock ? (
           <p className="mt-auto pt-2 text-[10px] font-semibold leading-4 text-rose-500 sm:text-[11px]" style={textColor ? { color: "#FFD166" } : undefined}>
             Only {product.quantity - product.reservedQuantity} left
           </p>
-        )}
+        ) : inStock ? (
+          <p className="zed-stock-status mt-auto pt-2 text-[10px] font-medium leading-4 sm:text-[11px]">In stock</p>
+        ) : null}
       </div>
     </article>
   );
