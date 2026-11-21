@@ -2,13 +2,15 @@
 
 import { usePathname } from "next/navigation";
 import Link from "next/link";
-import { BarChart3, Boxes, Building2, CreditCard, Database, Gift, LayoutDashboard, MapPin, Newspaper, Package, Palette, Quote, Ribbon, RotateCcw, ScrollText, Settings, ShieldCheck, Star, Truck, UserRound, Users, Tags, Zap, Menu, X } from "lucide-react";
+import { BarChart3, Boxes, Building2, CreditCard, Database, Gift, LayoutDashboard, MapPin, Newspaper, Package, Palette, Quote, Ribbon, RotateCcw, ScrollText, Settings, ShieldCheck, Star, Truck, UserRound, Users, Tags, Zap, Menu, X, Layers, Bell } from "lucide-react";
 
 const TABS = [
   { href: "/admin", label: "Overview", icon: LayoutDashboard, adminOnly: false },
   { href: "/admin/products", label: "Products", icon: Gift, adminOnly: true },
   { href: "/admin/categories", label: "Categories", icon: Tags, adminOnly: true },
+  { href: "/admin/collections", label: "Collections", icon: Layers, adminOnly: true },
   { href: "/admin/orders", label: "Orders", icon: Package, adminOnly: false },
+  { href: "/admin/notifications", label: "Notifications", icon: Bell, adminOnly: false },
   { href: "/admin/customers", label: "Customers", icon: UserRound, adminOnly: false },
   { href: "/admin/inventory", label: "Inventory", icon: Boxes, adminOnly: false },
   { href: "/admin/flash-sale", label: "Flash sales", icon: Zap, adminOnly: true },
