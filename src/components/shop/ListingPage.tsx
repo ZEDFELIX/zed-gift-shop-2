@@ -28,6 +28,7 @@ export async function ListingPage({
  filters,
   href,
   sidebar,
+  hero,
 }: {
   title: string;
   eyebrow?: string;
@@ -35,6 +36,7 @@ export async function ListingPage({
   filters: ProductListFilters;
   href: string;
   sidebar?: ReactNode;
+  hero?: ReactNode;
 }) {
   const [result, allCategories] = await Promise.all([
     listProducts(filters),
@@ -174,6 +176,7 @@ export async function ListingPage({
                 </div>
               </section>
             )}
+            {hero}
             {showSections && <ShopSections sections={sectionData.sections} />}
             {gridItems.length > 0 ? (
               <div className="rounded-2xl bg-transparent p-0 sm:glass-panel sm:p-3">
