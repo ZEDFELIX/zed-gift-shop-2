@@ -36,9 +36,11 @@ const TABS = [
 export function AdminNav({ isAdmin = false }: { isAdmin?: boolean }) {
   const pathname = usePathname();
   const tabs = TABS.filter((t) => isAdmin || !t.adminOnly);
-  const isActive = (href: string) => href === "/account"
-    ? false
-    : href === "/admin" ? pathname === href : pathname === href || pathname.startsWith(`${href}/`);
+  const isActive = (href: string) => {
+    if (href === "/account") return false;
+    const route = href.split("#")[0];
+    return route === "/admin" ? pathname === route : pathname === route || pathname.startsWith(`${route}/`);
+  };
 
   const links = (compact = false) => tabs.map(({ href, label, icon: Icon }) => {
     const active = isActive(href);
