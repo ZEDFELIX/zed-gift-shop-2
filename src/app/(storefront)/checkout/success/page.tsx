@@ -27,7 +27,7 @@ export default async function CheckoutSuccessPage({ searchParams }: { searchPara
  const statusLabel = ORDER_STATUS_STEPS.find((s) => s.status === data.orderStatus)?.label ?? data.orderStatus;
 
   return (
-  <div className="container-zed max-w-2xl py-14 lg:py-20">
+  <div className="zed-order-success-page container-zed max-w-2xl py-14 lg:py-20">
   {isPaid && (
   <TrackPageView
     event="purchase"
