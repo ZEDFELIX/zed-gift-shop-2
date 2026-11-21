@@ -96,7 +96,7 @@ export function SettingsForm({ initial }: { initial: SettingsShape }) {
  }
 
  return (
-  <form onSubmit={save} className="space-y-6">
+  <form id="website-settings" onSubmit={save} className="space-y-6">
    <section className="rounded-zed border border-edge bg-white p-6">
     <h2 className="font-display text-xl font-bold text-[#07111F]">Branding</h2>
     <p className="mt-1 text-sm text-[#334155]">Store identity and footer content.</p>
