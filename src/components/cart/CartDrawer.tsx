@@ -58,6 +58,7 @@ export function CartDrawer() {
     try {
       const data = await request<{ cart?: CartView }>("/api/cart");
       setCart(data.cart ?? null);
+      window.dispatchEvent(new CustomEvent("zed:cart-updated"));
       router.refresh();
     } catch {
       showToast("We couldn't refresh your cart. Please try again.", "error");
