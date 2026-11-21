@@ -936,3 +936,28 @@ body,.zed-page-bg { color:var(--color-ink, #171717); background:var(--color-pure
  .zed-admin .zed-admin-content form{min-width:0}
 }
 @media(prefers-reduced-motion:reduce){.zed-admin *{scroll-behavior:auto!important;transition:none!important}}
+
+/* Customer storefront refinements — use live Admin Brand Settings tokens. */
+.zed-shop-hero{
+  border:1px solid color-mix(in srgb,var(--zed-brand-primary) 16%,white);
+  box-shadow:0 18px 42px -30px color-mix(in srgb,var(--zed-brand-primary) 50%,transparent);
+}
+.zed-shop-hero a:focus-visible,.zed-shop-hero button:focus-visible{
+  outline:2px solid var(--zed-brand-secondary);outline-offset:3px;
+}
+.zed-wrap-page [class*="bg-[#542447]"]{background-color:var(--zed-brand-primary)!important}
+.zed-wrap-page [class*="text-[#542447]"]{color:var(--zed-brand-primary)!important}
+.zed-wrap-page [class*="border-[#542447]"]{border-color:var(--zed-brand-primary)!important}
+.zed-wrap-page [class*="bg-[#f8f1f7]"]{background-color:color-mix(in srgb,var(--zed-brand-primary) 8%,white)!important}
+.zed-wrap-page [class*="border-[#eadfe8]"]{border-color:color-mix(in srgb,var(--zed-brand-secondary) 16%,white)!important}
+.zed-wrap-page [class*="bg-[#fcf9fc]"],.zed-wrap-page [class*="bg-[#faf7fa]"]{background-color:color-mix(in srgb,var(--zed-brand-primary) 4%,white)!important}
+.zed-wrap-page [class*="text-[#321b30]"]{color:var(--zed-text-heading)!important}
+.zed-wrap-page [class*="text-[#766b75]"],.zed-wrap-page [class*="text-[#8a7d88]"]{color:var(--zed-text-muted)!important}
+.zed-wrap-page [class*="bg-[#f8f3f7]"]{background-color:color-mix(in srgb,var(--zed-brand-primary) 7%,white)!important}
+@media(max-width:767px){
+  .zed-shop-hero{border-radius:18px}
+  .zed-shop-hero h1{max-width:16ch}
+}
+@media(prefers-reduced-motion:reduce){
+  .zed-shop-hero *{scroll-behavior:auto!important;transition-duration:.01ms!important}
+}
