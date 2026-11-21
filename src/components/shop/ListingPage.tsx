@@ -6,6 +6,8 @@ import { listProducts, type ProductListFilters } from "@/lib/data/products";
 import { jsonLdItemList } from "@/lib/seo";
 import { listCategories } from "@/lib/data/catalog";
 import { ProductGrid } from "@/components/shop/ProductGrid";
+import { ShopMobileTools } from "@/components/shop/ShopMobileTools";
+import { FloatingCartBar } from "@/components/cart/FloatingCartBar";
 import { ShopFiltersMenu } from "@/components/shop/ShopFiltersMenu";
 import { Pagination } from "@/components/shop/Pagination";
 import { ShopSections, getShopSectionData, type ShopSection } from "@/components/shop/ShopSections";
@@ -125,6 +127,7 @@ export async function ListingPage({
       <div className={sidebar ? "lg:flex lg:items-start lg:gap-8" : undefined}>
         {sidebar ? <div className="hidden shrink-0 lg:block lg:w-60 xl:w-64">{sidebar}</div> : null}
         <div className="min-w-0 flex-1">
+          <ShopMobileTools />
           <header className="mb-4 hidden items-end justify-between gap-3 border-b border-[#eee6ed] pb-3 sm:mb-6 sm:flex sm:gap-4 sm:pb-4">
             <div className="min-w-0 flex-1" />
             <div className="flex shrink-0 items-center justify-end gap-2">
@@ -195,6 +198,7 @@ export async function ListingPage({
           </div>
         </div>
       </div>
+      <FloatingCartBar />
     </div>
   );
 }
