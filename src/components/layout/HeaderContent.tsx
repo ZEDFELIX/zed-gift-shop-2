@@ -252,7 +252,7 @@ export function HeaderContent({
       {pathname.startsWith("/shop") && isAuthed && customerName && (
         <div className="container-zed flex items-center gap-2 px-3 pb-1 pt-2 text-xs text-[var(--zed-brand-secondary,var(--color-plum-800))] sm:hidden">
           <span className="grid size-7 place-items-center rounded-full bg-[color-mix(in_srgb,var(--zed-brand-secondary,var(--color-plum-800))_12%,white)] font-bold">{customerName.trim().slice(0,1).toUpperCase()}</span>
-          <span>Welcome back, <strong>{customerName.trim().split(/\\s+/)[0]}</strong></span>
+          <span>Welcome back, <strong>{customerName.trim().split(" ")[0]}</strong></span>
         </div>
       )}
 
