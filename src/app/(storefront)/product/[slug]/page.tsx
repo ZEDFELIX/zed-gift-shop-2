@@ -95,7 +95,7 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
  });
 
   return (
-  <div className="container-zed px-0 pb-8 pt-0 sm:px-4 sm:py-8 lg:py-12">
+  <div className="zed-product-detail-page container-zed px-0 pb-8 pt-0 sm:px-4 sm:py-8 lg:py-12">
   <TrackPageView
     event="view_item"
     params={{ currency: "KES", value: product.price, items: [{ item_id: product.id, item_name: product.name }] }}
