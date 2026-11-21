@@ -19,7 +19,7 @@ const TABS = [
   { href: "/admin/analytics", label: "Reports & analytics", icon: BarChart3, adminOnly: true },
   { href: "/admin/staff", label: "Staff & permissions", icon: Users, adminOnly: true },
   { href: "/admin/colors", label: "Brand settings", icon: Palette, adminOnly: true },
-  { href: "/admin/settings", label: "Website settings", icon: Settings, adminOnly: true },
+  { href: "/admin/settings", label: "Website & homepage content", icon: Settings, adminOnly: true },
   { href: "/admin/deliveries", label: "Delivery settings", icon: Truck, adminOnly: true },
   { href: "/admin/testimonials", label: "Testimonials", icon: Quote, adminOnly: true },
   { href: "/admin/wholesale", label: "Wholesale", icon: Building2, adminOnly: true },
