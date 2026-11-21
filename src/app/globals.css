@@ -905,3 +905,32 @@ body,.zed-page-bg { color:var(--color-ink, #171717); background:var(--color-pure
   .zed-product-card,.zed-mobile-bottom-nav a{transition:none}
   .zed-product-card:hover{transform:none}
 }
+
+
+/* Admin workspace UI — professional neutral management styling. */
+.zed-admin{color:#0f172a}
+.zed-admin .zed-admin-content{min-width:0}
+.zed-admin .zed-admin-content .rounded-zed{border-radius:14px}
+.zed-admin .zed-admin-content .border-edge{border-color:#e2e8f0}
+.zed-admin .zed-admin-content .field{
+  min-height:42px;border:1px solid #e2e8f0;border-radius:11px;
+  background:#fff;padding:9px 12px;color:#1e293b;font-size:13px;
+  outline:none;transition:border-color .16s ease,box-shadow .16s ease;
+}
+.zed-admin .zed-admin-content .field:focus{border-color:#64748b;box-shadow:0 0 0 3px rgba(100,116,139,.12)}
+.zed-admin .zed-admin-content button,.zed-admin .zed-admin-content a{-webkit-tap-highlight-color:transparent}
+.zed-admin .zed-admin-content table th{font-weight:700}
+.zed-admin .zed-admin-content table td{vertical-align:middle}
+.zed-admin .zed-admin-content input,.zed-admin .zed-admin-content select,.zed-admin .zed-admin-content textarea{max-width:100%}
+.zed-admin .zed-admin-nav-active{background:#eef2f7;color:#0f172a;font-weight:700;box-shadow:inset 2px 0 0 #334155}
+.zed-admin-mobile-nav summary{user-select:none}
+.zed-admin-mobile-nav summary::-webkit-details-marker{display:none}
+.zed-admin-mobile-nav[open] summary{border-color:#cbd5e1}
+.zed-admin-stat-card{box-shadow:0 8px 22px -22px rgba(15,23,42,.35)}
+.zed-admin-topbar{box-shadow:0 5px 18px -18px rgba(15,23,42,.4)}
+@media(max-width:639px){
+ .zed-admin .container-zed{padding-left:14px;padding-right:14px}
+ .zed-admin .zed-admin-content .field{width:100%;min-width:0}
+ .zed-admin .zed-admin-content form{min-width:0}
+}
+@media(prefers-reduced-motion:reduce){.zed-admin *{scroll-behavior:auto!important;transition:none!important}}
