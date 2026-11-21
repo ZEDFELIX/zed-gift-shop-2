@@ -210,3 +210,92 @@
 @media (min-width: 768px) {
   .zed-app-shell .zed-mobile-bottom-nav { display: none; }
 }
+
+/* Reference-match pass: compact pink storefront hero and dense phone catalogue. */
+@media (max-width: 767px) {
+  .zed-app-shell .zed-shop-hero {
+    min-height: 126px;
+    margin-bottom: 16px;
+    border: 1px solid rgba(255,255,255,.82);
+    border-radius: 18px;
+    background: linear-gradient(110deg,#8f123f 0%,#bd1d58 54%,#f1a5bc 100%);
+    box-shadow: 0 12px 30px -20px rgba(111,13,57,.52);
+  }
+  .zed-app-shell .zed-shop-hero > .relative.grid {
+    min-height: 126px !important;
+    grid-template-columns: minmax(0,1.08fr) minmax(0,.92fr) !important;
+    align-items: stretch;
+  }
+  .zed-app-shell .zed-shop-hero > .relative.grid > div:first-child {
+    min-width: 0;
+    padding: 13px 0 13px 14px !important;
+    justify-content: center;
+  }
+  .zed-app-shell .zed-shop-hero > .relative.grid > div:first-child > span {
+    display: none;
+  }
+  .zed-app-shell .zed-shop-hero h1 {
+    margin-top: 0 !important;
+    max-width: 100%;
+    font-size: 17px !important;
+    line-height: 1.08 !important;
+    letter-spacing: -.04em;
+  }
+  .zed-app-shell .zed-shop-hero p {
+    display: none;
+  }
+  .zed-app-shell .zed-shop-hero a {
+    min-height: 29px !important;
+    margin-top: 9px !important;
+    padding: 5px 11px !important;
+    gap: 5px;
+    font-size: 10px !important;
+  }
+  .zed-app-shell .zed-shop-hero > .relative.grid > div:last-child {
+    min-height: 126px !important;
+    height: 100%;
+  }
+  .zed-app-shell .zed-shop-hero > .relative.grid > div:last-child img {
+    object-fit: contain !important;
+    object-position: center bottom !important;
+  }
+  .zed-app-shell .zed-shop-hero > .relative.grid > div:last-child > div.absolute.inset-0.bg-gradient-to-r {
+    background: linear-gradient(90deg,rgba(155,17,67,.16),transparent 45%) !important;
+  }
+  .zed-app-shell .zed-catalogue-heading {
+    border: 0;
+    padding: 0 0 7px;
+  }
+  .zed-app-shell .zed-catalogue-heading h1 {
+    font-size: 18px !important;
+  }
+  .zed-app-shell .zed-category-rail {
+    padding: 2px 0 10px;
+  }
+  .zed-app-shell .zed-category-chip {
+    min-height: 32px !important;
+    height: 32px !important;
+    padding: 0 11px !important;
+    gap: 5px !important;
+    border-radius: 999px !important;
+  }
+  .zed-app-shell .zed-category-chip > span:first-child {
+    display: none;
+  }
+  .zed-app-shell .zed-category-chip > span:last-child > span:first-child {
+    font-size: 10px !important;
+  }
+  .zed-app-shell .zed-product-card {
+    border-radius: 16px !important;
+  }
+  .zed-app-shell .zed-product-image-frame {
+    aspect-ratio: 1 / 1;
+  }
+  .zed-app-shell .zed-product-info {
+    padding: 8px 9px 10px !important;
+  }
+  .zed-app-shell .zed-product-info h3 {
+    min-height: 2rem !important;
+    font-size: 11px !important;
+  }
+}
