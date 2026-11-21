@@ -15,7 +15,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
 
   return (
     <div className="zed-admin min-h-screen bg-[#f5f6f8] text-slate-900">
-      <AdminTopBar role={user.role} email={user.email} />
+      <AdminTopBar role={user.role} email={user.email} name={user.name} />
       <div className="container-zed py-5 sm:py-7">
         <div className="mb-5 flex flex-wrap items-end justify-between gap-3">
           <div>
