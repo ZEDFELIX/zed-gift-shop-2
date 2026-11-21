@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowLeft, ArrowRight, Sparkles } from "lucide-react";
+import { ArrowLeft, ArrowRight, Gift, Sparkles } from "lucide-react";
 
 type HeroBanner = {
   eyebrow?: string;
@@ -73,7 +73,7 @@ export function ShopHeroBanner({ banner, fallbackImages = [] }: { banner: HeroBa
             </>
           ) : (
             <div className="absolute inset-0 flex items-center justify-center bg-[radial-gradient(circle_at_65%_45%,rgba(255,255,255,.25),transparent_48%)]">
-              <div className="grid size-28 place-items-center rounded-full border border-white/30 bg-white/10 text-5xl shadow-2xl backdrop-blur sm:size-36">🎁</div>
+              <div className="grid size-28 place-items-center rounded-full border border-white/30 bg-white/10 text-white shadow-2xl backdrop-blur sm:size-36"><Gift className="size-16" strokeWidth={1.2} /></div>
             </div>
           )}
         </div>
