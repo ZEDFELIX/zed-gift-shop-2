@@ -27,7 +27,7 @@ type CartItem = {
 
 type CartData = { items: CartItem[] };
 
-export function WrapAGiftClient({ wraps }: { wraps: WrapOption[] }) {
+export function WrapAGiftClient({ wraps, whatsappNumber }: { wraps: WrapOption[]; whatsappNumber: string }) {
   const [cart, setCart] = useState<CartData | null>(null);
   const [selected, setSelected] = useState<Record<string, string>>({});
   const [messages, setMessages] = useState<Record<string, string>>({});
@@ -145,7 +145,7 @@ export function WrapAGiftClient({ wraps }: { wraps: WrapOption[] }) {
       ...(image ? [`Wrap photo: ${image}`] : []),
       "Please confirm availability and drop-off or delivery arrangements.",
     ].join("\\n");
-    return `https://wa.me/254711436169?text=${encodeURIComponent(message)}`;
+    return `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
   }
 
   async function askAboutWrap(wrap: Pick<WrapOption, "name" | "price" | "image">) {
@@ -177,15 +177,16 @@ export function WrapAGiftClient({ wraps }: { wraps: WrapOption[] }) {
   }
 
   return (
-    <div className="container-zed py-8 sm:py-12">
+    <div className="zed-wrap-page container-zed py-5 sm:py-8">
       <header className="py-5 sm:py-7">
-        <h1 className="font-display text-3xl font-bold tracking-tight text-[#321b30] sm:text-4xl">Wrap a Gift</h1>
-        <p className="mt-2 text-sm text-[#766b75]">Choose a wrap.</p>
+        <p className="text-[10px] font-bold uppercase tracking-[.18em] text-[#8b557c]">Zed Gift Shop · Gift finishing</p>
+        <h1 className="mt-1 font-display text-2xl font-bold tracking-tight text-[#321b30] sm:text-3xl">Personalize Your Gift</h1>
+        <p className="mt-2 max-w-xl text-sm leading-relaxed text-[#766b75]">Bring us your gift, or choose one from our shop. We’ll wrap it beautifully.</p>
       </header>
 
       <section className="mt-2">
         <div className="mb-4">
-          <h2 className="font-display text-xl font-bold text-[#321b30] sm:text-2xl">Personalize your gift</h2>
+          <h2 className="font-display text-lg font-bold text-[#321b30] sm:text-xl">Choose your wrapping style</h2>
         </div>
         {wraps.length ? (
           <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
