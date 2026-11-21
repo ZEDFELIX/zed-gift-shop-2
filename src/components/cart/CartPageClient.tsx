@@ -115,7 +115,7 @@ export function CartPageClient() {
   const canCheckout = cart.items.every((item) => item.inStock);
 
   return (
-    <div className="container-zed max-w-6xl py-6 sm:py-9">
+    <div className="zed-cart-page container-zed max-w-6xl py-6 sm:py-9">
       <header className="mb-5 flex items-end justify-between gap-3">
         <div><p className="text-[10px] font-bold uppercase tracking-[.18em] text-[var(--zed-brand-primary)]">Your selections</p><h1 className="mt-1 font-display text-2xl font-extrabold tracking-tight text-[var(--zed-text-heading)] sm:text-3xl">Shopping cart <span className="text-base font-semibold text-[var(--zed-text-muted)]">({cart.count})</span></h1></div>
         <Link href="/shop" className="shrink-0 text-xs font-bold text-[var(--zed-brand-primary)] hover:underline">Continue shopping</Link>
