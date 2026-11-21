@@ -153,18 +153,13 @@ export async function ListingPage({
                 <div className="flex snap-x snap-mandatory items-center gap-1.5 overflow-x-auto overscroll-x-contain pb-0 scrollbar-none touch-pan-x sm:gap-2">
                   {visibleCategories.map((category, index) => {
                     const active = filters.category === category.slug;
-                    const tone = index % 3;
-                    const toneClass = tone === 0
-                      ? "bg-[#eef4df] text-[#72952e]"
-                      : tone === 1
-                        ? "bg-[#f8eaf0] text-[#b35a7b]"
-                        : "bg-[#edf0f5] text-[#65748b]";
+                    const toneClass = "bg-[color-mix(in_srgb,var(--zed-brand-secondary,var(--color-plum-800))_12%,white)] text-[var(--zed-brand-secondary,var(--color-plum-800))]";
                     return (
                       <Link
                         key={category.slug}
                         href={`/shop?category=${encodeURIComponent(category.slug)}`}
                         aria-current={active ? "page" : undefined}
-                        className={`flex h-[44px] min-w-[116px] max-w-[145px] shrink-0 snap-start items-center gap-1.5 rounded-md border bg-white px-2 text-left transition-colors sm:h-[48px] sm:min-w-[130px] sm:gap-2 sm:px-2.5 ${active ? "border-[var(--color-rose-500)] ring-1 ring-[var(--color-rose-500)]" : "border-[#e5e5e5] hover:border-[#c9c9c9]"}`}
+                        className={`flex h-[44px] min-w-[116px] max-w-[145px] shrink-0 snap-start items-center gap-1.5 rounded-md border bg-white px-2 text-left transition-colors sm:h-[48px] sm:min-w-[130px] sm:gap-2 sm:px-2.5 ${active ? "border-[var(--zed-brand-primary,var(--color-plum-800))] ring-1 ring-[var(--zed-brand-primary,var(--color-plum-800))]" : "border-[var(--zed-store-border)] hover:border-[var(--zed-brand-secondary,var(--color-plum-800))]/40"}`}
                       >
                         <span className={`grid size-7 shrink-0 place-items-center rounded text-[11px] font-black sm:size-8 ${toneClass}`}>
                           {category.displayName.slice(0, 1).toUpperCase()}
