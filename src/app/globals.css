@@ -961,3 +961,102 @@ body,.zed-page-bg { color:var(--color-ink, #171717); background:var(--color-pure
 @media(prefers-reduced-motion:reduce){
   .zed-shop-hero *{scroll-behavior:auto!important;transition-duration:.01ms!important}
 }
+
+
+/* Zed Gift Shop — premium app-like storefront refresh.
+   All interactive brand accents remain bound to Admin Brand Settings tokens. */
+.zed-mobile-bottom-nav { display:none; }
+@media (max-width:767px) {
+  body:has(.zed-mobile-bottom-nav) { background: var(--zed-brand-background, #fff7fb); }
+  .zed-mobile-bottom-nav {
+    display:grid; grid-template-columns:repeat(4,minmax(0,1fr));
+    position:fixed; inset-inline:12px; bottom:calc(8px + env(safe-area-inset-bottom));
+    z-index:80; min-height:62px; padding:6px 8px;
+    border:1px solid color-mix(in srgb,var(--zed-brand-secondary,#6b2d5c) 12%,white);
+    border-radius:22px; background:color-mix(in srgb,var(--zed-brand-background,#fff) 86%,transparent);
+    -webkit-backdrop-filter:blur(22px); backdrop-filter:blur(22px);
+    box-shadow:0 10px 32px rgba(74,31,66,.14);
+  }
+  .zed-mobile-bottom-link { display:flex; flex-direction:column; align-items:center; justify-content:center; gap:3px; min-width:0; border-radius:15px; color:var(--zed-brand-secondary,#6b2d5c); font-size:10px; font-weight:650; text-decoration:none; transition:background .18s ease,color .18s ease; }
+  .zed-mobile-bottom-link svg { width:19px; height:19px; stroke-width:2; }
+  .zed-mobile-bottom-link.is-active { color:white; background:var(--zed-brand-primary,#b3185e); }
+  .zed-glass-nav { border-radius:19px !important; border:1px solid color-mix(in srgb,var(--zed-brand-secondary,#6b2d5c) 12%,white); box-shadow:0 8px 26px rgba(74,31,66,.09); }
+  .zed-glass-nav > .container-zed { min-height:58px; }
+  .zed-glass-nav .navbar-logo { height:38px !important; max-width:148px; }
+  .zed-glass-nav .zed-menu-trigger { border-radius:13px; background:color-mix(in srgb,var(--zed-brand-secondary,#6b2d5c) 7%,white); }
+  .zed-glass-nav button[aria-label^="Cart"] { min-height:39px; border-radius:14px; }
+  main#main { min-height:calc(100dvh - 64px); }
+  main#main > .container-zed { padding-inline:12px; }
+  main#main .container-zed.bg-\[\#f7f7f7\] { background:transparent; }
+  main#main .zed-product-card {
+    border-radius:19px; border-color:color-mix(in srgb,var(--zed-brand-secondary,#6b2d5c) 11%,white);
+    background:color-mix(in srgb,var(--zed-brand-background,#fff) 94%,white);
+    box-shadow:0 5px 18px rgba(74,31,66,.075);
+  }
+  main#main .zed-product-card .zed-product-media { border-radius:18px 18px 0 0; }
+  main#main .zed-product-card .zed-product-media > div:first-child { aspect-ratio:1/1; background:transparent; }
+  main#main .zed-product-card > div:last-child { padding:8px 9px 10px; text-align:left; }
+  main#main .zed-product-card h3 { min-height:2.2rem; font-size:11px; line-height:1.25; }
+  main#main .zed-product-card > div:last-child > div { justify-content:flex-start; }
+  main#main .zed-product-card > div:last-child p { font-size:12px; }
+  main#main .zed-product-card .zed-stock-status { padding-top:5px; font-size:10px; }
+  main#main .zed-product-card [aria-label*="Save"] { font-size:9px; }
+  main#main .zed-product-card button[aria-label*="Save"] { width:30px; height:30px; border-radius:50%; background:rgba(255,255,255,.92); box-shadow:0 2px 9px rgba(0,0,0,.1); }
+  main#main .zed-product-card button[aria-label*="Save"] svg { width:16px; height:16px; }
+  main#main .zed-mobile-bottom-nav + * { padding-bottom:0; }
+  main#main .container-zed .zed-product-card img { object-fit:contain !important; }
+  main#main .container-zed .grid.grid-cols-2 { gap:9px; }
+  main#main .container-zed .zed-product-card .zed-sale-tag { border-radius:999px; padding:4px 7px; font-size:9px; }
+  main#main .container-zed .zed-product-card [class*="absolute"][class*="right-"] { top:8px; }
+  main#main .container-zed header h1 { font-size:17px; }
+  main#main .container-zed section[aria-label="Browse product categories"] a { min-width:72px; max-width:90px; height:38px; border-radius:999px; padding:0 10px; }
+  main#main .container-zed section[aria-label="Browse product categories"] a > span:first-child { width:23px; height:23px; border-radius:50%; }
+  main#main .container-zed section[aria-label="Browse product categories"] a > span:last-child > span:first-child { font-size:9px; }
+  main#main .container-zed section[aria-label="Browse product categories"] a > span:last-child > span:last-child { display:none; }
+  main#main .container-zed .zed-glass-panel, main#main .container-zed .glass-panel { border-radius:20px; }
+  main#main .container-zed .zed-shop-hero, main#main .container-zed [class*="hero-banner"] { border-radius:20px; overflow:hidden; }
+  main#main .container-zed .zed-shop-hero img, main#main .container-zed [class*="hero-banner"] img { object-fit:cover; }
+  main#main .container-zed .zed-product-card a { -webkit-tap-highlight-color:transparent; }
+  main#main .container-zed .zed-product-card:active { transform:scale(.985); }
+  main#main .container-zed .zed-product-card .text-charcoal-950 { color:var(--zed-text-heading,var(--zed-brand-secondary)); }
+  main#main .container-zed .zed-product-card .zed-stock-status { color:#16833b; }
+  .fixed.inset-x-0.bottom-\[calc\(4\.7rem\+env\(safe-area-inset-bottom\)\)\] { bottom:calc(5.5rem + env(safe-area-inset-bottom)) !important; }
+  .zed-mobile-bottom-nav a:focus-visible { outline:2px solid var(--zed-brand-primary); outline-offset:2px; }
+}
+@media (min-width:768px) {
+  .zed-mobile-bottom-nav { display:none !important; }
+}
+
+
+@media (max-width:767px) {
+  .zed-shop-listing-heading { display:none !important; }
+  .zed-shop-hero { min-height:172px; margin-top:2px; margin-bottom:16px; border-radius:20px !important; }
+  .zed-shop-hero > .relative.grid { position:relative; display:block; min-height:172px !important; }
+  .zed-shop-hero > .relative.grid > div:first-child { position:relative; z-index:2; width:72%; min-height:172px; justify-content:center; padding:15px 8px 15px 16px; }
+  .zed-shop-hero > .relative.grid > div:first-child > span { font-size:7px; padding:4px 7px; }
+  .zed-shop-hero > .relative.grid > div:first-child h1 { margin-top:8px; font-size:19px; line-height:1.04; }
+  .zed-shop-hero > .relative.grid > div:first-child p { margin-top:6px; font-size:10px; line-height:1.25; max-width:180px; }
+  .zed-shop-hero > .relative.grid > div:first-child a { min-height:30px; margin-top:10px; padding:6px 12px; font-size:10px; }
+  .zed-shop-hero > .relative.grid > div:last-child { position:absolute; z-index:1; inset:0 0 0 auto; width:58%; min-height:172px; }
+  .zed-shop-hero > .relative.grid > div:last-child > div:first-child { background:linear-gradient(90deg,var(--zed-brand-primary) 0%,transparent 75%); }
+  .zed-shop-hero > .relative.grid > div:last-child img { object-position:center; }
+  .zed-shop-hero > .relative.grid > div:last-child > div:last-child { bottom:7px; right:8px; }
+  .zed-shop-hero > .relative.grid > div:last-child > div:last-child button { width:18px; height:18px; }
+  .zed-shop-hero > .relative.grid > div:last-child > div:last-child button svg { width:11px; height:11px; }
+}
+
+
+@media (max-width:767px) {
+  .zed-product-detail-page { padding:0 12px 22px !important; }
+  .zed-product-detail-page > .grid { gap:12px !important; }
+  .zed-product-detail-page .zed-product-gallery, .zed-product-detail-page [class*="gallery"] { border-radius:22px; }
+  .zed-product-detail-page h1 { font-size:21px !important; line-height:1.15; }
+  .zed-product-detail-page .glass-card { border-radius:18px; }
+  .zed-product-detail-page [class*="text-3xl"] { font-size:25px; }
+  .zed-product-detail-page button, .zed-product-detail-page a[role="button"] { min-height:42px; }
+  .zed-product-detail-page .zed-product-media img { object-fit:contain; }
+  .zed-floating-cart-bar { bottom:calc(5.5rem + env(safe-area-inset-bottom)) !important; }
+  main#main .container-zed.max-w-6xl { padding-top:14px; }
+  main#main .container-zed.max-w-6xl > header { margin-bottom:14px; }
+  main#main .container-zed.max-w-6xl > header h1 { font-size:22px; }
+}
