@@ -30,7 +30,7 @@ export default async function AdminDashboardPage({searchParams}:{searchParams:Pr
   prisma.order.count({where:{...dateWhere,paymentStatus:"SUCCESSFUL"}}),
   prisma.order.count({where:{...dateWhere,orderStatus:"CANCELLED"}}),
   prisma.order.aggregate({where:{...dateWhere,paymentStatus:"SUCCESSFUL"},_sum:{total:true}}),
-  prisma.order.findMany({where:{...dateWhere,paymentStatus:"SUCCESSFUL"},select:{id:true,total:true,createdAt:true,items:{select:{name:true,quantity:true,price:true}}},orderBy:{createdAt:"asc"},take:3000}),
+  prisma.order.findMany({where:{...dateWhere,paymentStatus:"SUCCESSFUL"},select:{id:true,total:true,createdAt:true,items:{select:{name:true,quantity:true,price:true}}},orderBy:{createdAt:"asc"}}),
   prisma.product.count(),
   prisma.user.count({where:{role:"CUSTOMER"}}),
   prisma.product.findMany({where:{status:"ACTIVE",trackInventory:true},select:{id:true,name:true,quantity:true,reservedQuantity:true,lowStockThreshold:true},orderBy:{quantity:"asc"},take:300}),
