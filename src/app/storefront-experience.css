@@ -179,3 +179,34 @@
 @media (prefers-reduced-motion: reduce) {
   .zed-app-shell *, .zed-app-shell *::before, .zed-app-shell *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; }
 }
+
+/* Persistent phone tab bar — consistent across all customer screens. */
+.zed-app-shell .zed-mobile-bottom-nav {
+  left: 0 !important; right: 0 !important; bottom: 0 !important;
+  width: 100%; min-height: calc(68px + env(safe-area-inset-bottom,0px));
+  padding: 7px 10px calc(7px + env(safe-area-inset-bottom,0px)) !important;
+  border: 1px solid rgba(255,255,255,.92) !important;
+  border-bottom: 0 !important; border-radius: 22px 22px 0 0 !important;
+  background: rgba(255,255,255,.91) !important;
+  box-shadow: 0 -12px 34px -24px rgba(67,24,50,.34) !important;
+  backdrop-filter: blur(24px) saturate(170%);
+  -webkit-backdrop-filter: blur(24px) saturate(170%);
+}
+.zed-app-shell .zed-mobile-bottom-nav a {
+  min-height: 48px; color: #8b7784 !important;
+  border-radius: 16px; transition: background .18s ease,color .18s ease;
+}
+.zed-app-shell .zed-mobile-bottom-nav a.is-active,
+.zed-app-shell .zed-mobile-bottom-nav a[aria-current="page"] {
+  color: #64264f !important; background: #f8e9ef;
+}
+.zed-app-shell .zed-mobile-bottom-nav a.is-active svg,
+.zed-app-shell .zed-mobile-bottom-nav a[aria-current="page"] svg { stroke-width: 2.5; }
+@media (max-width: 767px) {
+  .zed-app-shell main { padding-bottom: calc(84px + env(safe-area-inset-bottom,0px)); }
+  .zed-app-shell nav[aria-label="Utility"] { display: none; }
+  .zed-app-shell .zed-mobile-bottom-nav { display: grid; }
+}
+@media (min-width: 768px) {
+  .zed-app-shell .zed-mobile-bottom-nav { display: none; }
+}
