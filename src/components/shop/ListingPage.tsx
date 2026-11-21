@@ -109,7 +109,7 @@ export async function ListingPage({
     }));
 
   return (
-    <div className="zed-shop-listing container-zed bg-[#f7f7f7] py-2 sm:bg-transparent sm:py-5 lg:py-6">
+    <div className="zed-shop-listing zed-catalogue-page container-zed bg-transparent py-2 sm:py-5 lg:py-6">
       {activeFilters.length > 0 && result.items.length > 0 && (
         <script
           type="application/ld+json"
@@ -130,8 +130,8 @@ export async function ListingPage({
         {sidebar ? <div className="hidden shrink-0 lg:block lg:w-60 xl:w-64">{sidebar}</div> : null}
         <div className="min-w-0 flex-1">
           <ShopMobileTools />
-          <header className="mb-3 flex items-end justify-between gap-3 border-b border-[var(--zed-brand-secondary)]/10 pb-3 sm:mb-5 sm:gap-4 sm:pb-4">
-            <div className="min-w-0 flex-1"><h1 className="font-display text-lg font-extrabold tracking-tight text-[var(--zed-text-heading)] sm:text-2xl">{title}</h1><p className="mt-0.5 hidden text-xs text-[var(--zed-text-muted)] sm:block">Thoughtful gifts for every moment.</p></div>
+          <header className="zed-catalogue-heading mb-3 flex items-end justify-between gap-3 border-0 pb-1 sm:mb-5 sm:gap-4 sm:pb-2">
+            <div className="min-w-0 flex-1"><p className="mb-1 text-[10px] font-bold uppercase tracking-[.16em] text-[var(--zed-brand-secondary)] sm:text-xs">Zed Gift Shop</p><h1 className="font-display text-xl font-extrabold tracking-tight text-[var(--zed-text-heading)] sm:text-2xl">{title === "Shop All Gifts" ? "Find the perfect gift" : title}</h1></div>
             <div className="hidden shrink-0 items-center justify-end gap-2 sm:flex">
               <Suspense fallback={null}>
                 <ShopFiltersMenu
@@ -148,7 +148,7 @@ export async function ListingPage({
 
           <div className="mt-0">
             {visibleCategories.length > 0 && (
-              <section aria-label="Browse product categories" className="mb-2 sm:mb-3">
+              <section aria-label="Browse product categories" className="zed-category-rail mb-3 sm:mb-4">
                 <div className="mb-1.5 flex items-center justify-between gap-2">
                   <Link href="/shop" className="shrink-0 text-[9px] font-semibold leading-tight text-[#72952e] hover:underline sm:text-[10px]">View all</Link>
                 </div>
@@ -161,7 +161,7 @@ export async function ListingPage({
                         key={category.slug}
                         href={`/shop?category=${encodeURIComponent(category.slug)}`}
                         aria-current={active ? "page" : undefined}
-                        className={`flex h-[44px] min-w-[116px] max-w-[145px] shrink-0 snap-start items-center gap-1.5 rounded-md border bg-white px-2 text-left transition-colors sm:h-[48px] sm:min-w-[130px] sm:gap-2 sm:px-2.5 ${active ? "border-[var(--zed-brand-primary,var(--color-plum-800))] ring-1 ring-[var(--zed-brand-primary,var(--color-plum-800))]" : "border-[var(--zed-store-border)] hover:border-[var(--zed-brand-secondary,var(--color-plum-800))]/40"}`}
+                        className={`zed-category-chip flex h-10 min-w-max shrink-0 snap-start items-center gap-2 rounded-full border bg-white/90 px-3 text-left transition-colors sm:h-11 sm:px-4 ${active ? "is-active border-[var(--zed-brand-primary,var(--color-plum-800))] ring-1 ring-[var(--zed-brand-primary,var(--color-plum-800))]" : "border-[var(--zed-store-border)] hover:border-[var(--zed-brand-secondary,var(--color-plum-800))]/40"}`}
                       >
                         <span className={`grid size-7 shrink-0 place-items-center rounded text-[11px] font-black sm:size-8 ${toneClass}`}>
                           {category.displayName.slice(0, 1).toUpperCase()}
