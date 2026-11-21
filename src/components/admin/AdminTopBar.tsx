@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import Image from "next/image";
 import { Loader2, LogOut, Search, Settings2, ShieldCheck, Store } from "lucide-react";
 import { AdminNotificationBell } from "@/components/admin/AdminNotificationBell";
 
@@ -29,7 +30,7 @@ export function AdminTopBar({ role, email, name }: { role: string; email: string
     <header className="zed-admin-topbar sticky top-0 z-40 border-b border-slate-200/80 bg-white/90 backdrop-blur-xl">
       <div className="container-zed flex min-h-[66px] items-center gap-3">
         <Link href="/admin" className="flex shrink-0 items-center gap-2.5">
-          <span className="grid size-9 place-items-center rounded-xl bg-slate-950 text-white"><ShieldCheck className="size-[18px]" /></span>
+          <Image src="/logo.png" alt="Zed Gift Shop" width={156} height={44} priority className="h-10 w-[132px] object-contain object-left" />
           <span className="hidden sm:block">
             <span className="block font-display text-[15px] font-bold tracking-tight text-slate-950">ZED GIFT SHOP</span>
             <span className="block text-[9px] font-bold uppercase tracking-[.18em] text-slate-400">Management</span>
