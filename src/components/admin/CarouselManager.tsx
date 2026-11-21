@@ -17,7 +17,7 @@ export function CarouselManager({ initial }: { initial: Carousel[] }) {
  const router=useRouter();
  const update=(i:number,key:keyof Carousel,value:string|boolean)=>setItems(old=>old.map((x,n)=>n===i?{...x,[key]:value}:x));
  async function save(){setBusy(true);setMessage("");try{const res=await fetch("/api/admin/settings",{method:"PATCH",headers:{"Content-Type":"application/json"},body:JSON.stringify({settings:{carouselSections:items}})});const data=await res.json();if(!res.ok)throw new Error(data.error||"Save failed");setMessage("Carousel settings saved.");router.refresh();}catch(e){setMessage(e instanceof Error?e.message:"Could not save.");}finally{setBusy(false);}}
- return <section className="rounded-zed border border-edge bg-white p-6 space-y-4">
+ return <section id="homepage-carousels" className="rounded-zed border border-edge bg-white p-6 space-y-4">
   <div><h2 className="font-display text-xl font-bold text-[#07111F]">Shop carousels</h2><p className="mt-1 text-sm text-[#334155]">Customise every product carousel or add a new one. Use a product search term to choose which existing products appear.</p></div>
   {items.map((item,i)=><div key={item.id} className="rounded-xl border border-edge p-4 space-y-3">
    <div className="flex items-center justify-between"><strong className="text-sm">{item.title||"New carousel"}</strong><button type="button" onClick={()=>setItems(old=>old.filter((_,n)=>n!==i))} className="text-red-600" aria-label="Remove carousel"><Trash2 className="size-4"/></button></div>
