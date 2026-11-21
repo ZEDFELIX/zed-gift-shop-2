@@ -34,6 +34,7 @@ export async function Header() {
       whatsappNumber={whatsappNumber}
       storeName={storeName}
       isAuthed={Boolean(user)}
+      customerName={user?.name ?? null}
       userRole={user?.role ?? null}
     />
   );
