@@ -438,7 +438,7 @@ export function ProductPurchase({
       <p className="truncate text-lg font-extrabold leading-tight text-[var(--color-ink)]">{formatKES(lineTotal)}</p>
     </div>
     {inStock ? (
-      <button type="button" onClick={addToCart} disabled={busy} className="inline-flex min-h-11 min-w-0 flex-1 items-center justify-center gap-1.5 rounded-full bg-[#9dbb35] px-3 text-xs font-bold text-[#17210b] shadow-sm disabled:opacity-60">
+      <button type="button" onClick={addToCart} disabled={busy} className="inline-flex min-h-11 min-w-0 flex-1 items-center justify-center gap-1.5 rounded-full bg-[var(--zed-brand-primary)] px-3 text-xs font-bold text-white shadow-sm disabled:opacity-60">
         <ShoppingBag className="size-4 shrink-0" /> {busy ? "Adding…" : "Add to cart"}
       </button>
     ) : <span className="min-w-0 flex-1 rounded-full bg-black/5 px-2 py-3 text-center text-[11px] font-semibold text-[#64748b]">Out of stock</span>}
