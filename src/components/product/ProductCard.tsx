@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import type { ProductCardData } from "@/lib/data/products";
 import { discountPercent, formatKES } from "@/lib/utils";
+import { SaveGiftButton } from "@/components/product/SaveGiftButton";
 
 export function ProductCard({ product, priority = false, textColor, flashSaleTag = false }: { product: ProductCardData; priority?: boolean; textColor?: string; flashSaleTag?: boolean }) {
   const image = product.images[0]?.url;
@@ -55,7 +56,7 @@ export function ProductCard({ product, priority = false, textColor, flashSaleTag
   );
 
   return (
-    <article className="zed-product-card group flex h-full flex-col overflow-hidden rounded-lg">
+    <article className="zed-product-card group flex h-full flex-col overflow-hidden rounded-2xl border border-[var(--zed-brand-secondary)]/10 bg-white shadow-[0_7px_22px_-18px_rgba(74,31,66,.38)] transition duration-300 hover:-translate-y-0.5 hover:shadow-[0_14px_30px_-18px_rgba(74,31,66,.3)]">
       <div className="relative transition-opacity group-hover:opacity-100">
         <Link
           href={`/product/${product.slug}`}
@@ -72,6 +73,7 @@ export function ProductCard({ product, priority = false, textColor, flashSaleTag
         >
           {media}
         </Link>
+        <SaveGiftButton productId={product.id} productName={product.name} />
       </div>
 
       <div className="flex min-w-0 flex-1 flex-col p-2.5 text-center sm:p-3 lg:p-4" style={textColor ? { color: textColor } : undefined}>
