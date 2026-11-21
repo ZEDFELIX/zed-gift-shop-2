@@ -8,7 +8,7 @@ import { DownloadAppPopup } from "@/components/layout/DownloadAppButton";
 
 export default function StorefrontLayout({ children }: { children: React.ReactNode }) {
   return (
-    <>
+    <div className="zed-app-shell">
       <Header />
       <main id="main" className="pb-20 lg:pb-0">{children}</main>
       <Footer />
@@ -17,6 +17,6 @@ export default function StorefrontLayout({ children }: { children: React.ReactNo
       <Trackers />
       <ConsentBanner />
       <DownloadAppPopup />
-    </>
+    </div>
   );
 }
