@@ -35,7 +35,7 @@ export default async function CheckoutPage() {
  }
 
   return (
-  <div className="container-zed py-10 lg:py-14">
+  <div className="zed-checkout-page container-zed py-6 sm:py-8 lg:py-12">
   <TrackPageView
     event="begin_checkout"
     params={{ currency: "KES", value: cart.subtotal, items: cart.items.map((i) => ({ item_id: i.productId, quantity: i.quantity })) }}
