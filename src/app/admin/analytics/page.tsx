@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { getCurrentUser } from "@/lib/auth";
+import { prisma } from "@/lib/prisma";
 import { formatKES } from "@/lib/utils";
 import {
   dashboardMetrics,
@@ -38,7 +39,7 @@ export default async function AdminAnalyticsPage({
   const bucket = (["day", "week", "month", "year"].includes(sp.bucket ?? "") ? sp.bucket : "day") as "day" | "week" | "month" | "year";
   const range = resolveRange(preset, sp.from, sp.to);
 
-  const [metrics, statuses, series, best, worst, lowStock, customers, inventory] = await Promise.all([
+  const [metrics, statuses, series, best, worst, lowStock, customers, inventory, couponUsage, wrappedItems] = await Promise.all([
     dashboardMetrics(),
     orderStatusBreakdown(),
     salesSeries(range, bucket),
@@ -47,8 +48,13 @@ export default async function AdminAnalyticsPage({
     lowStockProducts(8),
     customerAnalytics(range),
     inventoryAnalytics(),
+    prisma.order.groupBy({ by: ["couponCode"], where: { paymentStatus: "SUCCESSFUL", createdAt: { gte: range.from, lte: range.to }, couponCode: { not: null } }, _count: { _all: true }, _sum: { discount: true }, orderBy: { _count: { couponCode: "desc" } }, take: 10 }),
+    prisma.orderItem.findMany({ where: { giftWrapPrice: { gt: 0 }, order: { paymentStatus: "SUCCESSFUL", createdAt: { gte: range.from, lte: range.to } } }, select: { name: true, giftWrapPrice: true, quantity: true } }),
   ]);
 
+  const giftWrapRevenue = wrappedItems.reduce((sum, item) => sum + item.giftWrapPrice * item.quantity, 0);
+  const giftWrapUnits = wrappedItems.reduce((sum, item) => sum + item.quantity, 0);
+  const discountTotal = couponUsage.reduce((sum, item) => sum + (item._sum.discount ?? 0), 0);
   const maxRevenue = Math.max(1, ...series.map((s) => s.revenue));
   const maxOrders = Math.max(1, ...series.map((s) => s.orders));
   const allKpis = [
@@ -154,6 +160,21 @@ export default async function AdminAnalyticsPage({
               </li>
             ))}
           </ul>
+        </div>
+      </section>
+
+      <section className="grid gap-4 lg:grid-cols-2">
+        <div className="rounded-zed border border-edge bg-white p-5">
+          <h2 className="font-display text-lg font-bold text-[#07111F]">Coupon performance</h2>
+          <p className="mt-1 text-xs text-[#64748B]">Successful orders using coupons in the selected period</p>
+          <div className="mt-4 flex flex-wrap gap-5"><div><p className="text-xl font-bold text-[#07111F]">{couponUsage.reduce((sum,item)=>sum+item._count._all,0)}</p><p className="text-xs text-[#64748B]">Coupon orders</p></div><div><p className="text-xl font-bold text-[#07111F]">{formatKES(discountTotal)}</p><p className="text-xs text-[#64748B]">Discount value</p></div></div>
+          <ul className="mt-3 divide-y divide-edge text-sm">{couponUsage.map(item=><li key={item.couponCode??"none"} className="flex justify-between gap-3 py-2"><span className="font-medium text-[#07111F]">{item.couponCode}</span><span className="text-right text-[#334155]">{item._count._all} orders · {formatKES(item._sum.discount??0)}</span></li>)}{couponUsage.length===0&&<li className="py-3 text-xs text-[#64748B]">No coupon redemptions in this period.</li>}</ul>
+        </div>
+        <div className="rounded-zed border border-edge bg-white p-5">
+          <h2 className="font-display text-lg font-bold text-[#07111F]">Gift wrapping sales</h2>
+          <p className="mt-1 text-xs text-[#64748B]">Wrapping charges from successfully paid order items</p>
+          <div className="mt-4 grid grid-cols-2 gap-3"><div><p className="text-xl font-bold text-[#07111F]">{formatKES(giftWrapRevenue)}</p><p className="text-xs text-[#64748B]">Wrapping revenue</p></div><div><p className="text-xl font-bold text-[#07111F]">{giftWrapUnits}</p><p className="text-xs text-[#64748B]">Wrapped units</p></div></div>
+          <p className="mt-4 text-xs text-[#64748B]">Gift wrap totals use saved order-item charges, not current package prices.</p>
         </div>
       </section>
 
