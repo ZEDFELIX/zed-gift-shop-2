@@ -1129,3 +1129,42 @@ body,.zed-page-bg { color:var(--color-ink, #171717); background:var(--color-pure
   .zed-app-shell .zed-shop-listing .zed-product-card h3{text-align:left}
   .zed-app-shell .zed-shop-listing .zed-product-card .zed-product-media{background:#fff7fb}
 }
+
+
+/* ZED REFERENCE STOREFRONT — component-level styling for the live catalogue markup. */
+.zed-app-shell .zed-catalogue-page{max-width:1500px}
+.zed-app-shell .zed-catalogue-heading h1{letter-spacing:-.045em}
+.zed-app-shell .zed-category-rail>div:last-child{gap:9px;padding:2px 1px 8px}
+.zed-app-shell .zed-category-chip{min-height:40px;border-radius:999px;background:rgba(255,255,255,.86);box-shadow:0 5px 16px -13px rgba(85,20,56,.38)}
+.zed-app-shell .zed-category-chip.is-active{background:var(--zed-brand-primary);color:var(--zed-button-text,#fff)}
+.zed-app-shell .zed-category-chip.is-active>span:last-child>span:first-child{color:inherit}
+.zed-app-shell .zed-product-card{border-radius:20px;background:rgba(255,255,255,.94);border-color:color-mix(in srgb,var(--zed-brand-secondary) 13%,white);box-shadow:0 9px 24px -20px rgba(77,20,54,.4)}
+.zed-app-shell .zed-product-image-frame{aspect-ratio:1/1;background:linear-gradient(145deg,#fff 0%,#fff6fa 100%)}
+.zed-app-shell .zed-product-image-frame img{object-fit:contain!important;object-position:center;padding:8px}
+.zed-app-shell .zed-product-info{gap:1px}
+.zed-app-shell .zed-product-info h3{color:var(--zed-text-heading);font-size:12px;line-height:1.35}
+.zed-app-shell .zed-product-info p{color:var(--zed-text-heading)}
+.zed-app-shell .zed-product-info .zed-stock-status{color:#25824b}
+.zed-app-shell .zed-shop-listing .zed-product-card .zed-sale-tag{color:#fff!important}
+.zed-app-shell .zed-shop-listing .zed-product-card .zed-product-media{margin:0;width:100%;border-radius:0;background:transparent}
+.zed-app-shell .zed-shop-listing .zed-product-card .zed-product-media>div{aspect-ratio:1/1!important}
+.zed-app-shell .zed-shop-listing .zed-product-card .zed-product-media img{padding:8px}
+.zed-app-shell .zed-shop-listing .zed-product-card>div:last-child{padding:9px 11px 12px;text-align:left}
+.zed-app-shell .zed-shop-listing .zed-product-card h3{min-height:2.35rem;text-align:left;font-size:12px}
+@media(max-width:767px){
+ .zed-app-shell .zed-catalogue-page{padding:10px 12px 26px}
+ .zed-app-shell .zed-catalogue-heading{margin:4px 0 10px}
+ .zed-app-shell .zed-catalogue-heading h1{font-size:20px}
+ .zed-app-shell .zed-category-chip{height:39px;min-height:39px;padding-inline:13px}
+ .zed-app-shell .zed-shop-listing .grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+ .zed-app-shell .zed-product-card{border-radius:17px}
+ .zed-app-shell .zed-product-info{padding:8px 9px 10px}
+ .zed-app-shell .zed-product-info h3{min-height:2.25rem;font-size:11px}
+ .zed-app-shell .zed-product-info>div{justify-content:flex-start}
+ .zed-app-shell .zed-product-image-frame img{padding:6px}
+}
+@media(min-width:768px){
+ .zed-app-shell .zed-shop-listing .grid{gap:16px}
+ .zed-app-shell .zed-product-card{border-radius:21px}
+ .zed-app-shell .zed-product-image-frame img{padding:12px}
+}
