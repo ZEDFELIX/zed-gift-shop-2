@@ -31,7 +31,7 @@ export default async function WishlistPage() {
   const items = (wishlist?.items ?? []).filter((item) => item.product.status === "ACTIVE");
 
   if (!items.length) return (
-    <section className="glass-card rounded-zed p-8 text-center sm:p-12">
+    <section className="zed-wishlist-page glass-card rounded-zed p-8 text-center sm:p-12">
       <h2 className="font-display text-xl font-bold text-[#07111F]">Your saved gifts will appear here</h2>
       <p className="mt-2 text-sm text-[#334155]">Tap the heart on a gift to keep it handy for later.</p>
       <Link href="/shop" className="mt-5 inline-flex rounded-zed bg-plum-800 hover:bg-plum-900 px-5 py-3 text-sm font-bold text-white">Explore gifts</Link>
@@ -39,7 +39,7 @@ export default async function WishlistPage() {
   );
 
   return (
-    <section className="space-y-4">
+    <section className="zed-wishlist-page space-y-4">
       <div className="flex flex-wrap items-end justify-between gap-3">
         <div>
           <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-plum-800">Your personal collection</p>
