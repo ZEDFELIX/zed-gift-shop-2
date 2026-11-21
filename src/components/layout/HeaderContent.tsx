@@ -166,6 +166,12 @@ export function HeaderContent({
           </button>
 
           <Brand storeName={storeName} />
+          {isAuthed && customerName && (
+            <div className="hidden min-w-0 xl:block">
+              <p className="text-[10px] font-medium text-[var(--zed-text-muted)]">Welcome back</p>
+              <p className="max-w-[150px] truncate text-xs font-bold text-[var(--zed-text-heading)]">{customerName.trim().split(" ")[0]}</p>
+            </div>
+          )}
 
           <form
             role="search"
@@ -177,7 +183,7 @@ export function HeaderContent({
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               type="search"
-              placeholder="Search for products..."
+              placeholder="What are you looking for?"
               aria-label="Products search"
               className="w-full min-w-0 bg-transparent py-2 text-sm text-[var(--color-ink)] outline-none placeholder:text-charcoal/40"
             />
@@ -301,7 +307,7 @@ export function HeaderContent({
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 type="search"
-                placeholder="Search for products..."
+                placeholder="What are you looking for?"
                 aria-label="Products search"
                 className="w-full min-w-0 bg-transparent py-2 text-sm outline-none"
               />
