@@ -1114,3 +1114,18 @@ body,.zed-page-bg { color:var(--color-ink, #171717); background:var(--color-pure
 @media(prefers-reduced-motion:reduce){
   .zed-app-shell *{scroll-behavior:auto!important;transition-duration:.01ms!important}
 }
+
+
+/* Reference layout rhythm: remove legacy utility strip and catalogue heading on phones. */
+@media(max-width:767px){
+  .zed-app-shell>div.relative.z-30.border-b.border-edge.bg-white{display:none}
+  .zed-app-shell .zed-shop-listing>div>div>header{display:none}
+  .zed-app-shell .zed-shop-listing>div>div>div.mt-0{margin-top:0}
+  .zed-app-shell .zed-shop-listing .zed-shop-hero{margin-top:9px}
+  .zed-app-shell .zed-shop-listing .zed-product-card .zed-stock-status,
+  .zed-app-shell .zed-shop-listing .zed-product-card p{font-size:10px}
+  .zed-app-shell .zed-shop-listing .zed-product-card .zed-sale-tag{font-size:9px}
+  .zed-app-shell .zed-shop-listing .zed-product-card>div:last-child>div{justify-content:flex-start}
+  .zed-app-shell .zed-shop-listing .zed-product-card h3{text-align:left}
+  .zed-app-shell .zed-shop-listing .zed-product-card .zed-product-media{background:#fff7fb}
+}
