@@ -372,3 +372,42 @@
  .zed-app-shell .zed-checkout-page > .grid > div:first-child > .glass-card { padding:14px; }
  .zed-app-shell .zed-checkout-page aside > div { padding:14px; }
 }
+
+/* Shopline-inspired Zed storefront refinement — customer pages only */
+.zed-app-shell{--zed-ui-bg:#f7f7f9;--zed-ui-surface:#fff;--zed-ui-surface-solid:#fff;--zed-ui-ink:#171923;--zed-ui-muted:#777b87;--zed-ui-line:#ececf0;--zed-ui-plum:#682b55;--zed-ui-plum-deep:#421b38;--zed-ui-rose:#d76c9a;--zed-ui-blush:#f8edf2;--zed-ui-shadow:0 8px 28px -22px rgba(24,24,38,.28);background:#f7f7f9;color:#171923}
+.zed-app-shell main{min-height:58vh}
+.zed-app-shell .container-zed{max-width:1440px}
+.zed-app-shell .zed-glass-nav{border:1px solid #ebebf0;border-radius:17px;background:rgba(255,255,255,.96);box-shadow:0 5px 24px -19px rgba(20,20,35,.35);backdrop-filter:blur(22px) saturate(145%)}
+.zed-app-shell .zed-glass-nav a,.zed-app-shell .zed-glass-nav button{color:var(--zed-ui-ink)}
+.zed-app-shell .zed-glass-nav button[class*="bg-deep-olive"],.zed-app-shell .zed-glass-nav button[class*="bg-zed-"]{color:#fff;background:var(--zed-ui-plum)}
+.zed-app-shell .zed-glass-nav form[role="search"]{min-height:42px;border-radius:11px;border-color:#ededf1;background:#f7f7f9}
+.zed-app-shell .navbar-logo{height:clamp(36px,4vw,52px);max-width:clamp(112px,17vw,196px)}
+.zed-app-shell .zed-menu-trigger{color:var(--zed-ui-plum)!important}
+.zed-app-shell .zed-glass-footer{background:#fff;color:#555866;border-top:1px solid var(--zed-ui-line)}
+.zed-app-shell .zed-glass-footer,.zed-app-shell .zed-glass-footer p,.zed-app-shell .zed-glass-footer li,.zed-app-shell .zed-glass-footer a{color:#646775}
+.zed-app-shell .zed-glass-footer .text-white,.zed-app-shell .zed-glass-footer [class*="text-white/"]{color:#454754!important}
+.zed-app-shell .zed-glass-footer [class*="border-white/"]{border-color:#ececf0!important}
+.zed-app-shell .zed-shop-listing{padding-top:12px}
+.zed-app-shell .zed-catalogue-heading{border-color:var(--zed-ui-line)}
+.zed-app-shell .zed-catalogue-heading h1{font-size:clamp(1.25rem,2vw,1.8rem);font-weight:750}
+.zed-app-shell .zed-category-chip{min-height:42px;border-radius:13px!important;border-color:#ededf1!important;background:#fff!important;box-shadow:0 3px 12px -10px rgba(20,20,35,.25)}
+.zed-app-shell .zed-category-chip[aria-current="page"],.zed-app-shell .zed-category-chip.is-active{background:var(--zed-ui-plum)!important;border-color:var(--zed-ui-plum)!important;color:#fff!important}
+.zed-app-shell .zed-product-card,.zed-app-shell .shop-product-card{border:1px solid #ededf1!important;border-radius:15px!important;background:#fff!important;box-shadow:0 4px 18px -15px rgba(20,20,35,.3)!important;backdrop-filter:none;overflow:hidden}
+.zed-app-shell .zed-product-card:hover,.zed-app-shell .shop-product-card:hover{border-color:#dfcbd8!important;box-shadow:0 12px 28px -20px rgba(70,35,60,.32)!important}
+.zed-app-shell .zed-product-image-frame,.zed-app-shell .zed-product-media{background:#f6f6f8!important}
+.zed-app-shell .zed-product-info{padding:10px 11px 12px!important}
+.zed-app-shell .zed-product-info h3{color:#252633!important;font-weight:600}
+.zed-app-shell .zed-product-info p:first-child,.zed-app-shell .zed-product-info .font-bold{color:var(--zed-ui-plum-deep)!important}
+.zed-app-shell .zed-sale-tag{background:var(--zed-ui-plum)!important;color:#fff!important}
+.zed-app-shell .zed-shop-hero,.zed-app-shell .zed-shop-hero>.relative.grid{border-radius:17px!important;overflow:hidden}
+.zed-app-shell .glass-card,.zed-app-shell .glass-panel,.zed-app-shell .card,.zed-app-shell .card-flat,.zed-app-shell .card-quiet,.zed-app-shell [class*="rounded-"][class*="border"][class*="bg-white"]{border-color:#ededf1;box-shadow:0 7px 24px -21px rgba(20,20,35,.28)}
+.zed-app-shell input:not([type="checkbox"]):not([type="radio"]),.zed-app-shell select,.zed-app-shell textarea{border-color:#e7e7ec;border-radius:11px}
+.zed-app-shell button[class*="bg-zed-950"],.zed-app-shell a[class*="bg-zed-950"],.zed-app-shell button[class*="bg-deep-olive"],.zed-app-shell a[class*="bg-deep-olive"]{background:var(--zed-ui-plum)!important;color:#fff!important}
+.zed-app-shell .zed-product-detail-page{max-width:1320px}
+.zed-app-shell .zed-product-detail-page .glass-card,.zed-app-shell .zed-product-detail-page [class*="rounded-2xl"][class*="border"]{border-color:#ededf1;border-radius:17px;background:#fff}
+.zed-app-shell .zed-cart-page article,.zed-app-shell .zed-cart-page aside,.zed-app-shell .zed-checkout-page .glass-card,.zed-app-shell .zed-checkout-page aside>div,.zed-app-shell .zed-account-page>div>div>main,.zed-app-shell .zed-wishlist-page .zed-product-card,.zed-app-shell .zed-wrap-page>section:first-of-type article,.zed-app-shell .zed-order-success-page .glass-card{border:1px solid #ededf1;border-radius:17px;background:#fff;box-shadow:0 7px 24px -21px rgba(20,20,35,.28)}
+.zed-app-shell .zed-account-page>div>header{background:linear-gradient(135deg,#682b55,#9a557c)!important}
+.zed-app-shell .zed-checkout-page>header{border:1px solid #ededf1;border-radius:17px;background:#fff}
+.zed-app-shell .zed-order-success-page>div:first-of-type>span{background:#f8edf2;border-color:#ead9e3;color:var(--zed-ui-plum)}
+@media(min-width:1024px){.zed-app-shell .zed-shop-listing{padding-top:18px}.zed-app-shell .zed-product-info h3{font-size:13px!important;min-height:2.4rem!important}.zed-app-shell .zed-product-detail-page{padding-top:34px}}
+@media(max-width:767px){.zed-app-shell .zed-glass-nav{border-radius:14px}.zed-app-shell .zed-shop-listing{padding-top:7px}.zed-app-shell .zed-catalogue-heading{margin-bottom:10px;padding-bottom:10px}.zed-app-shell .zed-category-chip{min-height:38px;padding-left:12px;padding-right:12px}.zed-app-shell .zed-product-card{border-radius:13px!important}.zed-app-shell .zed-product-info{padding:8px 9px 10px!important}.zed-app-shell .zed-product-info h3{font-size:11px!important;min-height:2.1rem!important}.zed-app-shell .zed-product-info p:first-child{font-size:12px!important}.zed-app-shell .zed-product-detail-page{padding-top:0}.zed-app-shell .zed-checkout-page{padding-top:16px}.zed-app-shell .zed-checkout-page>header{margin-bottom:18px;border-radius:20px}.zed-app-shell footer{padding-bottom:calc(76px + env(safe-area-inset-bottom,0px))}}
